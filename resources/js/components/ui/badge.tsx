@@ -17,6 +17,14 @@ const badgeVariants = cva(
           "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+        common:
+          "border-gray-500/30 bg-gray-500/10 text-gray-700 dark:text-gray-300 [a&]:hover:bg-gray-500/20",
+        rare:
+          "border-blue-500/30 bg-blue-500/10 text-blue-700 dark:text-blue-300 [a&]:hover:bg-blue-500/20 [a&]:hover:shadow-[0_0_8px_rgba(59,130,246,0.3)]",
+        epic:
+          "border-purple-500/30 bg-purple-500/10 text-purple-700 dark:text-purple-300 [a&]:hover:bg-purple-500/20 [a&]:hover:shadow-[0_0_8px_rgba(168,85,247,0.3)]",
+        legendary:
+          "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 [a&]:hover:bg-amber-500/20 [a&]:hover:shadow-[0_0_8px_rgba(251,191,36,0.3)] animate-shimmer",
       },
     },
     defaultVariants: {

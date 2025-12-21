@@ -1,0 +1,86 @@
+<!-- Placeholder SVG para Aethermoor - Se puede reemplazar con imagen real -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000" width="2000" height="2000">
+  <defs>
+    <!-- Textura de pergamino -->
+    <filter id="parchment">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise"/>
+      <feDiffuseLighting in="noise" lighting-color="#d4c5a0" surfaceScale="2">
+        <feDistantLight azimuth="45" elevation="60"/>
+      </feDiffuseLighting>
+    </filter>
+    
+    <!-- Patrón de mapa antiguo -->
+    <pattern id="grid" width="200" height="200" patternUnits="userSpaceOnUse">
+      <path d="M 200 0 L 0 0 0 200" fill="none" stroke="#a89968" stroke-width="0.5" opacity="0.3"/>
+    </pattern>
+  </defs>
+  
+  <!-- Fondo de pergamino -->
+  <rect width="2000" height="2000" fill="#d4c5a0"/>
+  <rect width="2000" height="2000" fill="url(#grid)"/>
+  <rect width="2000" height="2000" filter="url(#parchment)" opacity="0.3"/>
+  
+  <!-- Borde decorativo -->
+  <rect x="50" y="50" width="1900" height="1900" fill="none" stroke="#8b6914" stroke-width="8" rx="10"/>
+  <rect x="60" y="60" width="1880" height="1880" fill="none" stroke="#a89968" stroke-width="2" rx="8"/>
+  
+  <!-- Rosa de los vientos (esquina superior izquierda) -->
+  <g transform="translate(150, 150)">
+    <circle cx="0" cy="0" r="60" fill="none" stroke="#8b6914" stroke-width="2"/>
+    <circle cx="0" cy="0" r="55" fill="none" stroke="#a89968" stroke-width="1"/>
+    
+    <!-- Puntos cardinales -->
+    <path d="M 0,-55 L 5,-40 L 0,-45 L -5,-40 Z" fill="#8b6914"/>
+    <path d="M 55,0 L 40,5 L 45,0 L 40,-5 Z" fill="#8b6914"/>
+    <path d="M 0,55 L 5,40 L 0,45 L -5,40 Z" fill="#8b6914"/>
+    <path d="M -55,0 L -40,5 L -45,0 L -40,-5 Z" fill="#8b6914"/>
+    
+    <text x="0" y="-70" text-anchor="middle" font-family="Cinzel, serif" font-size="24" fill="#8b6914" font-weight="bold">N</text>
+    <text x="70" y="8" text-anchor="middle" font-family="Cinzel, serif" font-size="24" fill="#8b6914">E</text>
+    <text x="0" y="85" text-anchor="middle" font-family="Cinzel, serif" font-size="24" fill="#8b6914">S</text>
+    <text x="-70" y="8" text-anchor="middle" font-family="Cinzel, serif" font-size="24" fill="#8b6914">O</text>
+  </g>
+  
+  <!-- Título del Mapa -->
+  <text x="1000" y="120" text-anchor="middle" font-family="Cinzel, serif" font-size="72" fill="#5d4e37" font-weight="bold">AETHERMOOR</text>
+  <text x="1000" y="180" text-anchor="middle" font-family="Philosopher, sans-serif" font-size="28" fill="#8b6914" font-style="italic">Reino de Magia y Leyendas</text>
+  
+  <!-- Elementos decorativos de terreno sugerido -->
+  <!-- Montañas (noroeste) -->
+  <g opacity="0.3">
+    <path d="M 300,400 L 350,300 L 400,400 Z" fill="none" stroke="#5d4e37" stroke-width="3"/>
+    <path d="M 350,400 L 400,320 L 450,400 Z" fill="none" stroke="#5d4e37" stroke-width="3"/>
+    <path d="M 400,420 L 450,340 L 500,420 Z" fill="none" stroke="#5d4e37" stroke-width="3"/>
+  </g>
+  
+  <!-- Bosques (centro) -->
+  <g opacity="0.25">
+    <circle cx="1000" cy="900" r="15" fill="#4a7c3f"/>
+    <circle cx="1030" cy="920" r="12" fill="#4a7c3f"/>
+    <circle cx="970" cy="930" r="14" fill="#4a7c3f"/>
+    <circle cx="1010" cy="950" r="11" fill="#4a7c3f"/>
+    <circle cx="980" cy="970" r="13" fill="#4a7c3f"/>
+  </g>
+  
+  <!-- Río (curva diagonal) -->
+  <path d="M 500,500 Q 800,700 1200,900 T 1700,1400" fill="none" stroke="#6b9cc7" stroke-width="8" opacity="0.4"/>
+  
+  <!-- Leyenda -->
+  <g transform="translate(1700, 1700)">
+    <rect x="-200" y="-150" width="220" height="170" fill="#e8d9b8" stroke="#8b6914" stroke-width="2" rx="5"/>
+    <text x="-190" y="-120" font-family="Cinzel, serif" font-size="18" fill="#5d4e37" font-weight="bold">Leyenda</text>
+    
+    <circle cx="-180" cy="-90" r="8" fill="#d32f2f"/>
+    <text x="-165" y="-85" font-family="Philosopher, sans-serif" font-size="14" fill="#5d4e37">Ciudades</text>
+    
+    <circle cx="-180" cy="-60" r="8" fill="#4a7c3f"/>
+    <text x="-165" y="-55" font-family="Philosopher, sans-serif" font-size="14" fill="#5d4e37">Bosques</text>
+    
+    <circle cx="-180" cy="-30" r="8" fill="#5d4037"/>
+    <text x="-165" y="-25" font-family="Philosopher, sans-serif" font-size="14" fill="#5d4e37">Montañas</text>
+  </g>
+  
+  <!-- Texto de placeholder -->
+  <text x="1000" y="1000" text-anchor="middle" font-family="Philosopher, sans-serif" font-size="36" fill="#8b6914" opacity="0.5" font-style="italic">Coloca tu mapa personalizado en /public/images/map-aethermoor.png</text>
+</svg>
+

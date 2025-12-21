@@ -1,28 +1,48 @@
-/.phpunit.cache
-/bootstrap/ssr
+# Laravel
 /node_modules
-/public/build
 /public/hot
 /public/storage
-/resources/js/actions
-/resources/js/routes
-/resources/js/wayfinder
 /storage/*.key
-/storage/pail
 /vendor
-.DS_Store
 .env
 .env.backup
 .env.production
-.phpactor.json
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
+auth.json
 npm-debug.log
 yarn-error.log
-/auth.json
 /.fleet
 /.idea
-/.nova
 /.vscode
-/.zed
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build
+/public/build
+/public/css
+/public/js
+/public/mix-manifest.json
+
+# Testing
+coverage/
+.phpunit.cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs temporales
+BACKEND_COMPLETADO.md
+FIX_INDEX_PAGES.md
+GUIA_RAPIDA.md
+INSTALACION_COMPLETADA.md
+SEEDERS_RESUMEN.md
+SISTEMA_COMPLETADO_FINAL.md
+SISTEMA_LORE_COMPLETADO.md
+fix_indexes.sh

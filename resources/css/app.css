@@ -2,6 +2,9 @@
 
 @import "tw-animate-css";
 
+/* Leaflet Map Styles */
+@import 'leaflet/dist/leaflet.css';
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
@@ -9,9 +12,11 @@
 
 @theme {
     --font-sans:
-        'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'Philosopher', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+    
+    --font-heading: 'Cinzel', 'Georgia', serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -62,74 +67,120 @@
 }
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.87 0 0);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.87 0 0);
+    /* Taberna Medieval Fantasía - Light Mode */
+    --background: oklch(0.45 0.06 38);  /* Mesa de madera oscura */
+    --foreground: oklch(0.95 0.02 45);  /* Texto claro sobre madera */
+    --card: oklch(0.96 0.02 42);  /* Cartas de pergamino */
+    --card-foreground: oklch(0.20 0.03 30);
+    --popover: oklch(0.96 0.02 42);
+    --popover-foreground: oklch(0.20 0.03 30);
+    
+    /* Madera de Roble Oscuro */
+    --primary: oklch(0.50 0.12 45);  /* Ámbar madera */
+    --primary-foreground: oklch(0.96 0.02 45);
+    
+    /* Cerveza Ámbar */
+    --secondary: oklch(0.60 0.15 55);  /* Ámbar dorado */
+    --secondary-foreground: oklch(0.20 0.03 30);
+    
+    --muted: oklch(0.50 0.05 40);  /* Madera gastada */
+    --muted-foreground: oklch(0.85 0.04 42);  /* Texto sobre madera */
+    
+    /* Fuego de Hoguera */
+    --accent: oklch(0.65 0.18 50);  /* Ámbar brillante */
+    --accent-foreground: oklch(0.20 0.03 30);
+    
+    --destructive: oklch(0.50 0.20 25);  /* Rojo ladrillo */
+    --destructive-foreground: oklch(0.98 0 0);
+    
+    --border: oklch(0.55 0.08 42);  /* Bordes madera */
+    --input: oklch(0.92 0.03 42);  /* Inputs pergamino */
+    --ring: oklch(0.65 0.18 50);  /* Dorado */
+    
+    /* Charts - Tonos de Taberna */
+    --chart-1: oklch(0.55 0.15 40);
+    --chart-2: oklch(0.65 0.18 50);
+    --chart-3: oklch(0.60 0.20 30);
+    --chart-4: oklch(0.70 0.15 60);
+    --chart-5: oklch(0.50 0.12 35);
+    
+    --radius: 0.5rem;
+    
+    /* Sidebar - Estantería de Taberna */
+    --sidebar: oklch(0.28 0.06 33);  /* Madera muy oscura */
+    --sidebar-foreground: oklch(0.88 0.03 45);
+    --sidebar-primary: oklch(0.65 0.18 50);
+    --sidebar-primary-foreground: oklch(0.20 0.03 30);
+    --sidebar-accent: oklch(0.32 0.07 36);
+    --sidebar-accent-foreground: oklch(0.88 0.03 45);
+    --sidebar-border: oklch(0.22 0.05 30);
+    --sidebar-ring: oklch(0.65 0.18 50);
+    
+    /* Colores personalizados Taberna */
+    --glow-fire: oklch(0.65 0.22 40);
+    --glow-amber: oklch(0.70 0.20 55);
+    --glow-gold: oklch(0.75 0.18 70);
+    
+    /* Rarezas - Metales y Gemas */
+    --rarity-common: oklch(0.50 0.05 30);
+    --rarity-rare: oklch(0.55 0.12 210);
+    --rarity-epic: oklch(0.60 0.18 340);
+    --rarity-legendary: oklch(0.70 0.20 65);
 }
 
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.145 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.145 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.985 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.396 0.141 25.723);
-    --destructive-foreground: oklch(0.637 0.237 25.331);
-    --border: oklch(0.269 0 0);
-    --input: oklch(0.269 0 0);
-    --ring: oklch(0.439 0 0);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.985 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(0.269 0 0);
-    --sidebar-ring: oklch(0.439 0 0);
+    /* Modo Oscuro - Interior de Taberna por la Noche */
+    --background: oklch(0.15 0.03 30);  /* Madera oscura de noche */
+    --foreground: oklch(0.90 0.03 45);  /* Texto claro */
+    --card: oklch(0.20 0.04 35);  /* Madera tablero */
+    --card-foreground: oklch(0.90 0.03 45);
+    --popover: oklch(0.18 0.04 32);
+    --popover-foreground: oklch(0.90 0.03 45);
+    
+    --primary: oklch(0.65 0.20 50);  /* Ámbar brillante */
+    --primary-foreground: oklch(0.15 0.03 30);
+    
+    --secondary: oklch(0.55 0.18 55);  /* Dorado oscuro */
+    --secondary-foreground: oklch(0.90 0.03 45);
+    
+    --muted: oklch(0.25 0.04 33);  /* Sombras */
+    --muted-foreground: oklch(0.60 0.05 40);
+    
+    --accent: oklch(0.60 0.20 45);  /* Fuego de hoguera */
+    --accent-foreground: oklch(0.90 0.03 45);
+    
+    --destructive: oklch(0.45 0.20 25);  /* Brasas */
+    --destructive-foreground: oklch(0.90 0.03 45);
+    
+    --border: oklch(0.30 0.04 35);  /* Grietas madera */
+    --input: oklch(0.30 0.04 35);
+    --ring: oklch(0.60 0.18 50);  /* Resplandor dorado */
+    
+    --chart-1: oklch(0.50 0.18 40);
+    --chart-2: oklch(0.60 0.20 50);
+    --chart-3: oklch(0.55 0.15 35);
+    --chart-4: oklch(0.65 0.18 60);
+    --chart-5: oklch(0.48 0.15 38);
+    
+    --sidebar: oklch(0.12 0.04 28);  /* Madera muy oscura */
+    --sidebar-foreground: oklch(0.88 0.03 45);
+    --sidebar-primary: oklch(0.65 0.20 50);
+    --sidebar-primary-foreground: oklch(0.15 0.03 30);
+    --sidebar-accent: oklch(0.18 0.05 32);
+    --sidebar-accent-foreground: oklch(0.88 0.03 45);
+    --sidebar-border: oklch(0.22 0.04 30);
+    --sidebar-ring: oklch(0.60 0.18 50);
+    
+    /* Resplandores nocturnos */
+    --glow-fire: oklch(0.60 0.25 40);
+    --glow-amber: oklch(0.65 0.22 52);
+    --glow-gold: oklch(0.70 0.20 65);
+    
+    /* Rarezas más brillantes en dark mode */
+    --rarity-common: oklch(0.45 0.06 30);
+    --rarity-rare: oklch(0.60 0.18 210);
+    --rarity-epic: oklch(0.65 0.22 340);
+    --rarity-legendary: oklch(0.75 0.24 65);
 }
 
 @layer base {
@@ -140,4 +191,431 @@
     body {
         @apply bg-background text-foreground;
     }
+    
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-heading);
+        font-weight: 600;
+    }
+}
+
+/* Animaciones Taberna Medieval */
+@keyframes glow-pulse {
+    0%, 100% {
+        box-shadow: 0 0 5px var(--glow-fire);
+    }
+    50% {
+        box-shadow: 0 0 20px var(--glow-fire), 0 0 30px var(--glow-amber);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes magical-glow {
+    0%, 100% {
+        filter: drop-shadow(0 0 3px var(--glow-fire));
+    }
+    33% {
+        filter: drop-shadow(0 0 8px var(--glow-amber));
+    }
+    66% {
+        filter: drop-shadow(0 0 8px var(--glow-gold));
+    }
+}
+
+@keyframes flicker {
+    0%, 100% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 0.9;
+        filter: brightness(1.1);
+    }
+}
+
+/* Clases de utilidad */
+.animate-glow {
+    animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+    animation: shimmer 2s linear infinite;
+    background: linear-gradient(
+        90deg,
+        var(--muted) 0%,
+        var(--accent) 50%,
+        var(--muted) 100%
+    );
+    background-size: 200% 100%;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-magical-glow {
+    animation: magical-glow 4s ease-in-out infinite;
+}
+
+.animate-flicker {
+    animation: flicker 2s ease-in-out infinite;
+}
+
+/* Card con efecto Taberna Medieval - Objeto sobre mesa */
+.card-tcg {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, var(--card) 0%, oklch(from var(--card) calc(l - 0.02) c h) 100%);
+    /* Sombra de objeto sobre mesa */
+    box-shadow: 
+        0 1px 3px oklch(0.10 0 0 / 0.3),
+        0 10px 20px oklch(0.10 0 0 / 0.2),
+        inset 0 0 0 1px oklch(from var(--card) calc(l + 0.05) c h / 0.5);
+}
+
+.card-tcg::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--glow-fire), var(--glow-amber), var(--glow-gold));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;  /* CRÍTICO: Permite clics a través del pseudo-elemento */
+}
+
+.card-tcg:hover::before {
+    opacity: 0.6;
+}
+
+.card-tcg:hover {
+    transform: translateY(-8px) scale(1.03) rotate(-1deg);
+    box-shadow: 
+        0 2px 5px oklch(0.10 0 0 / 0.3),
+        0 20px 40px oklch(0.10 0 0 / 0.3),
+        0 0 20px var(--glow-fire),
+        inset 0 0 0 1px oklch(from var(--card) calc(l + 0.08) c h / 0.7);
+}
+
+/* Sidebar Navigation Glow Effects - Fuego de Taberna */
+[data-slot="sidebar"] [data-active="true"] {
+    position: relative;
+}
+
+[data-slot="sidebar"] [data-active="true"]::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--glow-fire), var(--glow-amber), var(--glow-gold));
+    box-shadow: 0 0 10px var(--glow-fire);
+    animation: flicker 2s ease-in-out infinite;
+}
+
+/* Hover effect for sidebar items - Resplandor hoguera */
+[data-slot="sidebar-menu-button"]:hover {
+    background: oklch(from var(--primary) l c h / 0.1);
+    transition: all 0.2s ease;
+    box-shadow: inset 0 0 20px oklch(from var(--glow-fire) l c h / 0.1);
+}
+
+[data-slot="sidebar-menu-button"]:hover svg {
+    filter: drop-shadow(0 0 3px var(--glow-amber));
+}
+
+/* Toast Notifications Styling */
+[data-sonner-toast] {
+    border-radius: 0.75rem;
+    backdrop-filter: blur(12px);
+}
+
+[data-sonner-toast][data-type="success"] {
+    background: oklch(from var(--primary) l c h / 0.05);
+    border-color: oklch(from var(--primary) l c h / 0.3);
+}
+
+[data-sonner-toast][data-type="error"] {
+    background: oklch(from var(--destructive) l c h / 0.05);
+    border-color: oklch(from var(--destructive) l c h / 0.3);
+}
+
+[data-sonner-toast][data-type="warning"] {
+    background: oklch(0.95 0.15 85 / 0.05);
+    border-color: oklch(0.75 0.20 85 / 0.3);
+}
+
+/* Input Focus Glow - Resplandor Dorado */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    box-shadow: 0 0 0 3px var(--glow-amber), 0 0 10px var(--glow-gold);
+}
+
+/* Writer-friendly textareas */
+textarea {
+    line-height: 1.8;
+    font-size: 1rem;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* Comfortable form spacing */
+.writer-form label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.writer-form input,
+.writer-form textarea,
+.writer-form select {
+    font-size: 1rem;
+}
+
+.writer-form textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* Textura de pergamino para body */
+body {
+    background-color: var(--background);
+    background-image: 
+        /* Vignette - sombra de taberna */
+        radial-gradient(ellipse at center, transparent 0%, oklch(0.10 0.04 30 / 0.3) 100%),
+        /* Textura de pergamino */
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            oklch(from var(--background) calc(l - 0.01) c h) 2px,
+            oklch(from var(--background) calc(l - 0.01) c h) 4px
+        );
+}
+
+/* Mesa de Madera para el contenido principal */
+[data-slot="app-content"] {
+    background-color: oklch(0.35 0.06 35);
+    background-image:
+        /* Iluminación cenital de velas */
+        radial-gradient(ellipse 80% 40% at 50% 0%, oklch(0.45 0.08 40 / 0.4), transparent 70%),
+        /* Manchas y desgaste aleatorio */
+        radial-gradient(circle at 85% 15%, oklch(0.30 0.05 38 / 0.3) 0%, transparent 8%),
+        radial-gradient(circle at 25% 80%, oklch(0.32 0.06 36 / 0.4) 0%, transparent 12%),
+        radial-gradient(circle at 70% 60%, oklch(0.33 0.05 37 / 0.2) 0%, transparent 10%),
+        /* Vetas de madera horizontales */
+        repeating-linear-gradient(
+            0deg,
+            oklch(0.33 0.05 33),
+            oklch(0.33 0.05 33) 8px,
+            oklch(0.37 0.07 37) 8px,
+            oklch(0.37 0.07 37) 16px,
+            oklch(0.35 0.06 35) 16px,
+            oklch(0.35 0.06 35) 40px
+        ),
+        /* Textura madera base */
+        linear-gradient(
+            90deg,
+            oklch(0.34 0.06 34),
+            oklch(0.36 0.06 36) 50%,
+            oklch(0.34 0.06 34)
+        );
+    background-blend-mode: screen, multiply, multiply, multiply, multiply, normal;
+    box-shadow: inset 0 0 100px oklch(0.10 0 0 / 0.5);
+    padding-left: 2rem; /* Espacio desde el sidebar */
+    padding-right: 2rem;
+    padding-top: 1rem;
+    overflow-x: hidden; /* Evita scroll horizontal */
+}
+
+/* Textura de madera para sidebar */
+[data-slot="sidebar"] {
+    background-color: var(--sidebar);
+    background-image: 
+        /* Vetas verticales */
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 30px,
+            oklch(from var(--sidebar) calc(l - 0.03) c h) 30px,
+            oklch(from var(--sidebar) calc(l - 0.03) c h) 32px
+        ),
+        /* Textura base */
+        repeating-linear-gradient(
+            0deg,
+            oklch(from var(--sidebar) calc(l - 0.01) c h),
+            oklch(from var(--sidebar) calc(l - 0.01) c h) 3px,
+            oklch(from var(--sidebar) calc(l - 0.02) c h) 3px,
+            oklch(from var(--sidebar) calc(l - 0.02) c h) 4px
+        );
+    overflow-x: hidden !important; /* Evita scroll horizontal */
+    overflow-y: auto; /* Permite scroll vertical */
+}
+
+/* Evitar que elementos del sidebar causen scroll horizontal */
+[data-slot="sidebar"] * {
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+/* ================================
+   Leaflet Map - Medieval Theme
+   ================================ */
+
+/* Estilo pergamino/sepia para los tiles del mapa */
+.map-tile-sepia {
+    filter: sepia(60%) hue-rotate(10deg) saturate(0.8) contrast(1.1);
+    opacity: 0.9;
+}
+
+/* Contenedor del mapa */
+.map-fantasy {
+    font-family: var(--font-heading);
+}
+
+/* Popups personalizados - Mejorados */
+.leaflet-popup-content-wrapper {
+    background: var(--card) !important;
+    color: var(--foreground) !important;
+    border: 2px solid var(--primary) !important;
+    border-radius: 12px !important;
+    box-shadow: 
+        0 8px 24px oklch(0 0 0 / 0.3),
+        0 0 0 1px oklch(from var(--primary) l c h / 0.2),
+        inset 0 1px 0 oklch(1 0 0 / 0.1) !important;
+    padding: 0 !important;
+}
+
+.leaflet-popup-content {
+    margin: 0 !important;
+    font-family: var(--font-body) !important;
+}
+
+.leaflet-popup-tip {
+    background: var(--card) !important;
+    border: 2px solid var(--primary) !important;
+    border-top: none !important;
+    border-right: none !important;
+}
+
+.leaflet-popup-close-button {
+    color: var(--muted-foreground) !important;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    opacity: 0.7 !important;
+    transition: all 0.2s !important;
+}
+
+.leaflet-popup-close-button:hover {
+    color: var(--foreground) !important;
+    opacity: 1 !important;
+    transform: scale(1.1) !important;
+}
+
+.leaflet-popup {
+    margin-bottom: 50px !important;
+}
+
+
+/* Controles del mapa (zoom, etc.) */
+.leaflet-control-zoom a {
+    background: oklch(0.95 0.02 40) !important;
+    color: oklch(0.3 0.08 40) !important;
+    border: 2px solid oklch(0.45 0.08 40) !important;
+    font-weight: bold !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background: oklch(0.90 0.03 40) !important;
+    color: oklch(0.2 0.08 40) !important;
+}
+
+/* Marcadores personalizados */
+.custom-marker {
+    background: transparent !important;
+    border: none !important;
+    animation: marker-pulse 2s ease-in-out infinite;
+}
+
+@keyframes marker-pulse {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Tooltip del mapa */
+.leaflet-tooltip {
+    background: oklch(0.95 0.02 40) !important;
+    color: oklch(0.2 0.08 40) !important;
+    border: 2px solid oklch(0.45 0.08 40) !important;
+    font-family: var(--font-heading) !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px oklch(0 0 0 / 0.2) !important;
+}
+
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+    border-left-color: oklch(0.45 0.08 40) !important;
+    border-right-color: oklch(0.45 0.08 40) !important;
+}
+
+/* Estilos para marcadores personalizados */
+.custom-marker {
+    background: transparent !important;
+    border: none !important;
+}
+
+.custom-marker-location {
+    background: transparent !important;
+    border: none !important;
+    z-index: 1000 !important;
+}
+
+/* Asegurar que los marcadores sean visibles */
+.leaflet-marker-icon {
+    z-index: 1000 !important;
+}
+
+.leaflet-marker-icon.custom-marker,
+.leaflet-marker-icon.custom-marker-location {
+    z-index: 1000 !important;
+}
+
+/* Pane de marcadores por encima de todo */
+.leaflet-marker-pane {
+    z-index: 1000 !important;
+}
+
+.leaflet-popup-pane {
+    z-index: 1100 !important;
 }
