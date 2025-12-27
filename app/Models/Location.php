@@ -15,7 +15,6 @@ class Location extends Model
         'world_id',
         'name',
         'description',
-        'type',
         'location_type',
         'coordinate_x',
         'coordinate_y',

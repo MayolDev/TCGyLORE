@@ -5,13 +5,13 @@ import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { 
-    Globe, 
-    BookText, 
-    Users, 
-    MapPin, 
-    Clock, 
-    Swords, 
+import {
+    Globe,
+    BookText,
+    Users,
+    MapPin,
+    Clock,
+    Swords,
     UserCircle,
     Sparkles,
     TrendingUp,
@@ -38,13 +38,7 @@ interface StatsData {
     recent_cards: Array<{
         id: number;
         name: string;
-        rarity: {
-            name: string;
-            color: string;
-        } | null;
-        card_type?: {
-            name: string;
-        };
+        rarity: { id: number; name: string } | null;
         cost: number;
         world: { name: string };
     }>;
@@ -76,56 +70,56 @@ export default function Dashboard({ stats }: DashboardProps) {
     const hasContent = currentStats.worlds > 0 || currentStats.cards > 0;
 
     const modules = [
-        { 
-            name: 'Mundos', 
-            icon: Globe, 
-            count: currentStats.worlds, 
-            href: '/admin/worlds', 
+        {
+            name: 'Mundos',
+            icon: Globe,
+            count: currentStats.worlds,
+            href: '/admin/worlds',
             color: 'from-blue-500 to-cyan-600',
             bgGlow: 'bg-blue-500/10',
             iconColor: 'text-blue-600 dark:text-blue-400'
         },
-        { 
-            name: 'Historias', 
-            icon: BookText, 
-            count: currentStats.stories, 
-            href: '/admin/stories', 
+        {
+            name: 'Historias',
+            icon: BookText,
+            count: currentStats.stories,
+            href: '/admin/stories',
             color: 'from-purple-500 to-pink-600',
             bgGlow: 'bg-purple-500/10',
             iconColor: 'text-purple-600 dark:text-purple-400'
         },
-        { 
-            name: 'Personajes', 
-            icon: Users, 
-            count: currentStats.characters, 
-            href: '/admin/characters', 
+        {
+            name: 'Personajes',
+            icon: Users,
+            count: currentStats.characters,
+            href: '/admin/characters',
             color: 'from-emerald-500 to-teal-600',
             bgGlow: 'bg-emerald-500/10',
             iconColor: 'text-emerald-600 dark:text-emerald-400'
         },
-        { 
-            name: 'Ubicaciones', 
-            icon: MapPin, 
-            count: currentStats.locations, 
-            href: '/admin/locations', 
+        {
+            name: 'Ubicaciones',
+            icon: MapPin,
+            count: currentStats.locations,
+            href: '/admin/locations',
             color: 'from-rose-500 to-orange-600',
             bgGlow: 'bg-rose-500/10',
             iconColor: 'text-rose-600 dark:text-rose-400'
         },
-        { 
-            name: 'Línea de Tiempo', 
-            icon: Clock, 
-            count: currentStats.timeline_events, 
-            href: '/admin/timeline-events', 
+        {
+            name: 'Línea de Tiempo',
+            icon: Clock,
+            count: currentStats.timeline_events,
+            href: '/admin/timeline-events',
             color: 'from-amber-500 to-yellow-600',
             bgGlow: 'bg-amber-500/10',
             iconColor: 'text-amber-600 dark:text-amber-400'
         },
-        { 
-            name: 'Cartas TCG', 
-            icon: Swords, 
-            count: currentStats.cards, 
-            href: '/admin/cards', 
+        {
+            name: 'Cartas TCG',
+            icon: Swords,
+            count: currentStats.cards,
+            href: '/admin/cards',
             color: 'from-violet-500 to-purple-600',
             bgGlow: 'bg-violet-500/10',
             iconColor: 'text-violet-600 dark:text-violet-400'
@@ -133,11 +127,11 @@ export default function Dashboard({ stats }: DashboardProps) {
     ];
 
     if (isAdmin) {
-        modules.push({ 
-            name: 'Usuarios', 
-            icon: UserCircle, 
-            count: currentStats.users, 
-            href: '/admin/users', 
+        modules.push({
+            name: 'Usuarios',
+            icon: UserCircle,
+            count: currentStats.users,
+            href: '/admin/users',
             color: 'from-slate-500 to-gray-600',
             bgGlow: 'bg-slate-500/10',
             iconColor: 'text-slate-600 dark:text-slate-400'
@@ -156,7 +150,7 @@ export default function Dashboard({ stats }: DashboardProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            
+
             <div className="space-y-8 p-6">
                 {/* Hero Section */}
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 p-8 backdrop-blur-sm border border-primary/20">
@@ -268,7 +262,7 @@ export default function Dashboard({ stats }: DashboardProps) {
                                                 </span>
                                             </div>
                                             <div className="h-2 bg-muted rounded-full overflow-hidden">
-                                                <div 
+                                                <div
                                                     className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500"
                                                     style={{ width: `${percentage}%` }}
                                                 />
@@ -294,8 +288,8 @@ export default function Dashboard({ stats }: DashboardProps) {
                         <CardContent>
                             <div className="space-y-3">
                                 {currentStats.recent_cards.map((card) => (
-                                    <Link 
-                                        key={card.id} 
+                                    <Link
+                                        key={card.id}
                                         href={`/admin/cards/${card.id}/edit`}
                                         className="flex items-center justify-between p-3 rounded-lg border border-border hover:border-primary/40 hover:bg-accent/5 transition-all"
                                     >
@@ -309,11 +303,9 @@ export default function Dashboard({ stats }: DashboardProps) {
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-2">
-                                            {card.rarity && (
-                                                <Badge variant="outline" className={rarityColors[card.rarity.name.toLowerCase()] || ''}>
-                                                    {card.rarity.name}
-                                                </Badge>
-                                            )}
+                                            <Badge variant="outline" className={rarityColors[card.rarity?.name] || ''}>
+                                                {card.rarity?.name || 'Sin rareza'}
+                                            </Badge>
                                             <Badge variant="secondary">Coste: {card.cost}</Badge>
                                         </div>
                                     </Link>

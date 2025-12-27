@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Card;
 use App\Models\Character;
 use App\Models\Location;
-use App\Models\Rarity;
 use App\Models\Story;
 use App\Models\TimelineEvent;
 use App\Models\User;
@@ -17,15 +16,6 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        // Obtener conteo de cartas por rareza con nombres
-        $cardsByRarity = Rarity::withCount('cards')
-            ->orderBy('order')
-            ->get()
-            ->mapWithKeys(function ($rarity) {
-                return [$rarity->name => $rarity->cards_count];
-            })
-            ->toArray();
-
         $stats = [
             'worlds' => World::count(),
             'stories' => Story::count(),
@@ -34,8 +24,13 @@ class DashboardController extends Controller
             'timeline_events' => TimelineEvent::count(),
             'cards' => Card::count(),
             'users' => User::count(),
-            'cards_by_rarity' => $cardsByRarity,
-            'recent_cards' => Card::with(['world', 'character', 'cardType', 'rarity'])
+            'cards_by_rarity' => Card::with('rarity')
+                ->whereNotNull('rarity_id')
+                ->get()
+                ->groupBy('rarity.name')
+                ->map(fn ($cards) => $cards->count())
+                ->toArray(),
+            'recent_cards' => Card::with(['world', 'character', 'rarity', 'cardType', 'alignment'])
                 ->latest()
                 ->take(5)
                 ->get(),

@@ -7,25 +7,39 @@ use Illuminate\Database\Seeder;
 
 class CardTypeSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        $types = [
-            ['name' => 'Criatura', 'description' => 'Cartas que representan criaturas del mundo'],
-            ['name' => 'Criatura Legendaria', 'description' => 'Criaturas únicas y poderosas con habilidades especiales'],
-            ['name' => 'Hechizo', 'description' => 'Magia instantánea o de invocación'],
-            ['name' => 'Hechizo Instantáneo', 'description' => 'Hechizos que pueden jugarse en cualquier momento'],
-            ['name' => 'Artefacto', 'description' => 'Objetos mágicos permanentes'],
-            ['name' => 'Artefacto - Equipo', 'description' => 'Equipamiento que se puede colocar en criaturas'],
-            ['name' => 'Artefacto Legendario', 'description' => 'Artefactos únicos de gran poder'],
-            ['name' => 'Encantamiento', 'description' => 'Efectos mágicos permanentes'],
-            ['name' => 'Tierra', 'description' => 'Fuentes de maná y recursos'],
-            ['name' => 'Tierra Legendaria', 'description' => 'Ubicaciones únicas con habilidades especiales'],
-            ['name' => 'Trampa', 'description' => 'Cartas que se activan bajo condiciones específicas'],
-            ['name' => 'Evento', 'description' => 'Acontecimientos que afectan el campo de batalla'],
+        $cardTypes = [
+            [
+                'name' => 'Criatura',
+                'description' => 'Unidades que pueden atacar y defender',
+            ],
+            [
+                'name' => 'Hechizo',
+                'description' => 'Efectos instantáneos o permanentes',
+            ],
+            [
+                'name' => 'Artefacto',
+                'description' => 'Objetos mágicos permanentes',
+            ],
+            [
+                'name' => 'Encantamiento',
+                'description' => 'Efectos continuos que modifican el juego',
+            ],
+            [
+                'name' => 'Tierra',
+                'description' => 'Cartas que generan recursos',
+            ],
         ];
 
-        foreach ($types as $type) {
-            CardType::create($type);
+        foreach ($cardTypes as $cardType) {
+            CardType::firstOrCreate(
+                ['name' => $cardType['name']],
+                $cardType
+            );
         }
     }
 }

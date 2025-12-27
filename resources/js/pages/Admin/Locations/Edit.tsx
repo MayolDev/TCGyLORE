@@ -5,12 +5,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import WriterLayout from '@/layouts/writer-layout';
-import MapView from '@/components/map-view';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
-import { MapPin, Save, X, Map } from 'lucide-react';
-import { useState } from 'react';
+import { MapPin, Save, X } from 'lucide-react';
 
 interface World {
     id: number;
@@ -22,21 +20,14 @@ interface Location {
     world_id: number;
     name: string;
     description: string | null;
-    type: string;
-    location_type: string;
-    coordinate_x: number | null;
-    coordinate_y: number | null;
-    image: string | null;
-    world?: {
-        id: number;
-        name: string;
-    };
+    latitude: number | null;
+    longitude: number | null;
+    image_url: string | null;
 }
 
 interface Props {
     location: Location;
     worlds: World[];
-    locations: Location[]; // Todas las ubicaciones para el mapa
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -45,31 +36,19 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Editar' },
 ];
 
-export default function Edit({ location, worlds, locations }: Props) {
-    const [showMap, setShowMap] = useState(false);
-    
+export default function Edit({ location, worlds }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         world_id: location.world_id.toString(),
         name: location.name || '',
         description: location.description || '',
-        type: location.type || 'city',
-        location_type: location.location_type || '',
-        coordinate_x: location.coordinate_x?.toString() || '',
-        coordinate_y: location.coordinate_y?.toString() || '',
-        image: location.image || '',
-        is_discovered: true,
+        latitude: location.latitude?.toString() || '',
+        longitude: location.longitude?.toString() || '',
+        image_url: location.image_url || '',
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         put(`/admin/locations/${location.id}`);
-    };
-
-    const handleMapClick = (lat: number, lng: number) => {
-        // lat = Y, lng = X en nuestro sistema de coordenadas
-        setData('coordinate_y', lat.toFixed(2));
-        setData('coordinate_x', lng.toFixed(2));
-        console.log('📍 Coordenadas establecidas:', { Y: lat.toFixed(2), X: lng.toFixed(2) });
     };
 
     const wordCount = data.description.trim().split(/\s+/).filter(Boolean).length;
@@ -142,142 +121,42 @@ export default function Edit({ location, worlds, locations }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="image">URL de Imagen (opcional)</Label>
+                                <Label htmlFor="image_url">URL de Imagen (opcional)</Label>
                                 <Input
-                                    id="image"
+                                    id="image_url"
                                     type="text"
-                                    value={data.image}
-                                    onChange={(e) => setData('image', e.target.value)}
+                                    value={data.image_url}
+                                    onChange={(e) => setData('image_url', e.target.value)}
                                     placeholder="https://example.com/location.jpg"
                                 />
-                                <InputError message={errors.image} />
+                                <InputError message={errors.image_url} />
                             </div>
-                        </CardContent>
-                    </Card>
 
-                    {/* Coordinates Card with Interactive Map */}
-                    <Card className="border-primary/20">
-                        <CardHeader>
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <Map className="h-5 w-5" />
-                                        Coordenadas en el Mapa
-                                    </CardTitle>
-                                    <CardDescription>
-                                        Haz click en el mapa para establecer la ubicación
-                                    </CardDescription>
-                                </div>
-                                <Button
-                                    type="button"
-                                    variant={showMap ? "default" : "outline"}
-                                    size="sm"
-                                    onClick={() => setShowMap(!showMap)}
-                                >
-                                    {showMap ? 'Ocultar Mapa' : 'Mostrar Mapa'}
-                                </Button>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
                             <div className="grid gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label htmlFor="coordinate_x">Coordenada X</Label>
+                                    <Label htmlFor="latitude">Latitud (opcional)</Label>
                                     <Input
-                                        id="coordinate_x"
+                                        id="latitude"
                                         type="number"
                                         step="any"
-                                        value={data.coordinate_x}
-                                        onChange={(e) => setData('coordinate_x', e.target.value)}
-                                        placeholder="0-1536"
-                                        className="font-mono"
+                                        value={data.latitude}
+                                        onChange={(e) => setData('latitude', e.target.value)}
+                                        placeholder="Ej: 40.7128"
                                     />
-                                    <InputError message={errors.coordinate_x} />
-                                    <p className="text-xs text-muted-foreground">
-                                        Coordenada horizontal (0-1536 píxeles)
-                                    </p>
+                                    <InputError message={errors.latitude} />
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="coordinate_y">Coordenada Y</Label>
+                                    <Label htmlFor="longitude">Longitud (opcional)</Label>
                                     <Input
-                                        id="coordinate_y"
+                                        id="longitude"
                                         type="number"
                                         step="any"
-                                        value={data.coordinate_y}
-                                        onChange={(e) => setData('coordinate_y', e.target.value)}
-                                        placeholder="0-754"
-                                        className="font-mono"
+                                        value={data.longitude}
+                                        onChange={(e) => setData('longitude', e.target.value)}
+                                        placeholder="Ej: -74.0060"
                                     />
-                                    <InputError message={errors.coordinate_y} />
-                                    <p className="text-xs text-muted-foreground">
-                                        Coordenada vertical (0-754 píxeles)
-                                    </p>
-                                </div>
-                            </div>
-
-                            {showMap && (
-                                <div className="space-y-3">
-                                    <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-                                        <p className="text-sm text-amber-900 dark:text-amber-100 font-medium flex items-center gap-2">
-                                            <Map className="h-4 w-4" />
-                                            Click en el mapa para establecer las coordenadas de esta ubicación
-                                        </p>
-                                    </div>
-                                    <MapView
-                                        locations={locations || []}
-                                        onMapClick={handleMapClick}
-                                        allowClick={true}
-                                        height="500px"
-                                    />
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
-
-                    {/* Type Card */}
-                    <Card className="border-primary/20">
-                        <CardHeader>
-                            <CardTitle>Tipo de Ubicación</CardTitle>
-                            <CardDescription>
-                                Categoría de esta ubicación
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div className="grid gap-6 md:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label htmlFor="type">Tipo *</Label>
-                                    <Select value={data.type} onValueChange={(value) => setData('type', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Selecciona un tipo" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="castle">🏰 Castillo</SelectItem>
-                                            <SelectItem value="city">🏛️ Ciudad</SelectItem>
-                                            <SelectItem value="village">🏘️ Aldea</SelectItem>
-                                            <SelectItem value="forest">🌲 Bosque</SelectItem>
-                                            <SelectItem value="mountain">⛰️ Montaña</SelectItem>
-                                            <SelectItem value="dungeon">🕳️ Mazmorra</SelectItem>
-                                            <SelectItem value="ruins">🏛️ Ruinas</SelectItem>
-                                            <SelectItem value="battlefield">⚔️ Campo de Batalla</SelectItem>
-                                            <SelectItem value="port">⚓ Puerto</SelectItem>
-                                            <SelectItem value="temple">⛩️ Templo</SelectItem>
-                                            <SelectItem value="cave">🗻 Cueva</SelectItem>
-                                            <SelectItem value="tower">🗼 Torre</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.type} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="location_type">Tipo Descriptivo</Label>
-                                    <Input
-                                        id="location_type"
-                                        type="text"
-                                        value={data.location_type}
-                                        onChange={(e) => setData('location_type', e.target.value)}
-                                        placeholder="Ej: ciudad, bosque, montaña"
-                                    />
-                                    <InputError message={errors.location_type} />
+                                    <InputError message={errors.longitude} />
                                 </div>
                             </div>
                         </CardContent>

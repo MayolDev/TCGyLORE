@@ -7,18 +7,35 @@ use Illuminate\Database\Seeder;
 
 class RaritySeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
         $rarities = [
-            ['name' => 'Común', 'color' => '#9CA3AF', 'order' => 1],
-            ['name' => 'Rara', 'color' => '#3B82F6', 'order' => 2],
-            ['name' => 'Épica', 'color' => '#A855F7', 'order' => 3],
-            ['name' => 'Legendaria', 'color' => '#F59E0B', 'order' => 4],
-            ['name' => 'Mítica', 'color' => '#EF4444', 'order' => 5],
+            [
+                'name' => 'Común',
+                'description' => 'Cartas comunes y fáciles de obtener',
+            ],
+            [
+                'name' => 'Rara',
+                'description' => 'Cartas poco comunes con habilidades especiales',
+            ],
+            [
+                'name' => 'Épica',
+                'description' => 'Cartas poderosas con habilidades únicas',
+            ],
+            [
+                'name' => 'Legendaria',
+                'description' => 'Cartas extremadamente raras y poderosas',
+            ],
         ];
 
         foreach ($rarities as $rarity) {
-            Rarity::create($rarity);
+            Rarity::firstOrCreate(
+                ['name' => $rarity['name']],
+                $rarity
+            );
         }
     }
 }

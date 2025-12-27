@@ -7,19 +7,31 @@ use Illuminate\Database\Seeder;
 
 class AlignmentSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
         $alignments = [
-            ['name' => 'Luz', 'icon' => '☀️', 'description' => 'Representa el bien, la justicia y la protección'],
-            ['name' => 'Oscuridad', 'icon' => '🌙', 'description' => 'Representa el mal, el poder y la ambición'],
-            ['name' => 'Neutral', 'icon' => '⚖️', 'description' => 'Equilibrio entre luz y oscuridad'],
-            ['name' => 'Caos', 'icon' => '🌀', 'description' => 'Impredecible y destructivo'],
-            ['name' => 'Orden', 'icon' => '🛡️', 'description' => 'Estructura y control'],
+            [
+                'name' => 'Luz',
+                'description' => 'Cartas que representan el bien, la justicia y el orden',
+            ],
+            [
+                'name' => 'Oscuridad',
+                'description' => 'Cartas que representan el mal, el caos y las sombras',
+            ],
+            [
+                'name' => 'Neutral',
+                'description' => 'Cartas que no pertenecen a ningún bando específico',
+            ],
         ];
 
         foreach ($alignments as $alignment) {
-            Alignment::create($alignment);
+            Alignment::firstOrCreate(
+                ['name' => $alignment['name']],
+                $alignment
+            );
         }
     }
 }
-

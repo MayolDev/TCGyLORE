@@ -38,6 +38,17 @@ class DatabaseSeeder extends Seeder
         );
         $regularUser->assignRole('Usuario');
 
+        // Ejecutar seeders de taxonomías de cartas
+        $this->call([
+            CardTypeSeeder::class,
+            RaritySeeder::class,
+            AlignmentSeeder::class,
+            ArchetypeSeeder::class,
+            FactionSeeder::class,
+            EditionSeeder::class,
+            ArtistSeeder::class,
+        ]);
+
         // Ejecutar seeders del sistema de Lore
         $this->call([
             WorldSeeder::class,
@@ -45,15 +56,6 @@ class DatabaseSeeder extends Seeder
             CharacterSeeder::class,
             LocationSeeder::class,
             TimelineEventSeeder::class,
-
-            // Card catalog seeders (deben ir antes de CardSeeder)
-            CardTypeSeeder::class,
-            RaritySeeder::class,
-            AlignmentSeeder::class,
-            FactionSeeder::class,
-            ArtistSeeder::class,
-            ArchetypeSeeder::class,
-
             CardSeeder::class,
             CharacterRelationshipsSeeder::class, // Poblar relaciones many-to-many
         ]);

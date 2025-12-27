@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\LocationController::create
- * @see app/Http/Controllers/Admin/LocationController.php:36
+ * @see app/Http/Controllers/Admin/LocationController.php:37
  * @route '/admin/locations/create'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\LocationController::create
- * @see app/Http/Controllers/Admin/LocationController.php:36
+ * @see app/Http/Controllers/Admin/LocationController.php:37
  * @route '/admin/locations/create'
  */
 create.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\LocationController::create
- * @see app/Http/Controllers/Admin/LocationController.php:36
+ * @see app/Http/Controllers/Admin/LocationController.php:37
  * @route '/admin/locations/create'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -112,7 +112,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Admin\LocationController::create
- * @see app/Http/Controllers/Admin/LocationController.php:36
+ * @see app/Http/Controllers/Admin/LocationController.php:37
  * @route '/admin/locations/create'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -122,7 +122,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\LocationController::create
- * @see app/Http/Controllers/Admin/LocationController.php:36
+ * @see app/Http/Controllers/Admin/LocationController.php:37
  * @route '/admin/locations/create'
  */
     const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -132,7 +132,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\LocationController::create
- * @see app/Http/Controllers/Admin/LocationController.php:36
+ * @see app/Http/Controllers/Admin/LocationController.php:37
  * @route '/admin/locations/create'
  */
         createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -141,7 +141,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Admin\LocationController::create
- * @see app/Http/Controllers/Admin/LocationController.php:36
+ * @see app/Http/Controllers/Admin/LocationController.php:37
  * @route '/admin/locations/create'
  */
         createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -157,7 +157,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\LocationController::store
- * @see app/Http/Controllers/Admin/LocationController.php:43
+ * @see app/Http/Controllers/Admin/LocationController.php:44
  * @route '/admin/locations'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -172,7 +172,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\LocationController::store
- * @see app/Http/Controllers/Admin/LocationController.php:43
+ * @see app/Http/Controllers/Admin/LocationController.php:44
  * @route '/admin/locations'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -181,7 +181,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\LocationController::store
- * @see app/Http/Controllers/Admin/LocationController.php:43
+ * @see app/Http/Controllers/Admin/LocationController.php:44
  * @route '/admin/locations'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -191,7 +191,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\LocationController::store
- * @see app/Http/Controllers/Admin/LocationController.php:43
+ * @see app/Http/Controllers/Admin/LocationController.php:44
  * @route '/admin/locations'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -201,7 +201,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\LocationController::store
- * @see app/Http/Controllers/Admin/LocationController.php:43
+ * @see app/Http/Controllers/Admin/LocationController.php:44
  * @route '/admin/locations'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -411,7 +411,7 @@ edit.head = (args: { location: number | { id: number } } | [location: number | {
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\LocationController::update
- * @see app/Http/Controllers/Admin/LocationController.php:74
+ * @see app/Http/Controllers/Admin/LocationController.php:73
  * @route '/admin/locations/{location}'
  */
 export const update = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -426,7 +426,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\LocationController::update
- * @see app/Http/Controllers/Admin/LocationController.php:74
+ * @see app/Http/Controllers/Admin/LocationController.php:73
  * @route '/admin/locations/{location}'
  */
 update.url = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -459,7 +459,7 @@ update.url = (args: { location: number | { id: number } } | [location: number | 
 
 /**
 * @see \App\Http\Controllers\Admin\LocationController::update
- * @see app/Http/Controllers/Admin/LocationController.php:74
+ * @see app/Http/Controllers/Admin/LocationController.php:73
  * @route '/admin/locations/{location}'
  */
 update.put = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -468,7 +468,7 @@ update.put = (args: { location: number | { id: number } } | [location: number | 
 })
 /**
 * @see \App\Http\Controllers\Admin\LocationController::update
- * @see app/Http/Controllers/Admin/LocationController.php:74
+ * @see app/Http/Controllers/Admin/LocationController.php:73
  * @route '/admin/locations/{location}'
  */
 update.patch = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -478,7 +478,7 @@ update.patch = (args: { location: number | { id: number } } | [location: number 
 
     /**
 * @see \App\Http\Controllers\Admin\LocationController::update
- * @see app/Http/Controllers/Admin/LocationController.php:74
+ * @see app/Http/Controllers/Admin/LocationController.php:73
  * @route '/admin/locations/{location}'
  */
     const updateForm = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -493,7 +493,7 @@ update.patch = (args: { location: number | { id: number } } | [location: number 
 
             /**
 * @see \App\Http\Controllers\Admin\LocationController::update
- * @see app/Http/Controllers/Admin/LocationController.php:74
+ * @see app/Http/Controllers/Admin/LocationController.php:73
  * @route '/admin/locations/{location}'
  */
         updateForm.put = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -507,7 +507,7 @@ update.patch = (args: { location: number | { id: number } } | [location: number 
         })
             /**
 * @see \App\Http\Controllers\Admin\LocationController::update
- * @see app/Http/Controllers/Admin/LocationController.php:74
+ * @see app/Http/Controllers/Admin/LocationController.php:73
  * @route '/admin/locations/{location}'
  */
         updateForm.patch = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -523,7 +523,7 @@ update.patch = (args: { location: number | { id: number } } | [location: number 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\LocationController::destroy
- * @see app/Http/Controllers/Admin/LocationController.php:94
+ * @see app/Http/Controllers/Admin/LocationController.php:92
  * @route '/admin/locations/{location}'
  */
 export const destroy = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -538,7 +538,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\LocationController::destroy
- * @see app/Http/Controllers/Admin/LocationController.php:94
+ * @see app/Http/Controllers/Admin/LocationController.php:92
  * @route '/admin/locations/{location}'
  */
 destroy.url = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -571,7 +571,7 @@ destroy.url = (args: { location: number | { id: number } } | [location: number |
 
 /**
 * @see \App\Http\Controllers\Admin\LocationController::destroy
- * @see app/Http/Controllers/Admin/LocationController.php:94
+ * @see app/Http/Controllers/Admin/LocationController.php:92
  * @route '/admin/locations/{location}'
  */
 destroy.delete = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -581,7 +581,7 @@ destroy.delete = (args: { location: number | { id: number } } | [location: numbe
 
     /**
 * @see \App\Http\Controllers\Admin\LocationController::destroy
- * @see app/Http/Controllers/Admin/LocationController.php:94
+ * @see app/Http/Controllers/Admin/LocationController.php:92
  * @route '/admin/locations/{location}'
  */
     const destroyForm = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -596,7 +596,7 @@ destroy.delete = (args: { location: number | { id: number } } | [location: numbe
 
             /**
 * @see \App\Http\Controllers\Admin\LocationController::destroy
- * @see app/Http/Controllers/Admin/LocationController.php:94
+ * @see app/Http/Controllers/Admin/LocationController.php:92
  * @route '/admin/locations/{location}'
  */
         destroyForm.delete = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

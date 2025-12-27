@@ -3,28 +3,39 @@
 namespace Database\Seeders;
 
 use App\Models\Faction;
-use App\Models\World;
 use Illuminate\Database\Seeder;
 
 class FactionSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        $world = World::first();
-
         $factions = [
-            ['name' => 'Orden de Lumendor', 'description' => 'Magos dedicados a la preservación del conocimiento y la luz', 'color' => '#60A5FA'],
-            ['name' => 'Casa Umbravale', 'description' => 'Señores oscuros que controlan las sombras', 'color' => '#8B5CF6'],
-            ['name' => 'Flota de la Tormenta', 'description' => 'Piratas y marineros que dominan los mares', 'color' => '#06B6D4'],
-            ['name' => 'Círculo Druídico', 'description' => 'Guardianes de la naturaleza y sus secretos', 'color' => '#10B981'],
-            ['name' => 'Rebelión de Esclavos', 'description' => 'Luchadores por la libertad y la justicia', 'color' => '#F59E0B'],
-            ['name' => 'Orden de la Luz Sagrada', 'description' => 'Paladines dedicados a erradicar la oscuridad', 'color' => '#FBBF24'],
-            ['name' => 'Ninguna', 'description' => 'Sin afiliación a ninguna facción', 'color' => '#9CA3AF'],
+            [
+                'name' => 'La Orden del Alba',
+                'description' => 'Defensores de la luz y la justicia',
+            ],
+            [
+                'name' => 'El Culto de las Sombras',
+                'description' => 'Adoradores de la oscuridad y el caos',
+            ],
+            [
+                'name' => 'Los Guardianes del Bosque',
+                'description' => 'Protectores de la naturaleza',
+            ],
+            [
+                'name' => 'La Academia Arcana',
+                'description' => 'Estudiosos de la magia y el conocimiento',
+            ],
         ];
 
         foreach ($factions as $faction) {
-            Faction::create(array_merge($faction, ['world_id' => $world->id]));
+            Faction::firstOrCreate(
+                ['name' => $faction['name']],
+                $faction
+            );
         }
     }
 }
-

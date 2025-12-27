@@ -1,245 +1,266 @@
-# 🗺️ ProyectoLore - Sistema de Gestión de Lore para TCG RPG
+# Panel de Administración Laravel 12 con React
 
-Sistema de administración completo para gestionar el lore, personajes, ubicaciones y cartas de un juego de cartas coleccionables (TCG) con elementos de rol.
+Panel de administración completo construido con Laravel 12 y React 19, incluyendo sistema de roles y permisos, gestión de usuarios y autenticación.
 
-## ✨ Características
+## Stack Tecnológico
 
-### 🎮 Gestión de Lore
-- **Mundos**: Crea y administra universos completos
-- **Historias**: Editor amigable para escritores con contador de palabras
-- **Personajes**: Fichas de personajes con biografías, hechizos y relaciones
-- **Ubicaciones**: Mapa interactivo con coordenadas y descripciones detalladas
-- **Línea de Tiempo**: Gestión de eventos históricos con relaciones
+- **Backend**: Laravel 12, PHP 8.3
+- **Frontend**: React 19, Inertia.js 2, TypeScript
+- **Estilos**: Tailwind CSS 4, shadcn/ui
+- **Base de datos**: MySQL
+- **Autenticación**: Laravel Fortify
+- **Roles y Permisos**: Spatie Laravel Permission
 
-### 🃏 Sistema de Cartas TCG
-- **Cartas**: Creación de cartas con ilustraciones, efectos y atributos
-- **Tipos de Carta**: Criaturas, hechizos, trampas, eventos
-- **Rarezas**: Común, Rara, Épica, Legendaria
-- **Atributos**: Fuerza, Agilidad, Carisma, Mente
-- **Relaciones**: Alineaciones, Facciones, Arquetipos, Artistas
+## Características
 
-### 🗺️ Mapa Interactivo
-- Sistema de coordenadas personalizado
-- Click para establecer ubicaciones
-- Marcadores personalizados por tipo
-- Popups informativos
-- Vista de mapa y lista intercambiable
+- ✅ Sistema de autenticación completo (registro, login, recuperación de contraseña)
+- ✅ Autenticación de dos factores (2FA)
+- ✅ Sistema de roles y permisos con Spatie Permission
+- ✅ CRUD completo de usuarios
+- ✅ Panel de administración con interfaz moderna
+- ✅ Búsqueda y filtrado de usuarios
+- ✅ Asignación de roles a usuarios
+- ✅ Interfaz responsive con Tailwind CSS
+- ✅ Componentes UI con shadcn/ui
 
-### 👥 Sistema de Usuarios
-- Roles y permisos (Admin/User)
-- CRUD completo de usuarios
-- Autenticación con Laravel Fortify
+## Requisitos Previos
 
-### 🎨 Interfaz
-- Tema medieval de taberna
-- Diseño responsive
-- Modo oscuro/claro
-- Animaciones y efectos visuales
-- Componentes UI personalizados
-
-## 🛠️ Stack Tecnológico
-
-### Backend
-- **Laravel 12** - Framework PHP
-- **MySQL** - Base de datos
-- **Laravel Fortify** - Autenticación
-- **Spatie Laravel Permission** - Roles y permisos
-- **Inertia.js 2** - Comunicación Frontend-Backend
-
-### Frontend
-- **React 19** - Librería UI
-- **TypeScript** - Tipado estático
-- **Tailwind CSS 4** - Estilos
-- **shadcn/ui** - Componentes UI
-- **Leaflet** - Mapas interactivos
-- **Vite** - Build tool
-
-## 📦 Instalación
-
-### Requisitos
-- PHP 8.3+
+- PHP 8.3 o superior
 - Composer
-- Node.js 20+
-- MySQL 8.0+
+- Node.js 18 o superior
+- MySQL
+- NPM o Yarn
 
-### Pasos
+## Instalación
 
-1. **Clonar repositorio**
+### 1. Clonar el repositorio
+
 ```bash
-git clone <tu-repo>
 cd proyectoLore
 ```
 
-2. **Instalar dependencias PHP**
+### 2. Instalar dependencias de PHP
+
 ```bash
 composer install
 ```
 
-3. **Instalar dependencias Node**
-```bash
-npm install
-```
+### 3. Configurar el archivo .env
 
-4. **Configurar entorno**
+Copia el archivo `.env.example` a `.env` y configura las variables de entorno:
+
 ```bash
 cp .env.example .env
+```
+
+Configura la conexión a la base de datos:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=proyectolore
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 4. Generar la clave de la aplicación
+
+```bash
 php artisan key:generate
 ```
 
-5. **Configurar base de datos**
-Edita `.env` con tus credenciales de MySQL:
-```env
-DB_DATABASE=proyectolore
-DB_USERNAME=tu_usuario
-DB_PASSWORD=tu_contraseña
-```
+### 5. Ejecutar migraciones y seeders
 
-6. **Ejecutar migraciones y seeders**
 ```bash
 php artisan migrate --seed
 ```
 
-7. **Crear enlace simbólico para storage**
+Esto creará:
+- Las tablas necesarias
+- Dos roles: **Admin** y **Usuario**
+- Permisos para gestión de usuarios
+- Dos usuarios de prueba:
+  - **Admin**: admin@example.com / password
+  - **Usuario**: user@example.com / password
+
+### 6. Instalar dependencias de Node.js
+
 ```bash
-php artisan storage:link
+npm install
 ```
 
-8. **Compilar assets**
-```bash
-npm run build
-```
+### 7. Compilar assets
 
-9. **Iniciar servidor de desarrollo**
+Para desarrollo:
 ```bash
-# Terminal 1: Servidor PHP
-php artisan serve
-
-# Terminal 2: Vite (desarrollo)
 npm run dev
 ```
 
-10. **Acceder**
-- URL: `http://localhost:8000`
-- Admin: `admin@example.com` / `password`
-- User: `user@example.com` / `password`
-
-## 📸 Capturas
-
-### Dashboard
-Panel principal con estadísticas y accesos rápidos
-
-### Mapa Interactivo
-Sistema de ubicaciones con mapa personalizado
-
-### Editor de Historias
-Interfaz cómoda para escritores con contadores
-
-### Cartas TCG
-Vista previa de cartas con todos sus atributos
-
-## 🗂️ Estructura del Proyecto
-
-```
-proyectoLore/
-├── app/
-│   ├── Http/Controllers/Admin/  # Controladores del panel admin
-│   ├── Models/                  # Modelos Eloquent
-│   └── Http/Middleware/         # Middleware personalizado
-├── database/
-│   ├── migrations/              # Migraciones de BD
-│   └── seeders/                 # Seeders con datos de ejemplo
-├── resources/
-│   ├── js/
-│   │   ├── components/          # Componentes React
-│   │   ├── layouts/             # Layouts de página
-│   │   └── pages/               # Páginas Inertia
-│   └── css/                     # Estilos CSS
-├── routes/
-│   └── web.php                  # Rutas de la aplicación
-└── public/
-    └── images/                  # Imágenes del mapa
+Para producción:
+```bash
+npm run build
 ```
 
-## 🚀 Despliegue
+## Uso
 
-### Opción 1: Railway (Recomendado)
-1. Crea cuenta en [Railway](https://railway.app)
-2. Conecta tu repositorio GitHub
-3. Railway detectará Laravel automáticamente
-4. Configura variables de entorno
-5. Despliega
-
-### Opción 2: DigitalOcean
-1. Crea un Droplet Ubuntu
-2. Instala LAMP stack
-3. Clona el repositorio
-4. Configura Nginx/Apache
-5. Ejecuta migraciones
-
-### Opción 3: Vercel (Frontend) + PlanetScale (DB)
-- Frontend en Vercel
-- Base de datos en PlanetScale
-- API en Railway o similar
-
-## 🧪 Testing
+### Iniciar el servidor de desarrollo
 
 ```bash
-# Tests backend (Pest)
-php artisan test
+php artisan serve
+```
 
-# Tests con cobertura
-php artisan test --coverage
+La aplicación estará disponible en `http://localhost:8000`
 
-# Formatear código
+### Usuarios de prueba
+
+- **Administrador**:
+  - Email: `admin@example.com`
+  - Contraseña: `password`
+  - Tiene acceso al panel de administración
+
+- **Usuario Regular**:
+  - Email: `user@example.com`
+  - Contraseña: `password`
+  - No tiene acceso al panel de administración
+
+### Acceder al panel de administración
+
+Una vez autenticado como administrador, accede a:
+- Gestión de usuarios: `/admin/users`
+
+## Características del Panel de Administración
+
+### Gestión de Usuarios
+
+- **Listar usuarios**: Ver todos los usuarios con búsqueda y paginación
+- **Crear usuarios**: Agregar nuevos usuarios con nombre, email, contraseña y rol
+- **Editar usuarios**: Modificar información de usuarios existentes
+- **Eliminar usuarios**: Borrar usuarios del sistema (con protección para no eliminar el propio usuario)
+- **Asignar roles**: Cambiar el rol de un usuario (Admin o Usuario)
+
+### Sistema de Roles
+
+El sistema incluye dos roles predefinidos:
+
+1. **Admin**: Tiene acceso completo al panel de administración
+2. **Usuario**: Usuario regular sin permisos administrativos
+
+### Permisos
+
+Los siguientes permisos están configurados:
+- `users.index`: Ver lista de usuarios
+- `users.create`: Crear nuevos usuarios
+- `users.edit`: Editar usuarios existentes
+- `users.delete`: Eliminar usuarios
+
+## Estructura del Proyecto
+
+```
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   └── Admin/
+│   │   │       └── UserController.php      # Controlador CRUD de usuarios
+│   │   └── Middleware/
+│   │       └── IsAdmin.php                 # Middleware de autorización
+│   └── Models/
+│       └── User.php                        # Modelo con trait HasRoles
+│
+├── database/
+│   └── seeders/
+│       ├── RoleSeeder.php                  # Seeder de roles y permisos
+│       └── DatabaseSeeder.php              # Seeder principal
+│
+├── resources/
+│   └── js/
+│       ├── components/
+│       │   └── ui/                         # Componentes shadcn/ui
+│       ├── layouts/
+│       │   └── admin-layout.tsx            # Layout del panel admin
+│       └── pages/
+│           └── Admin/
+│               └── Users/
+│                   ├── Index.tsx           # Lista de usuarios
+│                   ├── Create.tsx          # Crear usuario
+│                   └── Edit.tsx            # Editar usuario
+│
+└── routes/
+    └── web.php                             # Rutas protegidas con middleware
+```
+
+## Comandos Útiles
+
+### Formatear código PHP
+```bash
 vendor/bin/pint
 ```
 
-## 📝 Comandos Útiles
-
+### Ejecutar tests
 ```bash
-# Limpiar cache
-php artisan optimize:clear
-
-# Regenerar assets
-npm run build
-
-# Crear nueva migración
-php artisan make:migration nombre_migracion
-
-# Crear nuevo modelo
-php artisan make:model NombreModelo -mfs
-
-# Ejecutar un seeder específico
-php artisan db:seed --class=NombreSeeder
+php artisan test
 ```
 
-## 🤝 Contribuir
+### Limpiar caché
+```bash
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+```
 
-1. Fork el proyecto
-2. Crea una rama (`git checkout -b feature/nueva-caracteristica`)
-3. Commit cambios (`git commit -m 'Agregar nueva característica'`)
-4. Push a la rama (`git push origin feature/nueva-caracteristica`)
-5. Abre un Pull Request
+### Crear nuevo administrador
+```bash
+php artisan tinker
+```
 
-## 📄 Licencia
+Luego en el shell de Tinker:
+```php
+$user = \App\Models\User::create([
+    'name' => 'Nuevo Admin',
+    'email' => 'nuevo@admin.com',
+    'password' => \Hash::make('password'),
+    'email_verified_at' => now()
+]);
+$user->assignRole('Admin');
+```
 
-Este proyecto es privado y confidencial.
+## Tecnologías y Paquetes
 
-## 👨‍💻 Autor
+### Backend
+- [Laravel 12](https://laravel.com/docs/12.x)
+- [Laravel Fortify](https://laravel.com/docs/12.x/fortify)
+- [Spatie Laravel Permission](https://spatie.be/docs/laravel-permission)
 
-**Tu Nombre** - [Tu GitHub](https://github.com/tu-usuario)
+### Frontend
+- [React 19](https://react.dev/)
+- [Inertia.js 2](https://inertiajs.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS 4](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Vite](https://vitejs.dev/)
 
-## 🙏 Agradecimientos
+## Desarrollo
 
-- Laravel por el excelente framework
-- React por la librería UI
-- shadcn/ui por los componentes
-- Leaflet por el sistema de mapas
-- Comunidad open source
+Para contribuir o personalizar el proyecto:
 
----
+1. Las rutas administrativas están protegidas con el middleware `isAdmin`
+2. Los componentes React están en `resources/js/`
+3. Los estilos utilizan Tailwind CSS
+4. Sigue las convenciones de Laravel y React
 
-**¿Necesitas ayuda?** Abre un issue en el repositorio.
+## Seguridad
 
-**Versión:** 1.0.0  
-**Última actualización:** Diciembre 2025
+- Las contraseñas se almacenan con hash usando bcrypt
+- Las rutas administrativas requieren autenticación y rol de Admin
+- CSRF protection habilitado en todos los formularios
+- Validación de datos en backend y frontend
+
+## Licencia
+
+Este proyecto está bajo la licencia MIT.
+
+## Soporte
+
+Para preguntas o problemas, por favor abre un issue en el repositorio.
+

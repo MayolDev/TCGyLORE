@@ -23,15 +23,8 @@ import { useState } from 'react';
 interface CardData {
     id: number;
     name: string;
-    card_type: {
-        id: number;
-        name: string;
-    };
-    rarity: {
-        id: number;
-        name: string;
-        color: string;
-    } | null;
+    card_type: string;
+    rarity: string | null;
     cost: number;
     illustration_url?: string | null;
     effect?: string;
@@ -40,23 +33,6 @@ interface CardData {
         name: string;
     };
     character?: {
-        id: number;
-        name: string;
-    } | null;
-    alignment?: {
-        id: number;
-        name: string;
-        icon: string;
-    } | null;
-    faction?: {
-        id: number;
-        name: string;
-    } | null;
-    artist?: {
-        id: number;
-        name: string;
-    } | null;
-    archetype?: {
         id: number;
         name: string;
     } | null;
@@ -107,8 +83,6 @@ const rarityGradient: Record<string, string> = {
 };
 
 export default function Index({ cards: initialCards, filters: initialFilters }: Props) {
-    console.log('DEBUG Cards - Primera carta:', initialCards?.data[0]);
-    
     const cards = initialCards || { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0 };
     const filters = initialFilters || { search: '', rarity: '' };
     const [search, setSearch] = useState(filters.search || '');
@@ -239,7 +213,7 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                             {cards.data.map((card) => (
                                 <Card key={card.id} className="card-tcg group overflow-hidden border-primary/20 hover:border-primary/40">
                                     {/* Card Illustration Header */}
-                                    <div className={`relative h-48 bg-gradient-to-br ${rarityGradient[card.rarity?.name.toLowerCase() || 'común'] || 'from-gray-400 to-gray-600'} overflow-hidden`}>
+                                    <div className={`relative h-48 bg-gradient-to-br ${rarityGradient[card.rarity || 'comun'] || 'from-gray-400 to-gray-600'} overflow-hidden`}>
                                         {card.illustration_url ? (
                                             <img 
                                                 src={card.illustration_url} 
@@ -260,8 +234,8 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                         {/* Rarity Badge */}
                                         {card.rarity && (
                                             <div className="absolute top-2 left-2">
-                                                <Badge variant={rarityBadgeVariant[card.rarity.name.toLowerCase()] || 'outline'} className="capitalize">
-                                                    {card.rarity.name}
+                                                <Badge variant={rarityBadgeVariant[card.rarity] || 'outline'} className="capitalize">
+                                                    {card.rarity}
                                                 </Badge>
                                             </div>
                                         )}
@@ -273,7 +247,7 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                             <Sparkles className="h-4 w-4 text-primary shrink-0" />
                                         </CardTitle>
                                         <CardDescription className="text-xs">
-                                            {card.card_type.name} • {card.world.name}
+                                            {card.card_type} • {card.world.name}
                                         </CardDescription>
                                     </CardHeader>
 

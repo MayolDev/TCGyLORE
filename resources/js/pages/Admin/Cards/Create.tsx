@@ -20,9 +20,21 @@ interface Character {
     name: string;
 }
 
+interface Taxonomy {
+    id: number;
+    name: string;
+}
+
 interface Props {
     worlds: World[];
     characters: Character[];
+    cardTypes: Taxonomy[];
+    rarities: Taxonomy[];
+    archetypes: Taxonomy[];
+    alignments: Taxonomy[];
+    factions: Taxonomy[];
+    editions: Taxonomy[];
+    artists: Taxonomy[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -31,26 +43,28 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Crear' },
 ];
 
-export default function Create({ worlds, characters }: Props) {
+export default function Create({ worlds, characters, cardTypes, rarities, archetypes, alignments, factions, editions, artists }: Props) {
     const { data, setData, post, processing, errors } = useForm({
         world_id: '',
         character_id: '0',
         name: '',
-        illustration_url: '',
+        illustration: null as File | null,
         effect: '',
         cost: '',
-        type: '',
-        rarity: '',
-        archetype: '',
-        alignment: '',
-        faction: '',
-        edition: '',
-        artist: '',
+        card_type_id: '',
+        rarity_id: '',
+        archetype_id: '0',
+        alignment_id: '',
+        faction_id: '0',
+        edition_id: '0',
+        artist_id: '0',
         flavor_text: '',
         strength: '',
         agility: '',
         charisma: '',
         mind: '',
+        defense: '',
+        magic_defense: '',
     });
 
     const submit = (e: React.FormEvent) => {
@@ -59,10 +73,15 @@ export default function Create({ worlds, characters }: Props) {
         const submitData = {
             ...data,
             character_id: data.character_id === '0' ? null : data.character_id,
+            archetype_id: data.archetype_id === '0' ? null : data.archetype_id,
+            faction_id: data.faction_id === '0' ? null : data.faction_id,
+            edition_id: data.edition_id === '0' ? null : data.edition_id,
+            artist_id: data.artist_id === '0' ? null : data.artist_id,
         };
         
         post('/admin/cards', {
             data: submitData,
+            forceFormData: true,
         });
     };
 
@@ -149,18 +168,20 @@ export default function Create({ worlds, characters }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="illustration_url">URL de Ilustración</Label>
+                                <Label htmlFor="illustration">Ilustración (formato vertical)</Label>
                                 <Input
-                                    id="illustration_url"
-                                    type="text"
-                                    value={data.illustration_url}
-                                    onChange={(e) => setData('illustration_url', e.target.value)}
-                                    placeholder="https://example.com/illustration.jpg"
+                                    id="illustration"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => setData('illustration', e.target.files?.[0] || null)}
                                 />
-                                <InputError message={errors.illustration_url} />
+                                <p className="text-xs text-muted-foreground">
+                                    Formato vertical recomendado (ej: 600x800px). Máximo 2MB.
+                                </p>
+                                <InputError message={errors.illustration} />
                             </div>
 
-                            <div className="grid gap-6 md:grid-cols-3">
+                            <div className="grid gap-6 md:grid-cols-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="cost">Coste *</Label>
                                     <Input
@@ -174,31 +195,54 @@ export default function Create({ worlds, characters }: Props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="type">Tipo *</Label>
-                                    <Input
-                                        id="type"
-                                        type="text"
-                                        value={data.type}
-                                        onChange={(e) => setData('type', e.target.value)}
-                                        placeholder="Criatura, Hechizo..."
-                                    />
-                                    <InputError message={errors.type} />
+                                    <Label htmlFor="card_type_id">Tipo *</Label>
+                                    <Select value={data.card_type_id} onValueChange={(value) => setData('card_type_id', value)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Tipo de carta" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {cardTypes.map((type) => (
+                                                <SelectItem key={type.id} value={type.id.toString()}>
+                                                    {type.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError message={errors.card_type_id} />
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="rarity">Rareza</Label>
-                                    <Select value={data.rarity} onValueChange={(value) => setData('rarity', value)}>
+                                    <Label htmlFor="rarity_id">Rareza *</Label>
+                                    <Select value={data.rarity_id} onValueChange={(value) => setData('rarity_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Rareza" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="común">Común</SelectItem>
-                                            <SelectItem value="rara">Rara</SelectItem>
-                                            <SelectItem value="épica">Épica</SelectItem>
-                                            <SelectItem value="legendaria">Legendaria</SelectItem>
+                                            {rarities.map((rarity) => (
+                                                <SelectItem key={rarity.id} value={rarity.id.toString()}>
+                                                    {rarity.name}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
-                                    <InputError message={errors.rarity} />
+                                    <InputError message={errors.rarity_id} />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="alignment_id">Alineación *</Label>
+                                    <Select value={data.alignment_id} onValueChange={(value) => setData('alignment_id', value)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Alineación" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {alignments.map((alignment) => (
+                                                <SelectItem key={alignment.id} value={alignment.id.toString()}>
+                                                    {alignment.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError message={errors.alignment_id} />
                                 </div>
                             </div>
                         </CardContent>
@@ -234,7 +278,7 @@ export default function Create({ worlds, characters }: Props) {
                             <CardDescription>Stats del personaje</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid gap-4 md:grid-cols-4">
+                            <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="strength">💪 Fuerza</Label>
                                     <Input
@@ -282,6 +326,30 @@ export default function Create({ worlds, characters }: Props) {
                                     />
                                     <InputError message={errors.mind} />
                                 </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="defense">🛡️ Defensa</Label>
+                                    <Input
+                                        id="defense"
+                                        type="number"
+                                        value={data.defense}
+                                        onChange={(e) => setData('defense', e.target.value)}
+                                        placeholder="0"
+                                    />
+                                    <InputError message={errors.defense} />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="magic_defense">🔮 Def. Mágica</Label>
+                                    <Input
+                                        id="magic_defense"
+                                        type="number"
+                                        value={data.magic_defense}
+                                        onChange={(e) => setData('magic_defense', e.target.value)}
+                                        placeholder="0"
+                                    />
+                                    <InputError message={errors.magic_defense} />
+                                </div>
                             </div>
                         </CardContent>
                     </UICard>
@@ -295,64 +363,76 @@ export default function Create({ worlds, characters }: Props) {
                         <CardContent className="space-y-6">
                             <div className="grid gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label htmlFor="archetype">Arquetipo</Label>
-                                    <Input
-                                        id="archetype"
-                                        type="text"
-                                        value={data.archetype}
-                                        onChange={(e) => setData('archetype', e.target.value)}
-                                        placeholder="Guerrero, Mago..."
-                                    />
-                                    <InputError message={errors.archetype} />
+                                    <Label htmlFor="archetype_id">Arquetipo</Label>
+                                    <Select value={data.archetype_id} onValueChange={(value) => setData('archetype_id', value)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Ninguno" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="0">Ninguno</SelectItem>
+                                            {archetypes.map((archetype) => (
+                                                <SelectItem key={archetype.id} value={archetype.id.toString()}>
+                                                    {archetype.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError message={errors.archetype_id} />
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="alignment">Alineación</Label>
-                                    <Input
-                                        id="alignment"
-                                        type="text"
-                                        value={data.alignment}
-                                        onChange={(e) => setData('alignment', e.target.value)}
-                                        placeholder="Luz, Oscuridad..."
-                                    />
-                                    <InputError message={errors.alignment} />
+                                    <Label htmlFor="faction_id">Facción</Label>
+                                    <Select value={data.faction_id} onValueChange={(value) => setData('faction_id', value)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Ninguna" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="0">Ninguna</SelectItem>
+                                            {factions.map((faction) => (
+                                                <SelectItem key={faction.id} value={faction.id.toString()}>
+                                                    {faction.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError message={errors.faction_id} />
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="faction">Facción</Label>
-                                    <Input
-                                        id="faction"
-                                        type="text"
-                                        value={data.faction}
-                                        onChange={(e) => setData('faction', e.target.value)}
-                                        placeholder="Nombre de facción"
-                                    />
-                                    <InputError message={errors.faction} />
+                                    <Label htmlFor="edition_id">Edición</Label>
+                                    <Select value={data.edition_id} onValueChange={(value) => setData('edition_id', value)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Ninguna" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="0">Ninguna</SelectItem>
+                                            {editions.map((edition) => (
+                                                <SelectItem key={edition.id} value={edition.id.toString()}>
+                                                    {edition.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError message={errors.edition_id} />
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="edition">Edición</Label>
-                                    <Input
-                                        id="edition"
-                                        type="text"
-                                        value={data.edition}
-                                        onChange={(e) => setData('edition', e.target.value)}
-                                        placeholder="Primera Edición..."
-                                    />
-                                    <InputError message={errors.edition} />
+                                    <Label htmlFor="artist_id">Artista</Label>
+                                    <Select value={data.artist_id} onValueChange={(value) => setData('artist_id', value)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Ninguno" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="0">Ninguno</SelectItem>
+                                            {artists.map((artist) => (
+                                                <SelectItem key={artist.id} value={artist.id.toString()}>
+                                                    {artist.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError message={errors.artist_id} />
                                 </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label htmlFor="artist">Artista</Label>
-                                <Input
-                                    id="artist"
-                                    type="text"
-                                    value={data.artist}
-                                    onChange={(e) => setData('artist', e.target.value)}
-                                    placeholder="Nombre del artista"
-                                />
-                                <InputError message={errors.artist} />
                             </div>
 
                             <div className="space-y-2">

@@ -13,12 +13,6 @@ class Card extends Model
     protected $fillable = [
         'world_id',
         'character_id',
-        'card_type_id',
-        'rarity_id',
-        'alignment_id',
-        'faction_id',
-        'artist_id',
-        'archetype_id',
         'name',
         'illustration',
         'effect',
@@ -26,8 +20,16 @@ class Card extends Model
         'agility',
         'charisma',
         'mind',
+        'defense',
+        'magic_defense',
         'cost',
-        'edition',
+        'card_type_id',
+        'rarity_id',
+        'archetype_id',
+        'alignment_id',
+        'faction_id',
+        'edition_id',
+        'artist_id',
         'flavor_text',
     ];
 
@@ -38,6 +40,8 @@ class Card extends Model
             'agility' => 'integer',
             'charisma' => 'integer',
             'mind' => 'integer',
+            'defense' => 'integer',
+            'magic_defense' => 'integer',
             'cost' => 'integer',
         ];
     }
@@ -62,6 +66,11 @@ class Card extends Model
         return $this->belongsTo(Rarity::class);
     }
 
+    public function archetype(): BelongsTo
+    {
+        return $this->belongsTo(Archetype::class);
+    }
+
     public function alignment(): BelongsTo
     {
         return $this->belongsTo(Alignment::class);
@@ -72,14 +81,14 @@ class Card extends Model
         return $this->belongsTo(Faction::class);
     }
 
+    public function edition(): BelongsTo
+    {
+        return $this->belongsTo(Edition::class);
+    }
+
     public function artist(): BelongsTo
     {
         return $this->belongsTo(Artist::class);
-    }
-
-    public function archetype(): BelongsTo
-    {
-        return $this->belongsTo(Archetype::class);
     }
 
     public function getFormattedEffectAttribute(): string

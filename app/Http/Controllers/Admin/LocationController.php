@@ -24,7 +24,8 @@ class LocationController extends Controller
                 $query->where('world_id', $worldId);
             })
             ->latest()
-            ->get(); // Cambiado de paginate(10) a get() para obtener todas las ubicaciones
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('Admin/Locations/Index', [
             'locations' => $locations,
@@ -46,7 +47,6 @@ class LocationController extends Controller
             'world_id' => ['required', 'exists:worlds,id'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'type' => ['required', 'in:castle,city,village,forest,mountain,dungeon,ruins,battlefield,port,temple,cave,tower'],
             'location_type' => ['required', 'in:ciudad,bosque,mazmorra,reino,montaña,mar,templo,ruina'],
             'coordinate_x' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
             'coordinate_y' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
@@ -67,7 +67,6 @@ class LocationController extends Controller
         return Inertia::render('Admin/Locations/Edit', [
             'location' => $location,
             'worlds' => World::all(['id', 'name']),
-            'locations' => Location::with('world')->get(), // Todas las ubicaciones para el mapa
         ]);
     }
 
@@ -77,10 +76,9 @@ class LocationController extends Controller
             'world_id' => ['required', 'exists:worlds,id'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'type' => ['required', 'in:castle,city,village,forest,mountain,dungeon,ruins,battlefield,port,temple,cave,tower'],
-            'location_type' => ['nullable', 'string', 'max:255'],
-            'coordinate_x' => ['nullable', 'numeric', 'between:0,1536'],
-            'coordinate_y' => ['nullable', 'numeric', 'between:0,754'],
+            'location_type' => ['required', 'in:ciudad,bosque,mazmorra,reino,montaña,mar,templo,ruina'],
+            'coordinate_x' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
+            'coordinate_y' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
             'image' => ['nullable', 'string'],
             'is_discovered' => ['boolean'],
         ]);
