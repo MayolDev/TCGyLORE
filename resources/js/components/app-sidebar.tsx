@@ -1,5 +1,4 @@
 import { NavFooter } from '@/components/nav-footer';
-import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
     Sidebar,
@@ -17,8 +16,6 @@ import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { 
-    BookOpen, 
-    Folder, 
     LayoutGrid, 
     Globe, 
     BookText, 
@@ -85,7 +82,7 @@ const adminNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [];
 
-function NavGroup({ title, items, icon: Icon }: { title: string; items: NavItem[]; icon?: any }) {
+function NavGroup({ title, items, icon: Icon }: { title: string; items: NavItem[]; icon?: React.ElementType }) {
     const page = usePage();
     
     return (

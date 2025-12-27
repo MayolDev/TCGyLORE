@@ -8,7 +8,7 @@ import WriterLayout from '@/layouts/writer-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
-import { Swords, Save, X, Upload } from 'lucide-react';
+import { Swords, Save, X } from 'lucide-react';
 
 interface World {
     id: number;

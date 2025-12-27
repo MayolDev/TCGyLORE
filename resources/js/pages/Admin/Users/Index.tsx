@@ -11,7 +11,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, router, useForm } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { Plus, Pencil, Trash2, Search } from 'lucide-react';
 import { useState } from 'react';
 

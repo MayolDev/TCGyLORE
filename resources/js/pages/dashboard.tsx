@@ -48,11 +48,31 @@ interface DashboardProps {
     stats?: StatsData;
 }
 
+interface Role {
+    id: number;
+    name: string;
+}
+
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    roles?: Role[];
+}
+
+interface AuthProps {
+    user?: User;
+}
+
+interface PageProps {
+    auth?: AuthProps;
+}
+
 export default function Dashboard({ stats }: DashboardProps) {
-    const page = usePage<any>();
+    const page = usePage<PageProps>();
     const auth = page.props.auth || {};
     const user = auth.user;
-    const isAdmin = user?.roles?.some((role: any) => role.name === 'Admin') || false;
+    const isAdmin = user?.roles?.some((role: Role) => role.name === 'Admin') || false;
 
     const defaultStats: StatsData = {
         worlds: 0,

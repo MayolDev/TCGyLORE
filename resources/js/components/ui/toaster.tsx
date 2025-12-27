@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react';
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
-    const [theme, setTheme] = useState<'light' | 'dark'>('light');
+    const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+        // Detectar el tema inicial
+        return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    });
 
     useEffect(() => {
-        // Detectar el tema del documento
-        const isDark = document.documentElement.classList.contains('dark');
-        setTheme(isDark ? 'dark' : 'light');
-
         // Observer para cambios de tema
         const observer = new MutationObserver(() => {
             const isDark = document.documentElement.classList.contains('dark');
