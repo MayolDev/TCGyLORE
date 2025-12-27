@@ -22,6 +22,7 @@ class Card extends Model
         'mind',
         'defense',
         'magic_defense',
+        'health',
         'cost',
         'card_type_id',
         'rarity_id',
@@ -42,6 +43,7 @@ class Card extends Model
             'mind' => 'integer',
             'defense' => 'integer',
             'magic_defense' => 'integer',
+            'health' => 'integer',
             'cost' => 'integer',
         ];
     }

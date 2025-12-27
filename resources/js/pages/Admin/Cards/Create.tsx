@@ -65,6 +65,7 @@ export default function Create({ worlds, characters, cardTypes, rarities, archet
         mind: '',
         defense: '',
         magic_defense: '',
+        health: '',
     });
 
     const submit = (e: React.FormEvent) => {
@@ -349,6 +350,18 @@ export default function Create({ worlds, characters, cardTypes, rarities, archet
                                         placeholder="0"
                                     />
                                     <InputError message={errors.magic_defense} />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="health">❤️ Puntos de Vida</Label>
+                                    <Input
+                                        id="health"
+                                        type="number"
+                                        value={data.health}
+                                        onChange={(e) => setData('health', e.target.value)}
+                                        placeholder="0"
+                                    />
+                                    <InputError message={errors.health} />
                                 </div>
                             </div>
                         </CardContent>

@@ -47,6 +47,7 @@ interface CardData {
     mind: number | null;
     defense: number | null;
     magic_defense: number | null;
+    health: number | null;
 }
 
 interface Props {
@@ -91,6 +92,7 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
         mind: card.mind?.toString() || '',
         defense: card.defense?.toString() || '',
         magic_defense: card.magic_defense?.toString() || '',
+        health: card.health?.toString() || '',
     });
 
     const submit = (e: React.FormEvent) => {
@@ -386,6 +388,18 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
                                         placeholder="0"
                                     />
                                     <InputError message={errors.magic_defense} />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="health">❤️ Puntos de Vida</Label>
+                                    <Input
+                                        id="health"
+                                        type="number"
+                                        value={data.health}
+                                        onChange={(e) => setData('health', e.target.value)}
+                                        placeholder="0"
+                                    />
+                                    <InputError message={errors.health} />
                                 </div>
                             </div>
                         </CardContent>
