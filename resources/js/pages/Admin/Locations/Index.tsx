@@ -71,14 +71,14 @@ export default function Index({ locations: initialLocations, filters: initialFil
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 bg-clip-text text-transparent">
+                        <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_2px_10px_rgba(251,191,36,0.5)] uppercase" style={{ fontFamily: 'Cinzel, serif' }}>
                             Ubicaciones Místicas
                         </h1>
-                        <p className="text-muted-foreground mt-1">
-                            Gestiona los lugares legendarios de tus mundos
+                        <p className="text-yellow-200/70 mt-2 font-semibold text-base">
+                            📍 Gestiona los lugares legendarios de tus mundos
                         </p>
                     </div>
-                    <Button variant="magical" size="lg" asChild>
+                    <Button variant="magical" size="lg" asChild className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30" style={{ fontFamily: 'Cinzel, serif' }}>
                         <Link href="/admin/locations/create">
                             <Plus className="mr-2 h-5 w-5" />
                             Crear Ubicación
@@ -140,9 +140,12 @@ export default function Index({ locations: initialLocations, filters: initialFil
                     <>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {locations.data.map((location) => (
-                                <Card key={location.id} className="card-tcg group overflow-hidden border-primary/20 hover:border-primary/40">
+                                <Card key={location.id} className="group overflow-hidden border-4 border-rose-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-rose-400/70 hover:shadow-[0_0_40px_rgba(244,63,94,0.4)] transition-all duration-300 hover:scale-105 hover:-rotate-1 relative">
+                                    {/* Brillo interior */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-transparent to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    
                                     {/* Location Image */}
-                                    <div className="relative h-48 bg-gradient-to-br from-rose-500/20 via-orange-500/10 to-amber-500/20 overflow-hidden">
+                                    <div className="relative h-48 bg-gradient-to-br from-rose-600/30 via-orange-600/20 to-amber-600/30 overflow-hidden border-b-2 border-rose-500/30">
                                         {location.image_url ? (
                                             <img 
                                                 src={location.image_url} 
@@ -151,14 +154,14 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                             />
                                         ) : (
                                             <div className="absolute inset-0 flex items-center justify-center">
-                                                <MapPin className="h-20 w-20 text-rose-500/30 animate-float" />
+                                                <MapPin className="h-20 w-20 text-rose-400/60 group-hover:text-rose-300 group-hover:scale-110 transition-all duration-300 drop-shadow-[0_0_10px_rgba(244,63,94,0.5)]" />
                                             </div>
                                         )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent" />
                                         
                                         {/* World Badge */}
                                         <div className="absolute top-2 right-2">
-                                            <Badge variant="secondary" className="backdrop-blur-sm bg-background/80">
+                                            <Badge variant="secondary" className="backdrop-blur-sm bg-slate-900/90 border-rose-500/30 text-yellow-200 font-bold">
                                                 {location.world.name}
                                             </Badge>
                                         </div>
@@ -166,7 +169,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                         {/* Coordinates Badge */}
                                         {(location.latitude != null && location.longitude != null) && (
                                             <div className="absolute bottom-2 left-2">
-                                                <Badge variant="outline" className="backdrop-blur-sm bg-background/80 gap-1">
+                                                <Badge variant="outline" className="backdrop-blur-sm bg-slate-900/90 border-amber-500/50 text-amber-200 gap-1 font-bold">
                                                     <Navigation className="h-3 w-3" />
                                                     <span className="text-xs">Mapeado</span>
                                                 </Badge>
@@ -174,21 +177,21 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                         )}
                                     </div>
 
-                                    <CardHeader className="pb-3">
-                                        <CardTitle className="text-base flex items-center justify-between gap-2">
+                                    <CardHeader className="pb-3 relative z-10">
+                                        <CardTitle className="text-xl flex items-center justify-between gap-2 text-yellow-100 font-black" style={{ fontFamily: 'Cinzel, serif' }}>
                                             <span className="line-clamp-1">{location.name}</span>
-                                            <Sparkles className="h-4 w-4 text-rose-500 shrink-0" />
+                                            <Sparkles className="h-6 w-6 text-rose-400 shrink-0 drop-shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
                                         </CardTitle>
-                                        <CardDescription className="line-clamp-2">
+                                        <CardDescription className="line-clamp-2 text-yellow-200/60 font-semibold">
                                             {location.description || 'Sin descripción'}
                                         </CardDescription>
                                     </CardHeader>
 
-                                    <CardContent className="space-y-4">
+                                    <CardContent className="space-y-4 relative z-10">
                                         {/* Coordinates */}
                                         {(location.latitude != null && location.longitude != null) && (
-                                            <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 rounded p-2">
-                                                <Navigation className="h-3.5 w-3.5 text-rose-500" />
+                                            <div className="flex items-center gap-2 text-xs text-yellow-200/70 bg-rose-900/30 border border-rose-500/30 rounded p-2 font-semibold">
+                                                <Navigation className="h-4 w-4 text-rose-400 drop-shadow-[0_0_5px_rgba(244,63,94,0.6)]" />
                                                 <span>
                                                     {Number(location.latitude).toFixed(4)}, {Number(location.longitude).toFixed(4)}
                                                 </span>
@@ -196,25 +199,25 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                         )}
 
                                         {/* Actions */}
-                                        <div className="flex gap-2 pt-2 border-t">
-                                            <Button variant="outline" size="sm" className="flex-1" asChild>
+                                        <div className="flex gap-2 pt-2">
+                                            <Button variant="outline" size="sm" className="flex-1 border-rose-500/50 text-rose-200 hover:bg-rose-600/20 hover:text-rose-100 font-bold" asChild>
                                                 <Link href={`/admin/locations/${location.id}/edit`}>
-                                                    <Pencil className="mr-1.5 h-3 w-3" />
+                                                    <Pencil className="mr-2 h-4 w-4" />
                                                     Editar
                                                 </Link>
                                             </Button>
                                             <Button 
                                                 variant="outline" 
                                                 size="sm"
-                                                className="text-destructive hover:text-destructive"
+                                                className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                 onClick={() => handleDelete(location.id, location.name)}
                                             >
-                                                <Trash2 className="h-3 w-3" />
+                                                <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </div>
 
                                         {/* Created Date */}
-                                        <p className="text-xs text-muted-foreground text-center pt-2 border-t">
+                                        <p className="text-xs text-yellow-300/50 text-center pt-2 border-t border-rose-500/30 font-semibold">
                                             Creado {new Date(location.created_at).toLocaleDateString('es-ES', { 
                                                 day: 'numeric', 
                                                 month: 'long', 

@@ -24,7 +24,7 @@ import {
     Clock, 
     Swords,
     UserCircle,
-    Sparkles
+    Flame
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -87,8 +87,8 @@ function NavGroup({ title, items, icon: Icon }: { title: string; items: NavItem[
     
     return (
         <SidebarGroup className="px-2 py-2">
-            <SidebarGroupLabel className="flex items-center gap-2 text-muted-foreground/80 text-xs font-medium tracking-wide mb-1">
-                {Icon && <Icon className="h-3.5 w-3.5" />}
+            <SidebarGroupLabel className="flex items-center gap-2 text-yellow-400/80 text-xs font-black tracking-wider mb-2 uppercase" style={{ fontFamily: 'Cinzel, serif' }}>
+                {Icon && <Icon className="h-4 w-4 text-yellow-500" />}
                 {title}
             </SidebarGroupLabel>
             <SidebarMenu>
@@ -102,7 +102,7 @@ function NavGroup({ title, items, icon: Icon }: { title: string; items: NavItem[
                                 tooltip={{ children: item.title }}
                                 className={`
                                     transition-all duration-200 
-                                    ${isActive ? 'bg-primary/10 border-l-2 border-primary shadow-[0_0_10px_rgba(59,130,246,0.2)]' : ''}
+                                    ${isActive ? 'bg-yellow-600/20 border-l-4 border-yellow-500 shadow-[0_0_15px_rgba(251,191,36,0.3)]' : 'hover:bg-yellow-600/10 hover:border-l-2 hover:border-yellow-600/50'}
                                 `}
                             >
                                 <Link href={item.href} prefetch>
@@ -110,14 +110,14 @@ function NavGroup({ title, items, icon: Icon }: { title: string; items: NavItem[
                                         <item.icon 
                                             className={`
                                                 transition-all duration-200
-                                                ${isActive ? 'text-primary scale-110 drop-shadow-[0_0_4px_rgba(59,130,246,0.5)]' : ''}
+                                                ${isActive ? 'text-yellow-400 scale-110 drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]' : 'text-yellow-200/60 group-hover:text-yellow-300'}
                                             `}
                                         />
                                     )}
                                     <span className={`
-                                        transition-all duration-200
-                                        ${isActive ? 'font-semibold text-primary' : ''}
-                                    `}>
+                                        transition-all duration-200 font-semibold
+                                        ${isActive ? 'text-yellow-100 font-black' : 'text-yellow-200/80'}
+                                    `} style={{ fontFamily: isActive ? 'Cinzel, serif' : 'inherit' }}>
                                         {item.title}
                                     </span>
                                 </Link>
@@ -132,18 +132,13 @@ function NavGroup({ title, items, icon: Icon }: { title: string; items: NavItem[
 
 export function AppSidebar() {
     return (
-        <Sidebar collapsible="icon" variant="inset" className="border-r border-primary/10">
-            <SidebarHeader className="border-b border-primary/10">
+        <Sidebar collapsible="icon" variant="inset" className="border-r-2 border-yellow-900/30">
+            <SidebarHeader className="border-b-2 border-yellow-900/30 bg-gradient-to-b from-slate-900/50 to-transparent">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild className="hover:bg-primary/5">
+                        <SidebarMenuButton size="lg" asChild className="hover:bg-yellow-600/10">
                             <Link href={dashboard()} prefetch>
-                                <div className="flex items-center gap-2">
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent shadow-lg">
-                                        <Sparkles className="h-4 w-4 text-primary-foreground" />
-                                    </div>
-                                    <AppLogo />
-                                </div>
+                                <AppLogo />
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -152,15 +147,15 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavGroup title="Panel Principal" items={dashboardNavItems} icon={LayoutGrid} />
-                <SidebarSeparator className="bg-primary/10" />
+                <SidebarSeparator className="bg-yellow-900/30" />
                 <NavGroup title="Sistema Lore" items={loreNavItems} icon={BookText} />
-                <SidebarSeparator className="bg-primary/10" />
-                <NavGroup title="TCG Cartas" items={tcgNavItems} icon={Swords} />
-                <SidebarSeparator className="bg-primary/10" />
+                <SidebarSeparator className="bg-yellow-900/30" />
+                <NavGroup title="TCG Cartas" items={tcgNavItems} icon={Flame} />
+                <SidebarSeparator className="bg-yellow-900/30" />
                 <NavGroup title="Administración" items={adminNavItems} icon={UserCircle} />
             </SidebarContent>
 
-            <SidebarFooter className="border-t border-primary/10">
+            <SidebarFooter className="border-t-2 border-yellow-900/30">
                 {footerNavItems.length > 0 && <NavFooter items={footerNavItems} className="mt-auto" />}
                 <NavUser />
             </SidebarFooter>

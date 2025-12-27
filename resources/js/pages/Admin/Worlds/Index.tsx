@@ -68,14 +68,14 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_2px_10px_rgba(251,191,36,0.5)] uppercase" style={{ fontFamily: 'Cinzel, serif' }}>
                             Mundos Épicos
                         </h1>
-                        <p className="text-muted-foreground mt-1">
-                            Gestiona los universos de tu juego TCG
+                        <p className="text-yellow-200/70 mt-2 font-semibold text-base">
+                            🌍 Gestiona los universos de tu juego TCG
                         </p>
                     </div>
-                    <Button variant="magical" size="lg" asChild>
+                    <Button variant="magical" size="lg" asChild className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30" style={{ fontFamily: 'Cinzel, serif' }}>
                         <Link href="/admin/worlds/create">
                             <Plus className="mr-2 h-5 w-5" />
                             Crear Mundo
@@ -137,9 +137,12 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                     <>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {worlds.data.map((world) => (
-                                <Card key={world.id} className="card-tcg group overflow-hidden border-primary/20 hover:border-primary/40">
+                                <Card key={world.id} className="group overflow-hidden border-4 border-purple-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-purple-400/70 hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] transition-all duration-300 hover:scale-105 hover:-rotate-1 relative">
+                                    {/* Brillo interior */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    
                                     {/* World Image or Gradient Header */}
-                                    <div className="relative h-32 bg-gradient-to-br from-primary/20 via-accent/10 to-secondary/20 overflow-hidden">
+                                    <div className="relative h-40 bg-gradient-to-br from-purple-600/30 via-blue-600/20 to-indigo-600/30 overflow-hidden border-b-2 border-purple-500/30">
                                         {world.image_url ? (
                                             <img 
                                                 src={world.image_url} 
@@ -148,54 +151,54 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                                             />
                                         ) : (
                                             <div className="absolute inset-0 flex items-center justify-center">
-                                                <Globe className="h-16 w-16 text-primary/40 animate-float" />
+                                                <Globe className="h-20 w-20 text-purple-400/60 group-hover:text-purple-300 group-hover:scale-110 transition-all duration-300 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
                                             </div>
                                         )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent" />
                                     </div>
 
-                                    <CardHeader>
-                                        <CardTitle className="flex items-start justify-between gap-2">
+                                    <CardHeader className="relative z-10">
+                                        <CardTitle className="flex items-start justify-between gap-2 text-yellow-100 font-black text-xl" style={{ fontFamily: 'Cinzel, serif' }}>
                                             <span className="line-clamp-1">{world.name}</span>
-                                            <Globe className="h-5 w-5 text-primary shrink-0" />
+                                            <Globe className="h-6 w-6 text-purple-400 shrink-0 drop-shadow-[0_0_6px_rgba(168,85,247,0.8)]" />
                                         </CardTitle>
-                                        <CardDescription className="line-clamp-2">
+                                        <CardDescription className="line-clamp-2 text-yellow-200/60 font-semibold">
                                             {world.description || 'Sin descripción'}
                                         </CardDescription>
                                     </CardHeader>
 
-                                    <CardContent className="space-y-4">
+                                    <CardContent className="space-y-4 relative z-10">
                                         {/* Stats */}
                                         <div className="grid grid-cols-2 gap-2">
                                             <div className="flex items-center gap-2 text-sm">
-                                                <div className="p-1.5 rounded bg-purple-500/10">
-                                                    <BookText className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+                                                <div className="p-1.5 rounded-lg bg-purple-500/30 border border-purple-500/50">
+                                                    <BookText className="h-4 w-4 text-purple-300 drop-shadow-[0_0_4px_rgba(168,85,247,0.6)]" />
                                                 </div>
-                                                <span className="text-muted-foreground">
+                                                <span className="text-yellow-200/80 font-semibold">
                                                     {world.stories_count || 0} historias
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-2 text-sm">
-                                                <div className="p-1.5 rounded bg-emerald-500/10">
-                                                    <Users className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                                <div className="p-1.5 rounded-lg bg-emerald-500/30 border border-emerald-500/50">
+                                                    <Users className="h-4 w-4 text-emerald-300 drop-shadow-[0_0_4px_rgba(16,185,129,0.6)]" />
                                                 </div>
-                                                <span className="text-muted-foreground">
+                                                <span className="text-yellow-200/80 font-semibold">
                                                     {world.characters_count || 0} personajes
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-2 text-sm">
-                                                <div className="p-1.5 rounded bg-rose-500/10">
-                                                    <MapPin className="h-3.5 w-3.5 text-rose-600 dark:text-rose-400" />
+                                                <div className="p-1.5 rounded-lg bg-rose-500/30 border border-rose-500/50">
+                                                    <MapPin className="h-4 w-4 text-rose-300 drop-shadow-[0_0_4px_rgba(244,63,94,0.6)]" />
                                                 </div>
-                                                <span className="text-muted-foreground">
+                                                <span className="text-yellow-200/80 font-semibold">
                                                     {world.locations_count || 0} ubicaciones
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-2 text-sm">
-                                                <div className="p-1.5 rounded bg-violet-500/10">
-                                                    <Swords className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
+                                                <div className="p-1.5 rounded-lg bg-violet-500/30 border border-violet-500/50">
+                                                    <Swords className="h-4 w-4 text-violet-300 drop-shadow-[0_0_4px_rgba(139,92,246,0.6)]" />
                                                 </div>
-                                                <span className="text-muted-foreground">
+                                                <span className="text-yellow-200/80 font-semibold">
                                                     {world.cards_count || 0} cartas
                                                 </span>
                                             </div>
@@ -203,24 +206,24 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
 
                                         {/* Actions */}
                                         <div className="flex gap-2 pt-2">
-                                            <Button variant="outline" size="sm" className="flex-1" asChild>
+                                            <Button variant="outline" size="sm" className="flex-1 border-purple-500/50 text-purple-200 hover:bg-purple-600/20 hover:text-purple-100 font-bold" asChild>
                                                 <Link href={`/admin/worlds/${world.id}/edit`}>
-                                                    <Pencil className="mr-2 h-3.5 w-3.5" />
+                                                    <Pencil className="mr-2 h-4 w-4" />
                                                     Editar
                                                 </Link>
                                             </Button>
                                             <Button 
                                                 variant="outline" 
                                                 size="sm"
-                                                className="text-destructive hover:text-destructive"
+                                                className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                 onClick={() => handleDelete(world.id, world.name)}
                                             >
-                                                <Trash2 className="h-3.5 w-3.5" />
+                                                <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </div>
 
                                         {/* Created Date */}
-                                        <p className="text-xs text-muted-foreground text-center pt-2 border-t">
+                                        <p className="text-xs text-yellow-300/50 text-center pt-2 border-t border-purple-500/30 font-semibold">
                                             Creado {new Date(world.created_at).toLocaleDateString('es-ES', { 
                                                 day: 'numeric', 
                                                 month: 'long', 

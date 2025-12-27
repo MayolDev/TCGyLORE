@@ -127,14 +127,14 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                            Cartas TCG Legendarias
+                        <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_2px_10px_rgba(251,191,36,0.5)]" style={{ fontFamily: 'Cinzel, serif' }}>
+                            CARTAS TCG LEGENDARIAS
                         </h1>
-                        <p className="text-muted-foreground mt-1">
-                            Gestiona las cartas de combate de tu juego
+                        <p className="text-yellow-200/70 mt-2 font-semibold text-base">
+                            ⚔️ Gestiona las cartas de combate de tu juego épico
                         </p>
                     </div>
-                    <Button variant="magical" size="lg" asChild>
+                    <Button variant="magical" size="lg" asChild className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30">
                         <Link href="/admin/cards/create">
                             <Plus className="mr-2 h-5 w-5" />
                             Crear Carta

@@ -5,6 +5,9 @@
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
+/* Fuentes épicas de Google Fonts */
+@import url('https://fonts.bunny.net/css?family=almendra:700|cinzel:700,900|trade-winds:400');
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -14,6 +17,8 @@
         'Noto Color Emoji';
     
     --font-heading: 'Cinzel', 'Georgia', serif;
+    --font-epic: 'Trade Winds', cursive;
+    --font-story: 'Almendra', serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -64,120 +69,120 @@
 }
 
 :root {
-    /* Taberna Medieval Fantasía - Light Mode */
-    --background: oklch(0.45 0.06 38);  /* Mesa de madera oscura */
-    --foreground: oklch(0.95 0.02 45);  /* Texto claro sobre madera */
-    --card: oklch(0.96 0.02 42);  /* Cartas de pergamino */
-    --card-foreground: oklch(0.20 0.03 30);
-    --popover: oklch(0.96 0.02 42);
-    --popover-foreground: oklch(0.20 0.03 30);
+    /* TAPON'AZO - Tema Épico Oscuro */
+    --background: oklch(0.15 0.03 270);  /* Fondo muy oscuro púrpura */
+    --foreground: oklch(0.95 0.02 60);  /* Texto claro dorado */
+    --card: oklch(0.18 0.04 270);  /* Cards oscuras */
+    --card-foreground: oklch(0.95 0.02 60);
+    --popover: oklch(0.16 0.04 270);
+    --popover-foreground: oklch(0.95 0.02 60);
     
-    /* Madera de Roble Oscuro */
-    --primary: oklch(0.50 0.12 45);  /* Ámbar madera */
-    --primary-foreground: oklch(0.96 0.02 45);
+    /* Dorado Épico */
+    --primary: oklch(0.65 0.18 60);  /* Amarillo dorado */
+    --primary-foreground: oklch(0.15 0.03 270);
     
-    /* Cerveza Ámbar */
-    --secondary: oklch(0.60 0.15 55);  /* Ámbar dorado */
-    --secondary-foreground: oklch(0.20 0.03 30);
+    /* Naranja Fuego */
+    --secondary: oklch(0.60 0.20 40);  /* Naranja */
+    --secondary-foreground: oklch(0.95 0.02 60);
     
-    --muted: oklch(0.50 0.05 40);  /* Madera gastada */
-    --muted-foreground: oklch(0.85 0.04 42);  /* Texto sobre madera */
+    --muted: oklch(0.20 0.04 270);  /* Oscuro púrpura */
+    --muted-foreground: oklch(0.70 0.05 60);
     
-    /* Fuego de Hoguera */
-    --accent: oklch(0.65 0.18 50);  /* Ámbar brillante */
-    --accent-foreground: oklch(0.20 0.03 30);
+    /* Rojo Fuego */
+    --accent: oklch(0.55 0.22 30);  /* Rojo */
+    --accent-foreground: oklch(0.95 0.02 60);
     
-    --destructive: oklch(0.50 0.20 25);  /* Rojo ladrillo */
+    --destructive: oklch(0.50 0.20 25);  /* Rojo destructivo */
     --destructive-foreground: oklch(0.98 0 0);
     
-    --border: oklch(0.55 0.08 42);  /* Bordes madera */
-    --input: oklch(0.92 0.03 42);  /* Inputs pergamino */
-    --ring: oklch(0.65 0.18 50);  /* Dorado */
+    --border: oklch(0.30 0.08 60);  /* Bordes dorados */
+    --input: oklch(0.22 0.04 270);  /* Inputs oscuros */
+    --ring: oklch(0.65 0.18 60);  /* Anillo dorado */
     
-    /* Charts - Tonos de Taberna */
-    --chart-1: oklch(0.55 0.15 40);
-    --chart-2: oklch(0.65 0.18 50);
-    --chart-3: oklch(0.60 0.20 30);
-    --chart-4: oklch(0.70 0.15 60);
-    --chart-5: oklch(0.50 0.12 35);
+    /* Charts - Tonos Épicos */
+    --chart-1: oklch(0.65 0.18 60);
+    --chart-2: oklch(0.60 0.20 40);
+    --chart-3: oklch(0.55 0.22 30);
+    --chart-4: oklch(0.60 0.18 280);
+    --chart-5: oklch(0.58 0.16 320);
     
-    --radius: 0.5rem;
+    --radius: 0.75rem;
     
-    /* Sidebar - Estantería de Taberna */
-    --sidebar: oklch(0.28 0.06 33);  /* Madera muy oscura */
-    --sidebar-foreground: oklch(0.88 0.03 45);
-    --sidebar-primary: oklch(0.65 0.18 50);
-    --sidebar-primary-foreground: oklch(0.20 0.03 30);
-    --sidebar-accent: oklch(0.32 0.07 36);
-    --sidebar-accent-foreground: oklch(0.88 0.03 45);
-    --sidebar-border: oklch(0.22 0.05 30);
-    --sidebar-ring: oklch(0.65 0.18 50);
+    /* Sidebar - Madera Oscura Épica */
+    --sidebar: oklch(0.12 0.04 270);  /* Muy oscuro */
+    --sidebar-foreground: oklch(0.88 0.03 60);
+    --sidebar-primary: oklch(0.65 0.18 60);
+    --sidebar-primary-foreground: oklch(0.15 0.03 270);
+    --sidebar-accent: oklch(0.18 0.05 270);
+    --sidebar-accent-foreground: oklch(0.88 0.03 60);
+    --sidebar-border: oklch(0.20 0.05 60);
+    --sidebar-ring: oklch(0.65 0.18 60);
     
-    /* Colores personalizados Taberna */
+    /* Colores épicos personalizados */
     --glow-fire: oklch(0.65 0.22 40);
     --glow-amber: oklch(0.70 0.20 55);
     --glow-gold: oklch(0.75 0.18 70);
     
-    /* Rarezas - Metales y Gemas */
-    --rarity-common: oklch(0.50 0.05 30);
-    --rarity-rare: oklch(0.55 0.12 210);
-    --rarity-epic: oklch(0.60 0.18 340);
-    --rarity-legendary: oklch(0.70 0.20 65);
+    /* Rarezas TCG */
+    --rarity-common: oklch(0.45 0.06 30);
+    --rarity-rare: oklch(0.55 0.15 240);
+    --rarity-epic: oklch(0.60 0.20 300);
+    --rarity-legendary: oklch(0.70 0.22 60);
 }
 
 .dark {
-    /* Modo Oscuro - Interior de Taberna por la Noche */
-    --background: oklch(0.15 0.03 30);  /* Madera oscura de noche */
-    --foreground: oklch(0.90 0.03 45);  /* Texto claro */
-    --card: oklch(0.20 0.04 35);  /* Madera tablero */
-    --card-foreground: oklch(0.90 0.03 45);
-    --popover: oklch(0.18 0.04 32);
-    --popover-foreground: oklch(0.90 0.03 45);
+    /* Modo Oscuro ÉPICO - Más profundo */
+    --background: oklch(0.10 0.04 270);  /* Casi negro púrpura */
+    --foreground: oklch(0.95 0.03 60);  /* Texto dorado claro */
+    --card: oklch(0.14 0.05 270);  /* Cards muy oscuras */
+    --card-foreground: oklch(0.95 0.03 60);
+    --popover: oklch(0.12 0.05 270);
+    --popover-foreground: oklch(0.95 0.03 60);
     
-    --primary: oklch(0.65 0.20 50);  /* Ámbar brillante */
-    --primary-foreground: oklch(0.15 0.03 30);
+    --primary: oklch(0.70 0.20 60);  /* Dorado más brillante */
+    --primary-foreground: oklch(0.10 0.04 270);
     
-    --secondary: oklch(0.55 0.18 55);  /* Dorado oscuro */
-    --secondary-foreground: oklch(0.90 0.03 45);
+    --secondary: oklch(0.65 0.22 40);  /* Naranja brillante */
+    --secondary-foreground: oklch(0.95 0.03 60);
     
-    --muted: oklch(0.25 0.04 33);  /* Sombras */
-    --muted-foreground: oklch(0.60 0.05 40);
+    --muted: oklch(0.18 0.04 270);  /* Púrpura oscuro */
+    --muted-foreground: oklch(0.65 0.06 60);
     
-    --accent: oklch(0.60 0.20 45);  /* Fuego de hoguera */
-    --accent-foreground: oklch(0.90 0.03 45);
+    --accent: oklch(0.60 0.24 30);  /* Rojo fuego */
+    --accent-foreground: oklch(0.95 0.03 60);
     
-    --destructive: oklch(0.45 0.20 25);  /* Brasas */
-    --destructive-foreground: oklch(0.90 0.03 45);
+    --destructive: oklch(0.45 0.22 25);  /* Rojo intenso */
+    --destructive-foreground: oklch(0.95 0.03 60);
     
-    --border: oklch(0.30 0.04 35);  /* Grietas madera */
-    --input: oklch(0.30 0.04 35);
-    --ring: oklch(0.60 0.18 50);  /* Resplandor dorado */
+    --border: oklch(0.28 0.08 60);  /* Bordes dorados */
+    --input: oklch(0.20 0.04 270);
+    --ring: oklch(0.65 0.20 60);  /* Anillo dorado brillante */
     
-    --chart-1: oklch(0.50 0.18 40);
-    --chart-2: oklch(0.60 0.20 50);
-    --chart-3: oklch(0.55 0.15 35);
-    --chart-4: oklch(0.65 0.18 60);
-    --chart-5: oklch(0.48 0.15 38);
+    --chart-1: oklch(0.65 0.20 60);
+    --chart-2: oklch(0.62 0.22 40);
+    --chart-3: oklch(0.58 0.24 30);
+    --chart-4: oklch(0.62 0.20 280);
+    --chart-5: oklch(0.60 0.18 320);
     
-    --sidebar: oklch(0.12 0.04 28);  /* Madera muy oscura */
-    --sidebar-foreground: oklch(0.88 0.03 45);
-    --sidebar-primary: oklch(0.65 0.20 50);
-    --sidebar-primary-foreground: oklch(0.15 0.03 30);
-    --sidebar-accent: oklch(0.18 0.05 32);
-    --sidebar-accent-foreground: oklch(0.88 0.03 45);
-    --sidebar-border: oklch(0.22 0.04 30);
-    --sidebar-ring: oklch(0.60 0.18 50);
+    --sidebar: oklch(0.08 0.05 270);  /* Sidebar casi negro */
+    --sidebar-foreground: oklch(0.90 0.03 60);
+    --sidebar-primary: oklch(0.70 0.20 60);
+    --sidebar-primary-foreground: oklch(0.10 0.04 270);
+    --sidebar-accent: oklch(0.14 0.06 270);
+    --sidebar-accent-foreground: oklch(0.90 0.03 60);
+    --sidebar-border: oklch(0.18 0.05 60);
+    --sidebar-ring: oklch(0.65 0.20 60);
     
-    /* Resplandores nocturnos */
-    --glow-fire: oklch(0.60 0.25 40);
-    --glow-amber: oklch(0.65 0.22 52);
-    --glow-gold: oklch(0.70 0.20 65);
+    /* Resplandores más intensos en dark mode */
+    --glow-fire: oklch(0.68 0.24 40);
+    --glow-amber: oklch(0.72 0.22 55);
+    --glow-gold: oklch(0.75 0.22 70);
     
-    /* Rarezas más brillantes en dark mode */
-    --rarity-common: oklch(0.45 0.06 30);
-    --rarity-rare: oklch(0.60 0.18 210);
-    --rarity-epic: oklch(0.65 0.22 340);
-    --rarity-legendary: oklch(0.75 0.24 65);
+    /* Rarezas más brillantes */
+    --rarity-common: oklch(0.48 0.08 30);
+    --rarity-rare: oklch(0.60 0.20 240);
+    --rarity-epic: oklch(0.65 0.24 300);
+    --rarity-legendary: oklch(0.75 0.24 60);
 }
 
 @layer base {
@@ -400,79 +405,46 @@ textarea:focus {
     resize: vertical;
 }
 
-/* Textura de pergamino para body */
+/* Fondo épico para body */
 body {
     background-color: var(--background);
     background-image: 
-        /* Vignette - sombra de taberna */
-        radial-gradient(ellipse at center, transparent 0%, oklch(0.10 0.04 30 / 0.3) 100%),
-        /* Textura de pergamino */
+        /* Vignette épico */
+        radial-gradient(ellipse at center, transparent 0%, oklch(0.08 0.05 270 / 0.5) 100%),
+        /* Textura mística */
         repeating-linear-gradient(
-            90deg,
+            45deg,
             transparent,
-            transparent 2px,
-            oklch(from var(--background) calc(l - 0.01) c h) 2px,
-            oklch(from var(--background) calc(l - 0.01) c h) 4px
+            transparent 40px,
+            oklch(from var(--background) calc(l + 0.01) c h / 0.02) 40px,
+            oklch(from var(--background) calc(l + 0.01) c h / 0.02) 80px
         );
 }
 
-/* Mesa de Madera para el contenido principal */
+/* Contenido principal épico */
 [data-slot="app-content"] {
-    background-color: oklch(0.35 0.06 35);
-    background-image:
-        /* Iluminación cenital de velas */
-        radial-gradient(ellipse 80% 40% at 50% 0%, oklch(0.45 0.08 40 / 0.4), transparent 70%),
-        /* Manchas y desgaste aleatorio */
-        radial-gradient(circle at 85% 15%, oklch(0.30 0.05 38 / 0.3) 0%, transparent 8%),
-        radial-gradient(circle at 25% 80%, oklch(0.32 0.06 36 / 0.4) 0%, transparent 12%),
-        radial-gradient(circle at 70% 60%, oklch(0.33 0.05 37 / 0.2) 0%, transparent 10%),
-        /* Vetas de madera horizontales */
-        repeating-linear-gradient(
-            0deg,
-            oklch(0.33 0.05 33),
-            oklch(0.33 0.05 33) 8px,
-            oklch(0.37 0.07 37) 8px,
-            oklch(0.37 0.07 37) 16px,
-            oklch(0.35 0.06 35) 16px,
-            oklch(0.35 0.06 35) 40px
-        ),
-        /* Textura madera base */
-        linear-gradient(
-            90deg,
-            oklch(0.34 0.06 34),
-            oklch(0.36 0.06 36) 50%,
-            oklch(0.34 0.06 34)
-        );
-    background-blend-mode: screen, multiply, multiply, multiply, multiply, normal;
-    box-shadow: inset 0 0 100px oklch(0.10 0 0 / 0.5);
-    padding-left: 2rem; /* Espacio desde el sidebar */
+    background: transparent;
+    padding-left: 2rem;
     padding-right: 2rem;
     padding-top: 1rem;
-    overflow-x: hidden; /* Evita scroll horizontal */
+    overflow-x: hidden;
 }
 
-/* Textura de madera para sidebar */
+/* Sidebar épico oscuro */
 [data-slot="sidebar"] {
     background-color: var(--sidebar);
     background-image: 
-        /* Vetas verticales */
+        /* Textura sutil */
         repeating-linear-gradient(
             90deg,
             transparent,
-            transparent 30px,
-            oklch(from var(--sidebar) calc(l - 0.03) c h) 30px,
-            oklch(from var(--sidebar) calc(l - 0.03) c h) 32px
-        ),
-        /* Textura base */
-        repeating-linear-gradient(
-            0deg,
-            oklch(from var(--sidebar) calc(l - 0.01) c h),
-            oklch(from var(--sidebar) calc(l - 0.01) c h) 3px,
-            oklch(from var(--sidebar) calc(l - 0.02) c h) 3px,
-            oklch(from var(--sidebar) calc(l - 0.02) c h) 4px
+            transparent 40px,
+            oklch(from var(--sidebar) calc(l - 0.01) c h) 40px,
+            oklch(from var(--sidebar) calc(l - 0.01) c h) 41px
         );
-    overflow-x: hidden !important; /* Evita scroll horizontal */
-    overflow-y: auto; /* Permite scroll vertical */
+    border-right: 2px solid oklch(0.25 0.10 60 / 0.3);
+    overflow-x: hidden !important;
+    overflow-y: auto;
 }
 
 /* Evitar que elementos del sidebar causen scroll horizontal */

@@ -95,54 +95,60 @@ export default function Dashboard({ stats }: DashboardProps) {
             icon: Globe,
             count: currentStats.worlds,
             href: '/admin/worlds',
-            color: 'from-blue-500 to-cyan-600',
-            bgGlow: 'bg-blue-500/10',
-            iconColor: 'text-blue-600 dark:text-blue-400'
+            color: 'from-purple-400 to-purple-600',
+            bgGlow: 'bg-purple-500/20',
+            iconColor: 'text-purple-300',
+            borderColor: 'border-purple-500/30'
         },
         {
             name: 'Historias',
             icon: BookText,
             count: currentStats.stories,
             href: '/admin/stories',
-            color: 'from-purple-500 to-pink-600',
-            bgGlow: 'bg-purple-500/10',
-            iconColor: 'text-purple-600 dark:text-purple-400'
+            color: 'from-blue-400 to-cyan-500',
+            bgGlow: 'bg-blue-500/20',
+            iconColor: 'text-blue-300',
+            borderColor: 'border-blue-500/30'
         },
         {
             name: 'Personajes',
             icon: Users,
             count: currentStats.characters,
             href: '/admin/characters',
-            color: 'from-emerald-500 to-teal-600',
-            bgGlow: 'bg-emerald-500/10',
-            iconColor: 'text-emerald-600 dark:text-emerald-400'
+            color: 'from-red-400 to-pink-500',
+            bgGlow: 'bg-red-500/20',
+            iconColor: 'text-red-300',
+            borderColor: 'border-red-500/30'
         },
         {
             name: 'Ubicaciones',
             icon: MapPin,
             count: currentStats.locations,
             href: '/admin/locations',
-            color: 'from-rose-500 to-orange-600',
-            bgGlow: 'bg-rose-500/10',
-            iconColor: 'text-rose-600 dark:text-rose-400'
+            color: 'from-emerald-400 to-green-500',
+            bgGlow: 'bg-emerald-500/20',
+            iconColor: 'text-emerald-300',
+            borderColor: 'border-emerald-500/30'
         },
         {
             name: 'Línea de Tiempo',
             icon: Clock,
             count: currentStats.timeline_events,
             href: '/admin/timeline-events',
-            color: 'from-amber-500 to-yellow-600',
-            bgGlow: 'bg-amber-500/10',
-            iconColor: 'text-amber-600 dark:text-amber-400'
+            color: 'from-indigo-400 to-violet-500',
+            bgGlow: 'bg-indigo-500/20',
+            iconColor: 'text-indigo-300',
+            borderColor: 'border-indigo-500/30'
         },
         {
             name: 'Cartas TCG',
             icon: Swords,
             count: currentStats.cards,
             href: '/admin/cards',
-            color: 'from-violet-500 to-purple-600',
-            bgGlow: 'bg-violet-500/10',
-            iconColor: 'text-violet-600 dark:text-violet-400'
+            color: 'from-yellow-400 to-orange-500',
+            bgGlow: 'bg-yellow-500/20',
+            iconColor: 'text-yellow-300',
+            borderColor: 'border-yellow-500/30'
         },
     ];
 
@@ -152,9 +158,10 @@ export default function Dashboard({ stats }: DashboardProps) {
             icon: UserCircle,
             count: currentStats.users,
             href: '/admin/users',
-            color: 'from-slate-500 to-gray-600',
-            bgGlow: 'bg-slate-500/10',
-            iconColor: 'text-slate-600 dark:text-slate-400'
+            color: 'from-slate-400 to-gray-500',
+            bgGlow: 'bg-slate-500/20',
+            iconColor: 'text-slate-300',
+            borderColor: 'border-slate-500/30'
         });
     }
 
@@ -176,42 +183,53 @@ export default function Dashboard({ stats }: DashboardProps) {
             <Head title="Dashboard" />
 
             <div className="space-y-8 p-6">
-                {/* Hero Section */}
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 p-8 backdrop-blur-sm border border-primary/20">
-                    <div className="absolute inset-0 bg-grid-white/5" />
+                {/* Hero Section ÉPICO CON MÁS BRILLO */}
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-yellow-900/60 via-orange-900/50 to-red-900/60 p-10 backdrop-blur-sm border-4 border-yellow-500/50 shadow-[0_0_50px_rgba(251,191,36,0.5)]">
+                    <div className="absolute inset-0 bg-grid-white/10" />
+                    {/* Efectos de luz INTENSOS */}
+                    <div className="absolute top-0 left-0 w-96 h-96 bg-yellow-400 rounded-full mix-blend-screen filter blur-3xl opacity-40 animate-pulse-slow"></div>
+                    <div className="absolute bottom-0 right-0 w-96 h-96 bg-orange-500 rounded-full mix-blend-screen filter blur-3xl opacity-40 animate-pulse-slow animation-delay-2000"></div>
+                    <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-red-500 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse-slow animation-delay-1000"></div>
+                    
                     <div className="relative z-10">
-                        <div className="flex items-center gap-3 mb-2">
-                            <Sparkles className="h-8 w-8 text-primary animate-magical-glow" />
-                            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-                                Bienvenido al Sistema de Lore TCG
+                        <div className="flex items-center gap-4 mb-4">
+                            <Sparkles className="h-12 w-12 text-yellow-300 animate-magical-glow drop-shadow-[0_0_20px_rgba(251,191,36,1)]" />
+                            <h1 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-300 to-orange-400 drop-shadow-[0_4px_20px_rgba(251,191,36,0.8)] animate-pulse" style={{ fontFamily: 'Cinzel, serif' }}>
+                                TAPON'AZO
                             </h1>
                         </div>
-                        <p className="text-muted-foreground text-lg max-w-2xl">
-                            Gestiona mundos épicos, crea historias inmersivas y diseña cartas legendarias para tu juego de rol TCG
+                        <p className="text-2xl text-yellow-50 font-bold max-w-3xl leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]" style={{ fontFamily: 'Almendra, serif' }}>
+                            ⚔️ Forja mundos legendarios, crea historias épicas y diseña cartas inmortales
+                        </p>
+                        <p className="text-base text-yellow-300 font-bold mt-3 tracking-[0.3em] drop-shadow-[0_2px_10px_rgba(251,191,36,0.6)]" style={{ fontFamily: 'Trade Winds, cursive' }}>
+                            LEGENDS FORGE
                         </p>
                     </div>
                 </div>
 
-                {/* Stats Grid - Tarjetas estilo TCG */}
+                {/* Stats Grid - Tarjetas estilo TCG SÚPER ÉPICAS */}
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {modules.map((module) => {
                         const Icon = module.icon;
                         return (
                             <Link key={module.name} href={module.href}>
-                                <Card className="card-tcg group cursor-pointer overflow-hidden border-primary/20 hover:border-primary/40 transition-all duration-300">
-                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                        <CardTitle className="text-sm font-medium">
+                                <Card className={`group cursor-pointer overflow-hidden ${module.borderColor} border-4 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:shadow-[0_0_40px_rgba(251,191,36,0.6)] transition-all duration-300 hover:scale-110 hover:-rotate-2 relative`}>
+                                    {/* Brillo interior */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+                                        <CardTitle className="text-base font-black text-yellow-100 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" style={{ fontFamily: 'Cinzel, serif' }}>
                                             {module.name}
                                         </CardTitle>
-                                        <div className={`p-3 rounded-lg ${module.bgGlow} group-hover:scale-110 transition-transform duration-300`}>
-                                            <Icon className={`h-5 w-5 ${module.iconColor}`} />
+                                        <div className={`p-3 rounded-lg ${module.bgGlow} group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 shadow-lg`}>
+                                            <Icon className={`h-6 w-6 ${module.iconColor} drop-shadow-[0_0_10px_currentColor] group-hover:drop-shadow-[0_0_20px_currentColor]`} />
                                         </div>
                                     </CardHeader>
-                                    <CardContent>
-                                        <div className="text-3xl font-bold mb-1 bg-gradient-to-br ${module.color} bg-clip-text text-transparent">
+                                    <CardContent className="relative z-10">
+                                        <div className={`text-4xl font-black mb-1 bg-gradient-to-br ${module.color} bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}>
                                             {module.count}
                                         </div>
-                                        <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                        <p className="text-xs text-yellow-200/70 flex items-center gap-1 font-bold">
                                             <TrendingUp className="h-3 w-3" />
                                             {module.count === 1 ? 'registro' : 'registros'}
                                         </p>
@@ -225,28 +243,28 @@ export default function Dashboard({ stats }: DashboardProps) {
                 <div className="grid gap-6 lg:grid-cols-2">
                     {/* Quick Actions */}
                     {isAdmin && (
-                        <Card className="border-primary/20">
+                        <Card className="border-yellow-600/30 bg-gradient-to-br from-slate-900/80 to-purple-900/60 backdrop-blur-sm">
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <Plus className="h-5 w-5 text-primary" />
+                                <CardTitle className="flex items-center gap-2 text-yellow-100" style={{ fontFamily: 'Cinzel, serif' }}>
+                                    <Plus className="h-5 w-5 text-yellow-400" />
                                     Acciones Rápidas
                                 </CardTitle>
-                                <CardDescription>Crear nuevo contenido</CardDescription>
+                                <CardDescription className="text-yellow-200/70">Crear nuevo contenido legendario</CardDescription>
                             </CardHeader>
                             <CardContent className="grid gap-3 sm:grid-cols-2">
-                                <Button variant="outline" className="justify-start" asChild>
+                                <Button variant="outline" className="justify-start border-yellow-600/30 hover:bg-yellow-600/10 hover:text-yellow-100" asChild>
                                     <Link href="/admin/worlds/create">
                                         <Globe className="mr-2 h-4 w-4" />
                                         Nuevo Mundo
                                     </Link>
                                 </Button>
-                                <Button variant="outline" className="justify-start" asChild>
+                                <Button variant="outline" className="justify-start border-yellow-600/30 hover:bg-yellow-600/10 hover:text-yellow-100" asChild>
                                     <Link href="/admin/stories/create">
                                         <BookText className="mr-2 h-4 w-4" />
                                         Nueva Historia
                                     </Link>
                                 </Button>
-                                <Button variant="outline" className="justify-start" asChild>
+                                <Button variant="outline" className="justify-start border-yellow-600/30 hover:bg-yellow-600/10 hover:text-yellow-100" asChild>
                                     <Link href="/admin/characters/create">
                                         <Users className="mr-2 h-4 w-4" />
                                         Nuevo Personaje
@@ -264,13 +282,13 @@ export default function Dashboard({ stats }: DashboardProps) {
 
                     {/* Rarity Distribution */}
                     {totalCards > 0 && (
-                        <Card className="border-primary/20">
+                        <Card className="border-purple-500/30 border-2 bg-gradient-to-br from-slate-900/90 to-purple-950/80 backdrop-blur-sm">
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <Sparkles className="h-5 w-5 text-amber-500" />
+                                <CardTitle className="flex items-center gap-2 text-yellow-100" style={{ fontFamily: 'Cinzel, serif' }}>
+                                    <Sparkles className="h-5 w-5 text-yellow-400 animate-pulse" />
                                     Distribución de Rarezas
                                 </CardTitle>
-                                <CardDescription>{totalCards} cartas totales</CardDescription>
+                                <CardDescription className="text-yellow-200/70">{totalCards} cartas legendarias forjadas</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-3">
                                 {Object.entries(currentStats.cards_by_rarity).map(([rarity, count]) => {
@@ -278,16 +296,16 @@ export default function Dashboard({ stats }: DashboardProps) {
                                     return (
                                         <div key={rarity} className="space-y-1">
                                             <div className="flex items-center justify-between text-sm">
-                                                <Badge variant="outline" className={rarityColors[rarity] || ''}>
+                                                <Badge variant="outline" className={rarityColors[rarity] || 'border-gray-500/30 bg-gray-500/20 text-gray-300'}>
                                                     {rarity}
                                                 </Badge>
-                                                <span className="text-muted-foreground">
+                                                <span className="text-yellow-200/60 font-semibold">
                                                     {count} ({percentage}%)
                                                 </span>
                                             </div>
-                                            <div className="h-2 bg-muted rounded-full overflow-hidden">
+                                            <div className="h-2 bg-slate-800/50 rounded-full overflow-hidden border border-yellow-900/30">
                                                 <div
-                                                    className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500"
+                                                    className="h-full bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 transition-all duration-500 shadow-lg shadow-orange-500/50"
                                                     style={{ width: `${percentage}%` }}
                                                 />
                                             </div>
@@ -301,13 +319,13 @@ export default function Dashboard({ stats }: DashboardProps) {
 
                 {/* Recent Cards */}
                 {currentStats.recent_cards.length > 0 && (
-                    <Card className="border-primary/20">
+                    <Card className="border-orange-500/30 border-2 bg-gradient-to-br from-slate-900/90 to-orange-950/80 backdrop-blur-sm">
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Eye className="h-5 w-5 text-primary" />
+                            <CardTitle className="flex items-center gap-2 text-yellow-100" style={{ fontFamily: 'Cinzel, serif' }}>
+                                <Eye className="h-5 w-5 text-orange-400" />
                                 Cartas Recientes
                             </CardTitle>
-                            <CardDescription>Últimas cartas creadas</CardDescription>
+                            <CardDescription className="text-yellow-200/70">Últimas leyendas forjadas</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-3">

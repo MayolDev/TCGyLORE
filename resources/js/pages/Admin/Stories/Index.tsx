@@ -77,14 +77,14 @@ export default function Index({ stories: initialStories, filters: initialFilters
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 bg-clip-text text-transparent">
+                        <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_2px_10px_rgba(251,191,36,0.5)] uppercase" style={{ fontFamily: 'Cinzel, serif' }}>
                             Historias Épicas
                         </h1>
-                        <p className="text-muted-foreground mt-1">
-                            Gestiona las narrativas y leyendas de tus mundos
+                        <p className="text-yellow-200/70 mt-2 font-semibold text-base">
+                            📖 Gestiona las narrativas y leyendas de tus mundos
                         </p>
                     </div>
-                    <Button variant="magical" size="lg" asChild>
+                    <Button variant="magical" size="lg" asChild className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30" style={{ fontFamily: 'Cinzel, serif' }}>
                         <Link href="/admin/stories/create">
                             <Plus className="mr-2 h-5 w-5" />
                             Crear Historia
@@ -146,9 +146,12 @@ export default function Index({ stories: initialStories, filters: initialFilters
                     <>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {stories.data.map((story) => (
-                                <Card key={story.id} className="card-tcg group overflow-hidden border-primary/20 hover:border-primary/40 flex flex-col">
+                                <Card key={story.id} className="group overflow-hidden border-4 border-purple-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-purple-400/70 hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] transition-all duration-300 hover:scale-105 hover:-rotate-1 relative flex flex-col">
+                                    {/* Brillo interior */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    
                                     {/* Story Image/Header */}
-                                    <div className="relative h-40 bg-gradient-to-br from-purple-500/20 via-pink-500/10 to-rose-500/20 overflow-hidden">
+                                    <div className="relative h-40 bg-gradient-to-br from-purple-600/30 via-pink-600/20 to-rose-600/30 overflow-hidden border-b-2 border-purple-500/30">
                                         {story.image_url ? (
                                             <img 
                                                 src={story.image_url} 
@@ -157,17 +160,17 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                             />
                                         ) : (
                                             <div className="absolute inset-0 flex items-center justify-center">
-                                                <FileText className="h-16 w-16 text-purple-500/30 animate-float" />
+                                                <FileText className="h-20 w-20 text-purple-400/60 group-hover:text-purple-300 group-hover:scale-110 transition-all duration-300 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
                                             </div>
                                         )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent" />
                                         
                                         {/* Category Badge */}
                                         {story.category && (
                                             <div className="absolute top-2 left-2">
                                                 <Badge 
                                                     variant="outline" 
-                                                    className={categoryColors[story.category] || 'bg-secondary'}
+                                                    className="backdrop-blur-sm bg-slate-900/90 border-purple-500/50 text-purple-200 font-bold"
                                                 >
                                                     {story.category}
                                                 </Badge>
@@ -176,51 +179,51 @@ export default function Index({ stories: initialStories, filters: initialFilters
 
                                         {/* World Badge */}
                                         <div className="absolute top-2 right-2">
-                                            <Badge variant="secondary" className="backdrop-blur-sm bg-background/80">
+                                            <Badge variant="secondary" className="backdrop-blur-sm bg-slate-900/90 border-purple-500/30 text-yellow-200 font-bold">
                                                 {story.world.name}
                                             </Badge>
                                         </div>
                                     </div>
 
-                                    <CardHeader className="pb-3">
-                                        <CardTitle className="text-base flex items-center justify-between gap-2">
+                                    <CardHeader className="pb-3 relative z-10">
+                                        <CardTitle className="text-xl flex items-center justify-between gap-2 text-yellow-100 font-black" style={{ fontFamily: 'Cinzel, serif' }}>
                                             <span className="line-clamp-2">{story.title}</span>
-                                            <Sparkles className="h-4 w-4 text-purple-500 shrink-0" />
+                                            <Sparkles className="h-6 w-6 text-purple-400 shrink-0 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
                                         </CardTitle>
                                     </CardHeader>
 
-                                    <CardContent className="space-y-4 flex-1 flex flex-col">
+                                    <CardContent className="space-y-4 flex-1 flex flex-col relative z-10">
                                         {/* Content Preview */}
-                                        <CardDescription className="line-clamp-3 flex-1">
+                                        <CardDescription className="line-clamp-3 flex-1 text-yellow-200/60 font-semibold">
                                             {story.content}
                                         </CardDescription>
 
                                         {/* Word Count */}
-                                        <div className="text-xs text-muted-foreground flex items-center gap-1.5">
-                                            <FileText className="h-3 w-3" />
+                                        <div className="text-xs text-yellow-200/70 flex items-center gap-1.5 font-semibold">
+                                            <FileText className="h-3 w-3 text-purple-400" />
                                             <span>{story.content.split(' ').length} palabras</span>
                                         </div>
 
                                         {/* Actions */}
-                                        <div className="flex gap-2 pt-2 border-t">
-                                            <Button variant="outline" size="sm" className="flex-1" asChild>
+                                        <div className="flex gap-2 pt-2">
+                                            <Button variant="outline" size="sm" className="flex-1 border-purple-500/50 text-purple-200 hover:bg-purple-600/20 hover:text-purple-100 font-bold" asChild>
                                                 <Link href={`/admin/stories/${story.id}/edit`}>
-                                                    <Pencil className="mr-1.5 h-3 w-3" />
+                                                    <Pencil className="mr-2 h-4 w-4" />
                                                     Editar
                                                 </Link>
                                             </Button>
                                             <Button 
                                                 variant="outline" 
                                                 size="sm"
-                                                className="text-destructive hover:text-destructive"
+                                                className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                 onClick={() => handleDelete(story.id, story.title)}
                                             >
-                                                <Trash2 className="h-3 w-3" />
+                                                <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </div>
 
                                         {/* Created Date */}
-                                        <p className="text-xs text-muted-foreground text-center pt-2 border-t">
+                                        <p className="text-xs text-yellow-300/50 text-center pt-2 border-t border-purple-500/30 font-semibold">
                                             Creado {new Date(story.created_at).toLocaleDateString('es-ES', { 
                                                 day: 'numeric', 
                                                 month: 'long', 
