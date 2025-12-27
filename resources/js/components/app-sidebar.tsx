@@ -83,18 +83,7 @@ const adminNavItems: NavItem[] = [
     },
 ];
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
+const footerNavItems: NavItem[] = [];
 
 function NavGroup({ title, items, icon: Icon }: { title: string; items: NavItem[]; icon?: any }) {
     const page = usePage();
@@ -175,7 +164,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter className="border-t border-primary/10">
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                {footerNavItems.length > 0 && <NavFooter items={footerNavItems} className="mt-auto" />}
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

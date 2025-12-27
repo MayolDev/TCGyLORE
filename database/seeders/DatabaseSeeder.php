@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
         // Ejecutar el seeder de roles primero
         $this->call(RoleSeeder::class);
 
-        // Crear usuario de prueba y asignarle el rol de Admin
+        // Crear usuario admin principal
         $user = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
+            ['email' => 'admin@taponazo.es'],
             [
-                'name' => 'Admin User',
-                'password' => 'password',
+                'name' => 'Administrador',
+                'password' => 'Taponazo2026',
                 'email_verified_at' => now(),
             ]
         );

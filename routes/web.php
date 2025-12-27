@@ -42,7 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Sistema TCG
         Route::resource('cards', CardController::class);
-        
+
         // Taxonomías TCG
         Route::resource('card-types', CardTypeController::class);
         Route::resource('rarities', RarityController::class);

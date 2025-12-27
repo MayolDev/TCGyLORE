@@ -44,7 +44,7 @@ class CharacterRelationshipsSeeder extends Seeder
                 $bosqueSombrio?->id,
                 $puertoTormenta?->id,
             ]);
-            if (!empty($locations)) {
+            if (! empty($locations)) {
                 $sylas->locations()->syncWithoutDetaching($locations);
             }
         }
