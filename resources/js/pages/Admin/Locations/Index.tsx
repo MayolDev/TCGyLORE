@@ -5,8 +5,18 @@ import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { MapPin, Plus, Search, Pencil, Trash2, Sparkles, Navigation } from 'lucide-react';
+import { MapPin, Plus, Search, Pencil, Trash2, Sparkles, Navigation, Grid3x3, Table2, Map as MapIcon } from 'lucide-react';
 import { useState } from 'react';
+import MapView from '@/components/map-view';
+
+interface LocationData {
+    id: number;
+    name: string;
+    description?: string;
+    type: string;
+    coordinate_x: number;
+    coordinate_y: number;
+}
 
 interface Location {
     id: number;
@@ -35,6 +45,7 @@ interface Props {
     filters?: {
         search?: string;
     };
+    allLocations: LocationData[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -42,10 +53,11 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Ubicaciones', href: '/admin/locations' },
 ];
 
-export default function Index({ locations: initialLocations, filters: initialFilters }: Props) {
+export default function Index({ locations: initialLocations, filters: initialFilters, allLocations }: Props) {
     const locations = initialLocations || { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0 };
     const filters = initialFilters || { search: '' };
     const [search, setSearch] = useState(filters.search || '');
+    const [viewMode, setViewMode] = useState<'grid' | 'table' | 'map'>('grid');
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -86,32 +98,65 @@ export default function Index({ locations: initialLocations, filters: initialFil
                     </Button>
                 </div>
 
-                {/* Search */}
+                {/* Search & View Toggle */}
                 <Card className="border-primary/20">
                     <CardContent className="pt-6">
-                        <form onSubmit={handleSearch} className="flex gap-2">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input
-                                    type="text"
-                                    placeholder="Buscar ubicaciones por nombre..."
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    className="pl-9"
-                                />
-                            </div>
-                            <Button type="submit">Buscar</Button>
-                            {filters.search && (
-                                <Button type="button" variant="outline" onClick={clearSearch}>
-                                    Limpiar
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <form onSubmit={handleSearch} className="flex gap-2 flex-1">
+                                <div className="relative flex-1">
+                                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                    <Input
+                                        type="text"
+                                        placeholder="Buscar ubicaciones por nombre..."
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        className="pl-9"
+                                    />
+                                </div>
+                                <Button type="submit">Buscar</Button>
+                                {filters.search && (
+                                    <Button type="button" variant="outline" onClick={clearSearch}>
+                                        Limpiar
+                                    </Button>
+                                )}
+                            </form>
+                            
+                            {/* View Mode Toggle */}
+                            <div className="flex gap-2">
+                                <Button
+                                    type="button"
+                                    variant={viewMode === 'grid' ? 'default' : 'outline'}
+                                    onClick={() => setViewMode('grid')}
+                                    className={viewMode === 'grid' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+                                >
+                                    <Grid3x3 className="h-4 w-4 mr-2" />
+                                    Cards
                                 </Button>
-                            )}
-                        </form>
+                                <Button
+                                    type="button"
+                                    variant={viewMode === 'table' ? 'default' : 'outline'}
+                                    onClick={() => setViewMode('table')}
+                                    className={viewMode === 'table' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+                                >
+                                    <Table2 className="h-4 w-4 mr-2" />
+                                    Tabla
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant={viewMode === 'map' ? 'default' : 'outline'}
+                                    onClick={() => setViewMode('map')}
+                                    className={viewMode === 'map' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+                                >
+                                    <MapIcon className="h-4 w-4 mr-2" />
+                                    Mapa
+                                </Button>
+                            </div>
+                        </div>
                     </CardContent>
                 </Card>
 
-                {/* Locations Grid */}
-                {locations.data.length === 0 ? (
+                {/* Locations Grid/Table/Map */}
+                {locations.data.length === 0 && viewMode !== 'map' ? (
                     <Card className="border-dashed border-2 border-primary/30">
                         <CardContent className="flex flex-col items-center justify-center py-16 text-center">
                             <div className="rounded-full bg-rose-500/10 p-6 mb-4">
@@ -136,7 +181,29 @@ export default function Index({ locations: initialLocations, filters: initialFil
                             )}
                         </CardContent>
                     </Card>
-                ) : (
+                ) : viewMode === 'map' ? (
+                    /* Map View */
+                    <Card className="border-primary/20">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-yellow-200">
+                                <Navigation className="h-6 w-6 text-yellow-400" />
+                                🗺️ Mapa del Mundo
+                            </CardTitle>
+                            <CardDescription className="text-yellow-200/70">
+                                Vista general de todas las ubicaciones en el mapa - Haz clic en un marcador para editar
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <MapView
+                                locations={allLocations}
+                                height="700px"
+                                onLocationClick={(location) => {
+                                    router.visit(`/admin/locations/${location.id}/edit`);
+                                }}
+                            />
+                        </CardContent>
+                    </Card>
+                ) : viewMode === 'grid' ? (
                     <>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {locations.data.map((location) => (
@@ -228,6 +295,145 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                 </Card>
                             ))}
                         </div>
+
+                        {/* Pagination */}
+                        {locations.last_page > 1 && (
+                            <Card className="border-primary/20">
+                                <CardContent className="flex items-center justify-between p-4">
+                                    <div className="text-sm text-muted-foreground">
+                                        Mostrando <span className="font-medium text-foreground">{locations.data.length}</span> de{' '}
+                                        <span className="font-medium text-foreground">{locations.total}</span> ubicaciones
+                                    </div>
+                                    <div className="flex gap-2">
+                                        {locations.current_page > 1 && (
+                                            <Button variant="outline" size="sm" asChild>
+                                                <Link
+                                                    href={`/admin/locations?page=${locations.current_page - 1}${
+                                                        search ? `&search=${search}` : ''
+                                                    }`}
+                                                >
+                                                    Anterior
+                                                </Link>
+                                            </Button>
+                                        )}
+                                        <div className="flex items-center gap-2 px-3 text-sm">
+                                            Página {locations.current_page} de {locations.last_page}
+                                        </div>
+                                        {locations.current_page < locations.last_page && (
+                                            <Button variant="outline" size="sm" asChild>
+                                                <Link
+                                                    href={`/admin/locations?page=${locations.current_page + 1}${
+                                                        search ? `&search=${search}` : ''
+                                                    }`}
+                                                >
+                                                    Siguiente
+                                                </Link>
+                                            </Button>
+                                        )}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </>
+                ) : (
+                    <>
+                        {/* Table View */}
+                        <Card className="border-primary/20">
+                            <CardContent className="p-0">
+                                <div className="overflow-x-auto">
+                                    <table className="w-full">
+                                        <thead>
+                                            <tr className="border-b border-primary/20 bg-slate-900/50">
+                                                <th className="px-6 py-4 text-left text-sm font-black text-yellow-200 uppercase tracking-wider">
+                                                    Nombre
+                                                </th>
+                                                <th className="px-6 py-4 text-left text-sm font-black text-yellow-200 uppercase tracking-wider">
+                                                    Mundo
+                                                </th>
+                                                <th className="px-6 py-4 text-left text-sm font-black text-yellow-200 uppercase tracking-wider">
+                                                    Descripción
+                                                </th>
+                                                <th className="px-6 py-4 text-center text-sm font-black text-yellow-200 uppercase tracking-wider">
+                                                    Coordenadas
+                                                </th>
+                                                <th className="px-6 py-4 text-center text-sm font-black text-yellow-200 uppercase tracking-wider">
+                                                    Fecha
+                                                </th>
+                                                <th className="px-6 py-4 text-right text-sm font-black text-yellow-200 uppercase tracking-wider">
+                                                    Acciones
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-primary/10">
+                                            {locations.data.map((location) => (
+                                                <tr 
+                                                    key={location.id}
+                                                    className="hover:bg-rose-500/10 transition-colors group"
+                                                >
+                                                    <td className="px-6 py-4">
+                                                        <div className="flex items-center gap-3">
+                                                            <MapPin className="h-5 w-5 text-rose-400 shrink-0" />
+                                                            <span className="font-bold text-yellow-100">{location.name}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        <Badge variant="secondary" className="bg-slate-800/70 border-rose-500/30 text-yellow-200 font-semibold">
+                                                            {location.world.name}
+                                                        </Badge>
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        <p className="text-sm text-yellow-200/70 line-clamp-2 max-w-md">
+                                                            {location.description || 'Sin descripción'}
+                                                        </p>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-center">
+                                                        {(location.latitude != null && location.longitude != null) ? (
+                                                            <Badge variant="outline" className="bg-slate-900/50 border-amber-500/50 text-amber-200 gap-1">
+                                                                <Navigation className="h-3 w-3" />
+                                                                Sí
+                                                            </Badge>
+                                                        ) : (
+                                                            <span className="text-xs text-muted-foreground">No</span>
+                                                        )}
+                                                    </td>
+                                                    <td className="px-6 py-4 text-center">
+                                                        <span className="text-xs text-yellow-300/60">
+                                                            {new Date(location.created_at).toLocaleDateString('es-ES', {
+                                                                day: '2-digit',
+                                                                month: '2-digit',
+                                                                year: 'numeric'
+                                                            })}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        <div className="flex items-center justify-end gap-2">
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                asChild
+                                                                className="border-yellow-500/50 text-yellow-300 hover:bg-yellow-600/20 hover:text-yellow-200"
+                                                            >
+                                                                <Link href={`/admin/locations/${location.id}/edit`}>
+                                                                    <Pencil className="h-4 w-4" />
+                                                                </Link>
+                                                            </Button>
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
+                                                                onClick={() => handleDelete(location.id, location.name)}
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </CardContent>
+                        </Card>
 
                         {/* Pagination */}
                         {locations.last_page > 1 && (

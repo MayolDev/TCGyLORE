@@ -5,9 +5,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import WriterLayout from '@/layouts/writer-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
-import { Globe, Save, X } from 'lucide-react';
+import { Globe, Save } from 'lucide-react';
+import EpicFormHeader from '@/components/epic-form-header';
 
 interface World {
     id: number;
@@ -46,28 +47,16 @@ export default function Edit({ world }: Props) {
             <Head title={`Editar ${world.name}`} />
 
             <div className="space-y-6">
-                {/* Header */}
-                <div className="flex items-start justify-between">
-                    <div>
-                        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent flex items-center gap-3">
-                            <Globe className="h-8 w-8 text-primary" />
-                            Editar Mundo
-                        </h1>
-                        <p className="text-muted-foreground mt-2">
-                            Modifica la configuración de tu mundo
-                        </p>
-                    </div>
-                    <Button variant="outline" size="lg" asChild>
-                        <Link href="/admin/worlds">
-                            <X className="mr-2 h-4 w-4" />
-                            Cancelar
-                        </Link>
-                    </Button>
-                </div>
+                <EpicFormHeader
+                    icon={Globe}
+                    title="Editar Mundo"
+                    description="🌍 Modifica la configuración de tu mundo"
+                    cancelLink="/admin/worlds"
+                />
 
                 <form onSubmit={submit} className="space-y-6 writer-form">
                     {/* Basic Info Card */}
-                    <Card className="border-primary/20">
+                    <Card>
                         <CardHeader>
                             <CardTitle>Información Básica</CardTitle>
                             <CardDescription>
@@ -103,7 +92,7 @@ export default function Edit({ world }: Props) {
                     </Card>
 
                     {/* Description Card */}
-                    <Card className="border-primary/20">
+                    <Card>
                         <CardHeader>
                             <div className="flex items-center justify-between">
                                 <div>
@@ -139,15 +128,12 @@ export default function Edit({ world }: Props) {
                     </Card>
 
                     {/* Actions */}
-                    <Card className="border-primary/20 bg-card/50">
+                    <Card className="bg-card/50">
                         <CardContent className="py-4">
                             <div className="flex justify-between items-center">
-                                <Button type="button" variant="outline" size="lg" asChild>
-                                    <Link href="/admin/worlds">
-                                        <X className="mr-2 h-4 w-4" />
-                                        Cancelar
-                                    </Link>
-                                </Button>
+                                <p className="text-sm text-muted-foreground">
+                                    ✨ Guarda los cambios para actualizar el mundo
+                                </p>
                                 <Button type="submit" size="lg" variant="magical" disabled={processing}>
                                     <Save className="mr-2 h-4 w-4" />
                                     {processing ? 'Guardando...' : 'Actualizar Mundo'}

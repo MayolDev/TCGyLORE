@@ -9,14 +9,26 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { MapPin, Plus, X } from 'lucide-react';
+import MapView, { LOCATION_TYPES } from '@/components/map-view';
+import ImageUpload from '@/components/image-upload';
 
 interface World {
     id: number;
     name: string;
 }
 
+interface LocationData {
+    id: number;
+    name: string;
+    description?: string;
+    type: string;
+    coordinate_x: number;
+    coordinate_y: number;
+}
+
 interface Props {
     worlds: World[];
+    allLocations: LocationData[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -25,19 +37,22 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Crear' },
 ];
 
-export default function Create({ worlds }: Props) {
+export default function Create({ worlds, allLocations }: Props) {
     const { data, setData, post, processing, errors } = useForm({
         world_id: '',
         name: '',
         description: '',
-        latitude: '',
-        longitude: '',
-        image_url: '',
+        coordinate_x: '',
+        coordinate_y: '',
+        image: null as File | null,
+        location_type: 'city',
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/admin/locations');
+        post('/admin/locations', {
+            forceFormData: true,
+        });
     };
 
     const wordCount = data.description.trim().split(/\s+/).filter(Boolean).length;
@@ -110,44 +125,99 @@ export default function Create({ worlds }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="image_url">URL de Imagen (opcional)</Label>
-                                <Input
-                                    id="image_url"
-                                    type="text"
-                                    value={data.image_url}
-                                    onChange={(e) => setData('image_url', e.target.value)}
-                                    placeholder="https://example.com/location.jpg"
+                                <Label htmlFor="image">Imagen de la Ubicación (opcional)</Label>
+                                <ImageUpload
+                                    value={data.image}
+                                    onChange={(file) => setData('image', file)}
+                                    error={errors.image}
                                 />
-                                <InputError message={errors.image_url} />
+                                <p className="text-xs text-yellow-300/60 font-semibold">
+                                    📸 Sube una imagen para visualizar esta ubicación (máx. 2MB)
+                                </p>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="location_type">Tipo de Ubicación *</Label>
+                                <Select value={data.location_type} onValueChange={(value) => setData('location_type', value)}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Selecciona un tipo" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {Object.entries(LOCATION_TYPES).map(([key, config]) => (
+                                            <SelectItem key={key} value={key}>
+                                                <span className="flex items-center gap-2">
+                                                    <span>{config.icon}</span>
+                                                    <span>{config.label}</span>
+                                                </span>
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <InputError message={errors.location_type} />
                             </div>
 
                             <div className="grid gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label htmlFor="latitude">Latitud (opcional)</Label>
+                                    <Label htmlFor="coordinate_x">Coordenada X (0-1536)</Label>
                                     <Input
-                                        id="latitude"
+                                        id="coordinate_x"
                                         type="number"
-                                        step="any"
-                                        value={data.latitude}
-                                        onChange={(e) => setData('latitude', e.target.value)}
-                                        placeholder="Ej: 40.7128"
+                                        step="1"
+                                        min="0"
+                                        max="1536"
+                                        value={data.coordinate_x}
+                                        onChange={(e) => setData('coordinate_x', e.target.value)}
+                                        placeholder="Horizontal: 0 (izquierda) a 1536 (derecha)"
                                     />
-                                    <InputError message={errors.latitude} />
+                                    <InputError message={errors.coordinate_x} />
+                                    <p className="text-xs text-yellow-300/60 font-semibold">
+                                        💡 Haz clic en el mapa para seleccionar
+                                    </p>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="longitude">Longitud (opcional)</Label>
+                                    <Label htmlFor="coordinate_y">Coordenada Y (0-754)</Label>
                                     <Input
-                                        id="longitude"
+                                        id="coordinate_y"
                                         type="number"
-                                        step="any"
-                                        value={data.longitude}
-                                        onChange={(e) => setData('longitude', e.target.value)}
-                                        placeholder="Ej: -74.0060"
+                                        step="1"
+                                        min="0"
+                                        max="754"
+                                        value={data.coordinate_y}
+                                        onChange={(e) => setData('coordinate_y', e.target.value)}
+                                        placeholder="Vertical: 0 (arriba) a 754 (abajo)"
                                     />
-                                    <InputError message={errors.longitude} />
+                                    <InputError message={errors.coordinate_y} />
+                                    <p className="text-xs text-yellow-300/60 font-semibold">
+                                        💡 Haz clic en el mapa para seleccionar
+                                    </p>
                                 </div>
                             </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Map Card */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>🗺️ Mapa del Mundo</CardTitle>
+                            <CardDescription>
+                                Haz clic en el mapa para colocar tu ubicación
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <MapView
+                                locations={allLocations}
+                                zoom={0}
+                                allowClick={true}
+                                onMapClick={(y, x) => {
+                                    setData({
+                                        ...data,
+                                        coordinate_x: Math.round(x).toString(),
+                                        coordinate_y: Math.round(y).toString(),
+                                    });
+                                }}
+                                height="500px"
+                            />
                         </CardContent>
                     </Card>
 

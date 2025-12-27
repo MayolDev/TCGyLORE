@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AdminLayout from '@/layouts/admin-layout';
@@ -16,7 +17,9 @@ import {
     Heart,
     Brain,
     Sparkles,
-    Filter
+    Filter,
+    Grid3x3,
+    Table2
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -96,6 +99,7 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
     const [search, setSearch] = useState(filters.search || '');
     const [rarity, setRarity] = useState(filters.rarity || '');
     const [showFilters, setShowFilters] = useState(false);
+    const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -145,28 +149,52 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                 {/* Search & Filters */}
                 <Card className="border-primary/20">
                     <CardContent className="pt-6 space-y-4">
-                        <form onSubmit={handleSearch} className="flex flex-col gap-2 sm:flex-row">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input
-                                    type="text"
-                                    placeholder="Buscar cartas por nombre..."
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    className="pl-9"
-                                />
-                            </div>
-                            <Button type="button" variant="outline" onClick={() => setShowFilters(!showFilters)}>
-                                <Filter className="mr-2 h-4 w-4" />
-                                Filtros
-                            </Button>
-                            <Button type="submit">Buscar</Button>
-                            {(filters.search || filters.rarity) && (
-                                <Button type="button" variant="outline" onClick={clearFilters}>
-                                    Limpiar
+                        <div className="flex flex-col gap-4">
+                            <form onSubmit={handleSearch} className="flex flex-col gap-2 sm:flex-row">
+                                <div className="relative flex-1">
+                                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                    <Input
+                                        type="text"
+                                        placeholder="Buscar cartas por nombre..."
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        className="pl-9"
+                                    />
+                                </div>
+                                <Button type="button" variant="outline" onClick={() => setShowFilters(!showFilters)}>
+                                    <Filter className="mr-2 h-4 w-4" />
+                                    Filtros
                                 </Button>
-                            )}
-                        </form>
+                                <Button type="submit">Buscar</Button>
+                                {(filters.search || filters.rarity) && (
+                                    <Button type="button" variant="outline" onClick={clearFilters}>
+                                        Limpiar
+                                    </Button>
+                                )}
+                            </form>
+
+                            {/* View Mode Toggle */}
+                            <div className="flex gap-2 justify-end">
+                                <Button
+                                    type="button"
+                                    variant={viewMode === 'grid' ? 'default' : 'outline'}
+                                    onClick={() => setViewMode('grid')}
+                                    className={viewMode === 'grid' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+                                >
+                                    <Grid3x3 className="h-4 w-4 mr-2" />
+                                    Cards
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant={viewMode === 'table' ? 'default' : 'outline'}
+                                    onClick={() => setViewMode('table')}
+                                    className={viewMode === 'table' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+                                >
+                                    <Table2 className="h-4 w-4 mr-2" />
+                                    Tabla
+                                </Button>
+                            </div>
+                        </div>
 
                         {showFilters && (
                             <div className="flex flex-wrap gap-3 pt-2 border-t">
@@ -189,7 +217,7 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                     </CardContent>
                 </Card>
 
-                {/* Cards Grid */}
+                {/* Cards Grid/Table */}
                 {cards.data.length === 0 ? (
                     <Card className="border-dashed border-2 border-primary/30">
                         <CardContent className="flex flex-col items-center justify-center py-16 text-center">
@@ -215,7 +243,7 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                             )}
                         </CardContent>
                     </Card>
-                ) : (
+                ) : viewMode === 'grid' ? (
                     <>
                         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                             {cards.data.map((card) => (
@@ -324,6 +352,166 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                 </Card>
                             ))}
                         </div>
+
+                        {/* Pagination */}
+                        {cards.last_page > 1 && (
+                            <Card className="border-primary/20">
+                                <CardContent className="flex items-center justify-between p-4">
+                                    <div className="text-sm text-muted-foreground">
+                                        Mostrando <span className="font-medium text-foreground">{cards.data.length}</span> de{' '}
+                                        <span className="font-medium text-foreground">{cards.total}</span> cartas
+                                    </div>
+                                    <div className="flex gap-2">
+                                        {cards.current_page > 1 && (
+                                            <Button variant="outline" size="sm" asChild>
+                                                <Link
+                                                    href={`/admin/cards?page=${cards.current_page - 1}${
+                                                        search ? `&search=${search}` : ''
+                                                    }${rarity ? `&rarity=${rarity}` : ''}`}
+                                                >
+                                                    Anterior
+                                                </Link>
+                                            </Button>
+                                        )}
+                                        <div className="flex items-center gap-2 px-3 text-sm">
+                                            Página {cards.current_page} de {cards.last_page}
+                                        </div>
+                                        {cards.current_page < cards.last_page && (
+                                            <Button variant="outline" size="sm" asChild>
+                                                <Link
+                                                    href={`/admin/cards?page=${cards.current_page + 1}${
+                                                        search ? `&search=${search}` : ''
+                                                    }${rarity ? `&rarity=${rarity}` : ''}`}
+                                                >
+                                                    Siguiente
+                                                </Link>
+                                            </Button>
+                                        )}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </>
+                ) : (
+                    /* Table View */
+                    <>
+                        <Card className="border-primary/20">
+                            <CardContent className="p-0">
+                                <div className="overflow-x-auto">
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow className="border-yellow-900/30 hover:bg-yellow-900/10">
+                                                <TableHead className="text-yellow-400 font-bold">Nombre</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Tipo</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Rareza</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold text-center">Coste</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Mundo</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Personaje</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Estadísticas</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Creado</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold text-right">Acciones</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {cards.data.map((card) => (
+                                                <TableRow 
+                                                    key={card.id} 
+                                                    className="border-yellow-900/20 hover:bg-yellow-900/10 transition-colors"
+                                                >
+                                                    <TableCell className="font-bold text-yellow-200">
+                                                        <div className="flex items-center gap-2">
+                                                            <Swords className="h-5 w-5 text-violet-400" />
+                                                            {card.name}
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="text-yellow-200/70">
+                                                        {card.card_type?.name || 'Sin tipo'}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Badge 
+                                                            variant={rarityBadgeVariant[card.rarity?.name || 'común'] || 'outline'}
+                                                            className="font-semibold"
+                                                        >
+                                                            {card.rarity?.name || 'Sin rareza'}
+                                                        </Badge>
+                                                    </TableCell>
+                                                    <TableCell className="text-center">
+                                                        <Badge variant="outline" className="bg-amber-500/20 border-amber-500/40 text-amber-300">
+                                                            {card.cost}
+                                                        </Badge>
+                                                    </TableCell>
+                                                    <TableCell className="text-yellow-200/70">
+                                                        <Badge variant="outline" className="bg-violet-500/20 border-violet-500/40 text-violet-300">
+                                                            {card.world.name}
+                                                        </Badge>
+                                                    </TableCell>
+                                                    <TableCell className="text-yellow-200/70">
+                                                        {card.character ? card.character.name : '-'}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <div className="flex flex-wrap gap-1 text-xs">
+                                                            {card.strength && (
+                                                                <Badge variant="outline" className="bg-red-500/20 border-red-500/40 text-red-300">
+                                                                    <Zap className="h-3 w-3 mr-1" />
+                                                                    {card.strength}
+                                                                </Badge>
+                                                            )}
+                                                            {card.agility && (
+                                                                <Badge variant="outline" className="bg-green-500/20 border-green-500/40 text-green-300">
+                                                                    <Sparkles className="h-3 w-3 mr-1" />
+                                                                    {card.agility}
+                                                                </Badge>
+                                                            )}
+                                                            {card.charisma && (
+                                                                <Badge variant="outline" className="bg-pink-500/20 border-pink-500/40 text-pink-300">
+                                                                    <Heart className="h-3 w-3 mr-1" />
+                                                                    {card.charisma}
+                                                                </Badge>
+                                                            )}
+                                                            {card.mind && (
+                                                                <Badge variant="outline" className="bg-blue-500/20 border-blue-500/40 text-blue-300">
+                                                                    <Brain className="h-3 w-3 mr-1" />
+                                                                    {card.mind}
+                                                                </Badge>
+                                                            )}
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="text-yellow-300/60 text-sm">
+                                                        {new Date(card.created_at).toLocaleDateString('es-ES', { 
+                                                            day: 'numeric', 
+                                                            month: 'short', 
+                                                            year: 'numeric' 
+                                                        })}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <div className="flex items-center justify-end gap-2">
+                                                            <Button 
+                                                                variant="outline" 
+                                                                size="sm"
+                                                                asChild
+                                                                className="bg-violet-900/50 hover:bg-violet-800/70 text-violet-200 hover:text-violet-100 border-violet-700/50 hover:border-violet-500/70"
+                                                            >
+                                                                <Link href={`/admin/cards/${card.id}/edit`}>
+                                                                    <Pencil className="h-4 w-4" />
+                                                                </Link>
+                                                            </Button>
+                                                            <Button 
+                                                                variant="outline" 
+                                                                size="sm"
+                                                                className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
+                                                                onClick={() => handleDelete(card.id, card.name)}
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </div>
+                            </CardContent>
+                        </Card>
 
                         {/* Pagination */}
                         {cards.last_page > 1 && (

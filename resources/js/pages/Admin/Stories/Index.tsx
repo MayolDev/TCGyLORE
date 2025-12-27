@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { BookText, Plus, Search, Pencil, Trash2, Sparkles, FileText } from 'lucide-react';
+import { BookText, Plus, Search, Pencil, Trash2, Sparkles, FileText, Grid3x3, Table2 } from 'lucide-react';
 import { useState } from 'react';
 
 interface Story {
@@ -52,6 +53,7 @@ export default function Index({ stories: initialStories, filters: initialFilters
     const stories = initialStories || { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0 };
     const filters = initialFilters || { search: '' };
     const [search, setSearch] = useState(filters.search || '');
+    const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -92,31 +94,55 @@ export default function Index({ stories: initialStories, filters: initialFilters
                     </Button>
                 </div>
 
-                {/* Search */}
+                {/* Search & View Toggle */}
                 <Card className="border-primary/20">
                     <CardContent className="pt-6">
-                        <form onSubmit={handleSearch} className="flex gap-2">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input
-                                    type="text"
-                                    placeholder="Buscar historias por título..."
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    className="pl-9"
-                                />
-                            </div>
-                            <Button type="submit">Buscar</Button>
-                            {filters.search && (
-                                <Button type="button" variant="outline" onClick={clearSearch}>
-                                    Limpiar
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <form onSubmit={handleSearch} className="flex gap-2 flex-1">
+                                <div className="relative flex-1">
+                                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                    <Input
+                                        type="text"
+                                        placeholder="Buscar historias por título..."
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        className="pl-9"
+                                    />
+                                </div>
+                                <Button type="submit">Buscar</Button>
+                                {filters.search && (
+                                    <Button type="button" variant="outline" onClick={clearSearch}>
+                                        Limpiar
+                                    </Button>
+                                )}
+                            </form>
+                            
+                            {/* View Mode Toggle */}
+                            <div className="flex gap-2">
+                                <Button
+                                    type="button"
+                                    variant={viewMode === 'grid' ? 'default' : 'outline'}
+                                    onClick={() => setViewMode('grid')}
+                                    className={viewMode === 'grid' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+                                >
+                                    <Grid3x3 className="h-4 w-4 mr-2" />
+                                    Cards
                                 </Button>
-                            )}
-                        </form>
+                                <Button
+                                    type="button"
+                                    variant={viewMode === 'table' ? 'default' : 'outline'}
+                                    onClick={() => setViewMode('table')}
+                                    className={viewMode === 'table' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+                                >
+                                    <Table2 className="h-4 w-4 mr-2" />
+                                    Tabla
+                                </Button>
+                            </div>
+                        </div>
                     </CardContent>
                 </Card>
 
-                {/* Stories Grid */}
+                {/* Stories Grid/Table */}
                 {stories.data.length === 0 ? (
                     <Card className="border-dashed border-2 border-primary/30">
                         <CardContent className="flex flex-col items-center justify-center py-16 text-center">
@@ -142,7 +168,7 @@ export default function Index({ stories: initialStories, filters: initialFilters
                             )}
                         </CardContent>
                     </Card>
-                ) : (
+                ) : viewMode === 'grid' ? (
                     <>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {stories.data.map((story) => (
@@ -234,6 +260,131 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                 </Card>
                             ))}
                         </div>
+
+                        {/* Pagination */}
+                        {stories.last_page > 1 && (
+                            <Card className="border-primary/20">
+                                <CardContent className="flex items-center justify-between p-4">
+                                    <div className="text-sm text-muted-foreground">
+                                        Mostrando <span className="font-medium text-foreground">{stories.data.length}</span> de{' '}
+                                        <span className="font-medium text-foreground">{stories.total}</span> historias
+                                    </div>
+                                    <div className="flex gap-2">
+                                        {stories.current_page > 1 && (
+                                            <Button variant="outline" size="sm" asChild>
+                                                <Link
+                                                    href={`/admin/stories?page=${stories.current_page - 1}${
+                                                        search ? `&search=${search}` : ''
+                                                    }`}
+                                                >
+                                                    Anterior
+                                                </Link>
+                                            </Button>
+                                        )}
+                                        <div className="flex items-center gap-2 px-3 text-sm">
+                                            Página {stories.current_page} de {stories.last_page}
+                                        </div>
+                                        {stories.current_page < stories.last_page && (
+                                            <Button variant="outline" size="sm" asChild>
+                                                <Link
+                                                    href={`/admin/stories?page=${stories.current_page + 1}${
+                                                        search ? `&search=${search}` : ''
+                                                    }`}
+                                                >
+                                                    Siguiente
+                                                </Link>
+                                            </Button>
+                                        )}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </>
+                ) : (
+                    /* Table View */
+                    <>
+                        <Card className="border-primary/20">
+                            <CardContent className="p-0">
+                                <div className="overflow-x-auto">
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow className="border-yellow-900/30 hover:bg-yellow-900/10">
+                                                <TableHead className="text-yellow-400 font-bold">Título</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Mundo</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Categoría</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Contenido</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Creado</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold text-right">Acciones</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {stories.data.map((story) => (
+                                                <TableRow 
+                                                    key={story.id} 
+                                                    className="border-yellow-900/20 hover:bg-yellow-900/10 transition-colors"
+                                                >
+                                                    <TableCell className="font-bold text-yellow-200">
+                                                        <div className="flex items-center gap-2">
+                                                            <FileText className="h-5 w-5 text-purple-400" />
+                                                            {story.title}
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="text-yellow-200/70">
+                                                        <Badge variant="outline" className="bg-purple-500/20 border-purple-500/40 text-purple-300">
+                                                            {story.world.name}
+                                                        </Badge>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {story.category && (
+                                                            <Badge 
+                                                                variant="outline" 
+                                                                className={`${categoryColors[story.category] || 'bg-violet-500/20 border-violet-500/40 text-violet-300'}`}
+                                                            >
+                                                                {story.category}
+                                                            </Badge>
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell className="text-yellow-200/70 max-w-md">
+                                                        <div className="line-clamp-2">
+                                                            {story.content}
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="text-yellow-300/60 text-sm">
+                                                        {new Date(story.created_at).toLocaleDateString('es-ES', { 
+                                                            day: 'numeric', 
+                                                            month: 'short', 
+                                                            year: 'numeric' 
+                                                        })}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <div className="flex items-center justify-end gap-2">
+                                                            <Button 
+                                                                variant="outline" 
+                                                                size="sm"
+                                                                asChild
+                                                                className="bg-purple-900/50 hover:bg-purple-800/70 text-purple-200 hover:text-purple-100 border-purple-700/50 hover:border-purple-500/70"
+                                                            >
+                                                                <Link href={`/admin/stories/${story.id}/edit`}>
+                                                                    <Pencil className="h-4 w-4" />
+                                                                </Link>
+                                                            </Button>
+                                                            <Button 
+                                                                variant="outline" 
+                                                                size="sm"
+                                                                className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
+                                                                onClick={() => handleDelete(story.id, story.title)}
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </div>
+                            </CardContent>
+                        </Card>
 
                         {/* Pagination */}
                         {stories.last_page > 1 && (

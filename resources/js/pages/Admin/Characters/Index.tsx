@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Users, Plus, Search, Pencil, Trash2, Sparkles, Scroll, User } from 'lucide-react';
+import { Users, Plus, Search, Pencil, Trash2, Sparkles, Scroll, User, Grid3x3, Table2 } from 'lucide-react';
 import { useState } from 'react';
 
 interface Character {
@@ -45,6 +46,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
     const characters = initialCharacters || { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0 };
     const filters = initialFilters || { search: '' };
     const [search, setSearch] = useState(filters.search || '');
+    const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -85,31 +87,55 @@ export default function Index({ characters: initialCharacters, filters: initialF
                     </Button>
                 </div>
 
-                {/* Search */}
+                {/* Search & View Toggle */}
                 <Card className="border-primary/20">
                     <CardContent className="pt-6">
-                        <form onSubmit={handleSearch} className="flex gap-2">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input
-                                    type="text"
-                                    placeholder="Buscar personajes por nombre..."
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    className="pl-9"
-                                />
-                            </div>
-                            <Button type="submit">Buscar</Button>
-                            {filters.search && (
-                                <Button type="button" variant="outline" onClick={clearSearch}>
-                                    Limpiar
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <form onSubmit={handleSearch} className="flex gap-2 flex-1">
+                                <div className="relative flex-1">
+                                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                    <Input
+                                        type="text"
+                                        placeholder="Buscar personajes por nombre..."
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        className="pl-9"
+                                    />
+                                </div>
+                                <Button type="submit">Buscar</Button>
+                                {filters.search && (
+                                    <Button type="button" variant="outline" onClick={clearSearch}>
+                                        Limpiar
+                                    </Button>
+                                )}
+                            </form>
+                            
+                            {/* View Mode Toggle */}
+                            <div className="flex gap-2">
+                                <Button
+                                    type="button"
+                                    variant={viewMode === 'grid' ? 'default' : 'outline'}
+                                    onClick={() => setViewMode('grid')}
+                                    className={viewMode === 'grid' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+                                >
+                                    <Grid3x3 className="h-4 w-4 mr-2" />
+                                    Cards
                                 </Button>
-                            )}
-                        </form>
+                                <Button
+                                    type="button"
+                                    variant={viewMode === 'table' ? 'default' : 'outline'}
+                                    onClick={() => setViewMode('table')}
+                                    className={viewMode === 'table' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+                                >
+                                    <Table2 className="h-4 w-4 mr-2" />
+                                    Tabla
+                                </Button>
+                            </div>
+                        </div>
                     </CardContent>
                 </Card>
 
-                {/* Characters Grid */}
+                {/* Characters Grid/Table */}
                 {characters.data.length === 0 ? (
                     <Card className="border-dashed border-2 border-primary/30">
                         <CardContent className="flex flex-col items-center justify-center py-16 text-center">
@@ -135,7 +161,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                             )}
                         </CardContent>
                     </Card>
-                ) : (
+                ) : viewMode === 'grid' ? (
                     <>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {characters.data.map((character) => (
@@ -238,6 +264,161 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                 </Card>
                             ))}
                         </div>
+
+                        {/* Pagination */}
+                        {characters.last_page > 1 && (
+                            <Card className="border-primary/20">
+                                <CardContent className="flex items-center justify-between p-4">
+                                    <div className="text-sm text-muted-foreground">
+                                        Mostrando <span className="font-medium text-foreground">{characters.data.length}</span> de{' '}
+                                        <span className="font-medium text-foreground">{characters.total}</span> personajes
+                                    </div>
+                                    <div className="flex gap-2">
+                                        {characters.current_page > 1 && (
+                                            <Button variant="outline" size="sm" asChild>
+                                                <Link
+                                                    href={`/admin/characters?page=${characters.current_page - 1}${
+                                                        search ? `&search=${search}` : ''
+                                                    }`}
+                                                >
+                                                    Anterior
+                                                </Link>
+                                            </Button>
+                                        )}
+                                        <div className="flex items-center gap-2 px-3 text-sm">
+                                            Página {characters.current_page} de {characters.last_page}
+                                        </div>
+                                        {characters.current_page < characters.last_page && (
+                                            <Button variant="outline" size="sm" asChild>
+                                                <Link
+                                                    href={`/admin/characters?page=${characters.current_page + 1}${
+                                                        search ? `&search=${search}` : ''
+                                                    }`}
+                                                >
+                                                    Siguiente
+                                                </Link>
+                                            </Button>
+                                        )}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </>
+                ) : (
+                    /* Table View */
+                    <>
+                        <Card className="border-primary/20">
+                            <CardContent className="p-0">
+                                <div className="overflow-x-auto">
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow className="border-yellow-900/30 hover:bg-yellow-900/10">
+                                                <TableHead className="text-yellow-400 font-bold">Nombre</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Mundo</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Biografía</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Hechizos</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold">Creado</TableHead>
+                                                <TableHead className="text-yellow-400 font-bold text-right">Acciones</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {characters.data.map((character) => (
+                                                <TableRow 
+                                                    key={character.id} 
+                                                    className="border-yellow-900/20 hover:bg-yellow-900/10 transition-colors"
+                                                >
+                                                    <TableCell className="font-bold text-yellow-200">
+                                                        <div className="flex items-center gap-2">
+                                                            <User className="h-5 w-5 text-emerald-400" />
+                                                            {character.name}
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="text-yellow-200/70">
+                                                        <Badge variant="outline" className="bg-emerald-500/20 border-emerald-500/40 text-emerald-300">
+                                                            {character.world.name}
+                                                        </Badge>
+                                                    </TableCell>
+                                                    <TableCell className="text-yellow-200/70 max-w-md">
+                                                        <div className="line-clamp-2">
+                                                            {character.biography || 'Sin biografía'}
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <div className="flex flex-wrap gap-1">
+                                                            {(() => {
+                                                                let spells = null;
+                                                                
+                                                                if (Array.isArray(character.spells)) {
+                                                                    spells = character.spells;
+                                                                } else if (typeof character.spells === 'string' && character.spells) {
+                                                                    try {
+                                                                        spells = JSON.parse(character.spells);
+                                                                    } catch {
+                                                                        // Si no es JSON válido, tratarlo como un solo hechizo
+                                                                        spells = [character.spells];
+                                                                    }
+                                                                }
+                                                                
+                                                                return spells && spells.length > 0 ? (
+                                                                    <>
+                                                                        {spells.slice(0, 3).map((spell: string, idx: number) => (
+                                                                            <Badge 
+                                                                                key={idx}
+                                                                                variant="outline" 
+                                                                                className="bg-teal-500/20 border-teal-500/40 text-teal-300 text-xs"
+                                                                            >
+                                                                                <Scroll className="h-3 w-3 mr-1" />
+                                                                                {spell}
+                                                                            </Badge>
+                                                                        ))}
+                                                                        {spells.length > 3 && (
+                                                                            <Badge variant="outline" className="bg-teal-500/20 border-teal-500/40 text-teal-300 text-xs">
+                                                                                +{spells.length - 3}
+                                                                            </Badge>
+                                                                        )}
+                                                                    </>
+                                                                ) : (
+                                                                    <span className="text-yellow-200/50 text-sm">Sin hechizos</span>
+                                                                );
+                                                            })()}
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="text-yellow-300/60 text-sm">
+                                                        {new Date(character.created_at).toLocaleDateString('es-ES', { 
+                                                            day: 'numeric', 
+                                                            month: 'short', 
+                                                            year: 'numeric' 
+                                                        })}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <div className="flex items-center justify-end gap-2">
+                                                            <Button 
+                                                                variant="outline" 
+                                                                size="sm"
+                                                                asChild
+                                                                className="bg-emerald-900/50 hover:bg-emerald-800/70 text-emerald-200 hover:text-emerald-100 border-emerald-700/50 hover:border-emerald-500/70"
+                                                            >
+                                                                <Link href={`/admin/characters/${character.id}/edit`}>
+                                                                    <Pencil className="h-4 w-4" />
+                                                                </Link>
+                                                            </Button>
+                                                            <Button 
+                                                                variant="outline" 
+                                                                size="sm"
+                                                                className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
+                                                                onClick={() => handleDelete(character.id, character.name)}
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </div>
+                            </CardContent>
+                        </Card>
 
                         {/* Pagination */}
                         {characters.last_page > 1 && (
