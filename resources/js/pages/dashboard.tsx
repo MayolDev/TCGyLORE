@@ -139,9 +139,13 @@ export default function Dashboard({ stats }: DashboardProps) {
     }
 
     const rarityColors: Record<string, string> = {
+        'Común': 'bg-gray-500/20 text-gray-700 dark:text-gray-300 border-gray-500/30',
         'común': 'bg-gray-500/20 text-gray-700 dark:text-gray-300 border-gray-500/30',
+        'Rara': 'bg-blue-500/20 text-blue-700 dark:text-blue-300 border-blue-500/30',
         'rara': 'bg-blue-500/20 text-blue-700 dark:text-blue-300 border-blue-500/30',
+        'Épica': 'bg-purple-500/20 text-purple-700 dark:text-purple-300 border-purple-500/30',
         'épica': 'bg-purple-500/20 text-purple-700 dark:text-purple-300 border-purple-500/30',
+        'Legendaria': 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-500/30',
         'legendaria': 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-500/30',
     };
 

@@ -16,6 +16,13 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
+        $cardsByRarity = Card::with('rarity')
+            ->whereNotNull('rarity_id')
+            ->get()
+            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
+            ->map(fn ($cards) => $cards->count())
+            ->toArray();
+
         $stats = [
             'worlds' => World::count(),
             'stories' => Story::count(),
@@ -24,12 +31,7 @@ class DashboardController extends Controller
             'timeline_events' => TimelineEvent::count(),
             'cards' => Card::count(),
             'users' => User::count(),
-            'cards_by_rarity' => Card::with('rarity')
-                ->whereNotNull('rarity_id')
-                ->get()
-                ->groupBy('rarity.name')
-                ->map(fn ($cards) => $cards->count())
-                ->toArray(),
+            'cards_by_rarity' => $cardsByRarity,
             'recent_cards' => Card::with(['world', 'character', 'rarity', 'cardType', 'alignment'])
                 ->latest()
                 ->take(5)
