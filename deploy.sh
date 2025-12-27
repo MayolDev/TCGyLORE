@@ -24,8 +24,12 @@ php artisan down || true
 echo -e "${YELLOW}📥 Descargando cambios de GitHub...${NC}"
 git pull origin main
 
+echo -e "${YELLOW}🧹 Limpiando vendor y cache de Composer...${NC}"
+rm -rf vendor
+composer clear-cache
+
 echo -e "${YELLOW}📦 Instalando dependencias de Composer...${NC}"
-composer install --no-dev --optimize-autoloader --no-interaction
+composer install --optimize-autoloader --no-interaction
 
 echo -e "${YELLOW}📦 Instalando dependencias de NPM...${NC}"
 npm ci
@@ -37,6 +41,12 @@ echo -e "${YELLOW}🗄️  Ejecutando migraciones...${NC}"
 php artisan migrate --force
 
 echo -e "${YELLOW}🧹 Limpiando cachés...${NC}"
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+php artisan cache:clear
+
+echo -e "${YELLOW}🧹 Reconstruyendo cachés...${NC}"
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache

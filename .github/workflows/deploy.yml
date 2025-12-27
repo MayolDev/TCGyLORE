@@ -52,8 +52,10 @@ jobs:
             # Pull últimos cambios
             git pull origin main
             
-            # Instalar dependencias de Composer
-            composer install --no-dev --optimize-autoloader --no-interaction
+            # Limpiar vendor y reinstalar dependencias correctamente
+            rm -rf vendor
+            composer clear-cache
+            composer install --optimize-autoloader --no-interaction
             
             # Instalar dependencias de NPM y compilar assets
             npm ci
@@ -63,10 +65,17 @@ jobs:
             php artisan migrate --force
             
             # Limpiar cachés
+            php artisan config:clear
+            php artisan route:clear
+            php artisan view:clear
+            php artisan cache:clear
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
             php artisan optimize
+            
+            # Ajustar permisos
+            chmod -R 755 storage bootstrap/cache
             
             # Desactivar modo mantenimiento
             php artisan up

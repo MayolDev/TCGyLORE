@@ -121,7 +121,9 @@ cat ~/.ssh/authorized_keys
 ### Error: Composer dependencies
 ```bash
 cd /home/mayoldev-taponazo/htdocs/taponazo.mayoldev.es
-composer install --no-dev --optimize-autoloader
+rm -rf vendor
+composer clear-cache
+composer install --optimize-autoloader
 ```
 
 ### Error: NPM/Node not found
