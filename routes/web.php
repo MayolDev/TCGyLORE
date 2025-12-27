@@ -1,8 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\AlignmentController;
+use App\Http\Controllers\Admin\ArchetypeController;
+use App\Http\Controllers\Admin\ArtistController;
 use App\Http\Controllers\Admin\CardController;
+use App\Http\Controllers\Admin\CardTypeController;
 use App\Http\Controllers\Admin\CharacterController;
+use App\Http\Controllers\Admin\EditionController;
+use App\Http\Controllers\Admin\FactionController;
 use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\RarityController;
 use App\Http\Controllers\Admin\StoryController;
 use App\Http\Controllers\Admin\TimelineEventController;
 use App\Http\Controllers\Admin\UserController;
@@ -35,6 +42,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Sistema TCG
         Route::resource('cards', CardController::class);
+        
+        // Taxonomías TCG
+        Route::resource('card-types', CardTypeController::class);
+        Route::resource('rarities', RarityController::class);
+        Route::resource('alignments', AlignmentController::class);
+        Route::resource('archetypes', ArchetypeController::class);
+        Route::resource('factions', FactionController::class);
+        Route::resource('editions', EditionController::class);
+        Route::resource('artists', ArtistController::class);
     });
 });
 

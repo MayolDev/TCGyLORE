@@ -256,6 +256,32 @@ Para contribuir o personalizar el proyecto:
 - CSRF protection habilitado en todos los formularios
 - Validación de datos en backend y frontend
 
+## 🚀 Deployment
+
+Este proyecto está configurado para auto-deploy desde GitHub a tu servidor.
+
+### Guías de Deployment
+
+- **[DEPLOY-QUICK.md](DEPLOY-QUICK.md)**: Guía rápida de referencia
+- **[DEPLOYMENT.md](DEPLOYMENT.md)**: Guía completa con todos los detalles
+
+### Deploy Automático
+
+Cada vez que hagas `git push origin main`, el proyecto se desplegará automáticamente usando GitHub Actions.
+
+Para configurarlo:
+1. Lee [DEPLOYMENT.md](DEPLOYMENT.md)
+2. Configura los GitHub Secrets
+3. Haz push a `main`
+
+### Deploy Manual
+
+En tu servidor:
+```bash
+cd /home/mayoldev-taponazo/htdocs/taponazo.mayoldev.es
+./deploy.sh
+```
+
 ## Licencia
 
 Este proyecto está bajo la licencia MIT.
