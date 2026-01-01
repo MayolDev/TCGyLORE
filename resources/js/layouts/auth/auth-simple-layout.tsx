@@ -65,6 +65,8 @@ export default function AuthSimpleLayout({
             });
         }
 
+        let animationId: number;
+
         function animate() {
             if (!ctx || !canvas) return;
             
@@ -128,7 +130,7 @@ export default function AuthSimpleLayout({
                 }
             });
 
-            requestAnimationFrame(animate);
+            animationId = requestAnimationFrame(animate);
         }
 
         animate();
@@ -139,7 +141,10 @@ export default function AuthSimpleLayout({
         };
 
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(animationId);
+        }
     }, []);
 
     return (
@@ -178,18 +183,21 @@ export default function AuthSimpleLayout({
 
                 {/* Estrellas parpadeantes */}
                 <div className="absolute inset-0">
-                    {[...Array(20)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 3}s`,
-                                opacity: Math.random() * 0.7 + 0.3
-                            }}
-                        />
-                    ))}
+                    {[...Array(20)].map((_, i) => {
+                        const style = {
+                            left: `${(i * 17 + 23) % 100}%`,
+                            top: `${(i * 31 + 11) % 100}%`,
+                            animationDelay: `${(i % 3)}s`,
+                            opacity: ((i % 10) / 10) * 0.7 + 0.3
+                        };
+                        return (
+                            <div
+                                key={i}
+                                className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
+                                style={style}
+                            />
+                        );
+                    })}
                 </div>
 
                 {/* Contenedor del formulario */}

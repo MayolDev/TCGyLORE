@@ -21,8 +21,10 @@ class CardController extends Controller
 {
     public function index(Request $request)
     {
+        // Optimization: Removed unused eager loaded relationships (archetype, alignment, faction, edition, artist)
+        // These relationships are not used in the Index view, only in the filters (which use IDs directly)
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            ->with(['world', 'character', 'cardType', 'rarity'])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
@@ -44,7 +46,7 @@ class CardController extends Controller
 
         return Inertia::render('Admin/Cards/Index', [
             'cards' => $cards,
-            'worlds' => World::all(['id', 'name']),
+            // Optimization: Removed 'worlds' => World::all(['id', 'name']) as it is not used in the Index component
             'filters' => $request->only(['search', 'rarity_id', 'card_type_id', 'alignment_id', 'world_id']),
         ]);
     }

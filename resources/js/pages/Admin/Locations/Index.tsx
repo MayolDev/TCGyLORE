@@ -6,7 +6,7 @@ import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { MapPin, Plus, Search, Pencil, Trash2, Sparkles, Navigation, Grid3x3, Table2, Map as MapIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MapView from '@/components/map-view';
 
 interface LocationData {
@@ -45,7 +45,7 @@ interface Props {
     filters?: {
         search?: string;
     };
-    allLocations: LocationData[];
+    // allLocations removed, fetched async
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -53,11 +53,23 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Ubicaciones', href: '/admin/locations' },
 ];
 
-export default function Index({ locations: initialLocations, filters: initialFilters, allLocations }: Props) {
+export default function Index({ locations: initialLocations, filters: initialFilters }: Props) {
     const locations = initialLocations || { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0 };
     const filters = initialFilters || { search: '' };
     const [search, setSearch] = useState(filters.search || '');
     const [viewMode, setViewMode] = useState<'grid' | 'table' | 'map'>('grid');
+    const [mapLocations, setMapLocations] = useState<LocationData[]>([]);
+
+    useEffect(() => {
+        // Only fetch map data if we are in map mode or if we want to preload it
+        // For optimization, we fetch it only once on mount or when viewMode changes to map
+        if (viewMode === 'map' && mapLocations.length === 0) {
+            fetch('/admin/locations/map-data')
+                .then(res => res.json())
+                .then(data => setMapLocations(data))
+                .catch(err => console.error('Error fetching map data:', err));
+        }
+    }, [viewMode, mapLocations.length]);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -195,7 +207,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                         </CardHeader>
                         <CardContent>
                             <MapView
-                                locations={allLocations}
+                                locations={mapLocations}
                                 height="700px"
                                 onLocationClick={(location) => {
                                     router.visit(`/admin/locations/${location.id}/edit`);

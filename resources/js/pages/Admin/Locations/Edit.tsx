@@ -11,7 +11,7 @@ import InputError from '@/components/input-error';
 import { MapPin, Save, X } from 'lucide-react';
 import MapView, { LOCATION_TYPES } from '@/components/map-view';
 import ImageUpload from '@/components/image-upload';
-import { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 
 interface World {
     id: number;
@@ -41,7 +41,7 @@ interface Location {
 interface Props {
     location: Location;
     worlds: World[];
-    allLocations: LocationData[];
+    // allLocations removed, fetched async
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -50,7 +50,16 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Editar' },
 ];
 
-export default function Edit({ location, worlds, allLocations }: Props) {
+export default function Edit({ location, worlds }: Props) {
+    const [mapLocations, setMapLocations] = useState<LocationData[]>([]);
+
+    useEffect(() => {
+        fetch('/admin/locations/map-data')
+            .then(res => res.json())
+            .then(data => setMapLocations(data))
+            .catch(err => console.error('Error fetching map data:', err));
+    }, []);
+
     const { data, setData, post, processing, errors } = useForm<{
         world_id: string;
         name: string;
@@ -242,7 +251,7 @@ export default function Edit({ location, worlds, allLocations }: Props) {
                         </CardHeader>
                         <CardContent>
                             <MapView
-                                locations={allLocations}
+                                locations={mapLocations}
                                 center={data.coordinate_x && data.coordinate_y ? [parseFloat(data.coordinate_y), parseFloat(data.coordinate_x)] : undefined}
                                 zoom={data.coordinate_x && data.coordinate_y ? 1 : 0}
                                 allowClick={true}

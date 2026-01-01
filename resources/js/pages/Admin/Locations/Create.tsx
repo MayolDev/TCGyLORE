@@ -11,6 +11,7 @@ import InputError from '@/components/input-error';
 import { MapPin, Plus, X } from 'lucide-react';
 import MapView, { LOCATION_TYPES } from '@/components/map-view';
 import ImageUpload from '@/components/image-upload';
+import { useState, useEffect } from 'react';
 
 interface World {
     id: number;
@@ -28,7 +29,7 @@ interface LocationData {
 
 interface Props {
     worlds: World[];
-    allLocations: LocationData[];
+    // allLocations removed, fetched async
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -37,7 +38,16 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Crear' },
 ];
 
-export default function Create({ worlds, allLocations }: Props) {
+export default function Create({ worlds }: Props) {
+    const [mapLocations, setMapLocations] = useState<LocationData[]>([]);
+
+    useEffect(() => {
+        fetch('/admin/locations/map-data')
+            .then(res => res.json())
+            .then(data => setMapLocations(data))
+            .catch(err => console.error('Error fetching map data:', err));
+    }, []);
+
     const { data, setData, post, processing, errors } = useForm({
         world_id: '',
         name: '',
@@ -206,7 +216,7 @@ export default function Create({ worlds, allLocations }: Props) {
                         </CardHeader>
                         <CardContent>
                             <MapView
-                                locations={allLocations}
+                                locations={mapLocations}
                                 zoom={0}
                                 allowClick={true}
                                 onMapClick={(y, x) => {
