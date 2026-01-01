@@ -12,8 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Primero, cambiar el tipo de columna a VARCHAR para permitir más valores
-        DB::statement("ALTER TABLE locations MODIFY COLUMN location_type VARCHAR(50)");
+        // En SQLite, ALTER TABLE MODIFY no está soportado de la misma manera que en MySQL.
+        // Como 'location_type' probablemente ya es un string (varchar o text en SQLite),
+        // y SQLite es tipado dinámicamente, podemos omitir el MODIFY COLUMN si estamos en SQLite.
+
+        // Si no es SQLite, intentamos ejecutar el modify.
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE locations MODIFY COLUMN location_type VARCHAR(50)");
+        }
 
         // Mapeo de valores antiguos (español) a nuevos (inglés)
         $typeMapping = [
