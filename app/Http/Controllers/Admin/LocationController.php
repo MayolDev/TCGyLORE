@@ -28,51 +28,41 @@ class LocationController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        // Cargar todas las ubicaciones para el mapa
-        $allLocations = Location::select('id', 'name', 'description', 'location_type as type', 'coordinate_x', 'coordinate_y')
-            ->whereNotNull('coordinate_x')
-            ->whereNotNull('coordinate_y')
-            ->get()
-            ->map(function ($loc) {
-                return [
-                    'id' => $loc->id,
-                    'name' => $loc->name,
-                    'description' => $loc->description,
-                    'type' => $loc->type,
-                    'coordinate_x' => $loc->coordinate_x,
-                    'coordinate_y' => $loc->coordinate_y,
-                ];
-            });
+        // Optimization: Removed synchronous loading of all locations ($allLocations)
+        // This data will be fetched asynchronously via the mapData endpoint
 
         return Inertia::render('Admin/Locations/Index', [
             'locations' => $locations,
             'worlds' => World::all(['id', 'name']),
             'filters' => $request->only(['search', 'location_type', 'world_id']),
-            'allLocations' => $allLocations,
         ]);
+    }
+
+    public function mapData()
+    {
+        // Return JSON directly for async fetching
+        return response()->json(
+            Location::select('id', 'name', 'description', 'location_type as type', 'coordinate_x', 'coordinate_y')
+                ->whereNotNull('coordinate_x')
+                ->whereNotNull('coordinate_y')
+                ->get()
+                ->map(function ($loc) {
+                    return [
+                        'id' => $loc->id,
+                        'name' => $loc->name,
+                        'description' => $loc->description,
+                        'type' => $loc->type,
+                        'coordinate_x' => $loc->coordinate_x,
+                        'coordinate_y' => $loc->coordinate_y,
+                    ];
+                })
+        );
     }
 
     public function create()
     {
-        // Cargar todas las ubicaciones para mostrarlas en el mapa
-        $allLocations = Location::select('id', 'name', 'description', 'location_type as type', 'coordinate_x', 'coordinate_y')
-            ->whereNotNull('coordinate_x')
-            ->whereNotNull('coordinate_y')
-            ->get()
-            ->map(function ($loc) {
-                return [
-                    'id' => $loc->id,
-                    'name' => $loc->name,
-                    'description' => $loc->description,
-                    'type' => $loc->type,
-                    'coordinate_x' => $loc->coordinate_x,
-                    'coordinate_y' => $loc->coordinate_y,
-                ];
-            });
-
         return Inertia::render('Admin/Locations/Create', [
             'worlds' => World::all(['id', 'name']),
-            'allLocations' => $allLocations,
         ]);
     }
 
@@ -104,26 +94,9 @@ class LocationController extends Controller
     {
         $location->load('world');
 
-        // Cargar todas las ubicaciones para mostrarlas en el mapa (incluyendo la actual)
-        $allLocations = Location::select('id', 'name', 'description', 'location_type as type', 'coordinate_x', 'coordinate_y')
-            ->whereNotNull('coordinate_x')
-            ->whereNotNull('coordinate_y')
-            ->get()
-            ->map(function ($loc) {
-                return [
-                    'id' => $loc->id,
-                    'name' => $loc->name,
-                    'description' => $loc->description,
-                    'type' => $loc->type,
-                    'coordinate_x' => $loc->coordinate_x,
-                    'coordinate_y' => $loc->coordinate_y,
-                ];
-            });
-
         return Inertia::render('Admin/Locations/Edit', [
             'location' => $location,
             'worlds' => World::all(['id', 'name']),
-            'allLocations' => $allLocations,
         ]);
     }
 
