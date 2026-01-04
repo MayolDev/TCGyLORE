@@ -705,4 +705,18 @@ body {
     font-size: 1.15em;
 }
 
+/* Estilos para citas/superíndices */
+.prose-orange .cite-number {
+    color: rgb(251 146 60);
+    font-weight: 700;
+    margin-left: 2px;
+    font-size: 0.7em;
+    cursor: help;
+}
+
+.prose-orange .cite-number:hover {
+    color: rgb(251 191 36);
+}
+
+
 

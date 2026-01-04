@@ -11,6 +11,8 @@ import { Head, Link, router } from '@inertiajs/react';
 import { BookOpen, Plus, Search, Pencil, Trash2, FileText, Eye, EyeOff, Grid3x3, Table2, BookOpenCheck } from 'lucide-react';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { processManualCitations } from '@/lib/citations';
 
 interface ManualSection {
     id: number;
@@ -477,7 +479,14 @@ export default function Index({ sections: initialSections, filters: initialFilte
                         <div className="flex-1 overflow-y-auto p-8">
                             <div className="max-w-7xl mx-auto bg-slate-800/50 rounded-xl p-12 border-2 border-orange-500/20 shadow-2xl">
                                 <div className="prose prose-orange prose-lg max-w-none">
-                                    <ReactMarkdown>{previewSection?.content || ''}</ReactMarkdown>
+                                    <ReactMarkdown 
+                                        remarkPlugins={[remarkGfm]}
+                                        components={{
+                                            sup: ({node, ...props}) => <sup className="cite-number" {...props} />
+                                        }}
+                                    >
+                                        {processManualCitations(previewSection?.content || '')}
+                                    </ReactMarkdown>
                                 </div>
                             </div>
                         </div>
@@ -515,7 +524,14 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                     </Badge>
                                                     <h1 className="!mt-2 !mb-4">{section.title}</h1>
                                                 </div>
-                                                <ReactMarkdown>{section.content}</ReactMarkdown>
+                                                <ReactMarkdown 
+                                                    remarkPlugins={[remarkGfm]}
+                                                    components={{
+                                                        sup: ({node, ...props}) => <sup className="cite-number" {...props} />
+                                                    }}
+                                                >
+                                                    {processManualCitations(section.content)}
+                                                </ReactMarkdown>
                                             </div>
                                         ))}
                                 </div>
