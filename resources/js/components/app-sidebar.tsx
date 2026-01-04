@@ -24,7 +24,8 @@ import {
     Clock, 
     Swords,
     UserCircle,
-    Flame
+    Flame,
+    BookOpen
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -69,6 +70,11 @@ const tcgNavItems: NavItem[] = [
         title: 'Cartas TCG',
         href: '/admin/cards',
         icon: Swords,
+    },
+    {
+        title: 'Manual del Juego',
+        href: '/admin/manual-sections',
+        icon: BookOpen,
     },
 ];
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CharacterController;
 use App\Http\Controllers\Admin\EditionController;
 use App\Http\Controllers\Admin\FactionController;
 use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\ManualSectionController;
 use App\Http\Controllers\Admin\RarityController;
 use App\Http\Controllers\Admin\StoryController;
 use App\Http\Controllers\Admin\TimelineEventController;
@@ -42,6 +43,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Sistema TCG
         Route::resource('cards', CardController::class);
+
+        // Manual del Juego
+        Route::resource('manual-sections', ManualSectionController::class);
 
         // Taxonomías TCG
         Route::resource('card-types', CardTypeController::class);

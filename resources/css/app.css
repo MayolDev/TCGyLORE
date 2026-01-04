@@ -501,3 +501,208 @@ body {
     max-width: 100%;
     overflow-wrap: break-word;
 }
+
+/* Estilos para Markdown Preview - Prose Orange */
+.prose-orange {
+    color: rgb(254 240 138);
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.prose-orange h1,
+.prose-orange h2,
+.prose-orange h3,
+.prose-orange h4,
+.prose-orange h5,
+.prose-orange h6 {
+    color: rgb(251 191 36);
+    font-family: var(--font-heading);
+    font-weight: 900;
+    margin-top: 1.8em;
+    margin-bottom: 0.8em;
+    line-height: 1.2;
+    text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+.prose-orange h1 {
+    font-size: 2.5em;
+    border-bottom: 3px solid rgb(251 146 60 / 0.4);
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+    background: linear-gradient(to right, rgb(251 191 36), rgb(251 146 60));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.prose-orange h2 {
+    font-size: 2em;
+    border-left: 5px solid rgb(251 146 60);
+    padding-left: 0.5em;
+}
+
+.prose-orange h3 {
+    font-size: 1.6em;
+    color: rgb(254 215 170);
+}
+
+.prose-orange h4 {
+    font-size: 1.3em;
+    color: rgb(254 215 170);
+}
+
+.prose-orange p {
+    margin-top: 1.2em;
+    margin-bottom: 1.2em;
+    line-height: 1.9;
+    font-size: 1.1em;
+}
+
+.prose-orange strong {
+    color: rgb(251 146 60);
+    font-weight: 800;
+}
+
+.prose-orange em {
+    color: rgb(254 215 170);
+    font-style: italic;
+}
+
+.prose-orange ul,
+.prose-orange ol {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    padding-left: 2em;
+}
+
+.prose-orange li {
+    margin-top: 0.8em;
+    margin-bottom: 0.8em;
+    line-height: 1.8;
+    font-size: 1.05em;
+}
+
+.prose-orange ul > li::marker {
+    color: rgb(251 146 60);
+    font-size: 1.3em;
+}
+
+.prose-orange ol > li::marker {
+    color: rgb(251 146 60);
+    font-weight: 900;
+    font-size: 1.1em;
+}
+
+.prose-orange code {
+    background: rgb(15 23 42);
+    color: rgb(251 146 60);
+    padding: 0.3em 0.6em;
+    border-radius: 0.4em;
+    font-size: 0.95em;
+    border: 2px solid rgb(251 146 60 / 0.3);
+    font-weight: 600;
+}
+
+.prose-orange pre {
+    background: rgb(15 23 42);
+    padding: 1.5em;
+    border-radius: 0.75em;
+    overflow-x: auto;
+    border: 2px solid rgb(251 146 60 / 0.3);
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.prose-orange pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-size: 1em;
+}
+
+.prose-orange blockquote {
+    border-left: 6px solid rgb(251 146 60);
+    padding: 1.5em 1.5em 1.5em 2em;
+    color: rgb(254 215 170);
+    font-style: italic;
+    margin: 1.5em 0;
+    background: rgb(251 146 60 / 0.1);
+    border-radius: 0.75em;
+    font-size: 1.1em;
+    box-shadow: inset 0 0 20px rgba(251, 146, 60, 0.1);
+}
+
+.prose-orange a {
+    color: rgb(251 146 60);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    transition: all 0.2s;
+    font-weight: 600;
+}
+
+.prose-orange a:hover {
+    color: rgb(251 191 36);
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+.prose-orange hr {
+    border-color: rgb(251 146 60 / 0.4);
+    margin: 3em 0;
+    border-width: 2px;
+}
+
+.prose-orange table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2em 0;
+    font-size: 1em;
+}
+
+.prose-orange th,
+.prose-orange td {
+    border: 2px solid rgb(251 146 60 / 0.3);
+    padding: 1em 1.25em;
+    text-align: left;
+}
+
+.prose-orange th {
+    background: rgb(251 146 60 / 0.2);
+    color: rgb(251 191 36);
+    font-weight: 900;
+    font-family: var(--font-heading);
+    font-size: 1.1em;
+}
+
+.prose-orange td {
+    background: rgb(15 23 42 / 0.3);
+}
+
+.prose-orange tr:hover td {
+    background: rgb(251 146 60 / 0.1);
+}
+
+/* Prose Large para el preview */
+.prose-lg.prose-orange {
+    font-size: 1.15rem;
+}
+
+.prose-lg.prose-orange h1 {
+    font-size: 2.75em;
+}
+
+.prose-lg.prose-orange h2 {
+    font-size: 2.25em;
+}
+
+.prose-lg.prose-orange h3 {
+    font-size: 1.75em;
+}
+
+.prose-lg.prose-orange p,
+.prose-lg.prose-orange li {
+    font-size: 1.15em;
+}
+
+

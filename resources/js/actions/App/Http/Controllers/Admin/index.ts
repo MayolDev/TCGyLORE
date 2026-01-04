@@ -5,6 +5,7 @@ import CharacterController from './CharacterController'
 import LocationController from './LocationController'
 import TimelineEventController from './TimelineEventController'
 import CardController from './CardController'
+import ManualSectionController from './ManualSectionController'
 import CardTypeController from './CardTypeController'
 import RarityController from './RarityController'
 import AlignmentController from './AlignmentController'
@@ -20,6 +21,7 @@ CharacterController: Object.assign(CharacterController, CharacterController),
 LocationController: Object.assign(LocationController, LocationController),
 TimelineEventController: Object.assign(TimelineEventController, TimelineEventController),
 CardController: Object.assign(CardController, CardController),
+ManualSectionController: Object.assign(ManualSectionController, ManualSectionController),
 CardTypeController: Object.assign(CardTypeController, CardTypeController),
 RarityController: Object.assign(RarityController, RarityController),
 AlignmentController: Object.assign(AlignmentController, AlignmentController),
