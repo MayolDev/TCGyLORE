@@ -49,8 +49,12 @@ jobs:
             # Activar modo mantenimiento
             php artisan down || true
             
+            # Guardar cambios locales (archivos generados)
+            git stash || true
+            
             # Pull últimos cambios
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
             
             # Limpiar vendor y reinstalar dependencias correctamente
             rm -rf vendor
