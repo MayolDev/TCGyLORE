@@ -13,6 +13,7 @@ import InputError from '@/components/input-error';
 import { BookOpen, X, Eye } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { processManualCitations } from '@/lib/citations';
 
 interface ManualSection {
@@ -209,10 +210,7 @@ export default function Create({ categories, sections, nextOrders }: Props) {
                                             <div className="prose prose-orange prose-lg max-w-none">
                                                 <ReactMarkdown 
                                                     remarkPlugins={[remarkGfm]}
-                                                    components={{
-                                                        // Permite HTML en el markdown (para los superíndices)
-                                                        sup: ({node, ...props}) => <sup className="cite-number" {...props} />
-                                                    }}
+                                                    rehypePlugins={[rehypeRaw]}
                                                 >
                                                     {processManualCitations(data.content) || '*No hay contenido para previsualizar*'}
                                                 </ReactMarkdown>

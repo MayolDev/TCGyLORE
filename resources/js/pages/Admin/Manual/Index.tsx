@@ -12,6 +12,7 @@ import { BookOpen, Plus, Search, Pencil, Trash2, FileText, Eye, EyeOff, Grid3x3,
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { processManualCitations } from '@/lib/citations';
 
 interface ManualSection {
@@ -481,9 +482,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                 <div className="prose prose-orange prose-lg max-w-none">
                                     <ReactMarkdown 
                                         remarkPlugins={[remarkGfm]}
-                                        components={{
-                                            sup: ({node, ...props}) => <sup className="cite-number" {...props} />
-                                        }}
+                                        rehypePlugins={[rehypeRaw]}
                                     >
                                         {processManualCitations(previewSection?.content || '')}
                                     </ReactMarkdown>
@@ -526,9 +525,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                 </div>
                                                 <ReactMarkdown 
                                                     remarkPlugins={[remarkGfm]}
-                                                    components={{
-                                                        sup: ({node, ...props}) => <sup className="cite-number" {...props} />
-                                                    }}
+                                                    rehypePlugins={[rehypeRaw]}
                                                 >
                                                     {processManualCitations(section.content)}
                                                 </ReactMarkdown>

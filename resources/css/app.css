@@ -706,16 +706,76 @@ body {
 }
 
 /* Estilos para citas/superíndices */
+.prose-orange .citation-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
 .prose-orange .cite-number {
     color: rgb(251 146 60);
     font-weight: 700;
-    margin-left: 2px;
     font-size: 0.7em;
     cursor: help;
+    transition: all 0.2s ease;
 }
 
 .prose-orange .cite-number:hover {
     color: rgb(251 191 36);
+    text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+}
+
+.prose-orange .cite-separator {
+    color: rgb(251 146 60);
+    font-weight: 700;
+    font-size: 0.7em;
+    vertical-align: super;
+}
+
+/* Tooltip para citas */
+.prose-orange .citation-wrapper::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: rgb(15 23 42);
+    color: rgb(254 240 138);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 2px solid rgb(251 146 60 / 0.5);
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.prose-orange .citation-wrapper:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* Flecha del tooltip */
+.prose-orange .citation-wrapper::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(2px);
+    border: 6px solid transparent;
+    border-top-color: rgb(251 146 60 / 0.5);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 1000;
+}
+
+.prose-orange .citation-wrapper:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
 }
 
 
