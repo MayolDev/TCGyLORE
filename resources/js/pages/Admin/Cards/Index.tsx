@@ -254,6 +254,9 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                             <img 
                                                 src={card.illustration_url} 
                                                 alt={card.name}
+                                                loading="lazy"
+                                                width="300"
+                                                height="200"
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                             />
                                         ) : (
