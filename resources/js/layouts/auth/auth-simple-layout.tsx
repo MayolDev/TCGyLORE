@@ -1,4 +1,4 @@
-import AppLogoIcon from '@/components/app-logo-icon';
+import { StarField } from '@/components/star-field';
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
@@ -178,18 +178,7 @@ export default function AuthSimpleLayout({
 
                 {/* Estrellas parpadeantes */}
                 <div className="absolute inset-0">
-                    {[...Array(20)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 3}s`,
-                                opacity: Math.random() * 0.7 + 0.3
-                            }}
-                        />
-                    ))}
+                    <StarField count={20} small />
                 </div>
 
                 {/* Contenedor del formulario */}
