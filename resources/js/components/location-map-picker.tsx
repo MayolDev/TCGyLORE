@@ -1,13 +1,13 @@
-import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useEffect, useRef } from 'react';
 
 // Fix para los iconos de Leaflet en Vite
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// @ts-ignore
+// @ts-expect-error - Fix for Leaflet icon prototype
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon,
@@ -36,14 +36,17 @@ export default function LocationMapPicker({
         // Inicializar el mapa
         const map = L.map(mapContainerRef.current).setView(
             [latitude || 40.4168, longitude || -3.7038], // Madrid por defecto
-            latitude && longitude ? 13 : 6
+            latitude && longitude ? 13 : 6,
         );
 
         // Añadir capa de tiles (mapa base) con estilo oscuro épico
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '©OpenStreetMap, ©CartoDB',
-            maxZoom: 19,
-        }).addTo(map);
+        L.tileLayer(
+            'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+            {
+                attribution: '©OpenStreetMap, ©CartoDB',
+                maxZoom: 19,
+            },
+        ).addTo(map);
 
         // Añadir marcador si hay coordenadas
         if (latitude && longitude) {
@@ -63,9 +66,9 @@ export default function LocationMapPicker({
                 iconAnchor: [16, 32],
             });
 
-            markerRef.current = L.marker([latitude, longitude], { 
+            markerRef.current = L.marker([latitude, longitude], {
                 icon: customIcon,
-                draggable: true 
+                draggable: true,
             }).addTo(map);
 
             // Evento al arrastrar el marcador
@@ -78,7 +81,7 @@ export default function LocationMapPicker({
         // Click en el mapa para colocar/mover el marcador
         map.on('click', (e) => {
             const { lat, lng } = e.latlng;
-            
+
             const customIcon = L.divIcon({
                 className: 'custom-marker-icon',
                 html: `
@@ -98,9 +101,9 @@ export default function LocationMapPicker({
             if (markerRef.current) {
                 markerRef.current.setLatLng([lat, lng]);
             } else {
-                markerRef.current = L.marker([lat, lng], { 
+                markerRef.current = L.marker([lat, lng], {
                     icon: customIcon,
-                    draggable: true 
+                    draggable: true,
                 }).addTo(map);
 
                 markerRef.current.on('dragend', (e) => {
@@ -119,6 +122,7 @@ export default function LocationMapPicker({
             map.remove();
             mapRef.current = null;
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Actualizar posición del marcador cuando cambien las props
@@ -136,11 +140,14 @@ export default function LocationMapPicker({
             <div className="relative">
                 <div
                     ref={mapContainerRef}
-                    className="h-[400px] w-full rounded-lg border-4 border-purple-500/40 shadow-[0_0_30px_rgba(168,85,247,0.3)] overflow-hidden"
+                    className="h-[400px] w-full overflow-hidden rounded-lg border-4 border-purple-500/40 shadow-[0_0_30px_rgba(168,85,247,0.3)]"
                     style={{ zIndex: 0 }}
                 />
-                <div className="absolute top-4 left-4 bg-slate-900/90 border-2 border-purple-500/50 rounded-lg px-4 py-2 z-[1000] backdrop-blur-sm">
-                    <p className="text-sm text-yellow-200 font-bold" style={{ fontFamily: 'Cinzel, serif' }}>
+                <div className="absolute top-4 left-4 z-[1000] rounded-lg border-2 border-purple-500/50 bg-slate-900/90 px-4 py-2 backdrop-blur-sm">
+                    <p
+                        className="text-sm font-bold text-yellow-200"
+                        style={{ fontFamily: 'Cinzel, serif' }}
+                    >
                         🗺️ Haz clic en el mapa para seleccionar una ubicación
                     </p>
                 </div>
@@ -170,4 +177,3 @@ export default function LocationMapPicker({
         </div>
     );
 }
-
