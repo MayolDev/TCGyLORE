@@ -1,6 +1,6 @@
+import { FlashMessages } from '@/components/flash-messages';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Toaster } from '@/components/ui/toaster';
-import { FlashMessages } from '@/components/flash-messages';
 import { SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 

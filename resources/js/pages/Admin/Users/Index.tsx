@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -8,11 +9,10 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Plus, Pencil, Trash2, Search } from 'lucide-react';
+import { Pencil, Plus, Search, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 interface Role {
@@ -76,7 +76,9 @@ export default function Index({ users, filters }: Props) {
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold">Gestión de Usuarios</h1>
+                        <h1 className="text-2xl font-bold">
+                            Gestión de Usuarios
+                        </h1>
                         <p className="text-muted-foreground">
                             Administra los usuarios del sistema
                         </p>
@@ -125,13 +127,18 @@ export default function Index({ users, filters }: Props) {
                                 <TableHead>Email</TableHead>
                                 <TableHead>Roles</TableHead>
                                 <TableHead>Fecha de Registro</TableHead>
-                                <TableHead className="text-right">Acciones</TableHead>
+                                <TableHead className="text-right">
+                                    Acciones
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {users.data.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={5} className="text-center">
+                                    <TableCell
+                                        colSpan={5}
+                                        className="text-center"
+                                    >
                                         No se encontraron usuarios
                                     </TableCell>
                                 </TableRow>
@@ -148,7 +155,8 @@ export default function Index({ users, filters }: Props) {
                                                     <Badge
                                                         key={role.id}
                                                         variant={
-                                                            role.name === 'Admin'
+                                                            role.name ===
+                                                            'Admin'
                                                                 ? 'default'
                                                                 : 'secondary'
                                                         }
@@ -159,19 +167,28 @@ export default function Index({ users, filters }: Props) {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            {new Date(user.created_at).toLocaleDateString()}
+                                            {new Date(
+                                                user.created_at,
+                                            ).toLocaleDateString()}
                                         </TableCell>
                                         <TableCell className="text-right">
                                             <div className="flex justify-end gap-2">
-                                                <Link href={`/admin/users/${user.id}/edit`}>
-                                                    <Button variant="outline" size="sm">
+                                                <Link
+                                                    href={`/admin/users/${user.id}/edit`}
+                                                >
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                    >
                                                         <Pencil className="size-4" />
                                                     </Button>
                                                 </Link>
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    onClick={() => handleDelete(user.id)}
+                                                    onClick={() =>
+                                                        handleDelete(user.id)
+                                                    }
                                                 >
                                                     <Trash2 className="size-4" />
                                                 </Button>
@@ -186,7 +203,8 @@ export default function Index({ users, filters }: Props) {
                     {users.last_page > 1 && (
                         <div className="flex items-center justify-between border-t p-4">
                             <div className="text-sm text-muted-foreground">
-                                Mostrando {users.data.length} de {users.total} usuarios
+                                Mostrando {users.data.length} de {users.total}{' '}
+                                usuarios
                             </div>
                             <div className="flex gap-2">
                                 {users.current_page > 1 && (
@@ -219,4 +237,3 @@ export default function Index({ users, filters }: Props) {
         </AdminLayout>
     );
 }
-
