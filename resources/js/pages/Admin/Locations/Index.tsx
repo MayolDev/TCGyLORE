@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -273,14 +274,22 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                                     Editar
                                                 </Link>
                                             </Button>
-                                            <Button 
-                                                variant="outline" 
-                                                size="sm"
-                                                className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
-                                                onClick={() => handleDelete(location.id, location.name)}
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
+                                                        onClick={() => handleDelete(location.id, location.name)}
+                                                        aria-label={`Eliminar ${location.name}`}
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>Eliminar ubicación</p>
+                                                </TooltipContent>
+                                            </Tooltip>
                                         </div>
 
                                         {/* Created Date */}
@@ -407,24 +416,39 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center justify-end gap-2">
-                                                            <Button
-                                                                variant="outline"
-                                                                size="sm"
-                                                                asChild
-                                                                className="border-yellow-500/50 text-yellow-300 hover:bg-yellow-600/20 hover:text-yellow-200"
-                                                            >
-                                                                <Link href={`/admin/locations/${location.id}/edit`}>
-                                                                    <Pencil className="h-4 w-4" />
-                                                                </Link>
-                                                            </Button>
-                                                            <Button
-                                                                variant="outline"
-                                                                size="sm"
-                                                                className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
-                                                                onClick={() => handleDelete(location.id, location.name)}
-                                                            >
-                                                                <Trash2 className="h-4 w-4" />
-                                                            </Button>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <Button
+                                                                        variant="outline"
+                                                                        size="sm"
+                                                                        asChild
+                                                                        className="border-yellow-500/50 text-yellow-300 hover:bg-yellow-600/20 hover:text-yellow-200"
+                                                                    >
+                                                                        <Link href={`/admin/locations/${location.id}/edit`} aria-label={`Editar ${location.name}`}>
+                                                                            <Pencil className="h-4 w-4" />
+                                                                        </Link>
+                                                                    </Button>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>Editar ubicación</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <Button
+                                                                        variant="outline"
+                                                                        size="sm"
+                                                                        className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
+                                                                        onClick={() => handleDelete(location.id, location.name)}
+                                                                        aria-label={`Eliminar ${location.name}`}
+                                                                    >
+                                                                        <Trash2 className="h-4 w-4" />
+                                                                    </Button>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>Eliminar ubicación</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
                                                         </div>
                                                     </td>
                                                 </tr>
