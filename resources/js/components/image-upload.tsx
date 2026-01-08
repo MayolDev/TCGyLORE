@@ -1,9 +1,9 @@
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import InputError from '@/components/input-error';
-import { Upload, X, Image as ImageIcon } from 'lucide-react';
+import { Image as ImageIcon, Upload, X } from 'lucide-react';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 
 interface ImageUploadProps {
     label: string;
@@ -96,14 +96,16 @@ export default function ImageUpload({
         }
     };
 
-    const displayImage = preview || (currentImage ? `/storage/${currentImage}` : null);
+    const displayImage =
+        preview || (currentImage ? `/storage/${currentImage}` : null);
 
     return (
         <div className="space-y-2">
             <Label htmlFor={id}>
-                {label} {required && <span className="text-destructive">*</span>}
+                {label}{' '}
+                {required && <span className="text-destructive">*</span>}
                 {aspectRatio !== 'any' && (
-                    <span className="text-xs text-muted-foreground ml-2">
+                    <span className="ml-2 text-xs text-muted-foreground">
                         {aspectRatioHints[aspectRatio]}
                     </span>
                 )}
@@ -112,14 +114,16 @@ export default function ImageUpload({
             <div className="grid gap-4 md:grid-cols-2">
                 {/* Preview Section */}
                 {displayImage && (
-                    <div className="relative group">
-                        <div className={`relative overflow-hidden rounded-lg border-2 border-border bg-muted ${aspectRatioClasses[aspectRatio]}`}>
+                    <div className="group relative">
+                        <div
+                            className={`relative overflow-hidden rounded-lg border-2 border-border bg-muted ${aspectRatioClasses[aspectRatio]}`}
+                        >
                             <img
                                 src={displayImage}
                                 alt="Preview"
-                                className="w-full h-full object-cover"
+                                className="h-full w-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                                 <Button
                                     type="button"
                                     variant="destructive"
@@ -132,7 +136,7 @@ export default function ImageUpload({
                                 </Button>
                             </div>
                         </div>
-                        <p className="text-xs text-muted-foreground text-center mt-2">
+                        <p className="mt-2 text-center text-xs text-muted-foreground">
                             {preview ? 'Nueva imagen' : 'Imagen actual'}
                         </p>
                     </div>
@@ -140,7 +144,7 @@ export default function ImageUpload({
 
                 {/* Upload Section */}
                 <div
-                    className={`relative border-2 border-dashed rounded-lg transition-colors ${
+                    className={`relative rounded-lg border-2 border-dashed transition-colors ${
                         isDragging
                             ? 'border-primary bg-primary/5'
                             : 'border-border hover:border-primary/50'
@@ -153,21 +157,23 @@ export default function ImageUpload({
                         id={id}
                         type="file"
                         accept={accept}
-                        onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                        onChange={(e) =>
+                            handleFileChange(e.target.files?.[0] || null)
+                        }
+                        className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
                     />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center pointer-events-none">
+                    <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
                         {isDragging ? (
                             <>
-                                <Upload className="h-12 w-12 text-primary mb-3 animate-bounce" />
+                                <Upload className="mb-3 h-12 w-12 animate-bounce text-primary" />
                                 <p className="text-sm font-medium text-primary">
                                     ¡Suelta la imagen aquí!
                                 </p>
                             </>
                         ) : (
                             <>
-                                <ImageIcon className="h-12 w-12 text-muted-foreground mb-3" />
-                                <p className="text-sm font-medium mb-1">
+                                <ImageIcon className="mb-3 h-12 w-12 text-muted-foreground" />
+                                <p className="mb-1 text-sm font-medium">
                                     Arrastra una imagen o haz clic
                                 </p>
                                 <p className="text-xs text-muted-foreground">
@@ -183,4 +189,3 @@ export default function ImageUpload({
         </div>
     );
 }
-
