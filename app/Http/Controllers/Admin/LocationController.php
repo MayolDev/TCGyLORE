@@ -46,7 +46,6 @@ class LocationController extends Controller
 
         return Inertia::render('Admin/Locations/Index', [
             'locations' => $locations,
-            'worlds' => World::all(['id', 'name']),
             'filters' => $request->only(['search', 'location_type', 'world_id']),
             'allLocations' => $allLocations,
         ]);

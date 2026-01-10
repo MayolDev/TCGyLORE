@@ -44,7 +44,6 @@ class CardController extends Controller
 
         return Inertia::render('Admin/Cards/Index', [
             'cards' => $cards,
-            'worlds' => World::all(['id', 'name']),
             'filters' => $request->only(['search', 'rarity_id', 'card_type_id', 'alignment_id', 'world_id']),
         ]);
     }
