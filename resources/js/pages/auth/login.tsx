@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
@@ -96,11 +95,10 @@ export default function Login({
                                 type="submit"
                                 className="mt-4 w-full bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black text-lg shadow-2xl shadow-orange-500/50 hover:shadow-orange-400/70 border-2 border-yellow-400/30 hover:scale-105 transition-all tracking-wider"
                                 tabIndex={4}
-                                disabled={processing}
+                                loading={processing}
                                 data-test="login-button"
                                 style={{ fontFamily: 'Cinzel, serif' }}
                             >
-                                {processing && <Spinner />}
                                 ENTRAR AL REINO
                             </Button>
                         </div>
