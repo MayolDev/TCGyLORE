@@ -1,8 +1,8 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
-import { type PropsWithChildren, useEffect, useRef } from 'react';
+import { type PropsWithChildren } from 'react';
 import { Shield, Sparkles, Swords } from 'lucide-react';
+import { StarField } from '@/components/star-field';
 
 interface AuthLayoutProps {
     name?: string;
@@ -15,133 +15,6 @@ export default function AuthSimpleLayout({
     title,
     description,
 }: PropsWithChildren<AuthLayoutProps>) {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        // Símbolos mágicos y runas
-        const runes = ['ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ', 'ᚺ', 'ᚾ', 'ᛁ', 'ᛃ', '✦', '✧', '⚝', '⚡', '❋', '✵'];
-        const colors = ['#FFD700', '#FF6B35', '#8B5CF6', '#F97316', '#EC4899', '#FBBF24'];
-
-        const magicElements: Array<{
-            x: number;
-            y: number;
-            type: 'rune' | 'spark' | 'trail';
-            symbol?: string;
-            size: number;
-            speedX: number;
-            speedY: number;
-            opacity: number;
-            color: string;
-            rotation: number;
-            rotationSpeed: number;
-            life: number;
-        }> = [];
-
-        // Crear elementos mágicos
-        for (let i = 0; i < 40; i++) {
-            const type = Math.random() > 0.65 ? 'rune' : Math.random() > 0.5 ? 'spark' : 'trail';
-            magicElements.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                type,
-                symbol: type === 'rune' ? runes[Math.floor(Math.random() * runes.length)] : undefined,
-                size: type === 'rune' ? Math.random() * 18 + 12 : Math.random() * 2.5 + 1.5,
-                speedX: (Math.random() - 0.5) * 0.4,
-                speedY: (Math.random() - 0.5) * 0.4,
-                opacity: Math.random() * 0.5 + 0.25,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                rotation: Math.random() * Math.PI * 2,
-                rotationSpeed: (Math.random() - 0.5) * 0.015,
-                life: Math.random() * 100 + 100
-            });
-        }
-
-        function animate() {
-            if (!ctx || !canvas) return;
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            magicElements.forEach((element) => {
-                ctx.save();
-                ctx.globalAlpha = element.opacity;
-
-                if (element.type === 'rune') {
-                    // Runas flotantes con rotación
-                    ctx.translate(element.x, element.y);
-                    ctx.rotate(element.rotation);
-                    ctx.font = `${element.size}px serif`;
-                    ctx.fillStyle = element.color;
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.shadowBlur = 12;
-                    ctx.shadowColor = element.color;
-                    ctx.fillText(element.symbol!, 0, 0);
-                    element.rotation += element.rotationSpeed;
-                } else if (element.type === 'spark') {
-                    // Chispas brillantes con estela
-                    ctx.fillStyle = element.color;
-                    ctx.shadowBlur = 8;
-                    ctx.shadowColor = element.color;
-                    ctx.beginPath();
-                    ctx.arc(element.x, element.y, element.size, 0, Math.PI * 2);
-                    ctx.fill();
-                    
-                    // Estela
-                    ctx.globalAlpha = element.opacity * 0.3;
-                    ctx.beginPath();
-                    ctx.arc(element.x - element.speedX * 8, element.y - element.speedY * 8, element.size * 0.5, 0, Math.PI * 2);
-                    ctx.fill();
-                } else {
-                    // Trazos de energía
-                    ctx.strokeStyle = element.color;
-                    ctx.lineWidth = element.size;
-                    ctx.shadowBlur = 6;
-                    ctx.shadowColor = element.color;
-                    ctx.beginPath();
-                    ctx.moveTo(element.x, element.y);
-                    ctx.lineTo(element.x + element.speedX * 15, element.y + element.speedY * 15);
-                    ctx.stroke();
-                }
-
-                ctx.restore();
-
-                // Movimiento
-                element.x += element.speedX;
-                element.y += element.speedY;
-                element.life--;
-
-                // Reposicionar si sale del canvas o termina su vida
-                if (element.life <= 0 || element.x < -50 || element.x > canvas.width + 50 || element.y < -50 || element.y > canvas.height + 50) {
-                    element.x = Math.random() * canvas.width;
-                    element.y = Math.random() * canvas.height;
-                    element.life = Math.random() * 100 + 100;
-                    element.opacity = Math.random() * 0.5 + 0.25;
-                }
-            });
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-
-        const handleResize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
     return (
         <>
             <Head>
@@ -152,45 +25,14 @@ export default function AuthSimpleLayout({
                 />
             </Head>
 
-            {/* Canvas de partículas */}
-            <canvas
-                ref={canvasRef}
-                className="fixed inset-0 pointer-events-none z-0"
-            />
-
-            {/* Background épico */}
+            {/* Background épico que reemplaza el canvas y efectos manuales */}
             <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900 p-6 md:p-10 overflow-hidden">
-                {/* Efectos de luz múltiples */}
-                <div className="absolute inset-0">
-                    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse-slow"></div>
-                    <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse-slow animation-delay-2000"></div>
-                    <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-yellow-500 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-pulse-slow animation-delay-1000"></div>
-                    <div className="absolute top-10 right-10 w-40 h-40 bg-pink-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-float"></div>
-                    <div className="absolute bottom-10 left-10 w-40 h-40 bg-blue-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-float animation-delay-1500"></div>
-                </div>
 
-                {/* Rayos de luz animados */}
-                <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute top-0 left-1/4 w-1 h-full bg-gradient-to-b from-transparent via-yellow-400/30 to-transparent animate-shimmer"></div>
-                    <div className="absolute top-0 left-3/4 w-1 h-full bg-gradient-to-b from-transparent via-orange-400/30 to-transparent animate-shimmer animation-delay-2000"></div>
-                    <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-purple-400/30 to-transparent animate-shimmer animation-delay-1000"></div>
-                </div>
+                {/* Usamos StarField para las partículas y efectos de fondo */}
+                <StarField />
 
-                {/* Estrellas parpadeantes */}
-                <div className="absolute inset-0">
-                    {[...Array(20)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 3}s`,
-                                opacity: Math.random() * 0.7 + 0.3
-                            }}
-                        />
-                    ))}
-                </div>
+                {/* Elementos extra específicos del layout Auth (si se quiere mantener algo extra) */}
+                {/* En este caso StarField ya cubre la mayoría, pero mantenemos el contenedor y el z-index correcto */}
 
                 {/* Contenedor del formulario */}
                 <div className="relative z-10 w-full max-w-md">
