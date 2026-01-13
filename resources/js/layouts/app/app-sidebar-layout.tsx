@@ -60,6 +60,8 @@ export default function AppSidebarLayout({
             });
         }
 
+        let animationId: number;
+
         function animate() {
             if (!ctx || !canvas) return;
             
@@ -123,7 +125,7 @@ export default function AppSidebarLayout({
                 }
             });
 
-            requestAnimationFrame(animate);
+            animationId = requestAnimationFrame(animate);
         }
 
         animate();
@@ -134,7 +136,10 @@ export default function AppSidebarLayout({
         };
 
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(animationId);
+        }
     }, []);
 
     return (
@@ -165,18 +170,21 @@ export default function AppSidebarLayout({
                 <div className="absolute top-0 left-3/4 w-2 h-full bg-gradient-to-b from-transparent via-orange-400/20 to-transparent animate-shimmer animation-delay-2000"></div>
                 
                 {/* Estrellas brillantes */}
-                {[...Array(30)].map((_, i) => (
-                    <div
-                        key={i}
-                        className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-twinkle"
-                        style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 3}s`,
-                            boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)'
-                        }}
-                    />
-                ))}
+                {[...Array(30)].map((_, i) => {
+                    const style = {
+                        left: `${(i * 13 + 7) % 100}%`,
+                        top: `${(i * 29 + 19) % 100}%`,
+                        animationDelay: `${(i % 5) * 0.5}s`,
+                        boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)'
+                    };
+                    return (
+                        <div
+                            key={i}
+                            className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-twinkle"
+                            style={style}
+                        />
+                    );
+                })}
             </div>
 
             <AppShell variant="sidebar">

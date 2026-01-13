@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('worlds', WorldController::class);
         Route::resource('stories', StoryController::class);
         Route::resource('characters', CharacterController::class);
+        Route::get('locations/map-data', [LocationController::class, 'mapData'])->name('locations.map-data');
         Route::resource('locations', LocationController::class);
         Route::resource('timeline-events', TimelineEventController::class);
 
