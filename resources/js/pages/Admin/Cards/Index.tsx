@@ -3,6 +3,11 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -334,19 +339,30 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                         {/* Actions */}
                                         <div className="flex gap-2 pt-2">
                                             <Button variant="outline" size="sm" className="flex-1" asChild>
-                                                <Link href={`/admin/cards/${card.id}/edit`}>
+                                                <Link
+                                                    href={`/admin/cards/${card.id}/edit`}
+                                                    aria-label={`Editar ${card.name}`}
+                                                >
                                                     <Pencil className="mr-1.5 h-3 w-3" />
                                                     Editar
                                                 </Link>
                                             </Button>
-                                            <Button 
-                                                variant="outline" 
-                                                size="sm"
-                                                className="text-destructive hover:text-destructive"
-                                                onClick={() => handleDelete(card.id, card.name)}
-                                            >
-                                                <Trash2 className="h-3 w-3" />
-                                            </Button>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        className="text-destructive hover:text-destructive"
+                                                        onClick={() => handleDelete(card.id, card.name)}
+                                                        aria-label={`Eliminar ${card.name}`}
+                                                    >
+                                                        <Trash2 className="h-3 w-3" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>Eliminar carta</p>
+                                                </TooltipContent>
+                                            </Tooltip>
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -485,24 +501,42 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="flex items-center justify-end gap-2">
-                                                            <Button 
-                                                                variant="outline" 
-                                                                size="sm"
-                                                                asChild
-                                                                className="bg-violet-900/50 hover:bg-violet-800/70 text-violet-200 hover:text-violet-100 border-violet-700/50 hover:border-violet-500/70"
-                                                            >
-                                                                <Link href={`/admin/cards/${card.id}/edit`}>
-                                                                    <Pencil className="h-4 w-4" />
-                                                                </Link>
-                                                            </Button>
-                                                            <Button 
-                                                                variant="outline" 
-                                                                size="sm"
-                                                                className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
-                                                                onClick={() => handleDelete(card.id, card.name)}
-                                                            >
-                                                                <Trash2 className="h-4 w-4" />
-                                                            </Button>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <Button
+                                                                        variant="outline"
+                                                                        size="sm"
+                                                                        asChild
+                                                                        className="bg-violet-900/50 hover:bg-violet-800/70 text-violet-200 hover:text-violet-100 border-violet-700/50 hover:border-violet-500/70"
+                                                                    >
+                                                                        <Link
+                                                                            href={`/admin/cards/${card.id}/edit`}
+                                                                            aria-label={`Editar ${card.name}`}
+                                                                        >
+                                                                            <Pencil className="h-4 w-4" />
+                                                                        </Link>
+                                                                    </Button>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>Editar carta</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <Button
+                                                                        variant="outline"
+                                                                        size="sm"
+                                                                        className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
+                                                                        onClick={() => handleDelete(card.id, card.name)}
+                                                                        aria-label={`Eliminar ${card.name}`}
+                                                                    >
+                                                                        <Trash2 className="h-4 w-4" />
+                                                                    </Button>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>Eliminar carta</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
                                                         </div>
                                                     </TableCell>
                                                 </TableRow>
