@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -21,30 +21,10 @@ import {
     Grid3x3,
     Table2
 } from 'lucide-react';
-import { useState } from 'react';
-
-interface CardData {
-    id: number;
-    name: string;
-    card_type: { id: number; name: string } | null;
-    rarity: { id: number; name: string } | null;
-    cost: number;
-    illustration_url?: string | null;
-    effect?: string;
-    world: {
-        id: number;
-        name: string;
-    };
-    character?: {
-        id: number;
-        name: string;
-    } | null;
-    strength?: number | null;
-    agility?: number | null;
-    charisma?: number | null;
-    mind?: number | null;
-    created_at: string;
-}
+import { useState, useCallback } from 'react';
+import { CardData } from '@/types/card';
+import { rarityBadgeVariant } from '@/lib/card-helpers';
+import CardGridItem from './CardGridItem';
 
 interface PaginatedCards {
     data: CardData[];
@@ -66,32 +46,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
     { title: 'Cartas TCG', href: '/admin/cards' },
 ];
-
-const rarityBadgeVariant: Record<string, 'common' | 'rare' | 'epic' | 'legendary' | 'outline'> = {
-    'comun': 'common',
-    'común': 'common',
-    'Común': 'common',
-    'rara': 'rare',
-    'Rara': 'rare',
-    'epica': 'epic',
-    'épica': 'epic',
-    'Épica': 'epic',
-    'legendaria': 'legendary',
-    'Legendaria': 'legendary',
-};
-
-const rarityGradient: Record<string, string> = {
-    'comun': 'from-gray-400 to-gray-600',
-    'común': 'from-gray-400 to-gray-600',
-    'Común': 'from-gray-400 to-gray-600',
-    'rara': 'from-blue-400 to-blue-600',
-    'Rara': 'from-blue-400 to-blue-600',
-    'epica': 'from-purple-400 to-purple-600',
-    'épica': 'from-purple-400 to-purple-600',
-    'Épica': 'from-purple-400 to-purple-600',
-    'legendaria': 'from-amber-400 to-amber-600',
-    'Legendaria': 'from-amber-400 to-amber-600',
-};
 
 export default function Index({ cards: initialCards, filters: initialFilters }: Props) {
     const cards = initialCards || { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0 };
@@ -117,11 +71,11 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
         router.get('/admin/cards');
     };
 
-    const handleDelete = (id: number, name: string) => {
+    const handleDelete = useCallback((id: number, name: string) => {
         if (confirm(`¿Estás seguro de eliminar la carta "${name}"?`)) {
             router.delete(`/admin/cards/${id}`);
         }
-    };
+    }, []);
 
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
@@ -247,109 +201,7 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                     <>
                         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                             {cards.data.map((card) => (
-                                <Card key={card.id} className="card-tcg group overflow-hidden border-primary/20 hover:border-primary/40">
-                                    {/* Card Illustration Header */}
-                                    <div className={`relative h-48 bg-gradient-to-br ${rarityGradient[card.rarity?.name || 'comun'] || 'from-gray-400 to-gray-600'} overflow-hidden`}>
-                                        {card.illustration_url ? (
-                                            <img 
-                                                src={card.illustration_url} 
-                                                alt={card.name}
-                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                            />
-                                        ) : (
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <Swords className="h-20 w-20 text-white/30 animate-float" />
-                                            </div>
-                                        )}
-                                        
-                                        {/* Cost Badge */}
-                                        <div className="absolute top-2 right-2 bg-background/90 backdrop-blur-sm rounded-full h-12 w-12 flex items-center justify-center border-2 border-primary/30 shadow-lg">
-                                            <span className="text-lg font-bold">{card.cost}</span>
-                                        </div>
-
-                                        {/* Rarity Badge */}
-                                        {card.rarity && (
-                                            <div className="absolute top-2 left-2">
-                                                <Badge variant={rarityBadgeVariant[card.rarity.name] || 'outline'} className="capitalize">
-                                                    {card.rarity.name}
-                                                </Badge>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <CardHeader className="pb-3">
-                                        <CardTitle className="text-base line-clamp-1 flex items-center justify-between gap-2">
-                                            <span>{card.name}</span>
-                                            <Sparkles className="h-4 w-4 text-primary shrink-0" />
-                                        </CardTitle>
-                                        <CardDescription className="text-xs">
-                                            {card.card_type?.name || 'Sin tipo'} • {card.world.name}
-                                        </CardDescription>
-                                    </CardHeader>
-
-                                    <CardContent className="space-y-3">
-                                        {/* Stats */}
-                                        {(card.strength || card.agility || card.charisma || card.mind) && (
-                                            <div className="grid grid-cols-2 gap-2">
-                                                {card.strength !== null && (
-                                                    <div className="flex items-center gap-1.5 text-xs">
-                                                        <div className="p-1 rounded bg-red-500/10">
-                                                            <Zap className="h-3 w-3 text-red-600 dark:text-red-400" />
-                                                        </div>
-                                                        <span className="text-muted-foreground">Fuerza: {card.strength}</span>
-                                                    </div>
-                                                )}
-                                                {card.agility !== null && (
-                                                    <div className="flex items-center gap-1.5 text-xs">
-                                                        <div className="p-1 rounded bg-green-500/10">
-                                                            <Zap className="h-3 w-3 text-green-600 dark:text-green-400" />
-                                                        </div>
-                                                        <span className="text-muted-foreground">Agilidad: {card.agility}</span>
-                                                    </div>
-                                                )}
-                                                {card.charisma !== null && (
-                                                    <div className="flex items-center gap-1.5 text-xs">
-                                                        <div className="p-1 rounded bg-pink-500/10">
-                                                            <Heart className="h-3 w-3 text-pink-600 dark:text-pink-400" />
-                                                        </div>
-                                                        <span className="text-muted-foreground">Carisma: {card.charisma}</span>
-                                                    </div>
-                                                )}
-                                                {card.mind !== null && (
-                                                    <div className="flex items-center gap-1.5 text-xs">
-                                                        <div className="p-1 rounded bg-blue-500/10">
-                                                            <Brain className="h-3 w-3 text-blue-600 dark:text-blue-400" />
-                                                        </div>
-                                                        <span className="text-muted-foreground">Mente: {card.mind}</span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
-
-                                        {/* Effect Text (truncated) */}
-                                        <div className="text-xs text-muted-foreground line-clamp-2 border-t pt-2">
-                                            {card.effect ? card.effect.replace(/\*\*\*/g, '').replace(/---/g, '•') : 'Sin efecto'}
-                                        </div>
-
-                                        {/* Actions */}
-                                        <div className="flex gap-2 pt-2">
-                                            <Button variant="outline" size="sm" className="flex-1" asChild>
-                                                <Link href={`/admin/cards/${card.id}/edit`}>
-                                                    <Pencil className="mr-1.5 h-3 w-3" />
-                                                    Editar
-                                                </Link>
-                                            </Button>
-                                            <Button 
-                                                variant="outline" 
-                                                size="sm"
-                                                className="text-destructive hover:text-destructive"
-                                                onClick={() => handleDelete(card.id, card.name)}
-                                            >
-                                                <Trash2 className="h-3 w-3" />
-                                            </Button>
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                <CardGridItem key={card.id} card={card} onDelete={handleDelete} />
                             ))}
                         </div>
 
