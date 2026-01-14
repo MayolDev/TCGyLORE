@@ -6,11 +6,33 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
 
+import { useState } from 'react';
+
+interface Star {
+    id: number;
+    left: string;
+    top: string;
+    animationDelay: string;
+}
+
 export default function AppSidebarLayout({
     children,
     breadcrumbs = [],
 }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [stars, setStars] = useState<Star[]>([]);
+
+    useEffect(() => {
+        // Generate stars only on client side to prevent hydration mismatch
+        const newStars = Array.from({ length: 30 }, (_, i) => ({
+            id: i,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 3}s`,
+        }));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setStars(newStars);
+    }, []);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -65,7 +87,7 @@ export default function AppSidebarLayout({
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -165,14 +187,14 @@ export default function AppSidebarLayout({
                 <div className="absolute top-0 left-3/4 w-2 h-full bg-gradient-to-b from-transparent via-orange-400/20 to-transparent animate-shimmer animation-delay-2000"></div>
                 
                 {/* Estrellas brillantes */}
-                {[...Array(30)].map((_, i) => (
+                {stars.map((star) => (
                     <div
-                        key={i}
+                        key={star.id}
                         className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-twinkle"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 3}s`,
+                            left: star.left,
+                            top: star.top,
+                            animationDelay: star.animationDelay,
                             boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)'
                         }}
                     />
