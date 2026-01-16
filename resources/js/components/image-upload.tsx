@@ -4,6 +4,7 @@ import InputError from '@/components/input-error';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ImageUploadProps {
     label: string;
@@ -54,7 +55,9 @@ export default function ImageUpload({
 
         // Validar tamaño
         if (file.size > maxSize * 1024 * 1024) {
-            alert(`El archivo debe ser menor a ${maxSize}MB`);
+            toast.error(`El archivo debe ser menor a ${maxSize}MB`, {
+                description: 'Por favor selecciona una imagen más pequeña.'
+            });
             return;
         }
 
@@ -66,6 +69,7 @@ export default function ImageUpload({
         reader.readAsDataURL(file);
 
         onFileChange(file);
+        toast.success('Imagen seleccionada correctamente');
     };
 
     const handleDrop = (e: React.DragEvent) => {
@@ -75,6 +79,10 @@ export default function ImageUpload({
         const file = e.dataTransfer.files[0];
         if (file && file.type.startsWith('image/')) {
             handleFileChange(file);
+        } else if (file) {
+            toast.error('Tipo de archivo no válido', {
+                description: 'Por favor sube una imagen válida (JPG, PNG, GIF)'
+            });
         }
     };
 
@@ -94,6 +102,7 @@ export default function ImageUpload({
         if (input) {
             input.value = '';
         }
+        toast.info('Imagen eliminada');
     };
 
     const displayImage = preview || (currentImage ? `/storage/${currentImage}` : null);
@@ -119,7 +128,7 @@ export default function ImageUpload({
                                 alt="Preview"
                                 className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity flex items-center justify-center">
                                 <Button
                                     type="button"
                                     variant="destructive"
@@ -143,7 +152,7 @@ export default function ImageUpload({
                     className={`relative border-2 border-dashed rounded-lg transition-colors ${
                         isDragging
                             ? 'border-primary bg-primary/5'
-                            : 'border-border hover:border-primary/50'
+                            : 'border-border hover:border-primary/50 focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20'
                     } ${aspectRatioClasses[aspectRatio]}`}
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
@@ -183,4 +192,3 @@ export default function ImageUpload({
         </div>
     );
 }
-
