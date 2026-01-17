@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -15,7 +15,7 @@
         'Philosopher', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
-    
+
     --font-heading: 'Cinzel', 'Georgia', serif;
     --font-epic: 'Trade Winds', cursive;
     --font-story: 'Almendra', serif;
@@ -70,117 +70,117 @@
 
 :root {
     /* TAPON'AZO - Tema Épico Oscuro */
-    --background: oklch(0.15 0.03 270);  /* Fondo muy oscuro púrpura */
-    --foreground: oklch(0.95 0.02 60);  /* Texto claro dorado */
-    --card: oklch(0.18 0.04 270);  /* Cards oscuras */
+    --background: oklch(0.15 0.03 270); /* Fondo muy oscuro púrpura */
+    --foreground: oklch(0.95 0.02 60); /* Texto claro dorado */
+    --card: oklch(0.18 0.04 270); /* Cards oscuras */
     --card-foreground: oklch(0.95 0.02 60);
     --popover: oklch(0.16 0.04 270);
     --popover-foreground: oklch(0.95 0.02 60);
-    
+
     /* Dorado Épico */
-    --primary: oklch(0.65 0.18 60);  /* Amarillo dorado */
+    --primary: oklch(0.65 0.18 60); /* Amarillo dorado */
     --primary-foreground: oklch(0.15 0.03 270);
-    
+
     /* Naranja Fuego */
-    --secondary: oklch(0.60 0.20 40);  /* Naranja */
+    --secondary: oklch(0.6 0.2 40); /* Naranja */
     --secondary-foreground: oklch(0.95 0.02 60);
-    
-    --muted: oklch(0.20 0.04 270);  /* Oscuro púrpura */
-    --muted-foreground: oklch(0.70 0.05 60);
-    
+
+    --muted: oklch(0.2 0.04 270); /* Oscuro púrpura */
+    --muted-foreground: oklch(0.7 0.05 60);
+
     /* Rojo Fuego */
-    --accent: oklch(0.55 0.22 30);  /* Rojo */
+    --accent: oklch(0.55 0.22 30); /* Rojo */
     --accent-foreground: oklch(0.95 0.02 60);
-    
-    --destructive: oklch(0.50 0.20 25);  /* Rojo destructivo */
+
+    --destructive: oklch(0.5 0.2 25); /* Rojo destructivo */
     --destructive-foreground: oklch(0.98 0 0);
-    
-    --border: oklch(0.30 0.08 60);  /* Bordes dorados */
-    --input: oklch(0.22 0.04 270);  /* Inputs oscuros */
-    --ring: oklch(0.65 0.18 60);  /* Anillo dorado */
-    
+
+    --border: oklch(0.3 0.08 60); /* Bordes dorados */
+    --input: oklch(0.22 0.04 270); /* Inputs oscuros */
+    --ring: oklch(0.65 0.18 60); /* Anillo dorado */
+
     /* Charts - Tonos Épicos */
     --chart-1: oklch(0.65 0.18 60);
-    --chart-2: oklch(0.60 0.20 40);
+    --chart-2: oklch(0.6 0.2 40);
     --chart-3: oklch(0.55 0.22 30);
-    --chart-4: oklch(0.60 0.18 280);
+    --chart-4: oklch(0.6 0.18 280);
     --chart-5: oklch(0.58 0.16 320);
-    
+
     --radius: 0.75rem;
-    
+
     /* Sidebar - Madera Oscura Épica */
-    --sidebar: oklch(0.12 0.04 270);  /* Muy oscuro */
+    --sidebar: oklch(0.12 0.04 270); /* Muy oscuro */
     --sidebar-foreground: oklch(0.88 0.03 60);
     --sidebar-primary: oklch(0.65 0.18 60);
     --sidebar-primary-foreground: oklch(0.15 0.03 270);
     --sidebar-accent: oklch(0.18 0.05 270);
     --sidebar-accent-foreground: oklch(0.88 0.03 60);
-    --sidebar-border: oklch(0.20 0.05 60);
+    --sidebar-border: oklch(0.2 0.05 60);
     --sidebar-ring: oklch(0.65 0.18 60);
-    
+
     /* Colores épicos personalizados */
     --glow-fire: oklch(0.65 0.22 40);
-    --glow-amber: oklch(0.70 0.20 55);
+    --glow-amber: oklch(0.7 0.2 55);
     --glow-gold: oklch(0.75 0.18 70);
-    
+
     /* Rarezas TCG */
     --rarity-common: oklch(0.45 0.06 30);
     --rarity-rare: oklch(0.55 0.15 240);
-    --rarity-epic: oklch(0.60 0.20 300);
-    --rarity-legendary: oklch(0.70 0.22 60);
+    --rarity-epic: oklch(0.6 0.2 300);
+    --rarity-legendary: oklch(0.7 0.22 60);
 }
 
 .dark {
     /* Modo Oscuro ÉPICO - Más profundo */
-    --background: oklch(0.10 0.04 270);  /* Casi negro púrpura */
-    --foreground: oklch(0.95 0.03 60);  /* Texto dorado claro */
-    --card: oklch(0.14 0.05 270);  /* Cards muy oscuras */
+    --background: oklch(0.1 0.04 270); /* Casi negro púrpura */
+    --foreground: oklch(0.95 0.03 60); /* Texto dorado claro */
+    --card: oklch(0.14 0.05 270); /* Cards muy oscuras */
     --card-foreground: oklch(0.95 0.03 60);
     --popover: oklch(0.12 0.05 270);
     --popover-foreground: oklch(0.95 0.03 60);
-    
-    --primary: oklch(0.70 0.20 60);  /* Dorado más brillante */
-    --primary-foreground: oklch(0.10 0.04 270);
-    
-    --secondary: oklch(0.65 0.22 40);  /* Naranja brillante */
+
+    --primary: oklch(0.7 0.2 60); /* Dorado más brillante */
+    --primary-foreground: oklch(0.1 0.04 270);
+
+    --secondary: oklch(0.65 0.22 40); /* Naranja brillante */
     --secondary-foreground: oklch(0.95 0.03 60);
-    
-    --muted: oklch(0.18 0.04 270);  /* Púrpura oscuro */
+
+    --muted: oklch(0.18 0.04 270); /* Púrpura oscuro */
     --muted-foreground: oklch(0.65 0.06 60);
-    
-    --accent: oklch(0.60 0.24 30);  /* Rojo fuego */
+
+    --accent: oklch(0.6 0.24 30); /* Rojo fuego */
     --accent-foreground: oklch(0.95 0.03 60);
-    
-    --destructive: oklch(0.45 0.22 25);  /* Rojo intenso */
+
+    --destructive: oklch(0.45 0.22 25); /* Rojo intenso */
     --destructive-foreground: oklch(0.95 0.03 60);
-    
-    --border: oklch(0.28 0.08 60);  /* Bordes dorados */
-    --input: oklch(0.20 0.04 270);
-    --ring: oklch(0.65 0.20 60);  /* Anillo dorado brillante */
-    
-    --chart-1: oklch(0.65 0.20 60);
+
+    --border: oklch(0.28 0.08 60); /* Bordes dorados */
+    --input: oklch(0.2 0.04 270);
+    --ring: oklch(0.65 0.2 60); /* Anillo dorado brillante */
+
+    --chart-1: oklch(0.65 0.2 60);
     --chart-2: oklch(0.62 0.22 40);
     --chart-3: oklch(0.58 0.24 30);
-    --chart-4: oklch(0.62 0.20 280);
-    --chart-5: oklch(0.60 0.18 320);
-    
-    --sidebar: oklch(0.08 0.05 270);  /* Sidebar casi negro */
-    --sidebar-foreground: oklch(0.90 0.03 60);
-    --sidebar-primary: oklch(0.70 0.20 60);
-    --sidebar-primary-foreground: oklch(0.10 0.04 270);
+    --chart-4: oklch(0.62 0.2 280);
+    --chart-5: oklch(0.6 0.18 320);
+
+    --sidebar: oklch(0.08 0.05 270); /* Sidebar casi negro */
+    --sidebar-foreground: oklch(0.9 0.03 60);
+    --sidebar-primary: oklch(0.7 0.2 60);
+    --sidebar-primary-foreground: oklch(0.1 0.04 270);
     --sidebar-accent: oklch(0.14 0.06 270);
-    --sidebar-accent-foreground: oklch(0.90 0.03 60);
+    --sidebar-accent-foreground: oklch(0.9 0.03 60);
     --sidebar-border: oklch(0.18 0.05 60);
-    --sidebar-ring: oklch(0.65 0.20 60);
-    
+    --sidebar-ring: oklch(0.65 0.2 60);
+
     /* Resplandores más intensos en dark mode */
     --glow-fire: oklch(0.68 0.24 40);
     --glow-amber: oklch(0.72 0.22 55);
     --glow-gold: oklch(0.75 0.22 70);
-    
+
     /* Rarezas más brillantes */
     --rarity-common: oklch(0.48 0.08 30);
-    --rarity-rare: oklch(0.60 0.20 240);
+    --rarity-rare: oklch(0.6 0.2 240);
     --rarity-epic: oklch(0.65 0.24 300);
     --rarity-legendary: oklch(0.75 0.24 60);
 }
@@ -193,8 +193,13 @@
     body {
         @apply bg-background text-foreground;
     }
-    
-    h1, h2, h3, h4, h5, h6 {
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         font-family: var(--font-heading);
         font-weight: 600;
     }
@@ -202,11 +207,14 @@
 
 /* Animaciones Taberna Medieval */
 @keyframes glow-pulse {
-    0%, 100% {
+    0%,
+    100% {
         box-shadow: 0 0 5px var(--glow-fire);
     }
     50% {
-        box-shadow: 0 0 20px var(--glow-fire), 0 0 30px var(--glow-amber);
+        box-shadow:
+            0 0 20px var(--glow-fire),
+            0 0 30px var(--glow-amber);
     }
 }
 
@@ -220,7 +228,8 @@
 }
 
 @keyframes float {
-    0%, 100% {
+    0%,
+    100% {
         transform: translateY(0);
     }
     50% {
@@ -229,7 +238,8 @@
 }
 
 @keyframes magical-glow {
-    0%, 100% {
+    0%,
+    100% {
         filter: drop-shadow(0 0 3px var(--glow-fire));
     }
     33% {
@@ -241,7 +251,8 @@
 }
 
 @keyframes flicker {
-    0%, 100% {
+    0%,
+    100% {
         opacity: 1;
         filter: brightness(1);
     }
@@ -280,20 +291,24 @@
 }
 
 /* Estilos épicos para formularios en WriterLayout */
-.writer-form [data-slot="card"] {
+.writer-form [data-slot='card'] {
     border: 4px solid rgb(168 85 247 / 0.4) !important;
-    background: linear-gradient(135deg, rgb(30 41 59 / 0.95), rgb(15 23 42 / 0.95)) !important;
+    background: linear-gradient(
+        135deg,
+        rgb(30 41 59 / 0.95),
+        rgb(15 23 42 / 0.95)
+    ) !important;
     box-shadow: 0 0 30px rgba(168, 85, 247, 0.3) !important;
 }
 
-.writer-form [data-slot="card-title"] {
+.writer-form [data-slot='card-title'] {
     font-family: 'Cinzel', serif !important;
     font-weight: 900 !important;
     color: rgb(254 240 138) !important;
     font-size: 1.5rem !important;
 }
 
-.writer-form [data-slot="card-description"] {
+.writer-form [data-slot='card-description'] {
     color: rgb(254 240 138 / 0.6) !important;
     font-weight: 600 !important;
 }
@@ -305,10 +320,10 @@
     font-size: 0.95rem !important;
 }
 
-.writer-form input[type="text"],
-.writer-form input[type="email"],
-.writer-form input[type="url"],
-.writer-form input[type="number"],
+.writer-form input[type='text'],
+.writer-form input[type='email'],
+.writer-form input[type='url'],
+.writer-form input[type='number'],
 .writer-form textarea,
 .writer-form select {
     background-color: rgb(15 23 42 / 0.5) !important;
@@ -332,11 +347,15 @@
 .card-tcg {
     position: relative;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: linear-gradient(135deg, var(--card) 0%, oklch(from var(--card) calc(l - 0.02) c h) 100%);
+    background: linear-gradient(
+        135deg,
+        var(--card) 0%,
+        oklch(from var(--card) calc(l - 0.02) c h) 100%
+    );
     /* Sombra de objeto sobre mesa */
-    box-shadow: 
-        0 1px 3px oklch(0.10 0 0 / 0.3),
-        0 10px 20px oklch(0.10 0 0 / 0.2),
+    box-shadow:
+        0 1px 3px oklch(0.1 0 0 / 0.3),
+        0 10px 20px oklch(0.1 0 0 / 0.2),
         inset 0 0 0 1px oklch(from var(--card) calc(l + 0.05) c h / 0.5);
 }
 
@@ -346,13 +365,20 @@
     inset: -2px;
     border-radius: inherit;
     padding: 2px;
-    background: linear-gradient(135deg, var(--glow-fire), var(--glow-amber), var(--glow-gold));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    background: linear-gradient(
+        135deg,
+        var(--glow-fire),
+        var(--glow-amber),
+        var(--glow-gold)
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
     transition: opacity 0.3s;
-    pointer-events: none;  /* CRÍTICO: Permite clics a través del pseudo-elemento */
+    pointer-events: none; /* CRÍTICO: Permite clics a través del pseudo-elemento */
 }
 
 .card-tcg:hover::before {
@@ -361,38 +387,43 @@
 
 .card-tcg:hover {
     transform: translateY(-8px) scale(1.03) rotate(-1deg);
-    box-shadow: 
-        0 2px 5px oklch(0.10 0 0 / 0.3),
-        0 20px 40px oklch(0.10 0 0 / 0.3),
+    box-shadow:
+        0 2px 5px oklch(0.1 0 0 / 0.3),
+        0 20px 40px oklch(0.1 0 0 / 0.3),
         0 0 20px var(--glow-fire),
         inset 0 0 0 1px oklch(from var(--card) calc(l + 0.08) c h / 0.7);
 }
 
 /* Sidebar Navigation Glow Effects - Fuego de Taberna */
-[data-slot="sidebar"] [data-active="true"] {
+[data-slot='sidebar'] [data-active='true'] {
     position: relative;
 }
 
-[data-slot="sidebar"] [data-active="true"]::before {
+[data-slot='sidebar'] [data-active='true']::before {
     content: '';
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
     width: 3px;
-    background: linear-gradient(to bottom, var(--glow-fire), var(--glow-amber), var(--glow-gold));
+    background: linear-gradient(
+        to bottom,
+        var(--glow-fire),
+        var(--glow-amber),
+        var(--glow-gold)
+    );
     box-shadow: 0 0 10px var(--glow-fire);
     animation: flicker 2s ease-in-out infinite;
 }
 
 /* Hover effect for sidebar items - Resplandor hoguera */
-[data-slot="sidebar-menu-button"]:hover {
+[data-slot='sidebar-menu-button']:hover {
     background: oklch(from var(--primary) l c h / 0.1);
     transition: all 0.2s ease;
     box-shadow: inset 0 0 20px oklch(from var(--glow-fire) l c h / 0.1);
 }
 
-[data-slot="sidebar-menu-button"]:hover svg {
+[data-slot='sidebar-menu-button']:hover svg {
     filter: drop-shadow(0 0 3px var(--glow-amber));
 }
 
@@ -402,26 +433,28 @@
     backdrop-filter: blur(12px);
 }
 
-[data-sonner-toast][data-type="success"] {
+[data-sonner-toast][data-type='success'] {
     background: oklch(from var(--primary) l c h / 0.05);
     border-color: oklch(from var(--primary) l c h / 0.3);
 }
 
-[data-sonner-toast][data-type="error"] {
+[data-sonner-toast][data-type='error'] {
     background: oklch(from var(--destructive) l c h / 0.05);
     border-color: oklch(from var(--destructive) l c h / 0.3);
 }
 
-[data-sonner-toast][data-type="warning"] {
+[data-sonner-toast][data-type='warning'] {
     background: oklch(0.95 0.15 85 / 0.05);
-    border-color: oklch(0.75 0.20 85 / 0.3);
+    border-color: oklch(0.75 0.2 85 / 0.3);
 }
 
 /* Input Focus Glow - Resplandor Dorado */
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-    box-shadow: 0 0 0 3px var(--glow-amber), 0 0 10px var(--glow-gold);
+    box-shadow:
+        0 0 0 3px var(--glow-amber),
+        0 0 10px var(--glow-gold);
 }
 
 /* Writer-friendly textareas */
@@ -459,19 +492,23 @@ body {
     background-color: var(--background);
     background-image: 
         /* Vignette épico */
-        radial-gradient(ellipse at center, transparent 0%, oklch(0.08 0.05 270 / 0.5) 100%),
+        radial-gradient(
+            ellipse at center,
+            transparent 0%,
+            oklch(0.08 0.05 270 / 0.5) 100%
+        ),
         /* Textura mística */
         repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 40px,
-            oklch(from var(--background) calc(l + 0.01) c h / 0.02) 40px,
-            oklch(from var(--background) calc(l + 0.01) c h / 0.02) 80px
-        );
+                45deg,
+                transparent,
+                transparent 40px,
+                oklch(from var(--background) calc(l + 0.01) c h / 0.02) 40px,
+                oklch(from var(--background) calc(l + 0.01) c h / 0.02) 80px
+            );
 }
 
 /* Contenido principal épico */
-[data-slot="app-content"] {
+[data-slot='app-content'] {
     background: transparent;
     padding-left: 2rem;
     padding-right: 2rem;
@@ -480,24 +517,23 @@ body {
 }
 
 /* Sidebar épico oscuro */
-[data-slot="sidebar"] {
+[data-slot='sidebar'] {
     background-color: var(--sidebar);
     background-image: 
-        /* Textura sutil */
-        repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 40px,
-            oklch(from var(--sidebar) calc(l - 0.01) c h) 40px,
-            oklch(from var(--sidebar) calc(l - 0.01) c h) 41px
-        );
-    border-right: 2px solid oklch(0.25 0.10 60 / 0.3);
+        /* Textura sutil */ repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 40px,
+        oklch(from var(--sidebar) calc(l - 0.01) c h) 40px,
+        oklch(from var(--sidebar) calc(l - 0.01) c h) 41px
+    );
+    border-right: 2px solid oklch(0.25 0.1 60 / 0.3);
     overflow-x: hidden !important;
     overflow-y: auto;
 }
 
 /* Evitar que elementos del sidebar causen scroll horizontal */
-[data-slot="sidebar"] * {
+[data-slot='sidebar'] * {
     max-width: 100%;
     overflow-wrap: break-word;
 }
@@ -748,7 +784,9 @@ body {
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
     z-index: 1000;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
@@ -769,7 +807,9 @@ body {
     border-top-color: rgb(251 146 60 / 0.5);
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
     z-index: 1000;
 }
 
@@ -777,6 +817,3 @@ body {
     opacity: 1;
     transform: translateX(-50%) translateY(-2px);
 }
-
-
-

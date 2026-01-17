@@ -25,7 +25,7 @@ createInertiaApp({
         );
     },
     progress: {
-        color: '#d97706',  // Ámbar dorado
+        color: '#d97706', // Ámbar dorado
         showSpinner: true,
     },
 });
