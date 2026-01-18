@@ -209,7 +209,7 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
                                         <Input
                                             id="illustration"
                                             type="file"
-                                            accept="image/*"
+                                            accept=".jpg,.jpeg,.png,.gif,.webp"
                                             onChange={(e) => setData('illustration', e.target.files?.[0] || null)}
                                         />
                                         <p className="text-xs text-muted-foreground mt-1">

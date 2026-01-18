@@ -23,7 +23,7 @@ export default function ImageUpload({
     currentImage,
     onFileChange,
     error,
-    accept = 'image/*',
+    accept = '.jpg,.jpeg,.png,.gif,.webp',
     maxSize = 2,
     aspectRatio = 'any',
     required = false,
@@ -73,7 +73,7 @@ export default function ImageUpload({
         setIsDragging(false);
 
         const file = e.dataTransfer.files[0];
-        if (file && file.type.startsWith('image/')) {
+        if (file && file.type.startsWith('image/') && file.type !== 'image/svg+xml') {
             handleFileChange(file);
         }
     };
