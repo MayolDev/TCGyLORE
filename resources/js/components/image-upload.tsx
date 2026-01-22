@@ -4,6 +4,7 @@ import InputError from '@/components/input-error';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ImageUploadProps {
     label: string;
@@ -54,7 +55,7 @@ export default function ImageUpload({
 
         // Validar tamaño
         if (file.size > maxSize * 1024 * 1024) {
-            alert(`El archivo debe ser menor a ${maxSize}MB`);
+            toast.error(`El archivo debe ser menor a ${maxSize}MB`);
             return;
         }
 
@@ -119,7 +120,7 @@ export default function ImageUpload({
                                 alt="Preview"
                                 className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity flex items-center justify-center">
                                 <Button
                                     type="button"
                                     variant="destructive"
@@ -140,7 +141,7 @@ export default function ImageUpload({
 
                 {/* Upload Section */}
                 <div
-                    className={`relative border-2 border-dashed rounded-lg transition-colors ${
+                    className={`relative border-2 border-dashed rounded-lg transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 ${
                         isDragging
                             ? 'border-primary bg-primary/5'
                             : 'border-border hover:border-primary/50'
