@@ -160,11 +160,11 @@ export default function Edit({ location, worlds, allLocations }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="image">Imagen de la Ubicación (opcional)</Label>
                                 <ImageUpload
-                                    value={data.image}
-                                    onChange={(file) => setData('image', file)}
-                                    existingImage={location.image ? `/storage/${location.image}` : undefined}
+                                    id="image"
+                                    label="Imagen de la Ubicación (opcional)"
+                                    onFileChange={(file) => setData('image', file)}
+                                    currentImage={location.image}
                                     error={errors.image}
                                 />
                                 <p className="text-xs text-yellow-300/60 font-semibold">
