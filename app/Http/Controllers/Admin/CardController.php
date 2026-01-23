@@ -22,7 +22,14 @@ class CardController extends Controller
     public function index(Request $request)
     {
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            // Optimize: Select only used columns (id, name) and remove unused relationships
+            // (archetype, alignment, faction, edition, artist) to reduce payload size.
+            ->with([
+                'world:id,name',
+                'character:id,name',
+                'cardType:id,name',
+                'rarity:id,name'
+            ])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
@@ -103,8 +110,8 @@ class CardController extends Controller
 
     public function edit(Card $card)
     {
-        $card->load(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist']);
-
+        // Optimize: No need to eager load relationships as the Edit form
+        // only uses the foreign keys (e.g., world_id) present in the model.
         return Inertia::render('Admin/Cards/Edit', [
             'card' => $card,
             'worlds' => World::all(['id', 'name']),
