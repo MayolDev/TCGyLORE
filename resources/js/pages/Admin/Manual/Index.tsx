@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -13,6 +13,8 @@ import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import { rehypeSanitizeSchema } from '@/lib/rehype-config';
 import { processManualCitations } from '@/lib/citations';
 
 interface ManualSection {
@@ -482,7 +484,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                 <div className="prose prose-orange prose-lg max-w-none">
                                     <ReactMarkdown 
                                         remarkPlugins={[remarkGfm]}
-                                        rehypePlugins={[rehypeRaw]}
+                                        rehypePlugins={[rehypeRaw, [rehypeSanitize, rehypeSanitizeSchema]]}
                                     >
                                         {processManualCitations(previewSection?.content || '')}
                                     </ReactMarkdown>
@@ -515,7 +517,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                             }
                                             return a.order - b.order;
                                         })
-                                        .map((section, index) => (
+                                        .map((section) => (
                                             <div key={section.id} className="border-t-4 border-orange-500/30 pt-8 first:border-t-0 first:pt-0">
                                                 <div className="mb-6">
                                                     <Badge className="mb-2 bg-orange-600/20 text-orange-300 border-orange-500/50">
@@ -525,7 +527,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                 </div>
                                                 <ReactMarkdown 
                                                     remarkPlugins={[remarkGfm]}
-                                                    rehypePlugins={[rehypeRaw]}
+                                                    rehypePlugins={[rehypeRaw, [rehypeSanitize, rehypeSanitizeSchema]]}
                                                 >
                                                     {processManualCitations(section.content)}
                                                 </ReactMarkdown>
