@@ -22,7 +22,8 @@ class CardController extends Controller
     public function index(Request $request)
     {
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            // Optimize: Only load necessary relationships and columns for the list view
+            ->with(['world:id,name', 'character:id,name', 'cardType:id,name', 'rarity:id,name'])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
@@ -103,7 +104,8 @@ class CardController extends Controller
 
     public function edit(Card $card)
     {
-        $card->load(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist']);
+        // Optimization: Removed eager loading as the Edit component uses dropdowns
+        // populated by separate props and the card's foreign keys.
 
         return Inertia::render('Admin/Cards/Edit', [
             'card' => $card,
