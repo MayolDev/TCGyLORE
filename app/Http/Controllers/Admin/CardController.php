@@ -21,8 +21,11 @@ class CardController extends Controller
 {
     public function index(Request $request)
     {
+        // Performance: Constrain eager loaded relationships to only required columns
+        // and remove unused relationships (archetype, alignment, faction, edition, artist)
+        // to reduce payload size and memory usage.
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            ->with(['world:id,name', 'character:id,name', 'cardType:id,name', 'rarity:id,name'])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
@@ -103,7 +106,8 @@ class CardController extends Controller
 
     public function edit(Card $card)
     {
-        $card->load(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist']);
+        // Performance: Removed unnecessary eager loading as the frontend uses
+        // foreign keys directly and separate props for dropdowns.
 
         return Inertia::render('Admin/Cards/Edit', [
             'card' => $card,
