@@ -12,6 +12,7 @@ use App\Models\Edition;
 use App\Models\Rarity;
 use App\Models\World;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CardSeeder extends Seeder
 {
@@ -66,8 +67,6 @@ class CardSeeder extends Seeder
                 'agility' => 3,
                 'charisma' => 8,
                 'mind' => 9,
-                'defense' => 4,
-                'magic_defense' => 7,
                 'health' => 25,
                 'cost' => 7,
                 'card_type_id' => $criaturaType?->id,
@@ -89,8 +88,6 @@ class CardSeeder extends Seeder
                 'agility' => 4,
                 'charisma' => 6,
                 'mind' => 7,
-                'defense' => 6,
-                'magic_defense' => 8,
                 'health' => 30,
                 'cost' => 8,
                 'card_type_id' => $criaturaType?->id,
@@ -112,8 +109,6 @@ class CardSeeder extends Seeder
                 'agility' => 6,
                 'charisma' => 7,
                 'mind' => 4,
-                'defense' => 8,
-                'magic_defense' => 3,
                 'health' => 35,
                 'cost' => 6,
                 'card_type_id' => $criaturaType?->id,
@@ -134,8 +129,6 @@ Roba una carta.',
                 'agility' => null,
                 'charisma' => null,
                 'mind' => null,
-                'defense' => null,
-                'magic_defense' => null,
                 'cost' => 3,
                 'card_type_id' => $hechizoType?->id,
                 'rarity_id' => $raraRarity?->id,
@@ -155,8 +148,6 @@ Roba una carta.',
                 'agility' => 2,
                 'charisma' => 1,
                 'mind' => 5,
-                'defense' => 7,
-                'magic_defense' => 6,
                 'health' => 20,
                 'cost' => 4,
                 'card_type_id' => $criaturaType?->id,
@@ -171,7 +162,31 @@ Roba una carta.',
         ];
 
         foreach ($cards as $card) {
-            Card::create(array_merge($card, ['world_id' => $world->id]));
+            // Transform keys and values for DB insertion
+            $dbCard = [
+                'world_id' => $world->id,
+                'character_id' => $card['character_id'] ?? null,
+                'name' => $card['name'],
+                'effect' => $card['effect'],
+                'strength' => $card['strength'] ?? null,
+                'agility' => $card['agility'] ?? null,
+                'charisma' => $card['charisma'] ?? null,
+                'mind' => $card['mind'] ?? null,
+                'health' => $card['health'] ?? null,
+                'cost' => $card['cost'],
+                'card_type' => CardType::find($card['card_type_id'])?->name ?? 'Desconocido',
+                'rarity' => Str::slug(Rarity::find($card['rarity_id'])?->name ?? 'comun'),
+                'archetype' => Archetype::find($card['archetype_id'])?->name ?? 'Desconocido',
+                'alignment' => Str::slug(Alignment::find($card['alignment_id'])?->name ?? 'neutral'),
+                'faction' => isset($card['faction_id']) ? (Faction::find($card['faction_id'])?->name) : null,
+                'edition' => isset($card['edition_id']) ? (Edition::find($card['edition_id'])?->name) : null,
+                'artist' => isset($card['artist_id']) ? (Artist::find($card['artist_id'])?->name) : null,
+                'flavor_text' => $card['flavor_text'] ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+
+            \Illuminate\Support\Facades\DB::table('cards')->insert($dbCard);
         }
     }
 }
