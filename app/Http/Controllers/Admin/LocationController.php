@@ -11,10 +11,24 @@ use Inertia\Inertia;
 
 class LocationController extends Controller
 {
+    /**
+     * Get all locations for the map view with optimized query.
+     * Uses toBase() to skip model hydration for better performance.
+     */
+    private function getAllLocationsForMap()
+    {
+        return Location::query()
+            ->select('id', 'name', 'description', 'location_type as type', 'coordinate_x', 'coordinate_y')
+            ->whereNotNull('coordinate_x')
+            ->whereNotNull('coordinate_y')
+            ->toBase()
+            ->get();
+    }
+
     public function index(Request $request)
     {
         $locations = Location::query()
-            ->with('world')
+            ->with('world:id,name') // Optimize: only load necessary columns
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
@@ -28,51 +42,19 @@ class LocationController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        // Cargar todas las ubicaciones para el mapa
-        $allLocations = Location::select('id', 'name', 'description', 'location_type as type', 'coordinate_x', 'coordinate_y')
-            ->whereNotNull('coordinate_x')
-            ->whereNotNull('coordinate_y')
-            ->get()
-            ->map(function ($loc) {
-                return [
-                    'id' => $loc->id,
-                    'name' => $loc->name,
-                    'description' => $loc->description,
-                    'type' => $loc->type,
-                    'coordinate_x' => $loc->coordinate_x,
-                    'coordinate_y' => $loc->coordinate_y,
-                ];
-            });
-
         return Inertia::render('Admin/Locations/Index', [
             'locations' => $locations,
             'worlds' => World::all(['id', 'name']),
             'filters' => $request->only(['search', 'location_type', 'world_id']),
-            'allLocations' => $allLocations,
+            'allLocations' => $this->getAllLocationsForMap(),
         ]);
     }
 
     public function create()
     {
-        // Cargar todas las ubicaciones para mostrarlas en el mapa
-        $allLocations = Location::select('id', 'name', 'description', 'location_type as type', 'coordinate_x', 'coordinate_y')
-            ->whereNotNull('coordinate_x')
-            ->whereNotNull('coordinate_y')
-            ->get()
-            ->map(function ($loc) {
-                return [
-                    'id' => $loc->id,
-                    'name' => $loc->name,
-                    'description' => $loc->description,
-                    'type' => $loc->type,
-                    'coordinate_x' => $loc->coordinate_x,
-                    'coordinate_y' => $loc->coordinate_y,
-                ];
-            });
-
         return Inertia::render('Admin/Locations/Create', [
             'worlds' => World::all(['id', 'name']),
-            'allLocations' => $allLocations,
+            'allLocations' => $this->getAllLocationsForMap(),
         ]);
     }
 
@@ -102,28 +84,12 @@ class LocationController extends Controller
 
     public function edit(Location $location)
     {
-        $location->load('world');
-
-        // Cargar todas las ubicaciones para mostrarlas en el mapa (incluyendo la actual)
-        $allLocations = Location::select('id', 'name', 'description', 'location_type as type', 'coordinate_x', 'coordinate_y')
-            ->whereNotNull('coordinate_x')
-            ->whereNotNull('coordinate_y')
-            ->get()
-            ->map(function ($loc) {
-                return [
-                    'id' => $loc->id,
-                    'name' => $loc->name,
-                    'description' => $loc->description,
-                    'type' => $loc->type,
-                    'coordinate_x' => $loc->coordinate_x,
-                    'coordinate_y' => $loc->coordinate_y,
-                ];
-            });
+        // Removed eager loading of world as it's not used in the edit form view directly (only world_id)
 
         return Inertia::render('Admin/Locations/Edit', [
             'location' => $location,
             'worlds' => World::all(['id', 'name']),
-            'allLocations' => $allLocations,
+            'allLocations' => $this->getAllLocationsForMap(),
         ]);
     }
 
