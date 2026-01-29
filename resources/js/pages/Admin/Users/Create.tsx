@@ -1,4 +1,12 @@
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -8,12 +16,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
-import InputError from '@/components/input-error';
 
 interface Role {
     id: number;
@@ -58,8 +64,12 @@ export default function Create({ roles }: Props) {
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold">Crear Nuevo Usuario</h1>
-                        <p className="text-muted-foreground">Agrega un nuevo usuario al sistema</p>
+                        <h1 className="text-2xl font-bold">
+                            Crear Nuevo Usuario
+                        </h1>
+                        <p className="text-muted-foreground">
+                            Agrega un nuevo usuario al sistema
+                        </p>
                     </div>
                 </div>
 
@@ -78,7 +88,9 @@ export default function Create({ roles }: Props) {
                                     id="name"
                                     type="text"
                                     value={data.name}
-                                    onChange={(e) => setData('name', e.target.value)}
+                                    onChange={(e) =>
+                                        setData('name', e.target.value)
+                                    }
                                     required
                                     autoFocus
                                 />
@@ -91,7 +103,9 @@ export default function Create({ roles }: Props) {
                                     id="email"
                                     type="email"
                                     value={data.email}
-                                    onChange={(e) => setData('email', e.target.value)}
+                                    onChange={(e) =>
+                                        setData('email', e.target.value)
+                                    }
                                     required
                                 />
                                 <InputError message={errors.email} />
@@ -103,7 +117,9 @@ export default function Create({ roles }: Props) {
                                     id="password"
                                     type="password"
                                     value={data.password}
-                                    onChange={(e) => setData('password', e.target.value)}
+                                    onChange={(e) =>
+                                        setData('password', e.target.value)
+                                    }
                                     required
                                 />
                                 <InputError message={errors.password} />
@@ -111,13 +127,21 @@ export default function Create({ roles }: Props) {
 
                             <div className="space-y-2">
                                 <Label htmlFor="role">Rol</Label>
-                                <Select value={data.role} onValueChange={(value) => setData('role', value)}>
+                                <Select
+                                    value={data.role}
+                                    onValueChange={(value) =>
+                                        setData('role', value)
+                                    }
+                                >
                                     <SelectTrigger>
                                         <SelectValue placeholder="Selecciona un rol" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {roles.map((role) => (
-                                            <SelectItem key={role.id} value={role.name}>
+                                            <SelectItem
+                                                key={role.id}
+                                                value={role.name}
+                                            >
                                                 {role.name}
                                             </SelectItem>
                                         ))}
@@ -128,7 +152,9 @@ export default function Create({ roles }: Props) {
 
                             <div className="flex gap-2">
                                 <Button type="submit" disabled={processing}>
-                                    {processing ? 'Creando...' : 'Crear Usuario'}
+                                    {processing
+                                        ? 'Creando...'
+                                        : 'Crear Usuario'}
                                 </Button>
                                 <Link href="/admin/users">
                                     <Button type="button" variant="outline">
@@ -143,4 +169,3 @@ export default function Create({ roles }: Props) {
         </AdminLayout>
     );
 }
-
