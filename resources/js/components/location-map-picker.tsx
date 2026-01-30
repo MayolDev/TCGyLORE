@@ -7,7 +7,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// @ts-ignore
+// @ts-expect-error - Override protected property for Leaflet in Vite
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon,
@@ -30,6 +30,7 @@ export default function LocationMapPicker({
     const markerRef = useRef<L.Marker | null>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
 
+    // Initial setup
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) return;
 
@@ -63,9 +64,9 @@ export default function LocationMapPicker({
                 iconAnchor: [16, 32],
             });
 
-            markerRef.current = L.marker([latitude, longitude], { 
+            markerRef.current = L.marker([latitude, longitude], {
                 icon: customIcon,
-                draggable: true 
+                draggable: true,
             }).addTo(map);
 
             // Evento al arrastrar el marcador
@@ -78,7 +79,7 @@ export default function LocationMapPicker({
         // Click en el mapa para colocar/mover el marcador
         map.on('click', (e) => {
             const { lat, lng } = e.latlng;
-            
+
             const customIcon = L.divIcon({
                 className: 'custom-marker-icon',
                 html: `
@@ -98,9 +99,9 @@ export default function LocationMapPicker({
             if (markerRef.current) {
                 markerRef.current.setLatLng([lat, lng]);
             } else {
-                markerRef.current = L.marker([lat, lng], { 
+                markerRef.current = L.marker([lat, lng], {
                     icon: customIcon,
-                    draggable: true 
+                    draggable: true,
                 }).addTo(map);
 
                 markerRef.current.on('dragend', (e) => {
@@ -119,6 +120,8 @@ export default function LocationMapPicker({
             map.remove();
             mapRef.current = null;
         };
+        // We exclude dependencies here intentionally as this is initialization logic
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Actualizar posición del marcador cuando cambien las props
@@ -140,7 +143,10 @@ export default function LocationMapPicker({
                     style={{ zIndex: 0 }}
                 />
                 <div className="absolute top-4 left-4 bg-slate-900/90 border-2 border-purple-500/50 rounded-lg px-4 py-2 z-[1000] backdrop-blur-sm">
-                    <p className="text-sm text-yellow-200 font-bold" style={{ fontFamily: 'Cinzel, serif' }}>
+                    <p
+                        className="text-sm font-bold text-yellow-200"
+                        style={{ fontFamily: 'Cinzel, serif' }}
+                    >
                         🗺️ Haz clic en el mapa para seleccionar una ubicación
                     </p>
                 </div>
@@ -170,4 +176,3 @@ export default function LocationMapPicker({
         </div>
     );
 }
-
