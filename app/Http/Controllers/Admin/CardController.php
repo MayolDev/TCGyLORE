@@ -22,7 +22,7 @@ class CardController extends Controller
     public function index(Request $request)
     {
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            ->with(['world:id,name', 'character:id,name', 'cardType:id,name', 'rarity:id,name'])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
@@ -103,8 +103,6 @@ class CardController extends Controller
 
     public function edit(Card $card)
     {
-        $card->load(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist']);
-
         return Inertia::render('Admin/Cards/Edit', [
             'card' => $card,
             'worlds' => World::all(['id', 'name']),
