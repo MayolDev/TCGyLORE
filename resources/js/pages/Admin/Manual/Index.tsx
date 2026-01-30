@@ -774,7 +774,7 @@ export default function Index({
                                             }
                                             return a.order - b.order;
                                         })
-                                        .map((section, index) => (
+                                        .map((section) => (
                                             <div
                                                 key={section.id}
                                                 className="border-t-4 border-orange-500/30 pt-8 first:border-t-0 first:pt-0"
