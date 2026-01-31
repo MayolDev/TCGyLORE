@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { 
     Swords, 
     Plus, 
@@ -156,6 +157,7 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                     <Input
                                         type="text"
                                         placeholder="Buscar cartas por nombre..."
+                                        aria-label="Buscar cartas por nombre"
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
                                         className="pl-9"
@@ -339,14 +341,22 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                                     Editar
                                                 </Link>
                                             </Button>
-                                            <Button 
-                                                variant="outline" 
-                                                size="sm"
-                                                className="text-destructive hover:text-destructive"
-                                                onClick={() => handleDelete(card.id, card.name)}
-                                            >
-                                                <Trash2 className="h-3 w-3" />
-                                            </Button>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        aria-label="Eliminar carta"
+                                                        className="text-destructive hover:text-destructive"
+                                                        onClick={() => handleDelete(card.id, card.name)}
+                                                    >
+                                                        <Trash2 className="h-3 w-3" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>Eliminar carta</p>
+                                                </TooltipContent>
+                                            </Tooltip>
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -485,24 +495,40 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="flex items-center justify-end gap-2">
-                                                            <Button 
-                                                                variant="outline" 
-                                                                size="sm"
-                                                                asChild
-                                                                className="bg-violet-900/50 hover:bg-violet-800/70 text-violet-200 hover:text-violet-100 border-violet-700/50 hover:border-violet-500/70"
-                                                            >
-                                                                <Link href={`/admin/cards/${card.id}/edit`}>
-                                                                    <Pencil className="h-4 w-4" />
-                                                                </Link>
-                                                            </Button>
-                                                            <Button 
-                                                                variant="outline" 
-                                                                size="sm"
-                                                                className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
-                                                                onClick={() => handleDelete(card.id, card.name)}
-                                                            >
-                                                                <Trash2 className="h-4 w-4" />
-                                                            </Button>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <Button
+                                                                        variant="outline"
+                                                                        size="sm"
+                                                                        asChild
+                                                                        aria-label="Editar carta"
+                                                                        className="bg-violet-900/50 hover:bg-violet-800/70 text-violet-200 hover:text-violet-100 border-violet-700/50 hover:border-violet-500/70"
+                                                                    >
+                                                                        <Link href={`/admin/cards/${card.id}/edit`}>
+                                                                            <Pencil className="h-4 w-4" />
+                                                                        </Link>
+                                                                    </Button>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>Editar carta</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <Button
+                                                                        variant="outline"
+                                                                        size="sm"
+                                                                        aria-label="Eliminar carta"
+                                                                        className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
+                                                                        onClick={() => handleDelete(card.id, card.name)}
+                                                                    >
+                                                                        <Trash2 className="h-4 w-4" />
+                                                                    </Button>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>Eliminar carta</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
                                                         </div>
                                                     </TableCell>
                                                 </TableRow>
