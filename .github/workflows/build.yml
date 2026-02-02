@@ -1,24 +1,17 @@
-name: tests
+name: Build and Test
 
 on:
   push:
-    branches:
-      - develop
-      - main
+    branches: [main, develop]
   pull_request:
-    branches:
-      - develop
-      - main
-
-permissions:
-  contents: read
+    branches: [main, develop]
 
 jobs:
-  ci:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Setup PHP
@@ -34,20 +27,19 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
-      - name: Install Node Dependencies
+      - name: Install NPM Dependencies
         run: npm ci
 
-      - name: Install Dependencies
+      - name: Install Composer Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-      - name: Build Assets
+      - name: Build Frontend Assets
         run: npm run build
 
-      - name: Copy Environment File
-        run: cp .env.example .env
+      - name: Prepare Environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
 
-      - name: Generate Application Key
-        run: php artisan key:generate
-
-      - name: Tests
+      - name: Run Tests
         run: ./vendor/bin/pest
