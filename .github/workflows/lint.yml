@@ -10,12 +10,9 @@ on:
       - develop
       - main
 
-permissions:
-  contents: write
-
 jobs:
   quality:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
