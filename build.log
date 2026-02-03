@@ -1,0 +1,41 @@
+
+> @ build /app
+> vite build
+
+vite v7.3.1 building client environment for production...
+[plugin @laravel/vite-plugin-wayfinder] Types generated for actions, routes, form variants
+Found 1 warning while optimizing generated CSS:
+
+[2m│   initial-value: 0;[22m
+[2m│ }[22m
+[2m│[22m @import url('https://fonts.bunny.net/css?family=almendra:700|cinzel:700,900|trade-winds:400');
+[2m┆[22m        [33m[2m^--[22m @import rules must precede all rules aside from @charset and @layer statements[39m
+[2m┆[22m
+[2m│ :root {[22m
+[2m│   --background: oklch(0.15 0.03 270);[22m
+
+transforming...
+✓ 3079 modules transformed.
+✗ Build failed in 10.90s
+error during build:
+resources/js/pages/auth/register.tsx (8:9): "login" is not exported by "resources/js/routes/login/index.ts", imported by "resources/js/pages/auth/register.tsx".
+file: /app/resources/js/pages/auth/register.tsx:8:9
+
+ 6: import { Spinner } from '@/components/ui/spinner';
+ 7: import AuthLayout from '@/layouts/auth-layout';
+ 8: import { login } from '@/routes/login';
+             ^
+ 9: import { store } from '@/routes/register';
+10: import { Form, Head } from '@inertiajs/react';
+
+    at getRollupError (file:///app/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+    at error (file:///app/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/parseAst.js:398:42)
+    at Module.error (file:///app/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:17040:16)
+    at Module.traceVariable (file:///app/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:17452:29)
+    at ModuleScope.findVariable (file:///app/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:15070:39)
+    at FunctionScope.findVariable (file:///app/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:5673:38)
+    at FunctionBodyScope.findVariable (file:///app/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:5673:38)
+    at ReturnValueScope.findVariable (file:///app/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:5673:38)
+    at FunctionBodyScope.findVariable (file:///app/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:5673:38)
+    at Identifier.bind (file:///app/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:5447:40)
+ ELIFECYCLE  Command failed with exit code 1.

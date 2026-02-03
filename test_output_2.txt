@@ -1,0 +1,7 @@
+
+   PASS  Tests\Feature\Auth\RegistrationTest
+  ✓ registration screen can be rendered                                  0.33s
+  ✓ new users can register                                               0.04s
+
+  Tests:    2 passed (4 assertions)
+  Duration: 0.45s
