@@ -4,6 +4,7 @@ import InputError from '@/components/input-error';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ImageUploadProps {
     label: string;
@@ -52,9 +53,15 @@ export default function ImageUpload({
             return;
         }
 
+        // Validar tipo de archivo
+        if (!file.type.startsWith('image/')) {
+            toast.error('El archivo debe ser una imagen');
+            return;
+        }
+
         // Validar tamaño
         if (file.size > maxSize * 1024 * 1024) {
-            alert(`El archivo debe ser menor a ${maxSize}MB`);
+            toast.error(`El archivo debe ser menor a ${maxSize}MB`);
             return;
         }
 
@@ -73,7 +80,7 @@ export default function ImageUpload({
         setIsDragging(false);
 
         const file = e.dataTransfer.files[0];
-        if (file && file.type.startsWith('image/')) {
+        if (file) {
             handleFileChange(file);
         }
     };
@@ -140,7 +147,7 @@ export default function ImageUpload({
 
                 {/* Upload Section */}
                 <div
-                    className={`relative border-2 border-dashed rounded-lg transition-colors ${
+                    className={`relative border-2 border-dashed rounded-lg transition-colors focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 ${
                         isDragging
                             ? 'border-primary bg-primary/5'
                             : 'border-border hover:border-primary/50'
@@ -183,4 +190,3 @@ export default function ImageUpload({
         </div>
     );
 }
-
