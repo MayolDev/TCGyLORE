@@ -1,0 +1,44 @@
+
+> @ lint /app
+> eslint . --fix
+
+
+/app/resources/js/layouts/app/app-sidebar-layout.tsx
+  19:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/resources/js/layouts/app/app-sidebar-layout.tsx:19:9
+  17 |
+  18 |     useEffect(() => {
+> 19 |         setStars(
+     |         ^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |             [...Array(30)].map(() => ({
+  21 |                 left: `${Math.random() * 100}%`,
+  22 |                 top: `${Math.random() * 100}%`,  react-hooks/set-state-in-effect
+
+/app/resources/js/layouts/auth/auth-simple-layout.tsx
+  23:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/resources/js/layouts/auth/auth-simple-layout.tsx:23:9
+  21 |
+  22 |     useEffect(() => {
+> 23 |         setStars(
+     |         ^^^^^^^^ Avoid calling setState() directly within an effect
+  24 |             [...Array(20)].map(() => ({
+  25 |                 left: `${Math.random() * 100}%`,
+  26 |                 top: `${Math.random() * 100}%`,  react-hooks/set-state-in-effect
+
+✖ 2 problems (2 errors, 0 warnings)
+
+ ELIFECYCLE  Command failed with exit code 1.
