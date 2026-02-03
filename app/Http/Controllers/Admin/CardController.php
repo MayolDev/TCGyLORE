@@ -22,7 +22,8 @@ class CardController extends Controller
     public function index(Request $request)
     {
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            // Bolt: Optimized eager loading to only select necessary columns and remove unused relationships for the list view.
+            ->with(['world:id,name', 'character:id,name', 'cardType:id,name', 'rarity:id,name'])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
