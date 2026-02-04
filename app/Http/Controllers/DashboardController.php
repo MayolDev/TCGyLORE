@@ -9,6 +9,7 @@ use App\Models\Story;
 use App\Models\TimelineEvent;
 use App\Models\User;
 use App\Models\World;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -16,11 +17,12 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
-            ->whereNotNull('rarity_id')
-            ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+        // OPTIMIZATION: Use DB query instead of loading all models
+        $cardsByRarity = DB::table('cards')
+            ->leftJoin('rarities', 'cards.rarity_id', '=', 'rarities.id')
+            ->selectRaw("COALESCE(rarities.name, 'Sin rareza') as rarity_name, count(*) as count")
+            ->groupBy('rarities.name')
+            ->pluck('count', 'rarity_name')
             ->toArray();
 
         $stats = [
