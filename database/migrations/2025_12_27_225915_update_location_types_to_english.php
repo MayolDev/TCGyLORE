@@ -13,7 +13,40 @@ return new class extends Migration
     public function up(): void
     {
         // Primero, cambiar el tipo de columna a VARCHAR para permitir más valores
-        DB::statement("ALTER TABLE locations MODIFY COLUMN location_type VARCHAR(50)");
+        if (DB::getDriverName() === 'sqlite') {
+            Schema::table('locations', function (Blueprint $table) {
+                $table->string('location_type_new', 50)->default('city');
+            });
+
+            $typeMapping = [
+                'ciudad' => 'city',
+                'bosque' => 'forest',
+                'mazmorra' => 'dungeon',
+                'reino' => 'castle',
+                'montaña' => 'mountain',
+                'mar' => 'port',
+                'templo' => 'temple',
+                'ruina' => 'ruins',
+            ];
+
+            foreach ($typeMapping as $oldType => $newType) {
+                DB::table('locations')
+                    ->where('location_type', $oldType)
+                    ->update(['location_type_new' => $newType]);
+            }
+
+            Schema::table('locations', function (Blueprint $table) {
+                $table->dropColumn('location_type');
+            });
+
+            Schema::table('locations', function (Blueprint $table) {
+                $table->renameColumn('location_type_new', 'location_type');
+            });
+
+            return;
+        }
+
+        DB::statement('ALTER TABLE locations MODIFY COLUMN location_type VARCHAR(50)');
 
         // Mapeo de valores antiguos (español) a nuevos (inglés)
         $typeMapping = [
