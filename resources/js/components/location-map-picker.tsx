@@ -7,7 +7,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// @ts-ignore
+// @ts-expect-error Leaflet internal API
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon,
@@ -119,7 +119,7 @@ export default function LocationMapPicker({
             map.remove();
             mapRef.current = null;
         };
-    }, []);
+    }, [latitude, longitude, onLocationChange]);
 
     // Actualizar posición del marcador cuando cambien las props
     useEffect(() => {
@@ -170,4 +170,3 @@ export default function LocationMapPicker({
         </div>
     );
 }
-
