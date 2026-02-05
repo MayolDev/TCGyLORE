@@ -23,8 +23,8 @@ return new class extends Migration
             $table->integer('charisma')->nullable();
             $table->integer('mind')->nullable();
             $table->integer('cost');
-            $table->string('archetype');
-            $table->string('card_type');
+            $table->string('archetype')->nullable();
+            $table->string('card_type')->nullable();
             $table->enum('alignment', ['luz', 'oscuridad', 'neutral'])->default('neutral');
             $table->enum('rarity', ['comun', 'rara', 'epica', 'legendaria'])->default('comun');
             $table->string('faction')->nullable();
