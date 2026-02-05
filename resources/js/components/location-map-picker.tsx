@@ -7,7 +7,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// @ts-ignore
+// @ts-expect-error - Fix Leaflet icon prototype for Vite
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon,
@@ -29,6 +29,12 @@ export default function LocationMapPicker({
     const mapRef = useRef<L.Map | null>(null);
     const markerRef = useRef<L.Marker | null>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
+
+    // Using useRef for the callback to keep it stable inside useEffect but up to date
+    const onLocationChangeRef = useRef(onLocationChange);
+    useEffect(() => {
+        onLocationChangeRef.current = onLocationChange;
+    }, [onLocationChange]);
 
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) return;
@@ -71,7 +77,7 @@ export default function LocationMapPicker({
             // Evento al arrastrar el marcador
             markerRef.current.on('dragend', (e) => {
                 const position = e.target.getLatLng();
-                onLocationChange(position.lat, position.lng);
+                onLocationChangeRef.current(position.lat, position.lng);
             });
         }
 
@@ -105,11 +111,11 @@ export default function LocationMapPicker({
 
                 markerRef.current.on('dragend', (e) => {
                     const position = e.target.getLatLng();
-                    onLocationChange(position.lat, position.lng);
+                    onLocationChangeRef.current(position.lat, position.lng);
                 });
             }
 
-            onLocationChange(lat, lng);
+            onLocationChangeRef.current(lat, lng);
         });
 
         mapRef.current = map;
@@ -119,6 +125,8 @@ export default function LocationMapPicker({
             map.remove();
             mapRef.current = null;
         };
+        // Intentionally disabling strict dependency check because we only want to initialize the map once
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Actualizar posición del marcador cuando cambien las props
@@ -170,4 +178,3 @@ export default function LocationMapPicker({
         </div>
     );
 }
-
