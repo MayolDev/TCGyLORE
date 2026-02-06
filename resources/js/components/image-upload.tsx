@@ -4,6 +4,7 @@ import InputError from '@/components/input-error';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ImageUploadProps {
     label: string;
@@ -40,7 +41,7 @@ export default function ImageUpload({
 
     const aspectRatioHints = {
         square: '(1:1)',
-        vertical: '(2:3 - formato carta)',
+        vertical: '(2:3 - portrait)',
         horizontal: '(3:2)',
         any: '',
     };
@@ -54,7 +55,7 @@ export default function ImageUpload({
 
         // Validar tamaño
         if (file.size > maxSize * 1024 * 1024) {
-            alert(`El archivo debe ser menor a ${maxSize}MB`);
+            toast.error(`File must be smaller than ${maxSize}MB`);
             return;
         }
 
@@ -116,7 +117,7 @@ export default function ImageUpload({
                         <div className={`relative overflow-hidden rounded-lg border-2 border-border bg-muted ${aspectRatioClasses[aspectRatio]}`}>
                             <img
                                 src={displayImage}
-                                alt="Preview"
+                                alt="Image preview"
                                 className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -128,19 +129,19 @@ export default function ImageUpload({
                                     className="gap-2"
                                 >
                                     <X className="h-4 w-4" />
-                                    Eliminar
+                                    Remove
                                 </Button>
                             </div>
                         </div>
                         <p className="text-xs text-muted-foreground text-center mt-2">
-                            {preview ? 'Nueva imagen' : 'Imagen actual'}
+                            {preview ? 'New image' : 'Current image'}
                         </p>
                     </div>
                 )}
 
                 {/* Upload Section */}
                 <div
-                    className={`relative border-2 border-dashed rounded-lg transition-colors ${
+                    className={`relative border-2 border-dashed rounded-lg transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
                         isDragging
                             ? 'border-primary bg-primary/5'
                             : 'border-border hover:border-primary/50'
@@ -161,17 +162,17 @@ export default function ImageUpload({
                             <>
                                 <Upload className="h-12 w-12 text-primary mb-3 animate-bounce" />
                                 <p className="text-sm font-medium text-primary">
-                                    ¡Suelta la imagen aquí!
+                                    Drop image here!
                                 </p>
                             </>
                         ) : (
                             <>
                                 <ImageIcon className="h-12 w-12 text-muted-foreground mb-3" />
                                 <p className="text-sm font-medium mb-1">
-                                    Arrastra una imagen o haz clic
+                                    Drag & drop or click to upload
                                 </p>
                                 <p className="text-xs text-muted-foreground">
-                                    Máximo {maxSize}MB • JPG, PNG, GIF
+                                    Max {maxSize}MB • JPG, PNG, GIF
                                 </p>
                             </>
                         )}
