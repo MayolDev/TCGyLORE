@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -13,7 +11,9 @@ return new class extends Migration
     public function up(): void
     {
         // Primero, cambiar el tipo de columna a VARCHAR para permitir más valores
-        DB::statement("ALTER TABLE locations MODIFY COLUMN location_type VARCHAR(50)");
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement('ALTER TABLE locations MODIFY COLUMN location_type VARCHAR(50)');
+        }
 
         // Mapeo de valores antiguos (español) a nuevos (inglés)
         $typeMapping = [
