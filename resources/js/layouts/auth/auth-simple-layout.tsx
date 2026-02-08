@@ -1,7 +1,6 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
-import { type PropsWithChildren, useEffect, useRef } from 'react';
+import { type PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { Shield, Sparkles, Swords } from 'lucide-react';
 
 interface AuthLayoutProps {
@@ -16,6 +15,21 @@ export default function AuthSimpleLayout({
     description,
 }: PropsWithChildren<AuthLayoutProps>) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [stars, setStars] = useState<
+        Array<{ left: string; top: string; delay: string; opacity: number }>
+    >([]);
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setStars(
+            Array.from({ length: 20 }).map(() => ({
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                delay: `${Math.random() * 3}s`,
+                opacity: Math.random() * 0.7 + 0.3,
+            }))
+        );
+    }, []);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -178,15 +192,15 @@ export default function AuthSimpleLayout({
 
                 {/* Estrellas parpadeantes */}
                 <div className="absolute inset-0">
-                    {[...Array(20)].map((_, i) => (
+                    {stars.map((star, i) => (
                         <div
                             key={i}
                             className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
                             style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 3}s`,
-                                opacity: Math.random() * 0.7 + 0.3
+                                left: star.left,
+                                top: star.top,
+                                animationDelay: star.delay,
+                                opacity: star.opacity,
                             }}
                         />
                     ))}
