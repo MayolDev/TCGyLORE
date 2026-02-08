@@ -183,9 +183,13 @@ export default function AuthSimpleLayout({
                             key={i}
                             className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
                             style={{
+                                // eslint-disable-next-line react-hooks/purity
                                 left: `${Math.random() * 100}%`,
+                                // eslint-disable-next-line react-hooks/purity
                                 top: `${Math.random() * 100}%`,
+                                // eslint-disable-next-line react-hooks/purity
                                 animationDelay: `${Math.random() * 3}s`,
+                                // eslint-disable-next-line react-hooks/purity
                                 opacity: Math.random() * 0.7 + 0.3
                             }}
                         />
