@@ -4,13 +4,20 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { type PropsWithChildren, useEffect, useRef } from 'react';
+import { type PropsWithChildren, useEffect, useRef, useState } from 'react';
 
 export default function AppSidebarLayout({
     children,
     breadcrumbs = [],
 }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [stars] = useState(() =>
+        Array.from({ length: 30 }).map(() => ({
+            left: Math.random() * 100,
+            top: Math.random() * 100,
+            delay: Math.random() * 3,
+        })),
+    );
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -65,7 +72,7 @@ export default function AppSidebarLayout({
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -155,25 +162,25 @@ export default function AppSidebarLayout({
             />
 
             {/* Efectos de luz ambiente INTENSOS */}
-            <div className="fixed inset-0 pointer-events-none z-0">
-                <div className="absolute top-20 left-20 w-[600px] h-[600px] bg-purple-500 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse-slow"></div>
-                <div className="absolute bottom-20 right-20 w-[600px] h-[600px] bg-orange-500 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse-slow animation-delay-2000"></div>
-                <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] bg-yellow-400 rounded-full mix-blend-screen filter blur-3xl opacity-25 animate-pulse-slow animation-delay-1000"></div>
-                
+            <div className="pointer-events-none fixed inset-0 z-0">
+                <div className="animate-pulse-slow absolute top-20 left-20 h-[600px] w-[600px] rounded-full bg-purple-500 opacity-30 blur-3xl filter mix-blend-screen"></div>
+                <div className="animate-pulse-slow animation-delay-2000 absolute bottom-20 right-20 h-[600px] w-[600px] rounded-full bg-orange-500 opacity-30 blur-3xl filter mix-blend-screen"></div>
+                <div className="animate-pulse-slow animation-delay-1000 absolute top-1/2 left-1/2 h-[500px] w-[500px] rounded-full bg-yellow-400 opacity-25 blur-3xl filter mix-blend-screen"></div>
+
                 {/* Rayos de luz */}
-                <div className="absolute top-0 left-1/4 w-2 h-full bg-gradient-to-b from-transparent via-yellow-400/20 to-transparent animate-shimmer"></div>
-                <div className="absolute top-0 left-3/4 w-2 h-full bg-gradient-to-b from-transparent via-orange-400/20 to-transparent animate-shimmer animation-delay-2000"></div>
-                
+                <div className="animate-shimmer absolute top-0 left-1/4 h-full w-2 bg-gradient-to-b from-transparent via-yellow-400/20 to-transparent"></div>
+                <div className="animate-shimmer animation-delay-2000 absolute top-0 left-3/4 h-full w-2 bg-gradient-to-b from-transparent via-orange-400/20 to-transparent"></div>
+
                 {/* Estrellas brillantes */}
-                {[...Array(30)].map((_, i) => (
+                {stars.map((star, i) => (
                     <div
                         key={i}
-                        className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-twinkle"
+                        className="animate-twinkle absolute h-2 w-2 rounded-full bg-yellow-300"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 3}s`,
-                            boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)'
+                            left: `${star.left}%`,
+                            top: `${star.top}%`,
+                            animationDelay: `${star.delay}s`,
+                            boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)',
                         }}
                     />
                 ))}
