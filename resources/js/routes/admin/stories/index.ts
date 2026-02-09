@@ -321,7 +321,7 @@ show.form = showForm
 * @see Http/Controllers/Admin/StoryController.php:63
 * @route '/admin/stories/{story}/edit'
 */
-export const edit = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const edit = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
@@ -336,7 +336,7 @@ edit.definition = {
 * @see Http/Controllers/Admin/StoryController.php:63
 * @route '/admin/stories/{story}/edit'
 */
-edit.url = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+edit.url = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { story: args }
     }
@@ -369,7 +369,7 @@ edit.url = (args: { story: string | number | { id: string | number } } | [story:
 * @see Http/Controllers/Admin/StoryController.php:63
 * @route '/admin/stories/{story}/edit'
 */
-edit.get = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+edit.get = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
@@ -379,7 +379,7 @@ edit.get = (args: { story: string | number | { id: string | number } } | [story:
 * @see Http/Controllers/Admin/StoryController.php:63
 * @route '/admin/stories/{story}/edit'
 */
-edit.head = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+edit.head = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: edit.url(args, options),
     method: 'head',
 })
@@ -389,7 +389,7 @@ edit.head = (args: { story: string | number | { id: string | number } } | [story
 * @see Http/Controllers/Admin/StoryController.php:63
 * @route '/admin/stories/{story}/edit'
 */
-const editForm = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+const editForm = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: edit.url(args, options),
     method: 'get',
 })
@@ -399,7 +399,7 @@ const editForm = (args: { story: string | number | { id: string | number } } | [
 * @see Http/Controllers/Admin/StoryController.php:63
 * @route '/admin/stories/{story}/edit'
 */
-editForm.get = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+editForm.get = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: edit.url(args, options),
     method: 'get',
 })
@@ -409,7 +409,7 @@ editForm.get = (args: { story: string | number | { id: string | number } } | [st
 * @see Http/Controllers/Admin/StoryController.php:63
 * @route '/admin/stories/{story}/edit'
 */
-editForm.head = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+editForm.head = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: edit.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',
@@ -426,7 +426,7 @@ edit.form = editForm
 * @see Http/Controllers/Admin/StoryController.php:73
 * @route '/admin/stories/{story}'
 */
-export const update = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -441,7 +441,7 @@ update.definition = {
 * @see Http/Controllers/Admin/StoryController.php:73
 * @route '/admin/stories/{story}'
 */
-update.url = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+update.url = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { story: args }
     }
@@ -474,7 +474,7 @@ update.url = (args: { story: string | number | { id: string | number } } | [stor
 * @see Http/Controllers/Admin/StoryController.php:73
 * @route '/admin/stories/{story}'
 */
-update.put = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -484,7 +484,7 @@ update.put = (args: { story: string | number | { id: string | number } } | [stor
 * @see Http/Controllers/Admin/StoryController.php:73
 * @route '/admin/stories/{story}'
 */
-update.patch = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update.patch = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(args, options),
     method: 'patch',
 })
@@ -494,7 +494,7 @@ update.patch = (args: { story: string | number | { id: string | number } } | [st
 * @see Http/Controllers/Admin/StoryController.php:73
 * @route '/admin/stories/{story}'
 */
-const updateForm = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const updateForm = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'PUT',
@@ -509,7 +509,7 @@ const updateForm = (args: { story: string | number | { id: string | number } } |
 * @see Http/Controllers/Admin/StoryController.php:73
 * @route '/admin/stories/{story}'
 */
-updateForm.put = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+updateForm.put = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'PUT',
@@ -524,7 +524,7 @@ updateForm.put = (args: { story: string | number | { id: string | number } } | [
 * @see Http/Controllers/Admin/StoryController.php:73
 * @route '/admin/stories/{story}'
 */
-updateForm.patch = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+updateForm.patch = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'PATCH',
@@ -541,7 +541,7 @@ update.form = updateForm
 * @see Http/Controllers/Admin/StoryController.php:91
 * @route '/admin/stories/{story}'
 */
-export const destroy = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -556,7 +556,7 @@ destroy.definition = {
 * @see Http/Controllers/Admin/StoryController.php:91
 * @route '/admin/stories/{story}'
 */
-destroy.url = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { story: args }
     }
@@ -589,7 +589,7 @@ destroy.url = (args: { story: string | number | { id: string | number } } | [sto
 * @see Http/Controllers/Admin/StoryController.php:91
 * @route '/admin/stories/{story}'
 */
-destroy.delete = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -599,7 +599,7 @@ destroy.delete = (args: { story: string | number | { id: string | number } } | [
 * @see Http/Controllers/Admin/StoryController.php:91
 * @route '/admin/stories/{story}'
 */
-const destroyForm = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const destroyForm = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',
@@ -614,7 +614,7 @@ const destroyForm = (args: { story: string | number | { id: string | number } } 
 * @see Http/Controllers/Admin/StoryController.php:91
 * @route '/admin/stories/{story}'
 */
-destroyForm.delete = (args: { story: string | number | { id: string | number } } | [story: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+destroyForm.delete = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',
