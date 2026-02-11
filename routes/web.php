@@ -26,6 +26,10 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('/test-image-upload', function () {
+    return Inertia::render('TestImageUpload');
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
