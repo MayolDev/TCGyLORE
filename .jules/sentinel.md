@@ -1,0 +1,4 @@
+## 2026-02-11 - Explicit Image Validation & Missing Migrations
+**Vulnerability:** The application relied on the generic `image` validation rule, which may allow SVG files depending on server configuration (e.g., `libxml`), leading to potential Stored XSS. Additionally, a critical database migration (`2025_12_21_171052_update_cards_table_with_relations.php`) was empty, causing a mismatch between the code (expecting relations) and the database (missing columns).
+**Learning:** Implicit validation rules like `image` are environment-dependent and can be bypassed or behave unexpectedly. Explicitly allowlisting MIME types (`mimes:jpeg,png...`) is a more robust defense. Also, empty migrations can silently break application logic in fresh environments.
+**Prevention:** Always use explicit MIME type validation for file uploads. verifying migration integrity in CI/CD pipelines.
