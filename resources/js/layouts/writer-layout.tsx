@@ -31,4 +31,3 @@ export default function WriterLayout({ children, breadcrumbs }: Props) {
         </AppShell>
     );
 }
-
