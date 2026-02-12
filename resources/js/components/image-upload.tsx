@@ -4,12 +4,15 @@ import InputError from '@/components/input-error';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ImageUploadProps {
-    label: string;
+    label?: string;
     id: string;
     currentImage?: string | null;
-    onFileChange: (file: File | null) => void;
+    value?: File | null;
+    onChange?: (file: File | null) => void;
+    onFileChange?: (file: File | null) => void;
     error?: string;
     accept?: string;
     maxSize?: number; // in MB
@@ -21,6 +24,8 @@ export default function ImageUpload({
     label,
     id,
     currentImage,
+    value,
+    onChange,
     onFileChange,
     error,
     accept = 'image/*',
@@ -30,6 +35,11 @@ export default function ImageUpload({
 }: ImageUploadProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isDragging, setIsDragging] = useState(false);
+
+    // Sync preview with value if it changes externally to null (e.g. form reset)
+    if (value === null && preview) {
+        setPreview(null);
+    }
 
     const aspectRatioClasses = {
         square: 'aspect-square',
@@ -45,16 +55,24 @@ export default function ImageUpload({
         any: '',
     };
 
+    const triggerChange = (file: File | null) => {
+        if (onChange) {
+            onChange(file);
+        } else if (onFileChange) {
+            onFileChange(file);
+        }
+    };
+
     const handleFileChange = (file: File | null) => {
         if (!file) {
             setPreview(null);
-            onFileChange(null);
+            triggerChange(null);
             return;
         }
 
         // Validar tamaño
         if (file.size > maxSize * 1024 * 1024) {
-            alert(`El archivo debe ser menor a ${maxSize}MB`);
+            toast.error(`El archivo debe ser menor a ${maxSize}MB`);
             return;
         }
 
@@ -65,7 +83,7 @@ export default function ImageUpload({
         };
         reader.readAsDataURL(file);
 
-        onFileChange(file);
+        triggerChange(file);
     };
 
     const handleDrop = (e: React.DragEvent) => {
@@ -75,6 +93,8 @@ export default function ImageUpload({
         const file = e.dataTransfer.files[0];
         if (file && file.type.startsWith('image/')) {
             handleFileChange(file);
+        } else if (file) {
+            toast.error('El archivo debe ser una imagen válida');
         }
     };
 
@@ -89,37 +109,45 @@ export default function ImageUpload({
 
     const clearImage = () => {
         setPreview(null);
-        onFileChange(null);
+        triggerChange(null);
         const input = document.getElementById(id) as HTMLInputElement;
         if (input) {
             input.value = '';
         }
     };
 
-    const displayImage = preview || (currentImage ? `/storage/${currentImage}` : null);
+    // Handle display image logic safely
+    const displayImage = preview || (currentImage ? (currentImage.startsWith('http') || currentImage.startsWith('/') ? currentImage : `/storage/${currentImage}`) : null);
+
+    // Parse accept to readable format for helper text
+    const readableExtensions = accept === 'image/*'
+        ? 'JPG, PNG, GIF, WEBP'
+        : accept.replace(/image\//g, '').toUpperCase().split(',').join(', ');
 
     return (
         <div className="space-y-2">
-            <Label htmlFor={id}>
-                {label} {required && <span className="text-destructive">*</span>}
-                {aspectRatio !== 'any' && (
-                    <span className="text-xs text-muted-foreground ml-2">
-                        {aspectRatioHints[aspectRatio]}
-                    </span>
-                )}
-            </Label>
+            {label && (
+                <Label htmlFor={id}>
+                    {label} {required && <span className="text-destructive">*</span>}
+                    {aspectRatio !== 'any' && (
+                        <span className="text-xs text-muted-foreground ml-2">
+                            {aspectRatioHints[aspectRatio]}
+                        </span>
+                    )}
+                </Label>
+            )}
 
             <div className="grid gap-4 md:grid-cols-2">
                 {/* Preview Section */}
                 {displayImage && (
-                    <div className="relative group">
+                    <div className="relative group animate-in fade-in duration-300">
                         <div className={`relative overflow-hidden rounded-lg border-2 border-border bg-muted ${aspectRatioClasses[aspectRatio]}`}>
                             <img
                                 src={displayImage}
                                 alt="Preview"
                                 className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center focus-within:opacity-100">
                                 <Button
                                     type="button"
                                     variant="destructive"
@@ -140,10 +168,10 @@ export default function ImageUpload({
 
                 {/* Upload Section */}
                 <div
-                    className={`relative border-2 border-dashed rounded-lg transition-colors ${
+                    className={`relative border-2 border-dashed rounded-lg transition-all duration-200 group focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 ${
                         isDragging
-                            ? 'border-primary bg-primary/5'
-                            : 'border-border hover:border-primary/50'
+                            ? 'border-primary bg-primary/5 scale-[1.02]'
+                            : 'border-border hover:border-primary/50 hover:bg-muted/50'
                     } ${aspectRatioClasses[aspectRatio]}`}
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
@@ -155,6 +183,7 @@ export default function ImageUpload({
                         accept={accept}
                         onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                        aria-label={label || "Subir imagen"}
                     />
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center pointer-events-none">
                         {isDragging ? (
@@ -166,12 +195,12 @@ export default function ImageUpload({
                             </>
                         ) : (
                             <>
-                                <ImageIcon className="h-12 w-12 text-muted-foreground mb-3" />
+                                <ImageIcon className="h-12 w-12 text-muted-foreground mb-3 group-hover:scale-110 transition-transform duration-200" />
                                 <p className="text-sm font-medium mb-1">
                                     Arrastra una imagen o haz clic
                                 </p>
                                 <p className="text-xs text-muted-foreground">
-                                    Máximo {maxSize}MB • JPG, PNG, GIF
+                                    Máximo {maxSize}MB • {readableExtensions}
                                 </p>
                             </>
                         )}
@@ -183,4 +212,3 @@ export default function ImageUpload({
         </div>
     );
 }
-
