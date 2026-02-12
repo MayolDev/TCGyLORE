@@ -125,8 +125,9 @@ export default function Create({ worlds, allLocations }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="image">Imagen de la Ubicación (opcional)</Label>
                                 <ImageUpload
+                                    id="image"
+                                    label="Imagen de la Ubicación (opcional)"
                                     value={data.image}
                                     onChange={(file) => setData('image', file)}
                                     error={errors.image}
