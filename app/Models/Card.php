@@ -10,6 +10,23 @@ class Card extends Model
 {
     use HasFactory;
 
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (Card $card) {
+            // Provide default values for legacy non-nullable columns to prevent SQL errors
+            // during the transition to relational foreign keys.
+            if (! isset($card->attributes['archetype'])) {
+                $card->setAttribute('archetype', 'legacy');
+            }
+            if (! isset($card->attributes['card_type'])) {
+                $card->setAttribute('card_type', 'legacy');
+            }
+        });
+    }
+
     protected $fillable = [
         'world_id',
         'character_id',
