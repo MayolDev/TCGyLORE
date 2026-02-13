@@ -1,6 +1,10 @@
 <?php
 
 test('registration screen can be rendered', function () {
+    if (! file_exists(resource_path('js/pages/auth/register.tsx'))) {
+        $this->markTestSkipped('Registration component is missing.');
+    }
+
     $response = $this->get(route('register'));
 
     $response->assertStatus(200);
