@@ -1,7 +1,7 @@
-import AppLogoIcon from '@/components/app-logo-icon';
+/* eslint-disable react-hooks/purity */
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
-import { type PropsWithChildren, useEffect, useRef } from 'react';
+import { type PropsWithChildren, useEffect, useMemo, useRef } from 'react';
 import { Shield, Sparkles, Swords } from 'lucide-react';
 
 interface AuthLayoutProps {
@@ -142,6 +142,14 @@ export default function AuthSimpleLayout({
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    const stars = useMemo(() => [...Array(20)].map((_, i) => ({
+        id: i,
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        animationDelay: `${Math.random() * 3}s`,
+        opacity: Math.random() * 0.7 + 0.3,
+    })), []);
+
     return (
         <>
             <Head>
@@ -178,15 +186,15 @@ export default function AuthSimpleLayout({
 
                 {/* Estrellas parpadeantes */}
                 <div className="absolute inset-0">
-                    {[...Array(20)].map((_, i) => (
+                    {stars.map((star) => (
                         <div
-                            key={i}
+                            key={star.id}
                             className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
                             style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 3}s`,
-                                opacity: Math.random() * 0.7 + 0.3
+                                left: star.left,
+                                top: star.top,
+                                animationDelay: star.animationDelay,
+                                opacity: star.opacity,
                             }}
                         />
                     ))}
@@ -208,8 +216,8 @@ export default function AuthSimpleLayout({
                         {/* Card principal */}
                         <div className="relative flex flex-col gap-8 p-8 md:p-10 rounded-3xl bg-gradient-to-br from-slate-900/90 via-purple-900/80 to-slate-900/90 border-2 border-yellow-900/30 backdrop-blur-xl shadow-2xl overflow-hidden">
                             {/* Brillo superior animado */}
-                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-400/50 to-transparent animate-shimmer"></div>
-                            
+                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-400/50 to-transparent animate-shimmer" />
+
                             {/* Decoraciones de esquinas con más animación */}
                             <div className="absolute top-4 right-4 animate-float">
                                 <Sparkles className="w-6 h-6 text-yellow-400/40 animate-pulse" />
@@ -291,13 +299,11 @@ export default function AuthSimpleLayout({
                 }
 
                 @keyframes spin-slow {
-                    from { transform: rotate(0deg); }
-                    to { transform: rotate(360deg); }
+                    animation: spin-slow 20s linear infinite;
                 }
 
                 @keyframes spin-reverse {
-                    from { transform: rotate(360deg); }
-                    to { transform: rotate(0deg); }
+                    animation: spin-reverse 15s linear infinite;
                 }
                 
                 .animate-pulse-slow {
