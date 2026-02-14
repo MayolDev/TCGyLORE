@@ -4,10 +4,11 @@ import InputError from '@/components/input-error';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ImageUploadProps {
-    label: string;
-    id: string;
+    label?: string;
+    id?: string;
     currentImage?: string | null;
     onFileChange: (file: File | null) => void;
     error?: string;
@@ -18,8 +19,8 @@ interface ImageUploadProps {
 }
 
 export default function ImageUpload({
-    label,
-    id,
+    label = 'Imagen',
+    id = 'image-upload',
     currentImage,
     onFileChange,
     error,
@@ -54,7 +55,7 @@ export default function ImageUpload({
 
         // Validar tamaño
         if (file.size > maxSize * 1024 * 1024) {
-            alert(`El archivo debe ser menor a ${maxSize}MB`);
+            toast.error(`El archivo debe ser menor a ${maxSize}MB`);
             return;
         }
 
@@ -112,20 +113,21 @@ export default function ImageUpload({
             <div className="grid gap-4 md:grid-cols-2">
                 {/* Preview Section */}
                 {displayImage && (
-                    <div className="relative group">
+                    <div className="relative group focus-within:ring-2 focus-within:ring-primary rounded-lg">
                         <div className={`relative overflow-hidden rounded-lg border-2 border-border bg-muted ${aspectRatioClasses[aspectRatio]}`}>
                             <img
                                 src={displayImage}
                                 alt="Preview"
                                 className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity flex items-center justify-center">
                                 <Button
                                     type="button"
                                     variant="destructive"
                                     size="sm"
                                     onClick={clearImage}
                                     className="gap-2"
+                                    aria-label="Eliminar imagen seleccionada"
                                 >
                                     <X className="h-4 w-4" />
                                     Eliminar
@@ -140,7 +142,7 @@ export default function ImageUpload({
 
                 {/* Upload Section */}
                 <div
-                    className={`relative border-2 border-dashed rounded-lg transition-colors ${
+                    className={`relative border-2 border-dashed rounded-lg transition-colors focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 ${
                         isDragging
                             ? 'border-primary bg-primary/5'
                             : 'border-border hover:border-primary/50'
@@ -183,4 +185,3 @@ export default function ImageUpload({
         </div>
     );
 }
-
