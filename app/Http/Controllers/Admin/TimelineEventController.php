@@ -15,7 +15,7 @@ class TimelineEventController extends Controller
     public function index(Request $request)
     {
         $events = TimelineEvent::query()
-            ->with(['world', 'characters', 'locations'])
+            ->with(['world:id,name', 'characters:id,name', 'locations:id,name'])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
@@ -76,7 +76,7 @@ class TimelineEventController extends Controller
 
     public function edit(TimelineEvent $timelineEvent)
     {
-        $timelineEvent->load(['world', 'characters', 'locations']);
+        $timelineEvent->load(['world:id,name', 'characters:id,name', 'locations:id,name']);
 
         return Inertia::render('Admin/TimelineEvents/Edit', [
             'event' => $timelineEvent,
