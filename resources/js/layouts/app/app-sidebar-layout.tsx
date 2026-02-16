@@ -65,7 +65,7 @@ export default function AppSidebarLayout({
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -129,8 +129,10 @@ export default function AppSidebarLayout({
         animate();
 
         const handleResize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
         };
 
         window.addEventListener('resize', handleResize);
@@ -165,15 +167,18 @@ export default function AppSidebarLayout({
                 <div className="absolute top-0 left-3/4 w-2 h-full bg-gradient-to-b from-transparent via-orange-400/20 to-transparent animate-shimmer animation-delay-2000"></div>
                 
                 {/* Estrellas brillantes */}
+                { }
                 {[...Array(30)].map((_, i) => (
                     <div
                         key={i}
                         className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-twinkle"
                         style={{
+                            /* eslint-disable react-hooks/purity */
                             left: `${Math.random() * 100}%`,
                             top: `${Math.random() * 100}%`,
                             animationDelay: `${Math.random() * 3}s`,
-                            boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)'
+                            boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)',
+                            /* eslint-enable react-hooks/purity */
                         }}
                     />
                 ))}

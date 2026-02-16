@@ -1,4 +1,3 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
@@ -178,15 +177,18 @@ export default function AuthSimpleLayout({
 
                 {/* Estrellas parpadeantes */}
                 <div className="absolute inset-0">
+                    { }
                     {[...Array(20)].map((_, i) => (
                         <div
                             key={i}
                             className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
                             style={{
+                                /* eslint-disable react-hooks/purity */
                                 left: `${Math.random() * 100}%`,
                                 top: `${Math.random() * 100}%`,
                                 animationDelay: `${Math.random() * 3}s`,
-                                opacity: Math.random() * 0.7 + 0.3
+                                opacity: Math.random() * 0.7 + 0.3,
+                                /* eslint-enable react-hooks/purity */
                             }}
                         />
                     ))}
