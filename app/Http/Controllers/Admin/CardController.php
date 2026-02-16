@@ -22,7 +22,33 @@ class CardController extends Controller
     public function index(Request $request)
     {
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            ->select([
+                'id',
+                'world_id',
+                'character_id',
+                'card_type_id',
+                'rarity_id',
+                'archetype_id',
+                'alignment_id',
+                'faction_id',
+                'edition_id',
+                'artist_id',
+                'name',
+                'illustration',
+                'effect',
+                'cost',
+                'strength',
+                'agility',
+                'charisma',
+                'mind',
+                'created_at',
+            ])
+            ->with([
+                'world:id,name',
+                'character:id,name',
+                'cardType:id,name',
+                'rarity:id,name',
+            ])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
