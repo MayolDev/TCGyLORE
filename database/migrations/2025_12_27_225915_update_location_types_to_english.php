@@ -13,7 +13,34 @@ return new class extends Migration
     public function up(): void
     {
         // Primero, cambiar el tipo de columna a VARCHAR para permitir más valores
-        DB::statement("ALTER TABLE locations MODIFY COLUMN location_type VARCHAR(50)");
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE locations MODIFY COLUMN location_type VARCHAR(50)");
+        } else {
+            // SQLite workaround: Recreate table to remove ENUM constraint
+            Schema::create('locations_temp', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('world_id')->constrained()->cascadeOnDelete();
+                $table->string('name');
+                $table->text('description');
+                $table->string('location_type', 50);
+                $table->decimal('coordinate_x', 8, 2)->nullable();
+                $table->decimal('coordinate_y', 8, 2)->nullable();
+                $table->string('image')->nullable();
+                $table->boolean('is_discovered')->default(true);
+                $table->timestamps();
+            });
+
+            // Disable foreign keys to avoid issues during swap
+            DB::statement('PRAGMA foreign_keys=OFF');
+
+            // Copy data
+            DB::statement('INSERT INTO locations_temp SELECT * FROM locations');
+
+            Schema::drop('locations');
+            Schema::rename('locations_temp', 'locations');
+
+            DB::statement('PRAGMA foreign_keys=ON');
+        }
 
         // Mapeo de valores antiguos (español) a nuevos (inglés)
         $typeMapping = [

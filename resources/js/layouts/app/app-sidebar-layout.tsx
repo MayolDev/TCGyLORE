@@ -4,13 +4,24 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { type PropsWithChildren, useEffect, useRef } from 'react';
+import { type PropsWithChildren, useEffect, useMemo, useRef } from 'react';
 
 export default function AppSidebarLayout({
     children,
     breadcrumbs = [],
 }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    // Pre-calculate random values for visual effects
+    /* eslint-disable react-hooks/purity */
+    const stars = useMemo(() => {
+        return [...Array(30)].map(() => ({
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 3}s`,
+        }));
+    }, []);
+    /* eslint-enable react-hooks/purity */
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -60,12 +71,14 @@ export default function AppSidebarLayout({
             });
         }
 
+        let animationFrameId: number;
+
         function animate() {
             if (!ctx || !canvas) return;
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -123,7 +136,7 @@ export default function AppSidebarLayout({
                 }
             });
 
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         }
 
         animate();
@@ -134,7 +147,10 @@ export default function AppSidebarLayout({
         };
 
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(animationFrameId);
+        };
     }, []);
 
     return (
@@ -165,14 +181,14 @@ export default function AppSidebarLayout({
                 <div className="absolute top-0 left-3/4 w-2 h-full bg-gradient-to-b from-transparent via-orange-400/20 to-transparent animate-shimmer animation-delay-2000"></div>
                 
                 {/* Estrellas brillantes */}
-                {[...Array(30)].map((_, i) => (
+                {stars.map((star, i) => (
                     <div
                         key={i}
                         className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-twinkle"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 3}s`,
+                            left: star.left,
+                            top: star.top,
+                            animationDelay: star.animationDelay,
                             boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)'
                         }}
                     />
