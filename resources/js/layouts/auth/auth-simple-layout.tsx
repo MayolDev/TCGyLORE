@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/purity */
-import { AppLogoIcon } from '@/components/app-logo-icon';
+import AppLogoIcon from '@/components/app-logo-icon';
 import { Head, Link } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useMemo, useRef } from 'react';
 
