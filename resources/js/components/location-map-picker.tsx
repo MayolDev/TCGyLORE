@@ -7,7 +7,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// @ts-ignore
+// @ts-expect-error - description: This is a known issue with Leaflet in Vite
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon,
@@ -63,13 +63,14 @@ export default function LocationMapPicker({
                 iconAnchor: [16, 32],
             });
 
-            markerRef.current = L.marker([latitude, longitude], { 
+            const marker = L.marker([latitude, longitude], {
                 icon: customIcon,
                 draggable: true 
             }).addTo(map);
+            markerRef.current = marker;
 
             // Evento al arrastrar el marcador
-            markerRef.current.on('dragend', (e) => {
+            marker.on('dragend', (e) => {
                 const position = e.target.getLatLng();
                 onLocationChange(position.lat, position.lng);
             });
@@ -98,12 +99,13 @@ export default function LocationMapPicker({
             if (markerRef.current) {
                 markerRef.current.setLatLng([lat, lng]);
             } else {
-                markerRef.current = L.marker([lat, lng], { 
+                const marker = L.marker([lat, lng], {
                     icon: customIcon,
                     draggable: true 
                 }).addTo(map);
+                markerRef.current = marker;
 
-                markerRef.current.on('dragend', (e) => {
+                marker.on('dragend', (e) => {
                     const position = e.target.getLatLng();
                     onLocationChange(position.lat, position.lng);
                 });
@@ -119,6 +121,7 @@ export default function LocationMapPicker({
             map.remove();
             mapRef.current = null;
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Actualizar posición del marcador cuando cambien las props
@@ -170,4 +173,3 @@ export default function LocationMapPicker({
         </div>
     );
 }
-
