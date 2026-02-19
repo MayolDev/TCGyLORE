@@ -1,0 +1,29 @@
+
+> @ dev /app
+> vite
+
+9:07:24 PM [vite] (client) info: Types generated for actions, routes, form variants
+  Plugin: @laravel/vite-plugin-wayfinder
+
+  VITE v7.3.1  ready in 2248 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+
+  LARAVEL v12.43.1  plugin v2.1.0
+
+  ➜  APP_URL: http://localhost
+[vite:css][postcss] @import must precede all other statements (besides @charset or empty @layer)
+7948 |    initial-value: 0;
+7949 |  }
+7950 |  @import url('https://fonts.bunny.net/css?family=almendra:700|cinzel:700,900|trade-winds:400');
+     |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+7951 |  :root {
+7952 |    --background: oklch(0.15 0.03 270);
+[vite:css][postcss] @import must precede all other statements (besides @charset or empty @layer)
+7948 |    initial-value: 0;
+7949 |  }
+7950 |  @import url('https://fonts.bunny.net/css?family=almendra:700|cinzel:700,900|trade-winds:400');
+     |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+7951 |  :root {
+7952 |    --background: oklch(0.15 0.03 270);
