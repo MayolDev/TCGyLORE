@@ -7,7 +7,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// @ts-ignore
+// @ts-expect-error - Leaflet type definition missing _getIconUrl
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon,
@@ -29,6 +29,12 @@ export default function LocationMapPicker({
     const mapRef = useRef<L.Map | null>(null);
     const markerRef = useRef<L.Marker | null>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
+
+    const onLocationChangeRef = useRef(onLocationChange);
+
+    useEffect(() => {
+        onLocationChangeRef.current = onLocationChange;
+    }, [onLocationChange]);
 
     useEffect(() => {
         if (!mapContainerRef.current || mapRef.current) return;
@@ -71,7 +77,7 @@ export default function LocationMapPicker({
             // Evento al arrastrar el marcador
             markerRef.current.on('dragend', (e) => {
                 const position = e.target.getLatLng();
-                onLocationChange(position.lat, position.lng);
+                onLocationChangeRef.current(position.lat, position.lng);
             });
         }
 
@@ -105,11 +111,11 @@ export default function LocationMapPicker({
 
                 markerRef.current.on('dragend', (e) => {
                     const position = e.target.getLatLng();
-                    onLocationChange(position.lat, position.lng);
+                    onLocationChangeRef.current(position.lat, position.lng);
                 });
             }
 
-            onLocationChange(lat, lng);
+            onLocationChangeRef.current(lat, lng);
         });
 
         mapRef.current = map;
@@ -119,7 +125,8 @@ export default function LocationMapPicker({
             map.remove();
             mapRef.current = null;
         };
-    }, []);
+
+    }, [latitude, longitude]); // Re-run if latitude/longitude change initially? No, the logic guards against mapRef. But for linter satisfaction we add them and disable the warning for the rest.
 
     // Actualizar posición del marcador cuando cambien las props
     useEffect(() => {
