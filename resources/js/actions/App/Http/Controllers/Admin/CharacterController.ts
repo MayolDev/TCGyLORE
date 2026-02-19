@@ -75,7 +75,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::create
@@ -153,7 +153,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::store
@@ -208,7 +208,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             action: store.url(options),
             method: 'post',
         })
-    
+
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::show
@@ -235,7 +235,7 @@ show.url = (args: { character: string | number } | [character: string | number ]
         args = { character: args }
     }
 
-    
+
     if (Array.isArray(args)) {
         args = {
                     character: args[0],
@@ -305,7 +305,7 @@ show.head = (args: { character: string | number } | [character: string | number 
                     }),
             method: 'get',
         })
-    
+
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::edit
@@ -335,7 +335,7 @@ edit.url = (args: { character: number | { id: number } } | [character: number | 
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { character: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     character: args[0],
@@ -407,7 +407,7 @@ edit.head = (args: { character: number | { id: number } } | [character: number |
                     }),
             method: 'get',
         })
-    
+
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::update
@@ -437,7 +437,7 @@ update.url = (args: { character: number | { id: number } } | [character: number 
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { character: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     character: args[0],
@@ -519,7 +519,7 @@ update.patch = (args: { character: number | { id: number } } | [character: numbe
                     }),
             method: 'post',
         })
-    
+
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::destroy
@@ -549,7 +549,7 @@ destroy.url = (args: { character: number | { id: number } } | [character: number
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { character: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     character: args[0],
@@ -608,7 +608,7 @@ destroy.delete = (args: { character: number | { id: number } } | [character: num
                     }),
             method: 'post',
         })
-    
+
     destroy.form = destroyForm
 const CharacterController = { index, create, store, show, edit, update, destroy }
 
