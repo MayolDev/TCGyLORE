@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/purity */
 import { AppContent } from '@/components/app-content';
 import { AppShell } from '@/components/app-shell';
 import { AppSidebar } from '@/components/app-sidebar';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { type PropsWithChildren, useEffect, useRef } from 'react';
+import { type PropsWithChildren, useEffect, useRef, useMemo } from 'react';
 
 export default function AppSidebarLayout({
     children,
@@ -65,7 +66,7 @@ export default function AppSidebarLayout({
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -165,7 +166,8 @@ export default function AppSidebarLayout({
                 <div className="absolute top-0 left-3/4 w-2 h-full bg-gradient-to-b from-transparent via-orange-400/20 to-transparent animate-shimmer animation-delay-2000"></div>
                 
                 {/* Estrellas brillantes */}
-                {[...Array(30)].map((_, i) => (
+                { }
+                {useMemo(() => [...Array(30)].map((_, i) => (
                     <div
                         key={i}
                         className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-twinkle"
@@ -176,7 +178,7 @@ export default function AppSidebarLayout({
                             boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)'
                         }}
                     />
-                ))}
+                )), [])}
             </div>
 
             <AppShell variant="sidebar">

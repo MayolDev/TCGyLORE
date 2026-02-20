@@ -1,0 +1,21 @@
+
+> @ dev /app
+> vite
+
+error when starting dev server:
+Error: Error generating types: Error: Command failed: php artisan wayfinder:generate --with-form
+PHP Warning:  require(/app/vendor/autoload.php): Failed to open stream: No such file or directory in /app/artisan on line 10
+PHP Fatal error:  Uncaught Error: Failed opening required '/app/vendor/autoload.php' (include_path='.:/usr/share/php') in /app/artisan:10
+Stack trace:
+#0 {main}
+  thrown in /app/artisan on line 10
+
+    at PluginContext._formatLog (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@22.19.11_jiti@2.6.1_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/config.js:28999:43)
+    at PluginContext.error (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@22.19.11_jiti@2.6.1_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/config.js:28996:14)
+    at runCommand (file:///app/node_modules/.pnpm/@laravel+vite-plugin-wayfinder@0.1.7/node_modules/@laravel/vite-plugin-wayfinder/dist/index.mjs:2101:15)
+    at async Promise.all (index 2)
+    at async EnvironmentPluginContainer.hookParallel (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@22.19.11_jiti@2.6.1_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/config.js:28661:3)
+    at async EnvironmentPluginContainer.buildStart (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@22.19.11_jiti@2.6.1_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/config.js:28671:3)
+    at async file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@22.19.11_jiti@2.6.1_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/config.js:25633:4
+    at async httpServer.listen (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@22.19.11_jiti@2.6.1_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/config.js:25644:5)
+ ELIFECYCLE  Command failed with exit code 1.
