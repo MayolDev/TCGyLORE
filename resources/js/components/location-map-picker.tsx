@@ -122,7 +122,7 @@ export default function LocationMapPicker({
             map.remove();
             mapRef.current = null;
         };
-    }, []);
+    }, [latitude, longitude, onLocationChange]);
 
     // Actualizar posición del marcador cuando cambien las props
     useEffect(() => {
