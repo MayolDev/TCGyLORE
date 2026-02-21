@@ -14,6 +14,7 @@ export default function AppSidebarLayout({
     const [stars, setStars] = useState<Array<{ left: number; top: number; delay: number }>>([]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setStars([...Array(30)].map(() => ({
             left: Math.random() * 100,
             top: Math.random() * 100,

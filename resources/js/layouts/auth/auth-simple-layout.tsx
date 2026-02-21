@@ -18,6 +18,7 @@ export default function AuthSimpleLayout({
     const [stars, setStars] = useState<Array<{ left: number; top: number; delay: number; opacity: number }>>([]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setStars([...Array(20)].map(() => ({
             left: Math.random() * 100,
             top: Math.random() * 100,
