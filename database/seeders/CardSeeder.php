@@ -171,6 +171,10 @@ Roba una carta.',
         ];
 
         foreach ($cards as $card) {
+            // Add legacy fields to satisfy NOT NULL constraints
+            $card['archetype'] = 'legacy';
+            $card['card_type'] = 'legacy';
+
             Card::create(array_merge($card, ['world_id' => $world->id]));
         }
     }
