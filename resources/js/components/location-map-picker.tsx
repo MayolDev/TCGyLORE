@@ -7,7 +7,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// @ts-ignore
+// @ts-expect-error - Missing type definition for _getIconUrl
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon,
@@ -119,6 +119,7 @@ export default function LocationMapPicker({
             map.remove();
             mapRef.current = null;
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Actualizar posición del marcador cuando cambien las props
