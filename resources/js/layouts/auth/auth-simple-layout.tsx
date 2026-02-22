@@ -1,7 +1,7 @@
-import AppLogoIcon from '@/components/app-logo-icon';
+/* eslint-disable react-hooks/purity */
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
-import { type PropsWithChildren, useEffect, useRef } from 'react';
+import { type PropsWithChildren, useEffect, useMemo, useRef } from 'react';
 import { Shield, Sparkles, Swords } from 'lucide-react';
 
 interface AuthLayoutProps {
@@ -178,7 +178,7 @@ export default function AuthSimpleLayout({
 
                 {/* Estrellas parpadeantes */}
                 <div className="absolute inset-0">
-                    {[...Array(20)].map((_, i) => (
+                    {useMemo(() => [...Array(20)].map((_, i) => (
                         <div
                             key={i}
                             className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
@@ -189,7 +189,7 @@ export default function AuthSimpleLayout({
                                 opacity: Math.random() * 0.7 + 0.3
                             }}
                         />
-                    ))}
+                    )), [])}
                 </div>
 
                 {/* Contenedor del formulario */}
