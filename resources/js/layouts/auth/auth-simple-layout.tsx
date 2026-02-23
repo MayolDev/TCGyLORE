@@ -1,4 +1,3 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
@@ -178,6 +177,7 @@ export default function AuthSimpleLayout({
 
                 {/* Estrellas parpadeantes */}
                 <div className="absolute inset-0">
+                    {/* eslint-disable react-hooks/purity */}
                     {[...Array(20)].map((_, i) => (
                         <div
                             key={i}
@@ -190,6 +190,7 @@ export default function AuthSimpleLayout({
                             }}
                         />
                     ))}
+                    {/* eslint-enable react-hooks/purity */}
                 </div>
 
                 {/* Contenedor del formulario */}
