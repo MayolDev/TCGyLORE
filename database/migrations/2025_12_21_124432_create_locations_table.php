@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('world_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->text('description');
-            $table->enum('location_type', ['ciudad', 'bosque', 'mazmorra', 'reino', 'montaña', 'mar', 'templo', 'ruina'])->default('ciudad');
+            $table->string('location_type')->default('ciudad');
             $table->decimal('coordinate_x', 8, 2)->nullable();
             $table->decimal('coordinate_y', 8, 2)->nullable();
             $table->string('image')->nullable();
