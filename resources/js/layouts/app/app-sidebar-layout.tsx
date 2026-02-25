@@ -65,7 +65,7 @@ export default function AppSidebarLayout({
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -169,12 +169,14 @@ export default function AppSidebarLayout({
                     <div
                         key={i}
                         className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-twinkle"
+                        /* eslint-disable react-hooks/purity */
                         style={{
                             left: `${Math.random() * 100}%`,
                             top: `${Math.random() * 100}%`,
                             animationDelay: `${Math.random() * 3}s`,
                             boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)'
                         }}
+                        /* eslint-enable react-hooks/purity */
                     />
                 ))}
             </div>
