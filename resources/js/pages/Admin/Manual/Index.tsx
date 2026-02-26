@@ -119,15 +119,19 @@ export default function Index({ sections: initialSections, filters: initialFilte
                         </Link>
                     </Button>
                     {sections.data.length > 0 && (
-                        <Button 
-                            variant="outline" 
-                            size="lg"
-                            onClick={() => setShowFullManual(true)}
-                            className="border-2 border-blue-500/50 hover:bg-blue-600/20 text-blue-200 font-bold"
-                        >
-                            <BookOpenCheck className="mr-2 h-5 w-5" />
-                            Ver Manual Completo
-                        </Button>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    size="lg"
+                                    onClick={() => setShowFullManual(true)}
+                                    className="border-2 border-blue-500/50 hover:bg-blue-600/20 text-blue-200 font-bold"
+                                >
+                                    <BookOpenCheck className="mr-2 h-5 w-5" />
+                                    Ver Manual Completo
+                                </Button>
+                            </DialogTrigger>
+                        </Dialog>
                     )}
                 </div>
 
@@ -515,7 +519,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                             }
                                             return a.order - b.order;
                                         })
-                                        .map((section, index) => (
+                                        .map((section) => (
                                             <div key={section.id} className="border-t-4 border-orange-500/30 pt-8 first:border-t-0 first:pt-0">
                                                 <div className="mb-6">
                                                     <Badge className="mb-2 bg-orange-600/20 text-orange-300 border-orange-500/50">
@@ -540,4 +544,3 @@ export default function Index({ sections: initialSections, filters: initialFilte
         </AdminLayout>
     );
 }
-
