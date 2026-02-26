@@ -1,7 +1,6 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
-import { type PropsWithChildren, useEffect, useRef } from 'react';
+import { type PropsWithChildren, useEffect, useMemo, useRef } from 'react';
 import { Shield, Sparkles, Swords } from 'lucide-react';
 
 interface AuthLayoutProps {
@@ -178,18 +177,29 @@ export default function AuthSimpleLayout({
 
                 {/* Estrellas parpadeantes */}
                 <div className="absolute inset-0">
-                    {[...Array(20)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 3}s`,
-                                opacity: Math.random() * 0.7 + 0.3
-                            }}
-                        />
-                    ))}
+                    {/* eslint-disable react-hooks/purity */}
+                    {useMemo(() => {
+                        const stars = Array.from({ length: 20 }, (_, i) => ({
+                            id: i,
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                            animationDelay: `${Math.random() * 3}s`,
+                            opacity: Math.random() * 0.7 + 0.3
+                        }));
+                        return stars.map((star) => (
+                            <div
+                                key={star.id}
+                                className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
+                                style={{
+                                    left: star.left,
+                                    top: star.top,
+                                    animationDelay: star.animationDelay,
+                                    opacity: star.opacity
+                                }}
+                            />
+                        ));
+                    }, [])}
+                    {/* eslint-enable react-hooks/purity */}
                 </div>
 
                 {/* Contenedor del formulario */}
