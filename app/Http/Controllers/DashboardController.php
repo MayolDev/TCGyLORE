@@ -16,11 +16,12 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
-            ->whereNotNull('rarity_id')
-            ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+        // ⚡ Bolt: Optimize calculation by grouping and counting in the database instead of loading all models into PHP memory
+        $cardsByRarity = Card::join('rarities', 'cards.rarity_id', '=', 'rarities.id')
+            ->whereNotNull('cards.rarity_id')
+            ->groupBy('rarities.name')
+            ->selectRaw('rarities.name, COUNT(*) as count')
+            ->pluck('count', 'rarities.name')
             ->toArray();
 
         $stats = [
