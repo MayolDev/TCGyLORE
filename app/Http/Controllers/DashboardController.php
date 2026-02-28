@@ -16,11 +16,15 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
-            ->whereNotNull('rarity_id')
+        // ⚡ Bolt: Optimize calculation by grouping and counting in the database instead of loading all models into PHP memory
+        // Expected impact: Dramatically lower memory usage (O(1) vs O(N)) when calculating dashboard stats
+        $cardsByRarity = Card::whereNotNull('rarity_id')
+            ->select('rarity_id', \Illuminate\Support\Facades\DB::raw('count(*) as count'))
+            ->groupBy('rarity_id')
+            ->with('rarity')
             ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+            ->groupBy(fn ($item) => $item->rarity?->name ?? 'Sin rareza')
+            ->map(fn ($group) => $group->sum('count'))
             ->toArray();
 
         $stats = [
