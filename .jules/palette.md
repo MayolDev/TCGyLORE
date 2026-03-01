@@ -1,0 +1,3 @@
+## 2024-03-01 - Image Upload Component Refinement
+**Learning:** Native `alert()` calls for validation (like file size checks) severely degrade the user experience and break immersion. Additionally, complex custom input wrappers (like a hidden file input inside a styled dropzone) often suffer from missing visible focus states (`focus-within`), breaking keyboard accessibility, and frequently omit screen-reader friendly labels (`aria-label`) on icon-only actions like "delete".
+**Action:** Always replace native alerts with toast notifications (e.g., `sonner`) for non-blocking feedback. Ensure any custom input container visually reflects keyboard focus using `focus-within` styles. Always explicitly label icon-only buttons.
