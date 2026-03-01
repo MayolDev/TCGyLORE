@@ -9,6 +9,7 @@ use App\Models\Story;
 use App\Models\TimelineEvent;
 use App\Models\User;
 use App\Models\World;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -16,11 +17,18 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
+        // ⚡ Bolt: Optimize card rarity distribution calculation
+        // Why: The previous method fetched all cards into memory, causing potential OOM errors
+        // on large datasets. This new method performs the count aggregation directly in the
+        // database and only loads the grouped results, significantly reducing memory usage.
+        $cardsByRarity = Card::select('rarity_id', DB::raw('count(*) as count'))
             ->whereNotNull('rarity_id')
+            ->groupBy('rarity_id')
+            ->with('rarity')
             ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+            ->mapWithKeys(function ($item) {
+                return [$item->rarity?->name ?? 'Sin rareza' => $item->count];
+            })
             ->toArray();
 
         $stats = [

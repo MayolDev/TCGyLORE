@@ -1,0 +1,3 @@
+## 2026-03-01 - [OOM Prevention in DashboardController]
+**Learning:** The previous implementation in `DashboardController::index` loaded all `Card` models into memory to perform a groupBy on rarity names via collections. When scaling up, this approach directly leads to high memory consumption and OOM errors in Laravel.
+**Action:** When performing aggregation (count, sum, avg) combined with groups, always leverage the database engine (e.g. `Card::select('rarity_id', DB::raw('count(*) as count'))->groupBy('rarity_id')`). Use `with()` to eager load any necessary relationship data for the aggregated rows, avoiding an N+1 when mapping results for the frontend array.
