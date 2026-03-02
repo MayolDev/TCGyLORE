@@ -1,0 +1,4 @@
+## 2025-03-02 - [CRITICAL] Fix Stored XSS via SVG Uploads in Controllers
+**Vulnerability:** The `Admin/LocationController` and `Admin/CardController` permitted the upload of SVG files. The application only utilized Laravel's `image` validation rule without specifying allowed MIME types.
+**Learning:** The default Laravel `image` validation rule permits `svg` file formats. SVG files are essentially XML and can contain `<script>` tags, making them a common vector for Stored Cross-Site Scripting (XSS) if they are served directly back to users.
+**Prevention:** Always restrict allowed image file uploads using the `mimes:jpeg,png,jpg,gif,webp` rule to strictly limit formats to safe, rasterized images. Place the `mimes` rule *before* the `image` rule in the validation array to ensure specific error messaging.
