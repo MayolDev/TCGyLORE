@@ -32,7 +32,6 @@ export default function ImageUpload({
     maxSize = 2,
     aspectRatio = 'any',
     required = false,
-    value,
     onChange,
     existingImage,
 }: ImageUploadProps) {
