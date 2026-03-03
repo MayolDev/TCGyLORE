@@ -1,0 +1,3 @@
+## 2026-03-03 - [Optimize Dashboard Card Distribution Query]
+**Learning:** In-memory Eloquent grouping (`->get()->groupBy(...)`) on large collections causes an O(N) memory overhead and performance bottleneck, especially when the total number of records scales up. When fetching distributions, always prefer database-level aggregation using `select()` and `groupBy()` to keep complexity at O(R), where R is the number of distinct categories (like rarities).
+**Action:** Replace in-memory `->get()->groupBy()` with `->select('category_id', DB::raw('count(*) as count'))->groupBy('category_id')` to offload calculations to the database. Preserve null-relation fallback behavior by mapping results post-query instead of raw joining on related tables.
