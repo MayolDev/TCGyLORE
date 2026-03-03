@@ -9,9 +9,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        \Illuminate\Support\Facades\Schema::table("cards", function (\Illuminate\Database\Schema\Blueprint $table) {
-            $table->foreignId("rarity_id")->nullable();
-        });
+        //
     }
 
     /**
