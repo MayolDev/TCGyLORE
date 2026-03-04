@@ -1,0 +1,24 @@
+<<<<<<< SEARCH
+    // Actualizar posición del marcador cuando cambien las props
+
+    useEffect(() => {
+        if (mapRef.current && latitude && longitude) {
+            if (markerRef.current) {
+                markerRef.current.setLatLng([latitude, longitude]);
+                mapRef.current.setView([latitude, longitude], 13);
+            }
+        }
+
+    }, [latitude, longitude]);
+=======
+    // Actualizar posición del marcador cuando cambien las props
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        if (mapRef.current && latitude && longitude) {
+            if (markerRef.current) {
+                markerRef.current.setLatLng([latitude, longitude]);
+                mapRef.current.setView([latitude, longitude], 13);
+            }
+        }
+    }, [latitude, longitude]);
+>>>>>>> REPLACE
