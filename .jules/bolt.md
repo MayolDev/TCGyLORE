@@ -1,0 +1,3 @@
+## 2024-03-06 - Optimize cards-by-rarity aggregation memory usage
+**Learning:** In the `DashboardController`, computing `$cardsByRarity` using Eloquent's `get()` followed by Collection `groupBy()` loads all models into memory before computing the sum, creating an O(N) memory scaling issue that degrades linearly with the number of cards.
+**Action:** Replace `->get()->groupBy(...)` with database-level aggregate `->select('rarity_id', DB::raw('count(*) as count'))->groupBy('rarity_id')` to limit memory usage from O(N) where N is all records, to O(R) where R is the number of distinct rarity groups. Always aggregate scalar values at the DB level for statistics.
