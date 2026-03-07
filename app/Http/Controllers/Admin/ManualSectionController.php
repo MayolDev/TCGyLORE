@@ -56,7 +56,7 @@ class ManualSectionController extends Controller
         ]);
 
         // Si no se proporciona orden, calcular el siguiente disponible para esa categoría
-        if (!isset($validated['order']) || $validated['order'] === null) {
+        if (! isset($validated['order']) || $validated['order'] === null) {
             $maxOrder = ManualSection::where('category', $validated['category'])->max('order');
             $validated['order'] = ($maxOrder ?? -1) + 1;
         }
@@ -114,6 +114,7 @@ class ManualSectionController extends Controller
             $maxOrder = ManualSection::where('category', $category)->max('order');
             $orders[$category] = ($maxOrder ?? -1) + 1;
         }
+
         return $orders;
     }
 
