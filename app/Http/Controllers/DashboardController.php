@@ -11,16 +11,23 @@ use App\Models\User;
 use App\Models\World;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
+        $cardsByRarity = Card::select('rarity_id', DB::raw('count(*) as count'))
             ->whereNotNull('rarity_id')
+            ->groupBy('rarity_id')
+            ->with('rarity:id,name')
             ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+            ->mapWithKeys(function ($group) {
+                // Using getRelation to safely access the relationship due to naming conflict
+                // between the 'rarity' string column and the 'rarity()' relationship method.
+                $rarity = $group->relationLoaded('rarity') ? $group->getRelation('rarity') : null;
+                return [$rarity?->name ?? 'Sin rareza' => $group->count];
+            })
             ->toArray();
 
         $stats = [
