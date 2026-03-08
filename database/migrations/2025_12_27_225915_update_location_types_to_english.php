@@ -12,8 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Primero, cambiar el tipo de columna a VARCHAR para permitir más valores
-        DB::statement("ALTER TABLE locations MODIFY COLUMN location_type VARCHAR(50)");
+        if (DB::getDriverName() !== 'sqlite') {
+            // Primero, cambiar el tipo de columna a VARCHAR para permitir más valores
+            DB::statement("ALTER TABLE locations MODIFY COLUMN location_type VARCHAR(50)");
+        }
 
         // Mapeo de valores antiguos (español) a nuevos (inglés)
         $typeMapping = [

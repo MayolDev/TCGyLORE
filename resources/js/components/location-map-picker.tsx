@@ -7,7 +7,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// @ts-ignore
+// @ts-expect-error - description
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon,
@@ -73,6 +73,7 @@ export default function LocationMapPicker({
                 const position = e.target.getLatLng();
                 onLocationChange(position.lat, position.lng);
             });
+
         }
 
         // Click en el mapa para colocar/mover el marcador
