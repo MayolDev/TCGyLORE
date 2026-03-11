@@ -22,7 +22,7 @@ local.url = (args: { path: string | number } | [path: string | number ] | string
         args = { path: args }
     }
 
-    
+
     if (Array.isArray(args)) {
         args = {
                     path: args[0],
@@ -87,7 +87,7 @@ local.head = (args: { path: string | number } | [path: string | number ] | strin
                     }),
             method: 'get',
         })
-    
+
     local.form = localForm
 const storage = {
     local: Object.assign(local, local),

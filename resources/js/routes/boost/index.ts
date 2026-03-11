@@ -47,7 +47,7 @@ browserLogs.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             action: browserLogs.url(options),
             method: 'post',
         })
-    
+
     browserLogs.form = browserLogsForm
 const boost = {
     browserLogs: Object.assign(browserLogs, browserLogs),
