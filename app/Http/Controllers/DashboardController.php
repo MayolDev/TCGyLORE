@@ -16,11 +16,20 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
+        // Optimizacion O(N) a O(R) de memoria al obtener tarjetas por rareza:
+        // Evita cargar todos los modelos en memoria y usa GROUP BY en la base de datos
+        // Se seleccionan unicamente las columnas rarity_id y count
+        $cardsByRarity = Card::select('rarity_id', \Illuminate\Support\Facades\DB::raw('count(*) as count'))
             ->whereNotNull('rarity_id')
+            ->groupBy('rarity_id')
+            ->with('rarity:id,name')
             ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+            ->mapWithKeys(function ($item) {
+                $rarityName = $item->relationLoaded('rarity') && $item->getRelation('rarity')
+                    ? $item->getRelation('rarity')->name
+                    : 'Sin rareza';
+                return [$rarityName => $item->count];
+            })
             ->toArray();
 
         $stats = [
