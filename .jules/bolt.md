@@ -1,0 +1,4 @@
+
+## 2024-03-14 - Collection hydration bottlenecks and Model string-relation collisions
+**Learning:** In the `Card` model, the string column `rarity` shadows the `rarity()` relationship method, causing `$card->rarity` to return a string instead of a related Model or fallback null if not properly handled. Moreover, running `.with('relation')->get()->groupBy()->map()` on large unpaginated collections loads the entire O(N) database result set into PHP memory before performing aggregation.
+**Action:** When aggregating large datasets for statistics (like the Dashboard cards per rarity list), always use O(R) database-level aggregations (`select('group_id', DB::raw('count(*) as count'))->groupBy('group_id')`) with eager loading (`->with()`) to fetch group names. Also, to bypass shadowed relations strings and get the actual related model, safely use `$model->relationLoaded('relation') && $model->getRelation('relation')` instead of `$model->relation`.
