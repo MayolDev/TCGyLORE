@@ -1,0 +1,3 @@
+## 2026-03-14 - File Upload Focus Indicators and Feedback
+**Learning:** In drag-and-drop file upload components using a visually hidden `<input type="file">` inside a styled `<div>` dropzone, keyboard focus can be completely lost, making it inaccessible to screen reader/keyboard users. Additionally, using native `alert()` disrupts the application flow and is visually discordant with the design system.
+**Action:** When implementing custom drag-and-drop file inputs, always apply `focus-within:ring-2` (and offset) to the wrapping dropzone `<div>`. Replace native `alert()`s with the design system's toast notification (`sonner`) for validation errors (like file size limits) to provide an accessible, non-blocking user experience.
