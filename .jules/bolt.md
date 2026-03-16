@@ -1,0 +1,3 @@
+## 2026-03-16 - DB Aggregation for Memory Optimization in Dashboard
+**Learning:** In `DashboardController::index`, grouping and counting an entire table in memory via Eloquent collections is an O(N) memory and time operation that degrades quickly as tables grow. Doing this via SQL aggregates like `select('column', DB::raw('count(*)'))->groupBy('column')` transforms this into an O(R) operation (where R is the number of distinct groups) returning significantly fewer records.
+**Action:** When calculating statistics across an entire table (like counts by relation), always perform aggregation at the database level rather than fetching all rows and using Collection's `groupBy()->map->count()`.
