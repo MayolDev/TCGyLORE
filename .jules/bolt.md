@@ -1,0 +1,4 @@
+
+## 2025-03-18 - Optimize Dashboard Card Distribution Query
+**Learning:** `DashboardController::index` fetches the complete `Card` models just to count the number of cards grouped by rarity. This loads all columns for all cards into memory, resulting in O(N) memory complexity and a lot of unnecessary database transmission overhead. The problem states that I should use Eloquent's `select('rarity_id', DB::raw('count(*) as count'))->groupBy('rarity_id')->with('rarity')` to perform an aggregated grouping in O(R) complexity (where R is the number of distinct rarities).
+**Action:** Replace `->get()->groupBy(...)->map(...)` logic with database-level aggregation via `select('rarity_id', DB::raw('count(*) as count'))->groupBy('rarity_id')` for dashboard metric queries, and access the relationship safely via `$item->relationLoaded('rarity') && $item->getRelation('rarity')` instead of `$item->rarity` due to the attribute conflict.
