@@ -4,32 +4,46 @@ import InputError from '@/components/input-error';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ImageUploadProps {
-    label: string;
-    id: string;
+    label?: string;
+    id?: string;
     currentImage?: string | null;
-    onFileChange: (file: File | null) => void;
+    onFileChange?: (file: File | null) => void;
     error?: string;
     accept?: string;
     maxSize?: number; // in MB
     aspectRatio?: 'square' | 'vertical' | 'horizontal' | 'any';
     required?: boolean;
+    // Legacy props
+    value?: File | null;
+    onChange?: (file: File | null) => void;
+    existingImage?: string | null;
 }
 
 export default function ImageUpload({
-    label,
-    id,
+    label = 'Imagen',
+    id = 'image',
     currentImage,
-    onFileChange,
+    onFileChange = () => {},
     error,
     accept = 'image/*',
     maxSize = 2,
     aspectRatio = 'any',
     required = false,
+    onChange,
+    existingImage,
 }: ImageUploadProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isDragging, setIsDragging] = useState(false);
+
+    const triggerChange = (file: File | null) => {
+        onFileChange(file);
+        if (onChange) {
+            onChange(file);
+        }
+    };
 
     const aspectRatioClasses = {
         square: 'aspect-square',
@@ -48,13 +62,13 @@ export default function ImageUpload({
     const handleFileChange = (file: File | null) => {
         if (!file) {
             setPreview(null);
-            onFileChange(null);
+            triggerChange(null);
             return;
         }
 
         // Validar tamaño
         if (file.size > maxSize * 1024 * 1024) {
-            alert(`El archivo debe ser menor a ${maxSize}MB`);
+            toast.error(`El archivo debe ser menor a ${maxSize}MB`);
             return;
         }
 
@@ -65,7 +79,7 @@ export default function ImageUpload({
         };
         reader.readAsDataURL(file);
 
-        onFileChange(file);
+        triggerChange(file);
     };
 
     const handleDrop = (e: React.DragEvent) => {
@@ -89,14 +103,14 @@ export default function ImageUpload({
 
     const clearImage = () => {
         setPreview(null);
-        onFileChange(null);
+        triggerChange(null);
         const input = document.getElementById(id) as HTMLInputElement;
         if (input) {
             input.value = '';
         }
     };
 
-    const displayImage = preview || (currentImage ? `/storage/${currentImage}` : null);
+    const displayImage = preview || (currentImage ? `/storage/${currentImage}` : existingImage ? `/storage/${existingImage}` : null);
 
     return (
         <div className="space-y-2">
@@ -126,6 +140,7 @@ export default function ImageUpload({
                                     size="sm"
                                     onClick={clearImage}
                                     className="gap-2"
+                                    aria-label="Eliminar imagen"
                                 >
                                     <X className="h-4 w-4" />
                                     Eliminar
@@ -140,7 +155,7 @@ export default function ImageUpload({
 
                 {/* Upload Section */}
                 <div
-                    className={`relative border-2 border-dashed rounded-lg transition-colors ${
+                    className={`relative border-2 border-dashed rounded-lg transition-colors focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 ${
                         isDragging
                             ? 'border-primary bg-primary/5'
                             : 'border-border hover:border-primary/50'
