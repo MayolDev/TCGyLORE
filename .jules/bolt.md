@@ -1,0 +1,4 @@
+
+## 2026-03-19 - O(N) Collection Aggregation Bottleneck & Relationship Shadowing
+**Learning:** Large memory operations involving `get()->groupBy()->map()` on related Eloquent collections scale poorly as the table grows (O(N) memory allocation). Transforming this to an Eloquent DB aggregation `select('rarity_id', DB::raw('count(*) as count'))->groupBy('rarity_id')->with('rarity')` drops this to O(R), where R is the number of distinct groups. Additionally, in the `Card` model, the column `rarity` shadows the relationship method `rarity()`, making `$card->rarity` return the enum string value instead of the related `Rarity` model.
+**Action:** Always prefer Eloquent aggregations over collection methods for group summaries to avoid N+1 and memory inflation issues. When bypassing shadowed relationships, manually check and access the relation using `$item->relationLoaded('rarity') && $item->getRelation('rarity')`.
