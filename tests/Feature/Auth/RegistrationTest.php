@@ -1,12 +1,14 @@
 <?php
 
 test('registration screen can be rendered', function () {
+    $this->withoutVite();
     $response = $this->get(route('register'));
 
     $response->assertStatus(200);
 });
 
 test('new users can register', function () {
+    $this->withoutVite();
     $response = $this->post(route('register.store'), [
         'name' => 'Test User',
         'email' => 'test@example.com',
