@@ -1,0 +1,3 @@
+## 2025-03-20 - Optimize Collection Memory in DashboardController
+**Learning:** In `DashboardController::index`, calling `Card::with('rarity')->get()->groupBy(...)` is an O(N) memory anti-pattern, loading every Card model in the database just to count rarity frequencies. This can quickly crash the application as the database grows.
+**Action:** When calculating statistics across large models, use database-level aggregations (e.g., `select('rarity_id', DB::raw('count(*) as count'))->groupBy('rarity_id')`) to convert O(N) memory overhead into O(R) (where R is the number of distinct groups). Preserve null-relation fallback behavior directly in the data map to avoid raw SQL joins when not needed.
