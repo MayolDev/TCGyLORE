@@ -112,10 +112,13 @@ function TwoFactorSetupStep({
                                         type="text"
                                         readOnly
                                         value={manualSetupKey}
+                                        aria-label="Manual setup key"
                                         className="h-full w-full bg-background p-3 text-foreground outline-none"
                                     />
                                     <button
                                         onClick={() => copy(manualSetupKey)}
+                                        aria-label="Copy manual setup key"
+                                        title="Copy manual setup key"
                                         className="border-l border-border px-3 hover:bg-muted"
                                     >
                                         <IconComponent className="w-4" />
