@@ -1,0 +1,3 @@
+## 2025-03-01 - Focus Visibility for Hidden Inputs in Custom Components
+**Learning:** Custom file drop zones that hide the actual `<input type="file">` using `opacity-0` often fail to provide visual focus indicators, making them inaccessible to keyboard users. Similarly, UI overlays that only appear on `group-hover` (like image delete buttons) leave keyboard users guessing where focus is.
+**Action:** When creating custom inputs or hover-revealed actions, explicitly add `focus-within` styling to the container (e.g., `focus-within:ring-2`, `focus-within:opacity-100`) to ensure focus states match hover states and interactables are visually obvious during keyboard navigation.
