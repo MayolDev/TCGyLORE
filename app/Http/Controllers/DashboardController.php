@@ -16,11 +16,18 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
-            ->whereNotNull('rarity_id')
+        // ⚡ Bolt: Transforms O(N) memory operation into O(R) by moving counting logic to DB layer.
+        $cardsByRarity = Card::select('rarity_id', \Illuminate\Support\Facades\DB::raw('count(*) as count'))
+            ->groupBy('rarity_id')
+            ->with('rarity')
             ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+            ->mapWithKeys(function ($item) {
+                // ⚡ Bolt: Safely bypassing the string attribute shadowing conflict on the Card model
+                $rarity = $item->relationLoaded('rarity') && $item->getRelation('rarity')
+                    ? $item->getRelation('rarity')->name
+                    : 'Sin rareza';
+                return [$rarity => $item->count];
+            })
             ->toArray();
 
         $stats = [
@@ -32,7 +39,8 @@ class DashboardController extends Controller
             'cards' => Card::count(),
             'users' => User::count(),
             'cards_by_rarity' => $cardsByRarity,
-            'recent_cards' => Card::with(['world', 'character', 'rarity', 'cardType', 'alignment'])
+            // ⚡ Bolt: Selecting only required relationship columns reduces model hydration overhead and payload size.
+            'recent_cards' => Card::with(['world:id,name', 'character:id,name', 'rarity:id,name', 'cardType:id,name', 'alignment:id,name'])
                 ->latest()
                 ->take(5)
                 ->get(),
