@@ -45,3 +45,7 @@ function something()
 {
     // ..
 }
+
+uses()->beforeEach(function () {
+    $this->withoutVite();
+})->in('Feature');
