@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, ImageOverlay } from 'react-leaflet';
+import { MapContainer, Marker, Popup, useMapEvents, ImageOverlay } from 'react-leaflet';
 import L, { CRS } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -6,7 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-let DefaultIcon = L.icon({
+const DefaultIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow,
     iconSize: [25, 41],
@@ -354,6 +354,7 @@ export default function MapView({
                                         onClick={() => onLocationClick && onLocationClick(location)}
                                         className="w-full px-4 py-2 bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 text-white rounded-md hover:from-yellow-500 hover:to-red-500 transition-all font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-orange-500/50"
                                         style={{ fontFamily: 'Cinzel, serif' }}
+                                        aria-label={`Editar ubicación ${location.name}`}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
