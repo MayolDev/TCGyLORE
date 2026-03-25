@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = User::query()
-            ->with('roles')
+            ->with('roles:id,name') // Optimizacion: cargar solo los campos necesarios de los roles para ahorrar memoria
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
@@ -38,7 +38,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::all(['id', 'name']); // Optimizacion: cargar solo id y name
 
         return Inertia::render('Admin/Users/Create', [
             'roles' => $roles,
@@ -87,8 +87,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $user->load('roles');
-        $roles = Role::all();
+        $user->load('roles:id,name'); // Optimizacion: cargar solo id y name
+        $roles = Role::all(['id', 'name']); // Optimizacion: cargar solo id y name
 
         return Inertia::render('Admin/Users/Edit', [
             'user' => $user,
