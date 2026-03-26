@@ -9,6 +9,7 @@ use App\Models\Story;
 use App\Models\TimelineEvent;
 use App\Models\User;
 use App\Models\World;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -16,11 +17,20 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
+        // ⚡ Bolt: Use database aggregation instead of pulling all records into memory
+        // This transforms an O(N) memory/compute operation into an O(R) operation (where R is number of rarities)
+        $cardsByRarity = Card::select('rarity_id', DB::raw('count(*) as count'))
             ->whereNotNull('rarity_id')
+            ->groupBy('rarity_id')
+            ->with('rarity:id,name')
             ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+            ->mapWithKeys(function ($item) {
+                // Safely access the shadowed rarity relationship
+                $name = $item->relationLoaded('rarity') && $item->getRelation('rarity')
+                    ? $item->getRelation('rarity')->name
+                    : 'Sin rareza';
+                return [$name => $item->count];
+            })
             ->toArray();
 
         $stats = [
@@ -32,7 +42,14 @@ class DashboardController extends Controller
             'cards' => Card::count(),
             'users' => User::count(),
             'cards_by_rarity' => $cardsByRarity,
-            'recent_cards' => Card::with(['world', 'character', 'rarity', 'cardType', 'alignment'])
+            // ⚡ Bolt: Select only needed columns in eager loading to reduce memory and CPU overhead
+            'recent_cards' => Card::with([
+                'world:id,name',
+                'character:id,name',
+                'rarity:id,name',
+                'cardType:id,name',
+                'alignment:id,name'
+            ])
                 ->latest()
                 ->take(5)
                 ->get(),
