@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('cards', function (Blueprint $table) {
-            $table->integer('health')->nullable()->after('magic_defense');
+            if (!Schema::hasColumn('cards', 'defense')) {
+                $table->integer('defense')->nullable();
+            }
+            if (!Schema::hasColumn('cards', 'magic_defense')) {
+                $table->integer('magic_defense')->nullable();
+            }
+            $table->integer('health')->nullable();
         });
     }
 
