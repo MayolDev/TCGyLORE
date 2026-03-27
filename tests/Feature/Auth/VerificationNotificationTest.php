@@ -4,6 +4,10 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('sends verification notification', function () {
     Notification::fake();
 
@@ -16,6 +20,10 @@ test('sends verification notification', function () {
         ->assertRedirect(route('home'));
 
     Notification::assertSentTo($user, VerifyEmail::class);
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('does not send verification notification if email is verified', function () {

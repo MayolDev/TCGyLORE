@@ -3,6 +3,10 @@
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('confirm password screen can be rendered', function () {
     $user = User::factory()->create();
 
@@ -13,6 +17,10 @@ test('confirm password screen can be rendered', function () {
     $response->assertInertia(fn (Assert $page) => $page
         ->component('auth/confirm-password')
     );
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('password confirmation requires authentication', function () {
