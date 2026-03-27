@@ -4,10 +4,18 @@ use App\Models\User;
 use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Fortify\Features;
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('login screen can be rendered', function () {
     $response = $this->get(route('login'));
 
     $response->assertStatus(200);
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('users can authenticate using the login screen', function () {
@@ -20,6 +28,10 @@ test('users can authenticate using the login screen', function () {
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('users with two factor enabled are redirected to two factor challenge', function () {
@@ -50,6 +62,10 @@ test('users with two factor enabled are redirected to two factor challenge', fun
     $this->assertGuest();
 });
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('users can not authenticate with invalid password', function () {
     $user = User::factory()->create();
 
@@ -61,6 +77,10 @@ test('users can not authenticate with invalid password', function () {
     $this->assertGuest();
 });
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('users can logout', function () {
     $user = User::factory()->create();
 
@@ -68,6 +88,10 @@ test('users can logout', function () {
 
     $this->assertGuest();
     $response->assertRedirect(route('home'));
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('users are rate limited', function () {

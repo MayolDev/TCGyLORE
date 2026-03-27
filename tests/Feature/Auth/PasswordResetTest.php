@@ -4,10 +4,18 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('reset password link screen can be rendered', function () {
     $response = $this->get(route('password.request'));
 
     $response->assertStatus(200);
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('reset password link can be requested', function () {
@@ -18,6 +26,10 @@ test('reset password link can be requested', function () {
     $this->post(route('password.email'), ['email' => $user->email]);
 
     Notification::assertSentTo($user, ResetPassword::class);
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('reset password screen can be rendered', function () {
@@ -34,6 +46,10 @@ test('reset password screen can be rendered', function () {
 
         return true;
     });
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('password can be reset with valid token', function () {
@@ -57,6 +73,10 @@ test('password can be reset with valid token', function () {
 
         return true;
     });
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('password cannot be reset with invalid token', function () {

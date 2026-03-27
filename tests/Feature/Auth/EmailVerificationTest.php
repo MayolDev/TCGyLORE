@@ -5,12 +5,20 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('email verification screen can be rendered', function () {
     $user = User::factory()->unverified()->create();
 
     $response = $this->actingAs($user)->get(route('verification.notice'));
 
     $response->assertStatus(200);
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('email can be verified', function () {
@@ -31,6 +39,10 @@ test('email can be verified', function () {
     $response->assertRedirect(route('dashboard', absolute: false).'?verified=1');
 });
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('email is not verified with invalid hash', function () {
     $user = User::factory()->unverified()->create();
 
@@ -43,6 +55,10 @@ test('email is not verified with invalid hash', function () {
     $this->actingAs($user)->get($verificationUrl);
 
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('email is not verified with invalid user id', function () {
@@ -61,6 +77,10 @@ test('email is not verified with invalid user id', function () {
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
 });
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('verified user is redirected to dashboard from verification prompt', function () {
     $user = User::factory()->create([
         'email_verified_at' => now(),
@@ -69,6 +89,10 @@ test('verified user is redirected to dashboard from verification prompt', functi
     $response = $this->actingAs($user)->get(route('verification.notice'));
 
     $response->assertRedirect(route('dashboard', absolute: false));
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('already verified user visiting verification link is redirected without firing event again', function () {

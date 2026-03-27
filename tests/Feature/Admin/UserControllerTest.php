@@ -9,10 +9,18 @@ beforeEach(function () {
     Role::firstOrCreate(['name' => 'Usuario']);
 });
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('los usuarios no autenticados no pueden acceder al panel de administración', function () {
     $response = $this->get('/admin/users');
 
     $response->assertRedirect('/login');
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('los usuarios sin rol admin no pueden acceder al panel de administración', function () {
@@ -24,6 +32,10 @@ test('los usuarios sin rol admin no pueden acceder al panel de administración',
     $response->assertForbidden();
 });
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('los administradores pueden ver la lista de usuarios', function () {
     $admin = User::factory()->create();
     $admin->assignRole('Admin');
@@ -31,6 +43,10 @@ test('los administradores pueden ver la lista de usuarios', function () {
     $response = $this->actingAs($admin)->get('/admin/users');
 
     $response->assertOk();
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('los administradores pueden crear usuarios', function () {
@@ -48,6 +64,10 @@ test('los administradores pueden crear usuarios', function () {
     $this->assertDatabaseHas('users', [
         'email' => 'test@example.com',
     ]);
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('los administradores pueden actualizar usuarios', function () {
@@ -70,6 +90,10 @@ test('los administradores pueden actualizar usuarios', function () {
     ]);
 });
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('los administradores pueden eliminar usuarios', function () {
     $admin = User::factory()->create();
     $admin->assignRole('Admin');
@@ -82,6 +106,10 @@ test('los administradores pueden eliminar usuarios', function () {
     $this->assertDatabaseMissing('users', [
         'id' => $user->id,
     ]);
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('los administradores no pueden eliminar su propio usuario', function () {

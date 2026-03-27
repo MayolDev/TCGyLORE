@@ -4,6 +4,10 @@ use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('two factor settings page can be rendered', function () {
     if (! Features::canManageTwoFactorAuthentication()) {
         $this->markTestSkipped('Two-factor authentication is not enabled.');
@@ -25,6 +29,10 @@ test('two factor settings page can be rendered', function () {
         );
 });
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('two factor settings page requires password confirmation when enabled', function () {
     if (! Features::canManageTwoFactorAuthentication()) {
         $this->markTestSkipped('Two-factor authentication is not enabled.');
@@ -41,6 +49,10 @@ test('two factor settings page requires password confirmation when enabled', fun
         ->get(route('two-factor.show'));
 
     $response->assertRedirect(route('password.confirm'));
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('two factor settings page does not requires password confirmation when disabled', function () {
@@ -61,6 +73,10 @@ test('two factor settings page does not requires password confirmation when disa
         ->assertInertia(fn (Assert $page) => $page
             ->component('settings/two-factor')
         );
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('two factor settings page returns forbidden response when two factor is disabled', function () {

@@ -2,6 +2,10 @@
 
 use App\Models\User;
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('profile page is displayed', function () {
     $user = User::factory()->create();
 
@@ -10,6 +14,10 @@ test('profile page is displayed', function () {
         ->get(route('profile.edit'));
 
     $response->assertOk();
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('profile information can be updated', function () {
@@ -33,6 +41,10 @@ test('profile information can be updated', function () {
     expect($user->email_verified_at)->toBeNull();
 });
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('email verification status is unchanged when the email address is unchanged', function () {
     $user = User::factory()->create();
 
@@ -50,6 +62,10 @@ test('email verification status is unchanged when the email address is unchanged
     expect($user->refresh()->email_verified_at)->not->toBeNull();
 });
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('user can delete their account', function () {
     $user = User::factory()->create();
 
@@ -65,6 +81,10 @@ test('user can delete their account', function () {
 
     $this->assertGuest();
     expect($user->fresh())->toBeNull();
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('correct password must be provided to delete account', function () {

@@ -3,6 +3,10 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 test('password update page is displayed', function () {
     $user = User::factory()->create();
 
@@ -11,6 +15,10 @@ test('password update page is displayed', function () {
         ->get(route('user-password.edit'));
 
     $response->assertStatus(200);
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('password can be updated', function () {
@@ -30,6 +38,10 @@ test('password can be updated', function () {
         ->assertRedirect(route('user-password.edit'));
 
     expect(Hash::check('new-password', $user->refresh()->password))->toBeTrue();
+});
+
+beforeEach(function () {
+    $this->withoutVite();
 });
 
 test('correct password must be provided to update password', function () {
