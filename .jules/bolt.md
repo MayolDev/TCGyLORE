@@ -1,0 +1,3 @@
+## 2024-05-14 - Optimize Eager Loading Columns
+**Learning:** In Laravel/Inertia applications, eager loading all relationships (`with(['archetype', 'alignment', 'faction', 'edition', 'artist'])`) and selecting all columns for paginated lists generates significant memory overhead and payload bloat, especially when only `id` and `name` are needed for a few relations in the frontend.
+**Action:** When building index lists, explicitly specify the required relationships and restrict selected columns (e.g., `with(['world:id,name'])`) to optimize database query performance and reduce the JSON payload size sent to Inertia views.
