@@ -1,0 +1,3 @@
+## 2026-03-28 - Optimize Memory-Heavy Grouping/Counting Operations
+**Learning:** Performing `groupBy` and `count()` on entire Eloquent collections (e.g., fetching all records to count relationships) causes severe O(N) memory overhead and degraded performance as the dataset grows.
+**Action:** Use database-level aggregation via Eloquent's `select('foreign_id', DB::raw('count(*) as count'))->groupBy('foreign_id')->with('relation:id,name')` combined with `mapWithKeys` to transform the data back into the required array format, making it an O(R) memory operation. Ensure you handle the memory restriction properly regarding shadowed attribute relations by explicitly checking `relationLoaded('rarity') && getRelation('rarity')`.
