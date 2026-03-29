@@ -1,4 +1,6 @@
 <?php
+beforeEach(function () { $this->withoutVite(); });
+
 
 use App\Models\User;
 use Illuminate\Support\Facades\RateLimiter;

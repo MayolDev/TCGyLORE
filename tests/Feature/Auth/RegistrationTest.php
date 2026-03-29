@@ -1,10 +1,16 @@
 <?php
+beforeEach(function () { $this->withoutVite(); });
+
+
+beforeEach(function () { $this->withoutVite(); });
 
 test('registration screen can be rendered', function () {
     $response = $this->get(route('register'));
 
     $response->assertStatus(200);
 });
+
+beforeEach(function () { $this->withoutVite(); });
 
 test('new users can register', function () {
     $response = $this->post(route('register.store'), [
