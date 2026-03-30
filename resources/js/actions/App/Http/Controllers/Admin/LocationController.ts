@@ -75,7 +75,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\LocationController::create
@@ -153,7 +153,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\LocationController::store
@@ -208,7 +208,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             action: store.url(options),
             method: 'post',
         })
-    
+
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\LocationController::show
@@ -235,7 +235,7 @@ show.url = (args: { location: string | number } | [location: string | number ] |
         args = { location: args }
     }
 
-    
+
     if (Array.isArray(args)) {
         args = {
                     location: args[0],
@@ -305,7 +305,7 @@ show.head = (args: { location: string | number } | [location: string | number ] 
                     }),
             method: 'get',
         })
-    
+
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\LocationController::edit
@@ -335,7 +335,7 @@ edit.url = (args: { location: number | { id: number } } | [location: number | { 
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { location: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     location: args[0],
@@ -407,7 +407,7 @@ edit.head = (args: { location: number | { id: number } } | [location: number | {
                     }),
             method: 'get',
         })
-    
+
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\LocationController::update
@@ -437,7 +437,7 @@ update.url = (args: { location: number | { id: number } } | [location: number | 
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { location: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     location: args[0],
@@ -519,7 +519,7 @@ update.patch = (args: { location: number | { id: number } } | [location: number 
                     }),
             method: 'post',
         })
-    
+
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\LocationController::destroy
@@ -549,7 +549,7 @@ destroy.url = (args: { location: number | { id: number } } | [location: number |
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { location: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     location: args[0],
@@ -608,7 +608,7 @@ destroy.delete = (args: { location: number | { id: number } } | [location: numbe
                     }),
             method: 'post',
         })
-    
+
     destroy.form = destroyForm
 const LocationController = { index, create, store, show, edit, update, destroy }
 

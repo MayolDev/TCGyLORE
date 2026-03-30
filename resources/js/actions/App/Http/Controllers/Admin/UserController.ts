@@ -75,7 +75,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\UserController::create
@@ -153,7 +153,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\UserController::store
@@ -208,7 +208,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             action: store.url(options),
             method: 'post',
         })
-    
+
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\UserController::show
@@ -238,7 +238,7 @@ show.url = (args: { user: number | { id: number } } | [user: number | { id: numb
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { user: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     user: args[0],
@@ -310,7 +310,7 @@ show.head = (args: { user: number | { id: number } } | [user: number | { id: num
                     }),
             method: 'get',
         })
-    
+
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\UserController::edit
@@ -340,7 +340,7 @@ edit.url = (args: { user: number | { id: number } } | [user: number | { id: numb
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { user: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     user: args[0],
@@ -412,7 +412,7 @@ edit.head = (args: { user: number | { id: number } } | [user: number | { id: num
                     }),
             method: 'get',
         })
-    
+
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\UserController::update
@@ -442,7 +442,7 @@ update.url = (args: { user: number | { id: number } } | [user: number | { id: nu
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { user: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     user: args[0],
@@ -524,7 +524,7 @@ update.patch = (args: { user: number | { id: number } } | [user: number | { id: 
                     }),
             method: 'post',
         })
-    
+
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\UserController::destroy
@@ -554,7 +554,7 @@ destroy.url = (args: { user: number | { id: number } } | [user: number | { id: n
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { user: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     user: args[0],
@@ -613,7 +613,7 @@ destroy.delete = (args: { user: number | { id: number } } | [user: number | { id
                     }),
             method: 'post',
         })
-    
+
     destroy.form = destroyForm
 const UserController = { index, create, store, show, edit, update, destroy }
 
