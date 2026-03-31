@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Card;
 use App\Models\Character;
+use Illuminate\Support\Facades\DB;
 use App\Models\Location;
 use App\Models\Story;
 use App\Models\TimelineEvent;
@@ -16,11 +17,20 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
+        // ⚡ Bolt: Optimize large collection calculation. Use database grouping to convert O(N) memory into O(R).
+        // Uses getRelation() to bypass the string 'rarity' column shadowing the relation in the Card model.
+        $cardsByRarity = Card::select('rarity_id', DB::raw('count(*) as count'))
             ->whereNotNull('rarity_id')
+            ->groupBy('rarity_id')
+            ->with('rarity:id,name')
             ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+            ->mapWithKeys(function ($item) {
+                $rarityName = $item->relationLoaded('rarity') && $item->getRelation('rarity')
+                    ? $item->getRelation('rarity')->name
+                    : 'Sin rareza';
+
+                return [$rarityName => $item->count];
+            })
             ->toArray();
 
         $stats = [
