@@ -21,8 +21,10 @@ class CardController extends Controller
 {
     public function index(Request $request)
     {
+        // ⚡ Bolt: Optimized eager loading to fetch only necessary relationships and specific columns.
+        // This significantly reduces memory usage and JSON payload size sent to the Inertia frontend.
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            ->with(['world:id,name', 'character:id,name', 'cardType:id,name', 'rarity:id,name'])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
