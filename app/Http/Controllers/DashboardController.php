@@ -16,11 +16,18 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
+        // ⚡ Bolt: Optimize memory usage by grouping in database instead of PHP
+        // Uses relationLoaded to bypass attribute conflict with legacy 'rarity' column
+        $cardsByRarity = Card::select('rarity_id', \Illuminate\Support\Facades\DB::raw('count(*) as count'))
             ->whereNotNull('rarity_id')
+            ->groupBy('rarity_id')
+            ->with('rarity:id,name') // Only load necessary columns
             ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+            ->mapWithKeys(fn ($item) => [
+                ($item->relationLoaded('rarity') && $item->getRelation('rarity'))
+                    ? $item->getRelation('rarity')->name
+                    : 'Sin rareza' => $item->count
+            ])
             ->toArray();
 
         $stats = [
