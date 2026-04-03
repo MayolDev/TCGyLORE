@@ -55,6 +55,8 @@ test('two factor settings page does not requires password confirmation when disa
         'confirmPassword' => false,
     ]);
 
+    $this->withoutVite();
+
     $this->actingAs($user)
         ->get(route('two-factor.show'))
         ->assertOk()
