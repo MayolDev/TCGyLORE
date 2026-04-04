@@ -333,7 +333,7 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
 
                                         {/* Actions */}
                                         <div className="flex gap-2 pt-2">
-                                            <Button variant="outline" size="sm" className="flex-1" asChild>
+                                            <Button variant="outline" size="sm" className="flex-1" title={`Editar ${card.name}`} asChild>
                                                 <Link href={`/admin/cards/${card.id}/edit`}>
                                                     <Pencil className="mr-1.5 h-3 w-3" />
                                                     Editar
@@ -344,6 +344,8 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                                 size="sm"
                                                 className="text-destructive hover:text-destructive"
                                                 onClick={() => handleDelete(card.id, card.name)}
+                                                title={`Eliminar ${card.name}`}
+                                                aria-label={`Eliminar ${card.name}`}
                                             >
                                                 <Trash2 className="h-3 w-3" />
                                             </Button>
@@ -490,6 +492,8 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                                                 size="sm"
                                                                 asChild
                                                                 className="bg-violet-900/50 hover:bg-violet-800/70 text-violet-200 hover:text-violet-100 border-violet-700/50 hover:border-violet-500/70"
+                                                                title={`Editar ${card.name}`}
+                                                                aria-label={`Editar ${card.name}`}
                                                             >
                                                                 <Link href={`/admin/cards/${card.id}/edit`}>
                                                                     <Pencil className="h-4 w-4" />
@@ -500,6 +504,8 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                                                 size="sm"
                                                                 className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                                 onClick={() => handleDelete(card.id, card.name)}
+                                                                title={`Eliminar ${card.name}`}
+                                                                aria-label={`Eliminar ${card.name}`}
                                                             >
                                                                 <Trash2 className="h-4 w-4" />
                                                             </Button>
