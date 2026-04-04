@@ -75,7 +75,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\WorldController::create
@@ -153,7 +153,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\WorldController::store
@@ -208,7 +208,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             action: store.url(options),
             method: 'post',
         })
-    
+
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\WorldController::show
@@ -235,7 +235,7 @@ show.url = (args: { world: string | number } | [world: string | number ] | strin
         args = { world: args }
     }
 
-    
+
     if (Array.isArray(args)) {
         args = {
                     world: args[0],
@@ -305,7 +305,7 @@ show.head = (args: { world: string | number } | [world: string | number ] | stri
                     }),
             method: 'get',
         })
-    
+
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\WorldController::edit
@@ -335,7 +335,7 @@ edit.url = (args: { world: number | { id: number } } | [world: number | { id: nu
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { world: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     world: args[0],
@@ -407,7 +407,7 @@ edit.head = (args: { world: number | { id: number } } | [world: number | { id: n
                     }),
             method: 'get',
         })
-    
+
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\WorldController::update
@@ -437,7 +437,7 @@ update.url = (args: { world: number | { id: number } } | [world: number | { id: 
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { world: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     world: args[0],
@@ -519,7 +519,7 @@ update.patch = (args: { world: number | { id: number } } | [world: number | { id
                     }),
             method: 'post',
         })
-    
+
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\WorldController::destroy
@@ -549,7 +549,7 @@ destroy.url = (args: { world: number | { id: number } } | [world: number | { id:
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { world: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     world: args[0],
@@ -608,7 +608,7 @@ destroy.delete = (args: { world: number | { id: number } } | [world: number | { 
                     }),
             method: 'post',
         })
-    
+
     destroy.form = destroyForm
 const WorldController = { index, create, store, show, edit, update, destroy }
 
