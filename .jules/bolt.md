@@ -1,0 +1,3 @@
+## 2025-01-20 - Optimize Inertia Payloads by Constraining Eager Loading
+**Learning:** When using Inertia.js, eagerly loading unnecessary models via `with()` on Eloquent queries sends unused JSON data to the frontend, increasing memory overhead on the backend and slowing down response times by artificially increasing the JSON payload size. Even if a relation is used, not specifying the columns will send the entire model back.
+**Action:** Always verify which relationships and specific columns are strictly required by frontend components. Reduce payload size by constraining eager-loaded relationships to only necessary columns using the syntax `with('relation:id,name')` and removing any relations not used by the component.
