@@ -16,11 +16,17 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
+        // Optimization: Push grouping to the database instead of loading all models into memory.
+        // We use mapWithKeys and getRelation() to bypass the 'rarity' attribute/relation naming conflict.
+        $cardsByRarity = Card::select('rarity_id', \Illuminate\Support\Facades\DB::raw('count(*) as count'))
             ->whereNotNull('rarity_id')
+            ->groupBy('rarity_id')
+            ->with('rarity:id,name')
             ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+            ->mapWithKeys(function ($item) {
+                $rarity = ($item->relationLoaded('rarity') && $item->getRelation('rarity')) ? $item->getRelation('rarity') : null;
+                return [$rarity ? $rarity->name : 'Sin rareza' => $item->count];
+            })
             ->toArray();
 
         $stats = [
