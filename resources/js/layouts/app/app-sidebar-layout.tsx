@@ -4,6 +4,7 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
+
 import { type PropsWithChildren, useEffect, useRef } from 'react';
 
 export default function AppSidebarLayout({
@@ -65,7 +66,7 @@ export default function AppSidebarLayout({
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -165,6 +166,7 @@ export default function AppSidebarLayout({
                 <div className="absolute top-0 left-3/4 w-2 h-full bg-gradient-to-b from-transparent via-orange-400/20 to-transparent animate-shimmer animation-delay-2000"></div>
                 
                 {/* Estrellas brillantes */}
+                {/* eslint-disable react-hooks/purity */}
                 {[...Array(30)].map((_, i) => (
                     <div
                         key={i}
