@@ -21,8 +21,21 @@ class CardController extends Controller
 {
     public function index(Request $request)
     {
+        // ⚡ Bolt Optimization: Eager load only required columns (id and name)
+        // to significantly reduce memory usage and Inertia JSON payload size
+        // without causing N+1 queries.
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            ->with([
+                'world:id,name',
+                'character:id,name',
+                'cardType:id,name',
+                'rarity:id,name',
+                'archetype:id,name',
+                'alignment:id,name',
+                'faction:id,name',
+                'edition:id,name',
+                'artist:id,name'
+            ])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
