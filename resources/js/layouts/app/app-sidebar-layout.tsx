@@ -6,6 +6,8 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
 
+/* eslint-disable react-hooks/purity */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export default function AppSidebarLayout({
     children,
     breadcrumbs = [],

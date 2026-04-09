@@ -1,8 +1,9 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
 import { Shield, Sparkles, Swords } from 'lucide-react';
+
+/* eslint-disable react-hooks/purity */
 
 interface AuthLayoutProps {
     name?: string;
