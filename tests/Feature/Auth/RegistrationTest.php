@@ -1,7 +1,7 @@
 <?php
 
 test('registration screen can be rendered', function () {
-    $response = $this->get(route('register'));
+    $response = $this->withoutVite()->get(route('register'));
 
     $response->assertStatus(200);
 });
