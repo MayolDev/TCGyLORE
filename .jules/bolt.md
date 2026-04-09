@@ -1,0 +1,3 @@
+## 2025-04-09 - Reduce JSON Payload via Optimized Eager Loading
+**Learning:** Over-fetching relationships in Inertia controllers using full `with()` statements leads to bloated JSON payloads and unnecessary database queries. By default, Eloquent returns all columns for all loaded relationships, which can quickly degrade performance on index pages.
+**Action:** When working with Inertia endpoints, strictly limit `with()` clauses to the exact columns needed by the React frontend component (e.g., `with(['relation:id,name'])`) and avoid loading relationships entirely if they are never displayed in the view.
