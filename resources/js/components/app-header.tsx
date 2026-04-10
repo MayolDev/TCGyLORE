@@ -66,6 +66,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         <Sheet>
                             <SheetTrigger asChild>
                                 <Button
+                                    aria-label="Open main menu"
                                     variant="ghost"
                                     size="icon"
                                     className="mr-2 h-[34px] w-[34px]"
@@ -176,6 +177,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     <div className="ml-auto flex items-center space-x-2">
                         <div className="relative flex items-center space-x-1">
                             <Button
+                                aria-label="Search"
                                 variant="ghost"
                                 size="icon"
                                 className="group h-9 w-9 cursor-pointer"
@@ -218,6 +220,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
+                                    aria-label="User menu"
                                     variant="ghost"
                                     className="size-10 rounded-full p-1"
                                 >
