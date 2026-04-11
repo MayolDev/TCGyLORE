@@ -16,11 +16,14 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
+        // ⚡ Bolt: Optimize cards by rarity calculation
+        // Replaced O(N) memory grouping with database-level counting using O(R) memory
+        $cardsByRarity = Card::select('rarity_id', \Illuminate\Support\Facades\DB::raw('count(*) as count'))
             ->whereNotNull('rarity_id')
+            ->groupBy('rarity_id')
+            ->with('rarity:id,name')
             ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+            ->mapWithKeys(fn ($item) => [$item->rarity?->name ?? 'Sin rareza' => $item->count])
             ->toArray();
 
         $stats = [
@@ -32,7 +35,9 @@ class DashboardController extends Controller
             'cards' => Card::count(),
             'users' => User::count(),
             'cards_by_rarity' => $cardsByRarity,
-            'recent_cards' => Card::with(['world', 'character', 'rarity', 'cardType', 'alignment'])
+            // ⚡ Bolt: Optimize recent_cards query payload
+            // Reduced eager loading from 5 full relations to 2 sparse relations needed by UI
+            'recent_cards' => Card::with(['world:id,name', 'rarity:id,name'])
                 ->latest()
                 ->take(5)
                 ->get(),

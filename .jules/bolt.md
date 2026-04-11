@@ -1,0 +1,3 @@
+## 2025-01-04 - Optimize Dashboard queries
+**Learning:** O(N) memory grouping on collections scales poorly and can be optimized to O(R) footprint by selecting grouped counts at the DB level via `->select('rarity_id', DB::raw('count(*) as count'))->groupBy('rarity_id')`. For frontend payload, trimming eager loaded relations from `['world', 'character', 'rarity', 'cardType', 'alignment']` to sparse selection `['world:id,name', 'rarity:id,name']` reduces execution time when UI only needs `card.world.name` and `card.rarity.name`.
+**Action:** When finding grouped counts or full object graphs returned to UI, convert them to database aggregates and sparse eager loading via `with(['relation:id,name'])` respectively.
