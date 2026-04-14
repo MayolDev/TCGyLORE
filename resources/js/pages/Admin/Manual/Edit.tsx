@@ -210,7 +210,7 @@ export default function Edit({ section, categories, sections }: Props) {
                                             <div className="flex-1 overflow-y-auto p-8">
                                                 <div className="max-w-7xl mx-auto bg-slate-800/50 rounded-xl p-12 border-2 border-orange-500/20 shadow-2xl">
                                             <div className="prose prose-orange prose-lg max-w-none">
-                                                <ReactMarkdown 
+                                                <ReactMarkdown
                                                     remarkPlugins={[remarkGfm]}
                                                     rehypePlugins={[rehypeRaw]}
                                                 >
@@ -252,9 +252,9 @@ export default function Edit({ section, categories, sections }: Props) {
                                 Cancelar
                             </Link>
                         </Button>
-                        <Button 
-                            type="submit" 
-                            size="lg" 
+                        <Button
+                            type="submit"
+                            size="lg"
                             disabled={processing}
                             className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500"
                         >

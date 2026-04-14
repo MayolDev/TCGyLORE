@@ -107,7 +107,7 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                                     </Button>
                                 )}
                             </form>
-                            
+
                             {/* View Mode Toggle */}
                             <div className="flex gap-2">
                                 <Button
@@ -144,7 +144,7 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                                 {filters.search ? 'No se encontraron mundos' : '¡Crea tu primer mundo!'}
                             </h3>
                             <p className="text-muted-foreground mb-6 max-w-md">
-                                {filters.search 
+                                {filters.search
                                     ? `No hay mundos que coincidan con "${filters.search}"`
                                     : 'Construye universos épicos donde tus historias y cartas cobrarán vida'
                                 }
@@ -166,12 +166,12 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                                 <Card key={world.id} className="group overflow-hidden border-4 border-purple-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-purple-400/70 hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] transition-all duration-300 hover:scale-105 hover:-rotate-1 relative">
                                     {/* Brillo interior */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    
+
                                     {/* World Image or Gradient Header */}
                                     <div className="relative h-40 bg-gradient-to-br from-purple-600/30 via-blue-600/20 to-indigo-600/30 overflow-hidden border-b-2 border-purple-500/30">
                                         {world.image_url ? (
-                                            <img 
-                                                src={world.image_url} 
+                                            <img
+                                                src={world.image_url}
                                                 alt={world.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                             />
@@ -238,8 +238,8 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                                                     Editar
                                                 </Link>
                                             </Button>
-                                            <Button 
-                                                variant="outline" 
+                                            <Button
+                                                variant="outline"
                                                 size="sm"
                                                 className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                 onClick={() => handleDelete(world.id, world.name)}
@@ -250,10 +250,10 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
 
                                         {/* Created Date */}
                                         <p className="text-xs text-yellow-300/50 text-center pt-2 border-t border-purple-500/30 font-semibold">
-                                            Creado {new Date(world.created_at).toLocaleDateString('es-ES', { 
-                                                day: 'numeric', 
-                                                month: 'long', 
-                                                year: 'numeric' 
+                                            Creado {new Date(world.created_at).toLocaleDateString('es-ES', {
+                                                day: 'numeric',
+                                                month: 'long',
+                                                year: 'numeric'
                                             })}
                                         </p>
                                     </CardContent>
@@ -321,8 +321,8 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                                         </TableHeader>
                                         <TableBody>
                                             {worlds.data.map((world) => (
-                                                <TableRow 
-                                                    key={world.id} 
+                                                <TableRow
+                                                    key={world.id}
                                                     className="border-yellow-900/20 hover:bg-yellow-900/10 transition-colors"
                                                 >
                                                     <TableCell className="font-bold text-yellow-200">
@@ -361,16 +361,16 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="text-yellow-300/60 text-sm">
-                                                        {new Date(world.created_at).toLocaleDateString('es-ES', { 
-                                                            day: 'numeric', 
-                                                            month: 'short', 
-                                                            year: 'numeric' 
+                                                        {new Date(world.created_at).toLocaleDateString('es-ES', {
+                                                            day: 'numeric',
+                                                            month: 'short',
+                                                            year: 'numeric'
                                                         })}
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="flex items-center justify-end gap-2">
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 asChild
                                                                 className="bg-purple-900/50 hover:bg-purple-800/70 text-purple-200 hover:text-purple-100 border-purple-700/50 hover:border-purple-500/70"
@@ -379,8 +379,8 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                                                                     <Pencil className="h-4 w-4" />
                                                                 </Link>
                                                             </Button>
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                                 onClick={() => handleDelete(world.id, world.name)}

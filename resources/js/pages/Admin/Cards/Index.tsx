@@ -7,11 +7,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { 
-    Swords, 
-    Plus, 
-    Search, 
-    Pencil, 
+import {
+    Swords,
+    Plus,
+    Search,
+    Pencil,
     Trash2,
     Zap,
     Heart,
@@ -251,8 +251,8 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                     {/* Card Illustration Header */}
                                     <div className={`relative h-48 bg-gradient-to-br ${rarityGradient[card.rarity?.name || 'comun'] || 'from-gray-400 to-gray-600'} overflow-hidden`}>
                                         {card.illustration_url ? (
-                                            <img 
-                                                src={card.illustration_url} 
+                                            <img
+                                                src={card.illustration_url}
                                                 alt={card.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                             />
@@ -261,7 +261,7 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                                 <Swords className="h-20 w-20 text-white/30 animate-float" />
                                             </div>
                                         )}
-                                        
+
                                         {/* Cost Badge */}
                                         <div className="absolute top-2 right-2 bg-background/90 backdrop-blur-sm rounded-full h-12 w-12 flex items-center justify-center border-2 border-primary/30 shadow-lg">
                                             <span className="text-lg font-bold">{card.cost}</span>
@@ -339,8 +339,8 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                                     Editar
                                                 </Link>
                                             </Button>
-                                            <Button 
-                                                variant="outline" 
+                                            <Button
+                                                variant="outline"
                                                 size="sm"
                                                 className="text-destructive hover:text-destructive"
                                                 onClick={() => handleDelete(card.id, card.name)}
@@ -414,8 +414,8 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                         </TableHeader>
                                         <TableBody>
                                             {cards.data.map((card) => (
-                                                <TableRow 
-                                                    key={card.id} 
+                                                <TableRow
+                                                    key={card.id}
                                                     className="border-yellow-900/20 hover:bg-yellow-900/10 transition-colors"
                                                 >
                                                     <TableCell className="font-bold text-yellow-200">
@@ -428,7 +428,7 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                                         {card.card_type?.name || 'Sin tipo'}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <Badge 
+                                                        <Badge
                                                             variant={rarityBadgeVariant[card.rarity?.name || 'común'] || 'outline'}
                                                             className="font-semibold"
                                                         >
@@ -477,16 +477,16 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="text-yellow-300/60 text-sm">
-                                                        {new Date(card.created_at).toLocaleDateString('es-ES', { 
-                                                            day: 'numeric', 
-                                                            month: 'short', 
-                                                            year: 'numeric' 
+                                                        {new Date(card.created_at).toLocaleDateString('es-ES', {
+                                                            day: 'numeric',
+                                                            month: 'short',
+                                                            year: 'numeric'
                                                         })}
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="flex items-center justify-end gap-2">
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 asChild
                                                                 className="bg-violet-900/50 hover:bg-violet-800/70 text-violet-200 hover:text-violet-100 border-violet-700/50 hover:border-violet-500/70"
@@ -495,8 +495,8 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                                                     <Pencil className="h-4 w-4" />
                                                                 </Link>
                                                             </Button>
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                                 onClick={() => handleDelete(card.id, card.name)}

@@ -15,13 +15,13 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { 
-    LayoutGrid, 
-    Globe, 
-    BookText, 
-    Users, 
-    MapPin, 
-    Clock, 
+import {
+    LayoutGrid,
+    Globe,
+    BookText,
+    Users,
+    MapPin,
+    Clock,
     Swords,
     UserCircle,
     Flame,
@@ -90,7 +90,7 @@ const footerNavItems: NavItem[] = [];
 
 function NavGroup({ title, items, icon: Icon }: { title: string; items: NavItem[]; icon?: React.ElementType }) {
     const page = usePage();
-    
+
     return (
         <SidebarGroup className="px-2 py-2">
             <SidebarGroupLabel className="flex items-center gap-2 text-yellow-400/80 text-xs font-black tracking-wider mb-2 uppercase" style={{ fontFamily: 'Cinzel, serif' }}>
@@ -107,13 +107,13 @@ function NavGroup({ title, items, icon: Icon }: { title: string; items: NavItem[
                                 isActive={isActive}
                                 tooltip={{ children: item.title }}
                                 className={`
-                                    transition-all duration-200 
+                                    transition-all duration-200
                                     ${isActive ? 'bg-yellow-600/20 border-l-4 border-yellow-500 shadow-[0_0_15px_rgba(251,191,36,0.3)]' : 'hover:bg-yellow-600/10 hover:border-l-2 hover:border-yellow-600/50'}
                                 `}
                             >
                                 <Link href={item.href} prefetch>
                                     {item.icon && (
-                                        <item.icon 
+                                        <item.icon
                                             className={`
                                                 transition-all duration-200
                                                 ${isActive ? 'text-yellow-400 scale-110 drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]' : 'text-yellow-200/60 group-hover:text-yellow-300'}

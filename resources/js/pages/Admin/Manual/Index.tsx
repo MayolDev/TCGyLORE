@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -106,11 +106,11 @@ export default function Index({ sections: initialSections, filters: initialFilte
                             📚 Documenta las reglas, mecánicas y fundamentos de tu juego
                         </p>
                     </div>
-                    <Button 
-                        variant="magical" 
-                        size="lg" 
-                        asChild 
-                        className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30" 
+                    <Button
+                        variant="magical"
+                        size="lg"
+                        asChild
+                        className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30"
                         style={{ fontFamily: 'Cinzel, serif' }}
                     >
                         <Link href="/admin/manual-sections/create">
@@ -119,8 +119,8 @@ export default function Index({ sections: initialSections, filters: initialFilte
                         </Link>
                     </Button>
                     {sections.data.length > 0 && (
-                        <Button 
-                            variant="outline" 
+                        <Button
+                            variant="outline"
                             size="lg"
                             onClick={() => setShowFullManual(true)}
                             className="border-2 border-blue-500/50 hover:bg-blue-600/20 text-blue-200 font-bold"
@@ -166,7 +166,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                     </Button>
                                 )}
                             </form>
-                            
+
                             {/* View Mode Toggle */}
                             <div className="flex gap-2">
                                 <Button
@@ -222,16 +222,16 @@ export default function Index({ sections: initialSections, filters: initialFilte
                     <>
                         <div className="grid gap-4">
                             {sections.data.map((section) => (
-                                <Card 
-                                    key={section.id} 
+                                <Card
+                                    key={section.id}
                                     className="group overflow-hidden border-2 border-orange-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-orange-400/70 hover:shadow-[0_0_30px_rgba(251,146,60,0.3)] transition-all duration-300"
                                 >
                                     <CardHeader className="pb-3">
                                         <div className="flex items-start justify-between gap-4">
                                             <div className="flex-1 space-y-2">
                                                 <div className="flex items-center gap-2 flex-wrap">
-                                                    <Badge 
-                                                        variant="outline" 
+                                                    <Badge
+                                                        variant="outline"
                                                         className={categoryColors[section.category] || 'bg-slate-500/10'}
                                                     >
                                                         {categories[section.category]}
@@ -241,10 +241,10 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                             ↳ {section.parent.title}
                                                         </Badge>
                                                     )}
-                                                    <Badge 
-                                                        variant="outline" 
-                                                        className={section.is_published 
-                                                            ? 'border-green-500/50 text-green-300 bg-green-500/10' 
+                                                    <Badge
+                                                        variant="outline"
+                                                        className={section.is_published
+                                                            ? 'border-green-500/50 text-green-300 bg-green-500/10'
                                                             : 'border-gray-500/50 text-gray-400 bg-gray-500/10'
                                                         }
                                                     >
@@ -264,8 +264,8 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                 </CardTitle>
                                             </div>
                                             <div className="flex gap-2">
-                                                <Button 
-                                                    variant="outline" 
+                                                <Button
+                                                    variant="outline"
                                                     size="sm"
                                                     asChild
                                                     className="bg-orange-900/50 hover:bg-orange-800/70 text-orange-200 hover:text-orange-100 border-orange-700/50 hover:border-orange-500/70"
@@ -275,8 +275,8 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                         Editar
                                                     </Link>
                                                 </Button>
-                                                <Button 
-                                                    variant="outline" 
+                                                <Button
+                                                    variant="outline"
                                                     size="sm"
                                                     className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                     onClick={() => handleDelete(section.id, section.title)}
@@ -297,10 +297,10 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                 {section.content.split(' ').length} palabras
                                             </div>
                                             <p className="text-xs text-yellow-300/50 font-semibold">
-                                                Creado {new Date(section.created_at).toLocaleDateString('es-ES', { 
-                                                    day: 'numeric', 
-                                                    month: 'long', 
-                                                    year: 'numeric' 
+                                                Creado {new Date(section.created_at).toLocaleDateString('es-ES', {
+                                                    day: 'numeric',
+                                                    month: 'long',
+                                                    year: 'numeric'
                                                 })}
                                             </p>
                                         </div>
@@ -368,8 +368,8 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                         </TableHeader>
                                         <TableBody>
                                             {sections.data.map((section) => (
-                                                <TableRow 
-                                                    key={section.id} 
+                                                <TableRow
+                                                    key={section.id}
                                                     className="border-yellow-900/20 hover:bg-yellow-900/10 transition-colors"
                                                 >
                                                     <TableCell className="font-bold text-yellow-200">
@@ -386,18 +386,18 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <Badge 
-                                                            variant="outline" 
+                                                        <Badge
+                                                            variant="outline"
                                                             className={categoryColors[section.category] || 'bg-slate-500/10'}
                                                         >
                                                             {categories[section.category]}
                                                         </Badge>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <Badge 
-                                                            variant="outline" 
-                                                            className={section.is_published 
-                                                                ? 'border-green-500/50 text-green-300 bg-green-500/10' 
+                                                        <Badge
+                                                            variant="outline"
+                                                            className={section.is_published
+                                                                ? 'border-green-500/50 text-green-300 bg-green-500/10'
                                                                 : 'border-gray-500/50 text-gray-400 bg-gray-500/10'
                                                             }
                                                         >
@@ -420,24 +420,24 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="text-yellow-300/60 text-sm">
-                                                        {new Date(section.created_at).toLocaleDateString('es-ES', { 
-                                                            day: 'numeric', 
-                                                            month: 'short', 
-                                                            year: 'numeric' 
+                                                        {new Date(section.created_at).toLocaleDateString('es-ES', {
+                                                            day: 'numeric',
+                                                            month: 'short',
+                                                            year: 'numeric'
                                                         })}
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="flex items-center justify-end gap-2">
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 onClick={() => setPreviewSection(section)}
                                                                 className="bg-blue-900/50 hover:bg-blue-800/70 text-blue-200 hover:text-blue-100 border-blue-700/50 hover:border-blue-500/70"
                                                             >
                                                                 <Eye className="h-4 w-4" />
                                                             </Button>
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 asChild
                                                                 className="bg-orange-900/50 hover:bg-orange-800/70 text-orange-200 hover:text-orange-100 border-orange-700/50 hover:border-orange-500/70"
@@ -446,8 +446,8 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                                     <Pencil className="h-4 w-4" />
                                                                 </Link>
                                                             </Button>
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                                 onClick={() => handleDelete(section.id, section.title)}
@@ -480,7 +480,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                         <div className="flex-1 overflow-y-auto p-8">
                             <div className="max-w-7xl mx-auto bg-slate-800/50 rounded-xl p-12 border-2 border-orange-500/20 shadow-2xl">
                                 <div className="prose prose-orange prose-lg max-w-none">
-                                    <ReactMarkdown 
+                                    <ReactMarkdown
                                         remarkPlugins={[remarkGfm]}
                                         rehypePlugins={[rehypeRaw]}
                                     >
@@ -515,7 +515,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                             }
                                             return a.order - b.order;
                                         })
-                                        .map((section, index) => (
+                                        .map((section) => (
                                             <div key={section.id} className="border-t-4 border-orange-500/30 pt-8 first:border-t-0 first:pt-0">
                                                 <div className="mb-6">
                                                     <Badge className="mb-2 bg-orange-600/20 text-orange-300 border-orange-500/50">
@@ -523,7 +523,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                     </Badge>
                                                     <h1 className="!mt-2 !mb-4">{section.title}</h1>
                                                 </div>
-                                                <ReactMarkdown 
+                                                <ReactMarkdown
                                                     remarkPlugins={[remarkGfm]}
                                                     rehypePlugins={[rehypeRaw]}
                                                 >
@@ -540,4 +540,3 @@ export default function Index({ sections: initialSections, filters: initialFilte
         </AdminLayout>
     );
 }
-

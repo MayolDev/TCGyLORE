@@ -116,7 +116,7 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                     </Button>
                                 )}
                             </form>
-                            
+
                             {/* View Mode Toggle */}
                             <div className="flex gap-2">
                                 <Button
@@ -175,12 +175,12 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                 <Card key={story.id} className="group overflow-hidden border-4 border-purple-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-purple-400/70 hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] transition-all duration-300 hover:scale-105 hover:-rotate-1 relative flex flex-col">
                                     {/* Brillo interior */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    
+
                                     {/* Story Image/Header */}
                                     <div className="relative h-40 bg-gradient-to-br from-purple-600/30 via-pink-600/20 to-rose-600/30 overflow-hidden border-b-2 border-purple-500/30">
                                         {story.image_url ? (
-                                            <img 
-                                                src={story.image_url} 
+                                            <img
+                                                src={story.image_url}
                                                 alt={story.title}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                             />
@@ -190,12 +190,12 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                             </div>
                                         )}
                                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent" />
-                                        
+
                                         {/* Category Badge */}
                                         {story.category && (
                                             <div className="absolute top-2 left-2">
-                                                <Badge 
-                                                    variant="outline" 
+                                                <Badge
+                                                    variant="outline"
                                                     className="backdrop-blur-sm bg-slate-900/90 border-purple-500/50 text-purple-200 font-bold"
                                                 >
                                                     {story.category}
@@ -238,8 +238,8 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                                     Editar
                                                 </Link>
                                             </Button>
-                                            <Button 
-                                                variant="outline" 
+                                            <Button
+                                                variant="outline"
                                                 size="sm"
                                                 className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                 onClick={() => handleDelete(story.id, story.title)}
@@ -250,10 +250,10 @@ export default function Index({ stories: initialStories, filters: initialFilters
 
                                         {/* Created Date */}
                                         <p className="text-xs text-yellow-300/50 text-center pt-2 border-t border-purple-500/30 font-semibold">
-                                            Creado {new Date(story.created_at).toLocaleDateString('es-ES', { 
-                                                day: 'numeric', 
-                                                month: 'long', 
-                                                year: 'numeric' 
+                                            Creado {new Date(story.created_at).toLocaleDateString('es-ES', {
+                                                day: 'numeric',
+                                                month: 'long',
+                                                year: 'numeric'
                                             })}
                                         </p>
                                     </CardContent>
@@ -319,8 +319,8 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                         </TableHeader>
                                         <TableBody>
                                             {stories.data.map((story) => (
-                                                <TableRow 
-                                                    key={story.id} 
+                                                <TableRow
+                                                    key={story.id}
                                                     className="border-yellow-900/20 hover:bg-yellow-900/10 transition-colors"
                                                 >
                                                     <TableCell className="font-bold text-yellow-200">
@@ -336,8 +336,8 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                                     </TableCell>
                                                     <TableCell>
                                                         {story.category && (
-                                                            <Badge 
-                                                                variant="outline" 
+                                                            <Badge
+                                                                variant="outline"
                                                                 className={`${categoryColors[story.category] || 'bg-violet-500/20 border-violet-500/40 text-violet-300'}`}
                                                             >
                                                                 {story.category}
@@ -350,16 +350,16 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="text-yellow-300/60 text-sm">
-                                                        {new Date(story.created_at).toLocaleDateString('es-ES', { 
-                                                            day: 'numeric', 
-                                                            month: 'short', 
-                                                            year: 'numeric' 
+                                                        {new Date(story.created_at).toLocaleDateString('es-ES', {
+                                                            day: 'numeric',
+                                                            month: 'short',
+                                                            year: 'numeric'
                                                         })}
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="flex items-center justify-end gap-2">
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 asChild
                                                                 className="bg-purple-900/50 hover:bg-purple-800/70 text-purple-200 hover:text-purple-100 border-purple-700/50 hover:border-purple-500/70"
@@ -368,8 +368,8 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                                                     <Pencil className="h-4 w-4" />
                                                                 </Link>
                                                             </Button>
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                                 onClick={() => handleDelete(story.id, story.title)}

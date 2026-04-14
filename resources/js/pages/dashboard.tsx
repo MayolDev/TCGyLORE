@@ -190,7 +190,7 @@ export default function Dashboard({ stats }: DashboardProps) {
                     <div className="absolute top-0 left-0 w-96 h-96 bg-yellow-400 rounded-full mix-blend-screen filter blur-3xl opacity-40 animate-pulse-slow"></div>
                     <div className="absolute bottom-0 right-0 w-96 h-96 bg-orange-500 rounded-full mix-blend-screen filter blur-3xl opacity-40 animate-pulse-slow animation-delay-2000"></div>
                     <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-red-500 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse-slow animation-delay-1000"></div>
-                    
+
                     <div className="relative z-10">
                         <div className="flex items-center gap-4 mb-4">
                             <Sparkles className="h-12 w-12 text-yellow-300 animate-magical-glow drop-shadow-[0_0_20px_rgba(251,191,36,1)]" />
@@ -216,7 +216,7 @@ export default function Dashboard({ stats }: DashboardProps) {
                                 <Card className={`group cursor-pointer overflow-hidden ${module.borderColor} border-4 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:shadow-[0_0_40px_rgba(251,191,36,0.6)] transition-all duration-300 hover:scale-110 hover:-rotate-2 relative`}>
                                     {/* Brillo interior */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    
+
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
                                         <CardTitle className="text-base font-black text-yellow-100 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" style={{ fontFamily: 'Cinzel, serif' }}>
                                             {module.name}

@@ -32,11 +32,11 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                             >
                                 <Link href={item.href} prefetch>
                                     {item.icon && (
-                                        <item.icon 
+                                        <item.icon
                                             className={cn(
                                                 "transition-all duration-200",
                                                 isActive && "text-primary scale-110 drop-shadow-[0_0_4px_rgba(var(--primary),0.5)]"
-                                            )} 
+                                            )}
                                         />
                                     )}
                                     <span className={cn(

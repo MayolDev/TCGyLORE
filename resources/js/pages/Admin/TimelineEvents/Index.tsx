@@ -133,7 +133,7 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                     </Button>
                                 )}
                             </form>
-                            
+
                             {/* View Mode Toggle */}
                             <div className="flex gap-2">
                                 <Button
@@ -196,7 +196,7 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                 <Card key={event.id} className="group overflow-hidden border-4 border-amber-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-amber-400/70 hover:shadow-[0_0_40px_rgba(251,191,36,0.4)] transition-all duration-300 hover:scale-105 relative md:ml-20">
                                     {/* Brillo interior */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    
+
                                     <div className="flex flex-col md:flex-row gap-4">
                                         {/* Timeline Dot */}
                                         <div className="hidden md:flex absolute -left-12 top-6 items-center justify-center">
@@ -266,7 +266,7 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                                         )}
                                                     </div>
                                                 )}
-                                                
+
                                                 {/* Actions */}
                                                 <div className="flex gap-2 pt-2">
                                                     <Button variant="outline" size="sm" className="border-amber-500/50 text-amber-200 hover:bg-amber-600/20 hover:text-amber-100 font-bold" asChild>
@@ -275,8 +275,8 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                                             Editar
                                                         </Link>
                                                     </Button>
-                                                    <Button 
-                                                        variant="outline" 
+                                                    <Button
+                                                        variant="outline"
                                                         size="sm"
                                                         className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                         onClick={() => handleDelete(event.id, event.name)}
@@ -353,8 +353,8 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                         </TableHeader>
                                         <TableBody>
                                             {sortedEvents.map((event) => (
-                                                <TableRow 
-                                                    key={event.id} 
+                                                <TableRow
+                                                    key={event.id}
                                                     className="border-yellow-900/20 hover:bg-yellow-900/10 transition-colors"
                                                 >
                                                     <TableCell className="font-bold text-amber-300 text-lg">
@@ -375,16 +375,16 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                                         </Badge>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <Badge 
-                                                            variant="outline" 
+                                                        <Badge
+                                                            variant="outline"
                                                             className={eventTypeColors[event.event_type] || 'bg-slate-500/20 border-slate-500/40 text-slate-300'}
                                                         >
                                                             {event.event_type}
                                                         </Badge>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <Badge 
-                                                            variant="outline" 
+                                                        <Badge
+                                                            variant="outline"
                                                             className={importanceColors[event.importance] || 'bg-slate-500/20 border-slate-500/40 text-slate-300'}
                                                         >
                                                             {event.importance}
@@ -409,23 +409,23 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                                                     {event.locations.length}
                                                                 </Badge>
                                                             )}
-                                                            {(!event.characters || event.characters.length === 0) && 
+                                                            {(!event.characters || event.characters.length === 0) &&
                                                              (!event.locations || event.locations.length === 0) && (
                                                                 <span className="text-yellow-200/50 text-sm">-</span>
                                                             )}
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="text-yellow-300/60 text-sm">
-                                                        {new Date(event.created_at).toLocaleDateString('es-ES', { 
-                                                            day: 'numeric', 
-                                                            month: 'short', 
-                                                            year: 'numeric' 
+                                                        {new Date(event.created_at).toLocaleDateString('es-ES', {
+                                                            day: 'numeric',
+                                                            month: 'short',
+                                                            year: 'numeric'
                                                         })}
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="flex items-center justify-end gap-2">
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 asChild
                                                                 className="bg-amber-900/50 hover:bg-amber-800/70 text-amber-200 hover:text-amber-100 border-amber-700/50 hover:border-amber-500/70"
@@ -434,8 +434,8 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                                                     <Pencil className="h-4 w-4" />
                                                                 </Link>
                                                             </Button>
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                                 onClick={() => handleDelete(event.id, event.name)}

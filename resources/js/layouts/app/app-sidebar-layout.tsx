@@ -62,10 +62,10 @@ export default function AppSidebarLayout({
 
         function animate() {
             if (!ctx || !canvas) return;
-            
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -89,7 +89,7 @@ export default function AppSidebarLayout({
                     ctx.beginPath();
                     ctx.arc(element.x, element.y, element.size, 0, Math.PI * 2);
                     ctx.fill();
-                    
+
                     // Estela
                     ctx.globalAlpha = element.opacity * 0.3;
                     ctx.beginPath();
@@ -159,20 +159,21 @@ export default function AppSidebarLayout({
                 <div className="absolute top-20 left-20 w-[600px] h-[600px] bg-purple-500 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse-slow"></div>
                 <div className="absolute bottom-20 right-20 w-[600px] h-[600px] bg-orange-500 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse-slow animation-delay-2000"></div>
                 <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] bg-yellow-400 rounded-full mix-blend-screen filter blur-3xl opacity-25 animate-pulse-slow animation-delay-1000"></div>
-                
+
                 {/* Rayos de luz */}
                 <div className="absolute top-0 left-1/4 w-2 h-full bg-gradient-to-b from-transparent via-yellow-400/20 to-transparent animate-shimmer"></div>
                 <div className="absolute top-0 left-3/4 w-2 h-full bg-gradient-to-b from-transparent via-orange-400/20 to-transparent animate-shimmer animation-delay-2000"></div>
-                
+
                 {/* Estrellas brillantes */}
                 {[...Array(30)].map((_, i) => (
                     <div
                         key={i}
                         className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-twinkle"
+                        /* eslint-disable react-hooks/purity */
                         style={{
                             left: `${Math.random() * 100}%`,
                             top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 3}s`,
+                            animationDelay: `${  Math.random() * 3}s`,
                             boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)'
                         }}
                     />

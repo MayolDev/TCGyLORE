@@ -1,4 +1,3 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
@@ -57,7 +56,7 @@ export default function AuthSimpleLayout({
                 size: type === 'rune' ? Math.random() * 18 + 12 : Math.random() * 2.5 + 1.5,
                 speedX: (Math.random() - 0.5) * 0.4,
                 speedY: (Math.random() - 0.5) * 0.4,
-                opacity: Math.random() * 0.5 + 0.25,
+                opacity:   Math.random() * 0.5 + 0.25,
                 color: colors[Math.floor(Math.random() * colors.length)],
                 rotation: Math.random() * Math.PI * 2,
                 rotationSpeed: (Math.random() - 0.5) * 0.015,
@@ -67,7 +66,7 @@ export default function AuthSimpleLayout({
 
         function animate() {
             if (!ctx || !canvas) return;
-            
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             magicElements.forEach((element) => {
@@ -94,7 +93,7 @@ export default function AuthSimpleLayout({
                     ctx.beginPath();
                     ctx.arc(element.x, element.y, element.size, 0, Math.PI * 2);
                     ctx.fill();
-                    
+
                     // Estela
                     ctx.globalAlpha = element.opacity * 0.3;
                     ctx.beginPath();
@@ -182,11 +181,12 @@ export default function AuthSimpleLayout({
                         <div
                             key={i}
                             className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
+                            /* eslint-disable react-hooks/purity */
                             style={{
                                 left: `${Math.random() * 100}%`,
                                 top: `${Math.random() * 100}%`,
                                 animationDelay: `${Math.random() * 3}s`,
-                                opacity: Math.random() * 0.7 + 0.3
+                                opacity:   Math.random() * 0.7 + 0.3
                             }}
                         />
                     ))}
@@ -197,19 +197,19 @@ export default function AuthSimpleLayout({
                     <div className="relative">
                         {/* Glow effect detrás de la card - mejorado */}
                         <div className="absolute inset-0 bg-gradient-to-r from-yellow-600/30 via-orange-600/30 to-red-600/30 blur-3xl animate-pulse-slow"></div>
-                        
+
                         {/* Anillos orbitales */}
                         <div className="absolute inset-0 -z-10">
                             <div className="absolute inset-0 rounded-full border-2 border-yellow-500/20 animate-spin-slow"></div>
                             <div className="absolute inset-4 rounded-full border-2 border-orange-500/20 animate-spin-reverse"></div>
                             <div className="absolute inset-8 rounded-full border border-purple-500/20 animate-spin-slow"></div>
                         </div>
-                        
+
                         {/* Card principal */}
                         <div className="relative flex flex-col gap-8 p-8 md:p-10 rounded-3xl bg-gradient-to-br from-slate-900/90 via-purple-900/80 to-slate-900/90 border-2 border-yellow-900/30 backdrop-blur-xl shadow-2xl overflow-hidden">
                             {/* Brillo superior animado */}
                             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-400/50 to-transparent animate-shimmer"></div>
-                            
+
                             {/* Decoraciones de esquinas con más animación */}
                             <div className="absolute top-4 right-4 animate-float">
                                 <Sparkles className="w-6 h-6 text-yellow-400/40 animate-pulse" />

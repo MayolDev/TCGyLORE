@@ -97,7 +97,7 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         const submitData = {
             ...data,
             character_id: data.character_id === '0' ? null : data.character_id,
@@ -106,7 +106,7 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
             edition_id: data.edition_id === '0' ? null : data.edition_id,
             artist_id: data.artist_id === '0' ? null : data.artist_id,
         };
-        
+
         post(`/admin/cards/${card.id}`, {
             data: submitData,
             forceFormData: true,
@@ -199,9 +199,9 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
                                 <Label htmlFor="illustration">Ilustración (formato vertical)</Label>
                                 <div className="flex items-center gap-4">
                                     {card.illustration && (
-                                        <img 
-                                            src={`/storage/${card.illustration}`} 
-                                            alt="Ilustración actual" 
+                                        <img
+                                            src={`/storage/${card.illustration}`}
+                                            alt="Ilustración actual"
                                             className="h-32 w-auto rounded-md object-cover"
                                         />
                                     )}

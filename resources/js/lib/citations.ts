@@ -13,12 +13,12 @@ export function processManualCitations(content: string): string {
     processed = processed.replace(/\[cite:\s*([^\]]+)\]/g, (match, citations) => {
         // Separar números por comas
         const numbers = citations.split(',').map((n: string) => n.trim());
-        
+
         // Convertir cada número a superíndice con tooltip
         const superscripts = numbers.map((num: string) => {
             return `<span class="citation-wrapper" data-tooltip="Referencia: Página ${num}"><sup class="cite-number">${num}</sup></span>`;
         }).join('<span class="cite-separator">,</span>');
-        
+
         return superscripts;
     });
 
@@ -41,4 +41,3 @@ export function extractCitations(content: string): string[] {
     // Eliminar duplicados y ordenar
     return [...new Set(citations)].sort((a, b) => parseInt(a) - parseInt(b));
 }
-

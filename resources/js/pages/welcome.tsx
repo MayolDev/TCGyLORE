@@ -44,7 +44,7 @@ export default function Welcome() {
 
         function animate() {
             if (!ctx || !canvas) return;
-            
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach(particle => {
@@ -85,7 +85,7 @@ export default function Welcome() {
                     rel="stylesheet"
                 />
             </Head>
-            
+
             {/* Canvas de partículas */}
             <canvas
                 ref={canvasRef}
@@ -96,7 +96,7 @@ export default function Welcome() {
             <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-purple-950 to-red-950">
                 {/* Capa de textura */}
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE0YzMuMzE0IDAgNiAyLjY4NiA2IDZzLTIuNjg2IDYtNiA2LTYtMi42ODYtNi02IDIuNjg2LTYgNi02ek0yNCA0MGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30"></div>
-                
+
                 {/* Efectos de luz dramáticos */}
                 <div className="absolute inset-0">
                     <div className="absolute top-0 left-1/4 w-96 h-96 bg-yellow-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse-slow"></div>
@@ -130,7 +130,7 @@ export default function Welcome() {
                                 </p>
                             </div>
                         </div>
-                        
+
                         <div className="flex items-center gap-4">
                             {auth.user ? (
                                 <Link
@@ -292,7 +292,7 @@ export default function Welcome() {
                             <div className="absolute bottom-4 left-4">
                                 <Sparkles className="w-12 h-12 text-orange-400/50 animate-spin-slow" />
                             </div>
-                            
+
                             <h2 className="text-5xl font-black text-yellow-100 mb-6" style={{ fontFamily: 'Cinzel, serif' }}>
                                 ¿LISTO PARA FORJAR TU LEYENDA?
                             </h2>

@@ -151,4 +151,3 @@ export default function Edit({ user, roles }: Props) {
         </AdminLayout>
     );
 }
-

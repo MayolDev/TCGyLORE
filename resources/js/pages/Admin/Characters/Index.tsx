@@ -109,7 +109,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                     </Button>
                                 )}
                             </form>
-                            
+
                             {/* View Mode Toggle */}
                             <div className="flex gap-2">
                                 <Button
@@ -168,12 +168,12 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                 <Card key={character.id} className="group overflow-hidden border-4 border-emerald-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-emerald-400/70 hover:shadow-[0_0_40px_rgba(16,185,129,0.4)] transition-all duration-300 hover:scale-105 hover:-rotate-1 relative">
                                     {/* Brillo interior */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    
+
                                     {/* Character Header with Avatar */}
                                     <div className="relative h-48 bg-gradient-to-br from-emerald-600/30 via-teal-600/20 to-cyan-600/30 overflow-hidden border-b-2 border-emerald-500/30">
                                         {character.image_url ? (
-                                            <img 
-                                                src={character.image_url} 
+                                            <img
+                                                src={character.image_url}
                                                 alt={character.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                             />
@@ -188,7 +188,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                             </div>
                                         )}
                                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent" />
-                                        
+
                                         {/* World Badge */}
                                         <div className="absolute top-2 right-2">
                                             <Badge variant="secondary" className="backdrop-blur-sm bg-slate-900/90 border-emerald-500/30 text-yellow-200 font-bold">
@@ -217,9 +217,9 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                                 </div>
                                                 <div className="flex flex-wrap gap-1.5">
                                                     {character.spells.slice(0, 3).map((spell, index) => (
-                                                        <Badge 
-                                                            key={index} 
-                                                            variant="outline" 
+                                                        <Badge
+                                                            key={index}
+                                                            variant="outline"
                                                             className="text-xs bg-teal-500/30 border-teal-500/50 text-teal-200 font-bold"
                                                         >
                                                             {spell}
@@ -242,8 +242,8 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                                     Editar
                                                 </Link>
                                             </Button>
-                                            <Button 
-                                                variant="outline" 
+                                            <Button
+                                                variant="outline"
                                                 size="sm"
                                                 className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                 onClick={() => handleDelete(character.id, character.name)}
@@ -254,10 +254,10 @@ export default function Index({ characters: initialCharacters, filters: initialF
 
                                         {/* Created Date */}
                                         <p className="text-xs text-yellow-300/50 text-center pt-2 border-t border-emerald-500/30 font-semibold">
-                                            Creado {new Date(character.created_at).toLocaleDateString('es-ES', { 
-                                                day: 'numeric', 
-                                                month: 'long', 
-                                                year: 'numeric' 
+                                            Creado {new Date(character.created_at).toLocaleDateString('es-ES', {
+                                                day: 'numeric',
+                                                month: 'long',
+                                                year: 'numeric'
                                             })}
                                         </p>
                                     </CardContent>
@@ -323,8 +323,8 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                         </TableHeader>
                                         <TableBody>
                                             {characters.data.map((character) => (
-                                                <TableRow 
-                                                    key={character.id} 
+                                                <TableRow
+                                                    key={character.id}
                                                     className="border-yellow-900/20 hover:bg-yellow-900/10 transition-colors"
                                                 >
                                                     <TableCell className="font-bold text-yellow-200">
@@ -347,7 +347,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                                         <div className="flex flex-wrap gap-1">
                                                             {(() => {
                                                                 let spells = null;
-                                                                
+
                                                                 if (Array.isArray(character.spells)) {
                                                                     spells = character.spells;
                                                                 } else if (typeof character.spells === 'string' && character.spells) {
@@ -358,13 +358,13 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                                                         spells = [character.spells];
                                                                     }
                                                                 }
-                                                                
+
                                                                 return spells && spells.length > 0 ? (
                                                                     <>
                                                                         {spells.slice(0, 3).map((spell: string, idx: number) => (
-                                                                            <Badge 
+                                                                            <Badge
                                                                                 key={idx}
-                                                                                variant="outline" 
+                                                                                variant="outline"
                                                                                 className="bg-teal-500/20 border-teal-500/40 text-teal-300 text-xs"
                                                                             >
                                                                                 <Scroll className="h-3 w-3 mr-1" />
@@ -384,16 +384,16 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="text-yellow-300/60 text-sm">
-                                                        {new Date(character.created_at).toLocaleDateString('es-ES', { 
-                                                            day: 'numeric', 
-                                                            month: 'short', 
-                                                            year: 'numeric' 
+                                                        {new Date(character.created_at).toLocaleDateString('es-ES', {
+                                                            day: 'numeric',
+                                                            month: 'short',
+                                                            year: 'numeric'
                                                         })}
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="flex items-center justify-end gap-2">
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 asChild
                                                                 className="bg-emerald-900/50 hover:bg-emerald-800/70 text-emerald-200 hover:text-emerald-100 border-emerald-700/50 hover:border-emerald-500/70"
@@ -402,8 +402,8 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                                                     <Pencil className="h-4 w-4" />
                                                                 </Link>
                                                             </Button>
-                                                            <Button 
-                                                                variant="outline" 
+                                                            <Button
+                                                                variant="outline"
                                                                 size="sm"
                                                                 className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                                 onClick={() => handleDelete(character.id, character.name)}

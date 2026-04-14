@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, ImageOverlay } from 'react-leaflet';
+import { MapContainer, Marker, Popup, useMapEvents, ImageOverlay } from 'react-leaflet';
 import L, { CRS } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -6,7 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-let DefaultIcon = L.icon({
+const DefaultIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow,
     iconSize: [25, 41],
@@ -17,15 +17,15 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 /**
  * SISTEMA DE COORDENADAS FANTASY MAP
- * 
+ *
  * Este mapa usa CRS.Simple (coordenadas cartesianas simples) en lugar del sistema
  * geográfico lat/long. Las coordenadas van de 0 a 100 en ambos ejes.
- * 
- * IMPORTANTE: 
+ *
+ * IMPORTANTE:
  * - coordinate_x = Eje horizontal (oeste-este) → 0 (izquierda) a 100 (derecha)
  * - coordinate_y = Eje vertical (norte-sur) → 0 (arriba) a 100 (abajo)
  * - Leaflet usa formato [Y, X] (al revés de lo normal)
- * 
+ *
  * Para agregar un mapa personalizado:
  * 1. Coloca tu imagen en /public/images/map-aethermoor.png (o .jpg)
  * 2. Descomenta el <ImageOverlay> más abajo
@@ -51,7 +51,7 @@ export const LOCATION_TYPES = {
 // Función para crear iconos personalizados épicos
 export function createCustomIcon(type: keyof typeof LOCATION_TYPES = 'city', isCurrentLocation = false) {
     const locationConfig = LOCATION_TYPES[type] || LOCATION_TYPES.city;
-    
+
     // Si es la ubicación actual (editando), hacer el marcador mucho más destacado
     const size = isCurrentLocation ? 80 : 56;
     const glowSize = isCurrentLocation ? 100 : 70;
@@ -59,7 +59,7 @@ export function createCustomIcon(type: keyof typeof LOCATION_TYPES = 'city', isC
     const borderColor = isCurrentLocation ? '#FF0080' : '#FBBF24';
     const borderWidth = isCurrentLocation ? 8 : 5;
     const pulseIntensity = isCurrentLocation ? '1.0' : '0.7';
-    
+
     const iconHtml = `
         <div class="relative animate-float" style="animation-duration: 3s;">
             <!-- Glow exterior pulsante -->
@@ -174,7 +174,7 @@ export function createCustomIcon(type: keyof typeof LOCATION_TYPES = 'city', isC
             "></div>
         </div>
     `;
-    
+
     return L.divIcon({
         html: iconHtml,
         className: 'custom-marker-location',
@@ -236,24 +236,24 @@ export default function MapView({
         if (!locations || locations.length === 0) {
             return center;
         }
-        
+
         const validLocations = locations.filter(
-            (loc) => loc.coordinate_x != null && loc.coordinate_y != null && 
+            (loc) => loc.coordinate_x != null && loc.coordinate_y != null &&
                      !isNaN(Number(loc.coordinate_x)) && !isNaN(Number(loc.coordinate_y))
         );
-        
+
         if (validLocations.length === 0) {
             return center;
         }
-        
+
         // Si solo hay una ubicación, centrar en ella con zoom
         if (validLocations.length === 1) {
             return [Number(validLocations[0].coordinate_y), Number(validLocations[0].coordinate_x)] as [number, number];
         }
-        
+
         const avgX = validLocations.reduce((sum, loc) => sum + Number(loc.coordinate_x || 0), 0) / validLocations.length;
         const avgY = validLocations.reduce((sum, loc) => sum + Number(loc.coordinate_y || 0), 0) / validLocations.length;
-        
+
         return [avgY, avgX] as [number, number];
     })();
 
@@ -269,14 +269,14 @@ export default function MapView({
                 <div className="absolute top-0 left-0 h-full w-12 bg-gradient-to-r from-amber-900/80 to-transparent" />
                 <div className="absolute top-0 right-0 h-full w-12 bg-gradient-to-l from-amber-900/80 to-transparent" />
             </div>
-            
+
             {/* Brújula decorativa épica */}
             <div className="absolute top-4 right-4 z-[1000] bg-slate-900/90 backdrop-blur-sm rounded-full p-4 border-4 border-yellow-500/50 shadow-[0_0_20px_rgba(251,191,36,0.6)]">
                 <div className="text-3xl animate-spin text-yellow-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]" style={{ animationDuration: '20s' }}>
                     🧭
                 </div>
             </div>
-            
+
             <MapContainer
                 center={calculatedCenter}
                 zoom={zoom}
@@ -296,29 +296,29 @@ export default function MapView({
                     bounds={bounds}
                     opacity={1.0}
                 />
-                
+
                 {/* Manejador de clicks */}
                 {allowClick && onMapClick && <MapClickHandler onMapClick={onMapClick} />}
-                
+
                 {/* Marcadores de ubicaciones */}
                 {locations.map((location) => {
                     if (location.coordinate_x == null || location.coordinate_y == null) {
                         return null;
                     }
-                    
+
                     // Si es la ubicación actual y tenemos coordenadas temporales, no mostrar este marcador
                     const isCurrentLocation = currentLocationId !== null && location.id === currentLocationId;
                     if (isCurrentLocation && currentLocationCoords) {
                         return null;
                     }
-                    
+
                     const type = (location.type || 'city') as keyof typeof LOCATION_TYPES;
                     const icon = createCustomIcon(type, isCurrentLocation);
                     const position: [number, number] = [
-                        Number(location.coordinate_y), 
+                        Number(location.coordinate_y),
                         Number(location.coordinate_x)
                     ];
-                    
+
                     return (
                         <Marker
                             key={location.id}
@@ -366,7 +366,7 @@ export default function MapView({
                         </Marker>
                     );
                 })}
-                
+
                 {/* Marcador temporal para la ubicación actual que se está editando */}
                 {currentLocationCoords && (
                     <Marker
@@ -392,7 +392,7 @@ export default function MapView({
                     </Marker>
                 )}
             </MapContainer>
-            
+
             <style>{`
                 .custom-marker-location {
                     background: transparent !important;
@@ -428,4 +428,3 @@ export default function MapView({
         </div>
     );
 }
-

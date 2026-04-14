@@ -202,5 +202,3 @@ export default function Edit({ story, worlds }: Props) {
         </WriterLayout>
     );
 }
-
-

@@ -12,8 +12,8 @@ export function CitationTooltip({ pageNumber, context }: CitationTooltipProps) {
                 <TooltipTrigger asChild>
                     <sup className="cite-number">{pageNumber}</sup>
                 </TooltipTrigger>
-                <TooltipContent 
-                    side="top" 
+                <TooltipContent
+                    side="top"
                     className="bg-slate-900 border-2 border-orange-500/50 text-yellow-200 max-w-xs"
                 >
                     <div className="space-y-1">
@@ -27,4 +27,3 @@ export function CitationTooltip({ pageNumber, context }: CitationTooltipProps) {
         </TooltipProvider>
     );
 }
-

@@ -120,7 +120,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                     </Button>
                                 )}
                             </form>
-                            
+
                             {/* View Mode Toggle */}
                             <div className="flex gap-2">
                                 <Button
@@ -210,12 +210,12 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                 <Card key={location.id} className="group overflow-hidden border-4 border-rose-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-rose-400/70 hover:shadow-[0_0_40px_rgba(244,63,94,0.4)] transition-all duration-300 hover:scale-105 hover:-rotate-1 relative">
                                     {/* Brillo interior */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-transparent to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    
+
                                     {/* Location Image */}
                                     <div className="relative h-48 bg-gradient-to-br from-rose-600/30 via-orange-600/20 to-amber-600/30 overflow-hidden border-b-2 border-rose-500/30">
                                         {location.image_url ? (
-                                            <img 
-                                                src={location.image_url} 
+                                            <img
+                                                src={location.image_url}
                                                 alt={location.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                             />
@@ -225,7 +225,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                             </div>
                                         )}
                                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent" />
-                                        
+
                                         {/* World Badge */}
                                         <div className="absolute top-2 right-2">
                                             <Badge variant="secondary" className="backdrop-blur-sm bg-slate-900/90 border-rose-500/30 text-yellow-200 font-bold">
@@ -273,8 +273,8 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                                     Editar
                                                 </Link>
                                             </Button>
-                                            <Button 
-                                                variant="outline" 
+                                            <Button
+                                                variant="outline"
                                                 size="sm"
                                                 className="border-red-500/50 text-red-300 hover:bg-red-600/20 hover:text-red-200"
                                                 onClick={() => handleDelete(location.id, location.name)}
@@ -285,10 +285,10 @@ export default function Index({ locations: initialLocations, filters: initialFil
 
                                         {/* Created Date */}
                                         <p className="text-xs text-yellow-300/50 text-center pt-2 border-t border-rose-500/30 font-semibold">
-                                            Creado {new Date(location.created_at).toLocaleDateString('es-ES', { 
-                                                day: 'numeric', 
-                                                month: 'long', 
-                                                year: 'numeric' 
+                                            Creado {new Date(location.created_at).toLocaleDateString('es-ES', {
+                                                day: 'numeric',
+                                                month: 'long',
+                                                year: 'numeric'
                                             })}
                                         </p>
                                     </CardContent>
@@ -366,7 +366,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                         </thead>
                                         <tbody className="divide-y divide-primary/10">
                                             {locations.data.map((location) => (
-                                                <tr 
+                                                <tr
                                                     key={location.id}
                                                     className="hover:bg-rose-500/10 transition-colors group"
                                                 >

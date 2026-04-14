@@ -7,7 +7,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// @ts-ignore
+// @ts-expect-error Ignoring third-party map typing
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon,
@@ -63,9 +63,9 @@ export default function LocationMapPicker({
                 iconAnchor: [16, 32],
             });
 
-            markerRef.current = L.marker([latitude, longitude], { 
+            markerRef.current = L.marker([latitude, longitude], {
                 icon: customIcon,
-                draggable: true 
+                draggable: true
             }).addTo(map);
 
             // Evento al arrastrar el marcador
@@ -78,7 +78,7 @@ export default function LocationMapPicker({
         // Click en el mapa para colocar/mover el marcador
         map.on('click', (e) => {
             const { lat, lng } = e.latlng;
-            
+
             const customIcon = L.divIcon({
                 className: 'custom-marker-icon',
                 html: `
@@ -98,9 +98,9 @@ export default function LocationMapPicker({
             if (markerRef.current) {
                 markerRef.current.setLatLng([lat, lng]);
             } else {
-                markerRef.current = L.marker([lat, lng], { 
+                markerRef.current = L.marker([lat, lng], {
                     icon: customIcon,
-                    draggable: true 
+                    draggable: true
                 }).addTo(map);
 
                 markerRef.current.on('dragend', (e) => {
@@ -170,4 +170,3 @@ export default function LocationMapPicker({
         </div>
     );
 }
-

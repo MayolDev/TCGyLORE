@@ -70,7 +70,7 @@ export default function Create({ worlds, characters, cardTypes, rarities, archet
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         const submitData = {
             ...data,
             character_id: data.character_id === '0' ? null : data.character_id,
@@ -79,7 +79,7 @@ export default function Create({ worlds, characters, cardTypes, rarities, archet
             edition_id: data.edition_id === '0' ? null : data.edition_id,
             artist_id: data.artist_id === '0' ? null : data.artist_id,
         };
-        
+
         post('/admin/cards', {
             data: submitData,
             forceFormData: true,

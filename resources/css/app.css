@@ -15,7 +15,7 @@
         'Philosopher', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
-    
+
     --font-heading: 'Cinzel', 'Georgia', serif;
     --font-epic: 'Trade Winds', cursive;
     --font-story: 'Almendra', serif;
@@ -76,38 +76,38 @@
     --card-foreground: oklch(0.95 0.02 60);
     --popover: oklch(0.16 0.04 270);
     --popover-foreground: oklch(0.95 0.02 60);
-    
+
     /* Dorado Épico */
     --primary: oklch(0.65 0.18 60);  /* Amarillo dorado */
     --primary-foreground: oklch(0.15 0.03 270);
-    
+
     /* Naranja Fuego */
     --secondary: oklch(0.60 0.20 40);  /* Naranja */
     --secondary-foreground: oklch(0.95 0.02 60);
-    
+
     --muted: oklch(0.20 0.04 270);  /* Oscuro púrpura */
     --muted-foreground: oklch(0.70 0.05 60);
-    
+
     /* Rojo Fuego */
     --accent: oklch(0.55 0.22 30);  /* Rojo */
     --accent-foreground: oklch(0.95 0.02 60);
-    
+
     --destructive: oklch(0.50 0.20 25);  /* Rojo destructivo */
     --destructive-foreground: oklch(0.98 0 0);
-    
+
     --border: oklch(0.30 0.08 60);  /* Bordes dorados */
     --input: oklch(0.22 0.04 270);  /* Inputs oscuros */
     --ring: oklch(0.65 0.18 60);  /* Anillo dorado */
-    
+
     /* Charts - Tonos Épicos */
     --chart-1: oklch(0.65 0.18 60);
     --chart-2: oklch(0.60 0.20 40);
     --chart-3: oklch(0.55 0.22 30);
     --chart-4: oklch(0.60 0.18 280);
     --chart-5: oklch(0.58 0.16 320);
-    
+
     --radius: 0.75rem;
-    
+
     /* Sidebar - Madera Oscura Épica */
     --sidebar: oklch(0.12 0.04 270);  /* Muy oscuro */
     --sidebar-foreground: oklch(0.88 0.03 60);
@@ -117,12 +117,12 @@
     --sidebar-accent-foreground: oklch(0.88 0.03 60);
     --sidebar-border: oklch(0.20 0.05 60);
     --sidebar-ring: oklch(0.65 0.18 60);
-    
+
     /* Colores épicos personalizados */
     --glow-fire: oklch(0.65 0.22 40);
     --glow-amber: oklch(0.70 0.20 55);
     --glow-gold: oklch(0.75 0.18 70);
-    
+
     /* Rarezas TCG */
     --rarity-common: oklch(0.45 0.06 30);
     --rarity-rare: oklch(0.55 0.15 240);
@@ -138,32 +138,32 @@
     --card-foreground: oklch(0.95 0.03 60);
     --popover: oklch(0.12 0.05 270);
     --popover-foreground: oklch(0.95 0.03 60);
-    
+
     --primary: oklch(0.70 0.20 60);  /* Dorado más brillante */
     --primary-foreground: oklch(0.10 0.04 270);
-    
+
     --secondary: oklch(0.65 0.22 40);  /* Naranja brillante */
     --secondary-foreground: oklch(0.95 0.03 60);
-    
+
     --muted: oklch(0.18 0.04 270);  /* Púrpura oscuro */
     --muted-foreground: oklch(0.65 0.06 60);
-    
+
     --accent: oklch(0.60 0.24 30);  /* Rojo fuego */
     --accent-foreground: oklch(0.95 0.03 60);
-    
+
     --destructive: oklch(0.45 0.22 25);  /* Rojo intenso */
     --destructive-foreground: oklch(0.95 0.03 60);
-    
+
     --border: oklch(0.28 0.08 60);  /* Bordes dorados */
     --input: oklch(0.20 0.04 270);
     --ring: oklch(0.65 0.20 60);  /* Anillo dorado brillante */
-    
+
     --chart-1: oklch(0.65 0.20 60);
     --chart-2: oklch(0.62 0.22 40);
     --chart-3: oklch(0.58 0.24 30);
     --chart-4: oklch(0.62 0.20 280);
     --chart-5: oklch(0.60 0.18 320);
-    
+
     --sidebar: oklch(0.08 0.05 270);  /* Sidebar casi negro */
     --sidebar-foreground: oklch(0.90 0.03 60);
     --sidebar-primary: oklch(0.70 0.20 60);
@@ -172,12 +172,12 @@
     --sidebar-accent-foreground: oklch(0.90 0.03 60);
     --sidebar-border: oklch(0.18 0.05 60);
     --sidebar-ring: oklch(0.65 0.20 60);
-    
+
     /* Resplandores más intensos en dark mode */
     --glow-fire: oklch(0.68 0.24 40);
     --glow-amber: oklch(0.72 0.22 55);
     --glow-gold: oklch(0.75 0.22 70);
-    
+
     /* Rarezas más brillantes */
     --rarity-common: oklch(0.48 0.08 30);
     --rarity-rare: oklch(0.60 0.20 240);
@@ -193,7 +193,7 @@
     body {
         @apply bg-background text-foreground;
     }
-    
+
     h1, h2, h3, h4, h5, h6 {
         font-family: var(--font-heading);
         font-weight: 600;
@@ -334,7 +334,7 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: linear-gradient(135deg, var(--card) 0%, oklch(from var(--card) calc(l - 0.02) c h) 100%);
     /* Sombra de objeto sobre mesa */
-    box-shadow: 
+    box-shadow:
         0 1px 3px oklch(0.10 0 0 / 0.3),
         0 10px 20px oklch(0.10 0 0 / 0.2),
         inset 0 0 0 1px oklch(from var(--card) calc(l + 0.05) c h / 0.5);
@@ -361,7 +361,7 @@
 
 .card-tcg:hover {
     transform: translateY(-8px) scale(1.03) rotate(-1deg);
-    box-shadow: 
+    box-shadow:
         0 2px 5px oklch(0.10 0 0 / 0.3),
         0 20px 40px oklch(0.10 0 0 / 0.3),
         0 0 20px var(--glow-fire),
@@ -777,6 +777,3 @@ body {
     opacity: 1;
     transform: translateX(-50%) translateY(-2px);
 }
-
-
-

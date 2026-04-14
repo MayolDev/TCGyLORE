@@ -50,11 +50,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Edit({ character, worlds, locations, stories }: Props) {
-    console.log('DEBUG - Props recibidos:', { 
-        locationsCount: locations?.length, 
+    console.log('DEBUG - Props recibidos:', {
+        locationsCount: locations?.length,
         storiesCount: stories?.length,
         locations,
-        stories 
+        stories
     });
 
     const { data, setData, put, processing, errors } = useForm({

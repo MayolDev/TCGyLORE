@@ -219,4 +219,3 @@ export default function Index({ users, filters }: Props) {
         </AdminLayout>
     );
 }
-
