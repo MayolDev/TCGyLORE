@@ -1,0 +1,3 @@
+## 2024-04-14 - Eager Loading Optimization with Column Selection
+**Learning:** In Laravel/Inertia, eager loading all model relationships in `CardController::index` causes severe N+1-like over-fetching. Even when filtering down, returning unused relations (like `archetype`, `artist`) inflates memory usage, JSON serialization time, and response payload size significantly, which then degrades React frontend render performance.
+**Action:** When returning paginated collections to Inertia, exclusively use `->with(['relation:id,name'])` to limit eager loading to *only* the specific relations and columns the frontend actually displays. Exclude non-visual or unused relationships entirely. Always add inline comments explaining the rationale.

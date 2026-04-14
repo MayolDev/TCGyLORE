@@ -1,13 +1,25 @@
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import WriterLayout from '@/layouts/writer-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
-import InputError from '@/components/input-error';
 import { BookText, Save, X } from 'lucide-react';
 
 interface World {
@@ -60,11 +72,11 @@ export default function Edit({ story, worlds }: Props) {
                 {/* Header */}
                 <div className="flex items-start justify-between">
                     <div>
-                        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent flex items-center gap-3">
+                        <h1 className="flex items-center gap-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-4xl font-bold text-transparent">
                             <BookText className="h-8 w-8 text-primary" />
                             Editar Historia
                         </h1>
-                        <p className="text-muted-foreground mt-2">
+                        <p className="mt-2 text-muted-foreground">
                             Edita tu historia con comodidad
                         </p>
                     </div>
@@ -76,7 +88,7 @@ export default function Edit({ story, worlds }: Props) {
                     </Button>
                 </div>
 
-                <form onSubmit={submit} className="space-y-6 writer-form">
+                <form onSubmit={submit} className="writer-form space-y-6">
                     {/* Metadata Card */}
                     <Card className="border-primary/20">
                         <CardHeader>
@@ -89,13 +101,21 @@ export default function Edit({ story, worlds }: Props) {
                             <div className="grid gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label htmlFor="world_id">Mundo *</Label>
-                                    <Select value={data.world_id} onValueChange={(value) => setData('world_id', value)}>
+                                    <Select
+                                        value={data.world_id}
+                                        onValueChange={(value) =>
+                                            setData('world_id', value)
+                                        }
+                                    >
                                         <SelectTrigger>
                                             <SelectValue placeholder="Selecciona un mundo" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {worlds.map((world) => (
-                                                <SelectItem key={world.id} value={world.id.toString()}>
+                                                <SelectItem
+                                                    key={world.id}
+                                                    value={world.id.toString()}
+                                                >
                                                     {world.name}
                                                 </SelectItem>
                                             ))}
@@ -110,7 +130,9 @@ export default function Edit({ story, worlds }: Props) {
                                         id="category"
                                         type="text"
                                         value={data.category}
-                                        onChange={(e) => setData('category', e.target.value)}
+                                        onChange={(e) =>
+                                            setData('category', e.target.value)
+                                        }
                                         placeholder="Leyenda, Crónica, Biografía..."
                                     />
                                     <InputError message={errors.category} />
@@ -123,7 +145,9 @@ export default function Edit({ story, worlds }: Props) {
                                     id="title"
                                     type="text"
                                     value={data.title}
-                                    onChange={(e) => setData('title', e.target.value)}
+                                    onChange={(e) =>
+                                        setData('title', e.target.value)
+                                    }
                                     placeholder="Un título épico para tu historia..."
                                     className="text-lg"
                                 />
@@ -131,12 +155,16 @@ export default function Edit({ story, worlds }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="image_url">URL de Imagen (opcional)</Label>
+                                <Label htmlFor="image_url">
+                                    URL de Imagen (opcional)
+                                </Label>
                                 <Input
                                     id="image_url"
                                     type="text"
                                     value={data.image_url}
-                                    onChange={(e) => setData('image_url', e.target.value)}
+                                    onChange={(e) =>
+                                        setData('image_url', e.target.value)
+                                    }
                                     placeholder="https://example.com/image.jpg"
                                 />
                                 <InputError message={errors.image_url} />
@@ -149,18 +177,29 @@ export default function Edit({ story, worlds }: Props) {
                         <CardHeader>
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <CardTitle>Contenido de la Historia *</CardTitle>
+                                    <CardTitle>
+                                        Contenido de la Historia *
+                                    </CardTitle>
                                     <CardDescription>
-                                        Escribe tu historia con libertad y creatividad
+                                        Escribe tu historia con libertad y
+                                        creatividad
                                     </CardDescription>
                                 </div>
                                 <div className="flex gap-4 text-sm text-muted-foreground">
                                     <span className="font-medium">
-                                        {wordCount} {wordCount === 1 ? 'palabra' : 'palabras'}
+                                        {wordCount}{' '}
+                                        {wordCount === 1
+                                            ? 'palabra'
+                                            : 'palabras'}
                                     </span>
-                                    <span className="text-muted-foreground/60">|</span>
+                                    <span className="text-muted-foreground/60">
+                                        |
+                                    </span>
                                     <span>
-                                        {charCount} {charCount === 1 ? 'carácter' : 'caracteres'}
+                                        {charCount}{' '}
+                                        {charCount === 1
+                                            ? 'carácter'
+                                            : 'caracteres'}
                                     </span>
                                 </div>
                             </div>
@@ -169,13 +208,16 @@ export default function Edit({ story, worlds }: Props) {
                             <Textarea
                                 id="content"
                                 value={data.content}
-                                onChange={(e) => setData('content', e.target.value)}
+                                onChange={(e) =>
+                                    setData('content', e.target.value)
+                                }
                                 placeholder="Había una vez en el reino de Aethermoor..."
-                                className="min-h-[500px] text-base leading-relaxed resize-y font-serif"
+                                className="min-h-[500px] resize-y font-serif text-base leading-relaxed"
                             />
                             <InputError message={errors.content} />
-                            <p className="text-xs text-muted-foreground mt-2">
-                                💡 Tip: Usa saltos de línea para separar párrafos y hacer tu historia más legible
+                            <p className="mt-2 text-xs text-muted-foreground">
+                                💡 Tip: Usa saltos de línea para separar
+                                párrafos y hacer tu historia más legible
                             </p>
                         </CardContent>
                     </Card>
@@ -183,16 +225,28 @@ export default function Edit({ story, worlds }: Props) {
                     {/* Actions */}
                     <Card className="border-primary/20 bg-card/50">
                         <CardContent className="py-4">
-                            <div className="flex justify-between items-center">
-                                <Button type="button" variant="outline" size="lg" asChild>
+                            <div className="flex items-center justify-between">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="lg"
+                                    asChild
+                                >
                                     <Link href="/admin/stories">
                                         <X className="mr-2 h-4 w-4" />
                                         Cancelar
                                     </Link>
                                 </Button>
-                                <Button type="submit" size="lg" variant="magical" disabled={processing}>
+                                <Button
+                                    type="submit"
+                                    size="lg"
+                                    variant="magical"
+                                    disabled={processing}
+                                >
                                     <Save className="mr-2 h-4 w-4" />
-                                    {processing ? 'Guardando...' : 'Actualizar Historia'}
+                                    {processing
+                                        ? 'Guardando...'
+                                        : 'Actualizar Historia'}
                                 </Button>
                             </div>
                         </CardContent>
@@ -202,5 +256,3 @@ export default function Edit({ story, worlds }: Props) {
         </WriterLayout>
     );
 }
-
-
