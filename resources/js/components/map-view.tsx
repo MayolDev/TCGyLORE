@@ -1,18 +1,12 @@
+import { MapContainer, Marker, Popup, useMapEvents, ImageOverlay } from 'react-leaflet';
 import L, { CRS } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import {
-    ImageOverlay,
-    MapContainer,
-    Marker,
-    Popup,
-    useMapEvents,
-} from 'react-leaflet';
 
 // Fix para los iconos de Leaflet
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-let DefaultIcon = L.icon({
+const DefaultIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow,
     iconSize: [25, 41],
@@ -55,10 +49,7 @@ export const LOCATION_TYPES = {
 };
 
 // Función para crear iconos personalizados épicos
-export function createCustomIcon(
-    type: keyof typeof LOCATION_TYPES = 'city',
-    isCurrentLocation = false,
-) {
+export function createCustomIcon(type: keyof typeof LOCATION_TYPES = 'city', isCurrentLocation = false) {
     const locationConfig = LOCATION_TYPES[type] || LOCATION_TYPES.city;
 
     // Si es la ubicación actual (editando), hacer el marcador mucho más destacado
@@ -81,9 +72,7 @@ export function createCustomIcon(
                 opacity: ${pulseIntensity};
             "></div>
             
-            ${
-                isCurrentLocation
-                    ? `
+            ${isCurrentLocation ? `
             <!-- Anillo extra para ubicación actual -->
             <div class="absolute animate-ping" style="
                 width: ${ringSize + 20}px;
@@ -95,9 +84,7 @@ export function createCustomIcon(
                 opacity: 0.6;
                 animation-duration: 2s;
             "></div>
-            `
-                    : ''
-            }
+            ` : ''}
             
             <!-- Anillo mágico giratorio -->
             <div class="absolute animate-spin-slow" style="
@@ -141,9 +128,7 @@ export function createCustomIcon(
                 ">${locationConfig.icon}</span>
             </div>
             
-            ${
-                isCurrentLocation
-                    ? `
+            ${isCurrentLocation ? `
             <!-- Etiqueta "TU UBICACIÓN" -->
             <div style="
                 position: absolute;
@@ -164,9 +149,7 @@ export function createCustomIcon(
             ">
                 ✨ EDITANDO ✨
             </div>
-            `
-                    : ''
-            }
+            ` : ''}
             
             <!-- Partículas mágicas -->
             <div class="absolute" style="
@@ -226,11 +209,7 @@ interface MapViewProps {
 }
 
 // Componente para capturar clicks en el mapa
-function MapClickHandler({
-    onMapClick,
-}: {
-    onMapClick?: (lat: number, lng: number) => void;
-}) {
+function MapClickHandler({ onMapClick }: { onMapClick?: (lat: number, lng: number) => void }) {
     useMapEvents({
         click(e) {
             if (onMapClick) {
@@ -259,11 +238,8 @@ export default function MapView({
         }
 
         const validLocations = locations.filter(
-            (loc) =>
-                loc.coordinate_x != null &&
-                loc.coordinate_y != null &&
-                !isNaN(Number(loc.coordinate_x)) &&
-                !isNaN(Number(loc.coordinate_y)),
+            (loc) => loc.coordinate_x != null && loc.coordinate_y != null &&
+                     !isNaN(Number(loc.coordinate_x)) && !isNaN(Number(loc.coordinate_y))
         );
 
         if (validLocations.length === 0) {
@@ -272,51 +248,31 @@ export default function MapView({
 
         // Si solo hay una ubicación, centrar en ella con zoom
         if (validLocations.length === 1) {
-            return [
-                Number(validLocations[0].coordinate_y),
-                Number(validLocations[0].coordinate_x),
-            ] as [number, number];
+            return [Number(validLocations[0].coordinate_y), Number(validLocations[0].coordinate_x)] as [number, number];
         }
 
-        const avgX =
-            validLocations.reduce(
-                (sum, loc) => sum + Number(loc.coordinate_x || 0),
-                0,
-            ) / validLocations.length;
-        const avgY =
-            validLocations.reduce(
-                (sum, loc) => sum + Number(loc.coordinate_y || 0),
-                0,
-            ) / validLocations.length;
+        const avgX = validLocations.reduce((sum, loc) => sum + Number(loc.coordinate_x || 0), 0) / validLocations.length;
+        const avgY = validLocations.reduce((sum, loc) => sum + Number(loc.coordinate_y || 0), 0) / validLocations.length;
 
         return [avgY, avgX] as [number, number];
     })();
 
     // Dimensiones del mapa fantasy: 1536x754 píxeles
-    const bounds: [[number, number], [number, number]] = [
-        [0, 0],
-        [754, 1536],
-    ];
+    const bounds: [[number, number], [number, number]] = [[0, 0], [754, 1536]];
 
     return (
-        <div
-            className="relative overflow-hidden rounded-lg border-4 border-amber-500/60 shadow-[0_0_40px_rgba(251,191,36,0.4)]"
-            style={{ height }}
-        >
+        <div className="relative rounded-lg overflow-hidden border-4 border-amber-500/60 shadow-[0_0_40px_rgba(251,191,36,0.4)]" style={{ height }}>
             {/* Decoración de pergamino épico */}
-            <div className="pointer-events-none absolute inset-0 z-[1000] opacity-30">
-                <div className="absolute top-0 left-0 h-12 w-full bg-gradient-to-b from-amber-900/80 to-transparent" />
-                <div className="absolute bottom-0 left-0 h-12 w-full bg-gradient-to-t from-amber-900/80 to-transparent" />
+            <div className="absolute inset-0 pointer-events-none z-[1000] opacity-30">
+                <div className="absolute top-0 left-0 w-full h-12 bg-gradient-to-b from-amber-900/80 to-transparent" />
+                <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-amber-900/80 to-transparent" />
                 <div className="absolute top-0 left-0 h-full w-12 bg-gradient-to-r from-amber-900/80 to-transparent" />
                 <div className="absolute top-0 right-0 h-full w-12 bg-gradient-to-l from-amber-900/80 to-transparent" />
             </div>
 
             {/* Brújula decorativa épica */}
-            <div className="absolute top-4 right-4 z-[1000] rounded-full border-4 border-yellow-500/50 bg-slate-900/90 p-4 shadow-[0_0_20px_rgba(251,191,36,0.6)] backdrop-blur-sm">
-                <div
-                    className="animate-spin text-3xl text-yellow-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"
-                    style={{ animationDuration: '20s' }}
-                >
+            <div className="absolute top-4 right-4 z-[1000] bg-slate-900/90 backdrop-blur-sm rounded-full p-4 border-4 border-yellow-500/50 shadow-[0_0_20px_rgba(251,191,36,0.6)]">
+                <div className="text-3xl animate-spin text-yellow-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]" style={{ animationDuration: '20s' }}>
                     🧭
                 </div>
             </div>
@@ -342,33 +298,25 @@ export default function MapView({
                 />
 
                 {/* Manejador de clicks */}
-                {allowClick && onMapClick && (
-                    <MapClickHandler onMapClick={onMapClick} />
-                )}
+                {allowClick && onMapClick && <MapClickHandler onMapClick={onMapClick} />}
 
                 {/* Marcadores de ubicaciones */}
                 {locations.map((location) => {
-                    if (
-                        location.coordinate_x == null ||
-                        location.coordinate_y == null
-                    ) {
+                    if (location.coordinate_x == null || location.coordinate_y == null) {
                         return null;
                     }
 
                     // Si es la ubicación actual y tenemos coordenadas temporales, no mostrar este marcador
-                    const isCurrentLocation =
-                        currentLocationId !== null &&
-                        location.id === currentLocationId;
+                    const isCurrentLocation = currentLocationId !== null && location.id === currentLocationId;
                     if (isCurrentLocation && currentLocationCoords) {
                         return null;
                     }
 
-                    const type = (location.type ||
-                        'city') as keyof typeof LOCATION_TYPES;
+                    const type = (location.type || 'city') as keyof typeof LOCATION_TYPES;
                     const icon = createCustomIcon(type, isCurrentLocation);
                     const position: [number, number] = [
                         Number(location.coordinate_y),
-                        Number(location.coordinate_x),
+                        Number(location.coordinate_x)
                     ];
 
                     return (
@@ -379,58 +327,35 @@ export default function MapView({
                             zIndexOffset={isCurrentLocation ? 1000 : 0}
                         >
                             <Popup className="custom-popup" maxWidth={320}>
-                                <div className="min-w-[300px] rounded-lg border-2 border-purple-500/50 bg-slate-900/95 p-4">
-                                    <h3
-                                        className="mb-2 flex items-center gap-2 text-xl font-black text-yellow-200"
-                                        style={{ fontFamily: 'Cinzel, serif' }}
-                                    >
-                                        <span className="text-3xl drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]">
-                                            {LOCATION_TYPES[type]?.icon}
-                                        </span>
+                                <div className="p-4 min-w-[300px] bg-slate-900/95 rounded-lg border-2 border-purple-500/50">
+                                    <h3 className="text-xl font-black mb-2 text-yellow-200 flex items-center gap-2" style={{ fontFamily: 'Cinzel, serif' }}>
+                                        <span className="text-3xl drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]">{LOCATION_TYPES[type]?.icon}</span>
                                         {location.name}
                                     </h3>
                                     {location.world && (
-                                        <p className="mb-3 flex items-center gap-1 text-xs font-semibold text-yellow-300/70">
-                                            <span>🌍</span>{' '}
-                                            {location.world.name}
+                                        <p className="text-xs text-yellow-300/70 mb-3 flex items-center gap-1 font-semibold">
+                                            <span>🌍</span> {location.world.name}
                                         </p>
                                     )}
-                                    <div className="mb-3 rounded-md border border-purple-500/30 bg-purple-900/30 p-2">
-                                        <p className="mb-1 flex items-center gap-1 text-sm font-bold text-purple-300">
-                                            <span>📍</span>{' '}
-                                            {LOCATION_TYPES[type]?.label ||
-                                                'Ubicación'}
+                                    <div className="mb-3 p-2 bg-purple-900/30 rounded-md border border-purple-500/30">
+                                        <p className="text-sm font-bold text-purple-300 mb-1 flex items-center gap-1">
+                                            <span>📍</span> {LOCATION_TYPES[type]?.label || 'Ubicación'}
                                         </p>
-                                        <p className="text-xs font-semibold text-yellow-300/60">
-                                            Coordenadas: (
-                                            {position[1].toFixed(0)},{' '}
-                                            {position[0].toFixed(0)})
+                                        <p className="text-xs text-yellow-300/60 font-semibold">
+                                            Coordenadas: ({position[1].toFixed(0)}, {position[0].toFixed(0)})
                                         </p>
                                     </div>
                                     {location.description && (
-                                        <p className="mb-4 line-clamp-4 text-sm leading-relaxed text-yellow-100">
+                                        <p className="text-sm text-yellow-100 mb-4 line-clamp-4 leading-relaxed">
                                             {location.description}
                                         </p>
                                     )}
                                     <button
-                                        onClick={() =>
-                                            onLocationClick &&
-                                            onLocationClick(location)
-                                        }
-                                        className="flex w-full items-center justify-center gap-2 rounded-md bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 px-4 py-2 text-sm font-black text-white shadow-lg shadow-orange-500/50 transition-all hover:from-yellow-500 hover:to-red-500"
+                                        onClick={() => onLocationClick && onLocationClick(location)}
+                                        className="w-full px-4 py-2 bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 text-white rounded-md hover:from-yellow-500 hover:to-red-500 transition-all font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-orange-500/50"
                                         style={{ fontFamily: 'Cinzel, serif' }}
                                     >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                         </svg>
@@ -446,33 +371,21 @@ export default function MapView({
                 {currentLocationCoords && (
                     <Marker
                         key="current-editing"
-                        position={[
-                            currentLocationCoords.y,
-                            currentLocationCoords.x,
-                        ]}
-                        icon={createCustomIcon(
-                            currentLocationCoords.type as keyof typeof LOCATION_TYPES,
-                            true,
-                        )}
+                        position={[currentLocationCoords.y, currentLocationCoords.x]}
+                        icon={createCustomIcon(currentLocationCoords.type as keyof typeof LOCATION_TYPES, true)}
                         zIndexOffset={1000}
                     >
                         <Popup className="custom-popup" maxWidth={320}>
-                            <div className="min-w-[300px] rounded-lg border-4 border-pink-500/70 bg-slate-900/95 p-4">
-                                <h3
-                                    className="mb-2 flex items-center gap-2 text-xl font-black text-pink-200"
-                                    style={{ fontFamily: 'Cinzel, serif' }}
-                                >
+                            <div className="p-4 min-w-[300px] bg-slate-900/95 rounded-lg border-4 border-pink-500/70">
+                                <h3 className="text-xl font-black mb-2 text-pink-200 flex items-center gap-2" style={{ fontFamily: 'Cinzel, serif' }}>
                                     <span className="text-3xl">✨</span>
                                     EDITANDO UBICACIÓN
                                 </h3>
-                                <p className="mb-2 text-sm text-pink-100">
-                                    Coordenadas actuales: (
-                                    {currentLocationCoords.x.toFixed(0)},{' '}
-                                    {currentLocationCoords.y.toFixed(0)})
+                                <p className="text-sm text-pink-100 mb-2">
+                                    Coordenadas actuales: ({currentLocationCoords.x.toFixed(0)}, {currentLocationCoords.y.toFixed(0)})
                                 </p>
-                                <p className="text-xs font-semibold text-yellow-300/70">
-                                    💾 Guarda los cambios para confirmar la
-                                    nueva posición
+                                <p className="text-xs text-yellow-300/70 font-semibold">
+                                    💾 Guarda los cambios para confirmar la nueva posición
                                 </p>
                             </div>
                         </Popup>

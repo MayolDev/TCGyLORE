@@ -15,7 +15,10 @@ interface LoginProps {
     canResetPassword: boolean;
 }
 
-export default function Login({ status, canResetPassword }: LoginProps) {
+export default function Login({
+    status,
+    canResetPassword,
+}: LoginProps) {
     return (
         <AuthLayout
             title="Accede a Tu Reino"
@@ -32,11 +35,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label
-                                    htmlFor="email"
-                                    className="text-sm font-bold text-yellow-100"
-                                    style={{ fontFamily: 'Cinzel, serif' }}
-                                >
+                                <Label htmlFor="email" className="text-yellow-100 font-bold text-sm" style={{ fontFamily: 'Cinzel, serif' }}>
                                     CORREO LEGENDARIO
                                 </Label>
                                 <Input
@@ -48,24 +47,20 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     tabIndex={1}
                                     autoComplete="email"
                                     placeholder="tu@email.com"
-                                    className="border-yellow-900/50 bg-slate-900/50 text-yellow-50 placeholder:text-yellow-200/30 focus:border-yellow-600 focus:ring-yellow-600/50"
+                                    className="bg-slate-900/50 border-yellow-900/50 text-yellow-50 placeholder:text-yellow-200/30 focus:border-yellow-600 focus:ring-yellow-600/50"
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label
-                                        htmlFor="password"
-                                        className="text-sm font-bold text-yellow-100"
-                                        style={{ fontFamily: 'Cinzel, serif' }}
-                                    >
+                                    <Label htmlFor="password" className="text-yellow-100 font-bold text-sm" style={{ fontFamily: 'Cinzel, serif' }}>
                                         CLAVE SECRETA
                                     </Label>
                                     {canResetPassword && (
                                         <TextLink
                                             href={request()}
-                                            className="ml-auto text-sm font-semibold text-yellow-400 hover:text-yellow-300"
+                                            className="ml-auto text-sm text-yellow-400 hover:text-yellow-300 font-semibold"
                                             tabIndex={5}
                                         >
                                             ¿Olvidaste tu clave?
@@ -80,7 +75,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     tabIndex={2}
                                     autoComplete="current-password"
                                     placeholder="••••••••"
-                                    className="border-yellow-900/50 bg-slate-900/50 text-yellow-50 placeholder:text-yellow-200/30 focus:border-yellow-600 focus:ring-yellow-600/50"
+                                    className="bg-slate-900/50 border-yellow-900/50 text-yellow-50 placeholder:text-yellow-200/30 focus:border-yellow-600 focus:ring-yellow-600/50"
                                 />
                                 <InputError message={errors.password} />
                             </div>
@@ -92,17 +87,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     tabIndex={3}
                                     className="border-yellow-900/50 data-[state=checked]:bg-yellow-600"
                                 />
-                                <Label
-                                    htmlFor="remember"
-                                    className="text-sm text-yellow-200/80"
-                                >
+                                <Label htmlFor="remember" className="text-yellow-200/80 text-sm">
                                     Recordar mi sesión
                                 </Label>
                             </div>
 
                             <Button
                                 type="submit"
-                                className="mt-4 w-full border-2 border-yellow-400/30 bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 text-lg font-black tracking-wider text-white shadow-2xl shadow-orange-500/50 transition-all hover:scale-105 hover:from-yellow-500 hover:to-red-500 hover:shadow-orange-400/70"
+                                className="mt-4 w-full bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black text-lg shadow-2xl shadow-orange-500/50 hover:shadow-orange-400/70 border-2 border-yellow-400/30 hover:scale-105 transition-all tracking-wider"
                                 tabIndex={4}
                                 disabled={processing}
                                 data-test="login-button"
@@ -117,7 +109,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             </Form>
 
             {status && (
-                <div className="mb-4 rounded-lg border border-green-600/30 bg-green-900/20 p-3 text-center text-sm font-medium text-green-400">
+                <div className="mb-4 text-center text-sm font-medium text-green-400 bg-green-900/20 border border-green-600/30 rounded-lg p-3">
                     {status}
                 </div>
             )}

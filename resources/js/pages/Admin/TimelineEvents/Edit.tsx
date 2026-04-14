@@ -1,26 +1,14 @@
-import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import WriterLayout from '@/layouts/writer-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Calendar, Clock, Save, X } from 'lucide-react';
+import InputError from '@/components/input-error';
+import { Clock, Save, X, Calendar } from 'lucide-react';
 
 interface World {
     id: number;
@@ -86,8 +74,8 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
         year: event.year.toString(),
         event_type: event.event_type || '',
         importance: event.importance || '',
-        character_ids: event.characters?.map((c) => c.id.toString()) || [],
-        location_ids: event.locations?.map((l) => l.id.toString()) || [],
+        character_ids: event.characters?.map(c => c.id.toString()) || [],
+        location_ids: event.locations?.map(l => l.id.toString()) || [],
     });
 
     const submit = (e: React.FormEvent) => {
@@ -95,10 +83,7 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
         put(`/admin/timeline-events/${event.id}`);
     };
 
-    const wordCount = data.description
-        .trim()
-        .split(/\s+/)
-        .filter(Boolean).length;
+    const wordCount = data.description.trim().split(/\s+/).filter(Boolean).length;
     const charCount = data.description.length;
 
     return (
@@ -109,11 +94,11 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
                 {/* Header */}
                 <div className="flex items-start justify-between">
                     <div>
-                        <h1 className="flex items-center gap-3 bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 bg-clip-text text-4xl font-bold text-transparent">
+                        <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 bg-clip-text text-transparent flex items-center gap-3">
                             <Clock className="h-8 w-8 text-amber-500" />
                             Editar Evento Histórico
                         </h1>
-                        <p className="mt-2 text-muted-foreground">
+                        <p className="text-muted-foreground mt-2">
                             Modifica este momento crucial de la historia
                         </p>
                     </div>
@@ -125,7 +110,7 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
                     </Button>
                 </div>
 
-                <form onSubmit={submit} className="writer-form space-y-6">
+                <form onSubmit={submit} className="space-y-6 writer-form">
                     {/* Basic Info Card */}
                     <Card className="border-primary/20">
                         <CardHeader>
@@ -138,21 +123,13 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
                             <div className="grid gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label htmlFor="world_id">Mundo *</Label>
-                                    <Select
-                                        value={data.world_id}
-                                        onValueChange={(value) =>
-                                            setData('world_id', value)
-                                        }
-                                    >
+                                    <Select value={data.world_id} onValueChange={(value) => setData('world_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Selecciona un mundo" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {worlds.map((world) => (
-                                                <SelectItem
-                                                    key={world.id}
-                                                    value={world.id.toString()}
-                                                >
+                                                <SelectItem key={world.id} value={world.id.toString()}>
                                                     {world.name}
                                                 </SelectItem>
                                             ))}
@@ -162,10 +139,7 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label
-                                        htmlFor="year"
-                                        className="flex items-center gap-2"
-                                    >
+                                    <Label htmlFor="year" className="flex items-center gap-2">
                                         <Calendar className="h-4 w-4" />
                                         Año *
                                     </Label>
@@ -173,9 +147,7 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
                                         id="year"
                                         type="number"
                                         value={data.year}
-                                        onChange={(e) =>
-                                            setData('year', e.target.value)
-                                        }
+                                        onChange={(e) => setData('year', e.target.value)}
                                         placeholder="Ej: -1000, 500, 2024"
                                     />
                                     <InputError message={errors.year} />
@@ -183,16 +155,12 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="name">
-                                    Nombre del Evento *
-                                </Label>
+                                <Label htmlFor="name">Nombre del Evento *</Label>
                                 <Input
                                     id="name"
                                     type="text"
                                     value={data.name}
-                                    onChange={(e) =>
-                                        setData('name', e.target.value)
-                                    }
+                                    onChange={(e) => setData('name', e.target.value)}
                                     placeholder="La Gran Guerra, Fundación de..."
                                     className="text-lg"
                                 />
@@ -201,24 +169,14 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
 
                             <div className="grid gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label htmlFor="event_type">
-                                        Tipo de Evento *
-                                    </Label>
-                                    <Select
-                                        value={data.event_type}
-                                        onValueChange={(value) =>
-                                            setData('event_type', value)
-                                        }
-                                    >
+                                    <Label htmlFor="event_type">Tipo de Evento *</Label>
+                                    <Select value={data.event_type} onValueChange={(value) => setData('event_type', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Selecciona un tipo" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {EVENT_TYPES.map((type) => (
-                                                <SelectItem
-                                                    key={type.value}
-                                                    value={type.value}
-                                                >
+                                                <SelectItem key={type.value} value={type.value}>
                                                     {type.label}
                                                 </SelectItem>
                                             ))}
@@ -228,24 +186,14 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="importance">
-                                        Importancia *
-                                    </Label>
-                                    <Select
-                                        value={data.importance}
-                                        onValueChange={(value) =>
-                                            setData('importance', value)
-                                        }
-                                    >
+                                    <Label htmlFor="importance">Importancia *</Label>
+                                    <Select value={data.importance} onValueChange={(value) => setData('importance', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Selecciona importancia" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {IMPORTANCE_LEVELS.map((level) => (
-                                                <SelectItem
-                                                    key={level.value}
-                                                    value={level.value}
-                                                >
+                                                <SelectItem key={level.value} value={level.value}>
                                                     {level.label}
                                                 </SelectItem>
                                             ))}
@@ -262,29 +210,18 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
                         <CardHeader>
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <CardTitle>
-                                        Descripción del Evento *
-                                    </CardTitle>
+                                    <CardTitle>Descripción del Evento *</CardTitle>
                                     <CardDescription>
-                                        Narra qué sucedió y su impacto en el
-                                        mundo
+                                        Narra qué sucedió y su impacto en el mundo
                                     </CardDescription>
                                 </div>
                                 <div className="flex gap-4 text-sm text-muted-foreground">
                                     <span className="font-medium">
-                                        {wordCount}{' '}
-                                        {wordCount === 1
-                                            ? 'palabra'
-                                            : 'palabras'}
+                                        {wordCount} {wordCount === 1 ? 'palabra' : 'palabras'}
                                     </span>
-                                    <span className="text-muted-foreground/60">
-                                        |
-                                    </span>
+                                    <span className="text-muted-foreground/60">|</span>
                                     <span>
-                                        {charCount}{' '}
-                                        {charCount === 1
-                                            ? 'carácter'
-                                            : 'caracteres'}
+                                        {charCount} {charCount === 1 ? 'carácter' : 'caracteres'}
                                     </span>
                                 </div>
                             </div>
@@ -293,16 +230,13 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
                             <Textarea
                                 id="description"
                                 value={data.description}
-                                onChange={(e) =>
-                                    setData('description', e.target.value)
-                                }
+                                onChange={(e) => setData('description', e.target.value)}
                                 placeholder="En el año X, sucedió algo extraordinario que cambiaría el curso de la historia..."
-                                className="min-h-[400px] resize-y font-serif text-base leading-relaxed"
+                                className="min-h-[400px] text-base leading-relaxed resize-y font-serif"
                             />
                             <InputError message={errors.description} />
-                            <p className="mt-2 text-xs text-muted-foreground">
-                                💡 Tip: Describe qué sucedió, quiénes estuvieron
-                                involucrados y las consecuencias del evento
+                            <p className="text-xs text-muted-foreground mt-2">
+                                💡 Tip: Describe qué sucedió, quiénes estuvieron involucrados y las consecuencias del evento
                             </p>
                         </CardContent>
                     </Card>
@@ -310,47 +244,31 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
                     {/* Relations Card */}
                     <Card className="border-primary/20">
                         <CardHeader>
-                            <CardTitle>
-                                Personajes y Ubicaciones Relacionados
-                            </CardTitle>
+                            <CardTitle>Personajes y Ubicaciones Relacionados</CardTitle>
                             <CardDescription>
-                                Conecta este evento con personajes y lugares
-                                (opcional)
+                                Conecta este evento con personajes y lugares (opcional)
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="space-y-2">
                                 <Label>Personajes Involucrados</Label>
-                                <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                     {characters.map((character) => {
-                                        const isSelected =
-                                            data.character_ids.includes(
-                                                character.id.toString(),
-                                            );
+                                        const isSelected = data.character_ids.includes(character.id.toString());
                                         return (
                                             <button
                                                 key={character.id}
                                                 type="button"
                                                 onClick={() => {
                                                     const ids = isSelected
-                                                        ? data.character_ids.filter(
-                                                              (id) =>
-                                                                  id !==
-                                                                  character.id.toString(),
-                                                          )
-                                                        : [
-                                                              ...data.character_ids,
-                                                              character.id.toString(),
-                                                          ];
-                                                    setData(
-                                                        'character_ids',
-                                                        ids,
-                                                    );
+                                                        ? data.character_ids.filter((id) => id !== character.id.toString())
+                                                        : [...data.character_ids, character.id.toString()];
+                                                    setData('character_ids', ids);
                                                 }}
-                                                className={`rounded-md border px-3 py-2 text-sm transition-colors ${
+                                                className={`px-3 py-2 text-sm rounded-md border transition-colors ${
                                                     isSelected
-                                                        ? 'border-primary bg-primary text-primary-foreground'
-                                                        : 'border-border bg-card hover:bg-accent'
+                                                        ? 'bg-primary text-primary-foreground border-primary'
+                                                        : 'bg-card hover:bg-accent border-border'
                                                 }`}
                                             >
                                                 {character.name}
@@ -365,36 +283,23 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
 
                             <div className="space-y-2">
                                 <Label>Ubicaciones del Evento</Label>
-                                <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                     {locations.map((location) => {
-                                        const isSelected =
-                                            data.location_ids.includes(
-                                                location.id.toString(),
-                                            );
+                                        const isSelected = data.location_ids.includes(location.id.toString());
                                         return (
                                             <button
                                                 key={location.id}
                                                 type="button"
                                                 onClick={() => {
                                                     const ids = isSelected
-                                                        ? data.location_ids.filter(
-                                                              (id) =>
-                                                                  id !==
-                                                                  location.id.toString(),
-                                                          )
-                                                        : [
-                                                              ...data.location_ids,
-                                                              location.id.toString(),
-                                                          ];
-                                                    setData(
-                                                        'location_ids',
-                                                        ids,
-                                                    );
+                                                        ? data.location_ids.filter((id) => id !== location.id.toString())
+                                                        : [...data.location_ids, location.id.toString()];
+                                                    setData('location_ids', ids);
                                                 }}
-                                                className={`rounded-md border px-3 py-2 text-sm transition-colors ${
+                                                className={`px-3 py-2 text-sm rounded-md border transition-colors ${
                                                     isSelected
-                                                        ? 'border-primary bg-primary text-primary-foreground'
-                                                        : 'border-border bg-card hover:bg-accent'
+                                                        ? 'bg-primary text-primary-foreground border-primary'
+                                                        : 'bg-card hover:bg-accent border-border'
                                                 }`}
                                             >
                                                 {location.name}
@@ -412,28 +317,16 @@ export default function Edit({ event, worlds, characters, locations }: Props) {
                     {/* Actions */}
                     <Card className="border-primary/20 bg-card/50">
                         <CardContent className="py-4">
-                            <div className="flex items-center justify-between">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="lg"
-                                    asChild
-                                >
+                            <div className="flex justify-between items-center">
+                                <Button type="button" variant="outline" size="lg" asChild>
                                     <Link href="/admin/timeline-events">
                                         <X className="mr-2 h-4 w-4" />
                                         Cancelar
                                     </Link>
                                 </Button>
-                                <Button
-                                    type="submit"
-                                    size="lg"
-                                    variant="magical"
-                                    disabled={processing}
-                                >
+                                <Button type="submit" size="lg" variant="magical" disabled={processing}>
                                     <Save className="mr-2 h-4 w-4" />
-                                    {processing
-                                        ? 'Guardando...'
-                                        : 'Actualizar Evento'}
+                                    {processing ? 'Guardando...' : 'Actualizar Evento'}
                                 </Button>
                             </div>
                         </CardContent>

@@ -1,12 +1,4 @@
-import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -16,10 +8,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import InputError from '@/components/input-error';
 
 interface Role {
     id: number;
@@ -73,9 +67,7 @@ export default function Edit({ user, roles }: Props) {
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-2xl font-bold">Editar Usuario</h1>
-                        <p className="text-muted-foreground">
-                            Modifica la información del usuario
-                        </p>
+                        <p className="text-muted-foreground">Modifica la información del usuario</p>
                     </div>
                 </div>
 
@@ -94,9 +86,7 @@ export default function Edit({ user, roles }: Props) {
                                     id="name"
                                     type="text"
                                     value={data.name}
-                                    onChange={(e) =>
-                                        setData('name', e.target.value)
-                                    }
+                                    onChange={(e) => setData('name', e.target.value)}
                                     required
                                     autoFocus
                                 />
@@ -109,25 +99,19 @@ export default function Edit({ user, roles }: Props) {
                                     id="email"
                                     type="email"
                                     value={data.email}
-                                    onChange={(e) =>
-                                        setData('email', e.target.value)
-                                    }
+                                    onChange={(e) => setData('email', e.target.value)}
                                     required
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="password">
-                                    Nueva Contraseña (opcional)
-                                </Label>
+                                <Label htmlFor="password">Nueva Contraseña (opcional)</Label>
                                 <Input
                                     id="password"
                                     type="password"
                                     value={data.password}
-                                    onChange={(e) =>
-                                        setData('password', e.target.value)
-                                    }
+                                    onChange={(e) => setData('password', e.target.value)}
                                     placeholder="Dejar en blanco para mantener la actual"
                                 />
                                 <InputError message={errors.password} />
@@ -135,21 +119,13 @@ export default function Edit({ user, roles }: Props) {
 
                             <div className="space-y-2">
                                 <Label htmlFor="role">Rol</Label>
-                                <Select
-                                    value={data.role}
-                                    onValueChange={(value) =>
-                                        setData('role', value)
-                                    }
-                                >
+                                <Select value={data.role} onValueChange={(value) => setData('role', value)}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Selecciona un rol" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {roles.map((role) => (
-                                            <SelectItem
-                                                key={role.id}
-                                                value={role.name}
-                                            >
+                                            <SelectItem key={role.id} value={role.name}>
                                                 {role.name}
                                             </SelectItem>
                                         ))}
@@ -160,9 +136,7 @@ export default function Edit({ user, roles }: Props) {
 
                             <div className="flex gap-2">
                                 <Button type="submit" disabled={processing}>
-                                    {processing
-                                        ? 'Actualizando...'
-                                        : 'Actualizar Usuario'}
+                                    {processing ? 'Actualizando...' : 'Actualizar Usuario'}
                                 </Button>
                                 <Link href="/admin/users">
                                     <Button type="button" variant="outline">

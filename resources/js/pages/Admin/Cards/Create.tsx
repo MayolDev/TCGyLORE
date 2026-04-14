@@ -1,26 +1,14 @@
-import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import {
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-    Card as UICard,
-} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { Card as UICard, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import WriterLayout from '@/layouts/writer-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Plus, Swords, X } from 'lucide-react';
+import InputError from '@/components/input-error';
+import { Swords, Plus, X } from 'lucide-react';
 
 interface World {
     id: number;
@@ -55,17 +43,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Crear' },
 ];
 
-export default function Create({
-    worlds,
-    characters,
-    cardTypes,
-    rarities,
-    archetypes,
-    alignments,
-    factions,
-    editions,
-    artists,
-}: Props) {
+export default function Create({ worlds, characters, cardTypes, rarities, archetypes, alignments, factions, editions, artists }: Props) {
     const { data, setData, post, processing, errors } = useForm({
         world_id: '',
         character_id: '0',
@@ -116,11 +94,11 @@ export default function Create({
                 {/* Header */}
                 <div className="flex items-start justify-between">
                     <div>
-                        <h1 className="flex items-center gap-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-4xl font-bold text-transparent">
+                        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent flex items-center gap-3">
                             <Swords className="h-8 w-8 text-primary" />
                             Crear Nueva Carta TCG
                         </h1>
-                        <p className="mt-2 text-muted-foreground">
+                        <p className="text-muted-foreground mt-2">
                             Diseña una nueva carta para tu juego
                         </p>
                     </div>
@@ -132,34 +110,24 @@ export default function Create({
                     </Button>
                 </div>
 
-                <form onSubmit={submit} className="writer-form space-y-6">
+                <form onSubmit={submit} className="space-y-6 writer-form">
                     {/* Basic Info */}
                     <UICard className="border-primary/20">
                         <CardHeader>
                             <CardTitle>Información Básica</CardTitle>
-                            <CardDescription>
-                                Datos principales de la carta
-                            </CardDescription>
+                            <CardDescription>Datos principales de la carta</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="grid gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label htmlFor="world_id">Mundo *</Label>
-                                    <Select
-                                        value={data.world_id}
-                                        onValueChange={(value) =>
-                                            setData('world_id', value)
-                                        }
-                                    >
+                                    <Select value={data.world_id} onValueChange={(value) => setData('world_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Selecciona un mundo" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {worlds.map((world) => (
-                                                <SelectItem
-                                                    key={world.id}
-                                                    value={world.id.toString()}
-                                                >
+                                                <SelectItem key={world.id} value={world.id.toString()}>
                                                     {world.name}
                                                 </SelectItem>
                                             ))}
@@ -169,27 +137,15 @@ export default function Create({
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="character_id">
-                                        Personaje (opcional)
-                                    </Label>
-                                    <Select
-                                        value={data.character_id}
-                                        onValueChange={(value) =>
-                                            setData('character_id', value)
-                                        }
-                                    >
+                                    <Label htmlFor="character_id">Personaje (opcional)</Label>
+                                    <Select value={data.character_id} onValueChange={(value) => setData('character_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Ninguno" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="0">
-                                                Ninguno
-                                            </SelectItem>
+                                            <SelectItem value="0">Ninguno</SelectItem>
                                             {characters.map((character) => (
-                                                <SelectItem
-                                                    key={character.id}
-                                                    value={character.id.toString()}
-                                                >
+                                                <SelectItem key={character.id} value={character.id.toString()}>
                                                     {character.name}
                                                 </SelectItem>
                                             ))}
@@ -200,16 +156,12 @@ export default function Create({
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="name">
-                                    Nombre de la Carta *
-                                </Label>
+                                <Label htmlFor="name">Nombre de la Carta *</Label>
                                 <Input
                                     id="name"
                                     type="text"
                                     value={data.name}
-                                    onChange={(e) =>
-                                        setData('name', e.target.value)
-                                    }
+                                    onChange={(e) => setData('name', e.target.value)}
                                     placeholder="Nombre épico de la carta..."
                                     className="text-lg"
                                 />
@@ -217,23 +169,15 @@ export default function Create({
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="illustration">
-                                    Ilustración (formato vertical)
-                                </Label>
+                                <Label htmlFor="illustration">Ilustración (formato vertical)</Label>
                                 <Input
                                     id="illustration"
                                     type="file"
                                     accept="image/*"
-                                    onChange={(e) =>
-                                        setData(
-                                            'illustration',
-                                            e.target.files?.[0] || null,
-                                        )
-                                    }
+                                    onChange={(e) => setData('illustration', e.target.files?.[0] || null)}
                                 />
                                 <p className="text-xs text-muted-foreground">
-                                    Formato vertical recomendado (ej:
-                                    600x800px). Máximo 2MB.
+                                    Formato vertical recomendado (ej: 600x800px). Máximo 2MB.
                                 </p>
                                 <InputError message={errors.illustration} />
                             </div>
@@ -245,9 +189,7 @@ export default function Create({
                                         id="cost"
                                         type="number"
                                         value={data.cost}
-                                        onChange={(e) =>
-                                            setData('cost', e.target.value)
-                                        }
+                                        onChange={(e) => setData('cost', e.target.value)}
                                         placeholder="0"
                                     />
                                     <InputError message={errors.cost} />
@@ -255,21 +197,13 @@ export default function Create({
 
                                 <div className="space-y-2">
                                     <Label htmlFor="card_type_id">Tipo *</Label>
-                                    <Select
-                                        value={data.card_type_id}
-                                        onValueChange={(value) =>
-                                            setData('card_type_id', value)
-                                        }
-                                    >
+                                    <Select value={data.card_type_id} onValueChange={(value) => setData('card_type_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Tipo de carta" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {cardTypes.map((type) => (
-                                                <SelectItem
-                                                    key={type.id}
-                                                    value={type.id.toString()}
-                                                >
+                                                <SelectItem key={type.id} value={type.id.toString()}>
                                                     {type.name}
                                                 </SelectItem>
                                             ))}
@@ -280,21 +214,13 @@ export default function Create({
 
                                 <div className="space-y-2">
                                     <Label htmlFor="rarity_id">Rareza *</Label>
-                                    <Select
-                                        value={data.rarity_id}
-                                        onValueChange={(value) =>
-                                            setData('rarity_id', value)
-                                        }
-                                    >
+                                    <Select value={data.rarity_id} onValueChange={(value) => setData('rarity_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Rareza" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {rarities.map((rarity) => (
-                                                <SelectItem
-                                                    key={rarity.id}
-                                                    value={rarity.id.toString()}
-                                                >
+                                                <SelectItem key={rarity.id} value={rarity.id.toString()}>
                                                     {rarity.name}
                                                 </SelectItem>
                                             ))}
@@ -304,24 +230,14 @@ export default function Create({
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="alignment_id">
-                                        Alineación *
-                                    </Label>
-                                    <Select
-                                        value={data.alignment_id}
-                                        onValueChange={(value) =>
-                                            setData('alignment_id', value)
-                                        }
-                                    >
+                                    <Label htmlFor="alignment_id">Alineación *</Label>
+                                    <Select value={data.alignment_id} onValueChange={(value) => setData('alignment_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Alineación" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {alignments.map((alignment) => (
-                                                <SelectItem
-                                                    key={alignment.id}
-                                                    value={alignment.id.toString()}
-                                                >
+                                                <SelectItem key={alignment.id} value={alignment.id.toString()}>
                                                     {alignment.name}
                                                 </SelectItem>
                                             ))}
@@ -345,16 +261,13 @@ export default function Create({
                             <Textarea
                                 id="effect"
                                 value={data.effect}
-                                onChange={(e) =>
-                                    setData('effect', e.target.value)
-                                }
+                                onChange={(e) => setData('effect', e.target.value)}
                                 placeholder="***Habilidad Especial:*** Este personaje puede...&#10;---&#10;Al entrar al campo de batalla..."
-                                className="min-h-[200px] resize-y font-mono text-base leading-relaxed"
+                                className="min-h-[200px] text-base leading-relaxed resize-y font-mono"
                             />
                             <InputError message={errors.effect} />
-                            <p className="mt-2 text-xs text-muted-foreground">
-                                💡 Tip: Usa ***texto*** para negrita y --- en
-                                una línea separada para divisores
+                            <p className="text-xs text-muted-foreground mt-2">
+                                💡 Tip: Usa ***texto*** para negrita y --- en una línea separada para divisores
                             </p>
                         </CardContent>
                     </UICard>
@@ -363,9 +276,7 @@ export default function Create({
                     <UICard className="border-primary/20">
                         <CardHeader>
                             <CardTitle>Atributos (opcionales)</CardTitle>
-                            <CardDescription>
-                                Stats del personaje
-                            </CardDescription>
+                            <CardDescription>Stats del personaje</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
@@ -375,9 +286,7 @@ export default function Create({
                                         id="strength"
                                         type="number"
                                         value={data.strength}
-                                        onChange={(e) =>
-                                            setData('strength', e.target.value)
-                                        }
+                                        onChange={(e) => setData('strength', e.target.value)}
                                         placeholder="0"
                                     />
                                     <InputError message={errors.strength} />
@@ -389,9 +298,7 @@ export default function Create({
                                         id="agility"
                                         type="number"
                                         value={data.agility}
-                                        onChange={(e) =>
-                                            setData('agility', e.target.value)
-                                        }
+                                        onChange={(e) => setData('agility', e.target.value)}
                                         placeholder="0"
                                     />
                                     <InputError message={errors.agility} />
@@ -403,9 +310,7 @@ export default function Create({
                                         id="charisma"
                                         type="number"
                                         value={data.charisma}
-                                        onChange={(e) =>
-                                            setData('charisma', e.target.value)
-                                        }
+                                        onChange={(e) => setData('charisma', e.target.value)}
                                         placeholder="0"
                                     />
                                     <InputError message={errors.charisma} />
@@ -417,9 +322,7 @@ export default function Create({
                                         id="mind"
                                         type="number"
                                         value={data.mind}
-                                        onChange={(e) =>
-                                            setData('mind', e.target.value)
-                                        }
+                                        onChange={(e) => setData('mind', e.target.value)}
                                         placeholder="0"
                                     />
                                     <InputError message={errors.mind} />
@@ -431,46 +334,31 @@ export default function Create({
                                         id="defense"
                                         type="number"
                                         value={data.defense}
-                                        onChange={(e) =>
-                                            setData('defense', e.target.value)
-                                        }
+                                        onChange={(e) => setData('defense', e.target.value)}
                                         placeholder="0"
                                     />
                                     <InputError message={errors.defense} />
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="magic_defense">
-                                        🔮 Def. Mágica
-                                    </Label>
+                                    <Label htmlFor="magic_defense">🔮 Def. Mágica</Label>
                                     <Input
                                         id="magic_defense"
                                         type="number"
                                         value={data.magic_defense}
-                                        onChange={(e) =>
-                                            setData(
-                                                'magic_defense',
-                                                e.target.value,
-                                            )
-                                        }
+                                        onChange={(e) => setData('magic_defense', e.target.value)}
                                         placeholder="0"
                                     />
-                                    <InputError
-                                        message={errors.magic_defense}
-                                    />
+                                    <InputError message={errors.magic_defense} />
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="health">
-                                        ❤️ Puntos de Vida
-                                    </Label>
+                                    <Label htmlFor="health">❤️ Puntos de Vida</Label>
                                     <Input
                                         id="health"
                                         type="number"
                                         value={data.health}
-                                        onChange={(e) =>
-                                            setData('health', e.target.value)
-                                        }
+                                        onChange={(e) => setData('health', e.target.value)}
                                         placeholder="0"
                                     />
                                     <InputError message={errors.health} />
@@ -483,34 +371,20 @@ export default function Create({
                     <UICard className="border-primary/20">
                         <CardHeader>
                             <CardTitle>Información Adicional</CardTitle>
-                            <CardDescription>
-                                Detalles extra de la carta
-                            </CardDescription>
+                            <CardDescription>Detalles extra de la carta</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="grid gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label htmlFor="archetype_id">
-                                        Arquetipo
-                                    </Label>
-                                    <Select
-                                        value={data.archetype_id}
-                                        onValueChange={(value) =>
-                                            setData('archetype_id', value)
-                                        }
-                                    >
+                                    <Label htmlFor="archetype_id">Arquetipo</Label>
+                                    <Select value={data.archetype_id} onValueChange={(value) => setData('archetype_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Ninguno" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="0">
-                                                Ninguno
-                                            </SelectItem>
+                                            <SelectItem value="0">Ninguno</SelectItem>
                                             {archetypes.map((archetype) => (
-                                                <SelectItem
-                                                    key={archetype.id}
-                                                    value={archetype.id.toString()}
-                                                >
+                                                <SelectItem key={archetype.id} value={archetype.id.toString()}>
                                                     {archetype.name}
                                                 </SelectItem>
                                             ))}
@@ -521,24 +395,14 @@ export default function Create({
 
                                 <div className="space-y-2">
                                     <Label htmlFor="faction_id">Facción</Label>
-                                    <Select
-                                        value={data.faction_id}
-                                        onValueChange={(value) =>
-                                            setData('faction_id', value)
-                                        }
-                                    >
+                                    <Select value={data.faction_id} onValueChange={(value) => setData('faction_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Ninguna" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="0">
-                                                Ninguna
-                                            </SelectItem>
+                                            <SelectItem value="0">Ninguna</SelectItem>
                                             {factions.map((faction) => (
-                                                <SelectItem
-                                                    key={faction.id}
-                                                    value={faction.id.toString()}
-                                                >
+                                                <SelectItem key={faction.id} value={faction.id.toString()}>
                                                     {faction.name}
                                                 </SelectItem>
                                             ))}
@@ -549,24 +413,14 @@ export default function Create({
 
                                 <div className="space-y-2">
                                     <Label htmlFor="edition_id">Edición</Label>
-                                    <Select
-                                        value={data.edition_id}
-                                        onValueChange={(value) =>
-                                            setData('edition_id', value)
-                                        }
-                                    >
+                                    <Select value={data.edition_id} onValueChange={(value) => setData('edition_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Ninguna" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="0">
-                                                Ninguna
-                                            </SelectItem>
+                                            <SelectItem value="0">Ninguna</SelectItem>
                                             {editions.map((edition) => (
-                                                <SelectItem
-                                                    key={edition.id}
-                                                    value={edition.id.toString()}
-                                                >
+                                                <SelectItem key={edition.id} value={edition.id.toString()}>
                                                     {edition.name}
                                                 </SelectItem>
                                             ))}
@@ -577,24 +431,14 @@ export default function Create({
 
                                 <div className="space-y-2">
                                     <Label htmlFor="artist_id">Artista</Label>
-                                    <Select
-                                        value={data.artist_id}
-                                        onValueChange={(value) =>
-                                            setData('artist_id', value)
-                                        }
-                                    >
+                                    <Select value={data.artist_id} onValueChange={(value) => setData('artist_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Ninguno" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="0">
-                                                Ninguno
-                                            </SelectItem>
+                                            <SelectItem value="0">Ninguno</SelectItem>
                                             {artists.map((artist) => (
-                                                <SelectItem
-                                                    key={artist.id}
-                                                    value={artist.id.toString()}
-                                                >
+                                                <SelectItem key={artist.id} value={artist.id.toString()}>
                                                     {artist.name}
                                                 </SelectItem>
                                             ))}
@@ -605,18 +449,14 @@ export default function Create({
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="flavor_text">
-                                    Texto de Sabor
-                                </Label>
+                                <Label htmlFor="flavor_text">Texto de Sabor</Label>
                                 <Textarea
                                     id="flavor_text"
                                     value={data.flavor_text}
-                                    onChange={(e) =>
-                                        setData('flavor_text', e.target.value)
-                                    }
+                                    onChange={(e) => setData('flavor_text', e.target.value)}
                                     placeholder="Una cita o texto descriptivo..."
                                     rows={3}
-                                    className="resize-y text-base leading-relaxed italic"
+                                    className="text-base leading-relaxed resize-y italic"
                                 />
                                 <InputError message={errors.flavor_text} />
                             </div>
@@ -626,24 +466,14 @@ export default function Create({
                     {/* Actions */}
                     <UICard className="border-primary/20 bg-card/50">
                         <CardContent className="py-4">
-                            <div className="flex items-center justify-between">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="lg"
-                                    asChild
-                                >
+                            <div className="flex justify-between items-center">
+                                <Button type="button" variant="outline" size="lg" asChild>
                                     <Link href="/admin/cards">
                                         <X className="mr-2 h-4 w-4" />
                                         Cancelar
                                     </Link>
                                 </Button>
-                                <Button
-                                    type="submit"
-                                    size="lg"
-                                    variant="magical"
-                                    disabled={processing}
-                                >
+                                <Button type="submit" size="lg" variant="magical" disabled={processing}>
                                     <Plus className="mr-2 h-4 w-4" />
                                     {processing ? 'Creando...' : 'Crear Carta'}
                                 </Button>
