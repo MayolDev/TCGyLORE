@@ -71,6 +71,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     className="mr-2 h-[34px] w-[34px]"
                                 >
                                     <Menu className="h-5 w-5" />
+                                    <span className="sr-only">Toggle menu</span>
                                 </Button>
                             </SheetTrigger>
                             <SheetContent
@@ -181,6 +182,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 className="group h-9 w-9 cursor-pointer"
                             >
                                 <Search className="!size-5 opacity-80 group-hover:opacity-100" />
+                                <span className="sr-only">Search</span>
                             </Button>
                             <div className="hidden lg:flex">
                                 {rightNavItems.map((item) => (
@@ -230,6 +232,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             {getInitials(auth.user.name)}
                                         </AvatarFallback>
                                     </Avatar>
+                                    <span className="sr-only">
+                                        Open user menu
+                                    </span>
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-56" align="end">
