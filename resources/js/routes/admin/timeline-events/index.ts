@@ -75,7 +75,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::create
@@ -153,7 +153,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::store
@@ -208,7 +208,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             action: store.url(options),
             method: 'post',
         })
-    
+
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::show
@@ -235,7 +235,7 @@ show.url = (args: { timeline_event: string | number } | [timeline_event: string 
         args = { timeline_event: args }
     }
 
-    
+
     if (Array.isArray(args)) {
         args = {
                     timeline_event: args[0],
@@ -305,7 +305,7 @@ show.head = (args: { timeline_event: string | number } | [timeline_event: string
                     }),
             method: 'get',
         })
-    
+
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::edit
@@ -332,7 +332,7 @@ edit.url = (args: { timeline_event: string | number } | [timeline_event: string 
         args = { timeline_event: args }
     }
 
-    
+
     if (Array.isArray(args)) {
         args = {
                     timeline_event: args[0],
@@ -402,7 +402,7 @@ edit.head = (args: { timeline_event: string | number } | [timeline_event: string
                     }),
             method: 'get',
         })
-    
+
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::update
@@ -429,7 +429,7 @@ update.url = (args: { timeline_event: string | number } | [timeline_event: strin
         args = { timeline_event: args }
     }
 
-    
+
     if (Array.isArray(args)) {
         args = {
                     timeline_event: args[0],
@@ -509,7 +509,7 @@ update.patch = (args: { timeline_event: string | number } | [timeline_event: str
                     }),
             method: 'post',
         })
-    
+
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::destroy
@@ -536,7 +536,7 @@ destroy.url = (args: { timeline_event: string | number } | [timeline_event: stri
         args = { timeline_event: args }
     }
 
-    
+
     if (Array.isArray(args)) {
         args = {
                     timeline_event: args[0],
@@ -593,7 +593,7 @@ destroy.delete = (args: { timeline_event: string | number } | [timeline_event: s
                     }),
             method: 'post',
         })
-    
+
     destroy.form = destroyForm
 const timelineEvents = {
     index: Object.assign(index, index),
