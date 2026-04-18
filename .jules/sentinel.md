@@ -1,0 +1,4 @@
+## 2024-04-18 - [SVG Stored XSS via File Uploads]
+**Vulnerability:** The default Laravel `image` validation rule allows the uploading of SVG files. Since SVG files can contain embedded JavaScript, malicious actors could upload an SVG file containing a script, leading to a Stored Cross-Site Scripting (XSS) vulnerability when the image is rendered or viewed directly by other users.
+**Learning:** Depending solely on high-level validation rules like `image` can be risky as their internal definitions (like allowed extensions/MIMEs) might be broader than expected and include dangerous formats like SVG.
+**Prevention:** To prevent this, override or supplement the default `image` validation rule with explicit MIME type restrictions using the `mimes` rule, specifying only safe raster image formats (e.g., `mimes:jpeg,png,jpg,gif,webp`).

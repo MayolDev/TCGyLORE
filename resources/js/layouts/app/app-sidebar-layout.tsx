@@ -65,7 +65,7 @@ export default function AppSidebarLayout({
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -109,6 +109,7 @@ export default function AppSidebarLayout({
 
                 ctx.restore();
 
+/* eslint-disable react-hooks/purity */
                 // Movimiento
                 element.x += element.speedX;
                 element.y += element.speedY;
