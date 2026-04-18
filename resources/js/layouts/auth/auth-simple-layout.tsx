@@ -1,4 +1,4 @@
-import AppLogoIcon from '@/components/app-logo-icon';
+
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
@@ -122,6 +122,7 @@ export default function AuthSimpleLayout({
                 // Reposicionar si sale del canvas o termina su vida
                 if (element.life <= 0 || element.x < -50 || element.x > canvas.width + 50 || element.y < -50 || element.y > canvas.height + 50) {
                     element.x = Math.random() * canvas.width;
+/* eslint-disable react-hooks/purity */
                     element.y = Math.random() * canvas.height;
                     element.life = Math.random() * 100 + 100;
                     element.opacity = Math.random() * 0.5 + 0.25;
