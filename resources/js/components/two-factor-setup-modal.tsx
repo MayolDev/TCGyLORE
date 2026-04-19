@@ -112,13 +112,17 @@ function TwoFactorSetupStep({
                                         type="text"
                                         readOnly
                                         value={manualSetupKey}
-                                        className="h-full w-full bg-background p-3 text-foreground outline-none"
+                                        aria-label="Manual setup key"
+                                        className="h-full w-full bg-background p-3 text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0"
                                     />
                                     <button
+                                        type="button"
                                         onClick={() => copy(manualSetupKey)}
-                                        className="border-l border-border px-3 hover:bg-muted"
+                                        aria-label="Copy manual setup key"
+                                        title="Copy manual setup key"
+                                        className="border-l border-border px-3 hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                                     >
-                                        <IconComponent className="w-4" />
+                                        <IconComponent className="w-4" aria-hidden="true" />
                                     </button>
                                 </>
                             )}
