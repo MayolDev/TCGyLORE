@@ -1,4 +1,9 @@
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface CitationTooltipProps {
     pageNumber: string;
@@ -12,14 +17,18 @@ export function CitationTooltip({ pageNumber, context }: CitationTooltipProps) {
                 <TooltipTrigger asChild>
                     <sup className="cite-number">{pageNumber}</sup>
                 </TooltipTrigger>
-                <TooltipContent 
-                    side="top" 
-                    className="bg-slate-900 border-2 border-orange-500/50 text-yellow-200 max-w-xs"
+                <TooltipContent
+                    side="top"
+                    className="max-w-xs border-2 border-orange-500/50 bg-slate-900 text-yellow-200"
                 >
                     <div className="space-y-1">
-                        <p className="font-bold text-orange-400">📖 Referencia: Página {pageNumber}</p>
+                        <p className="font-bold text-orange-400">
+                            📖 Referencia: Página {pageNumber}
+                        </p>
                         {context && (
-                            <p className="text-sm text-yellow-200/80">{context}</p>
+                            <p className="text-sm text-yellow-200/80">
+                                {context}
+                            </p>
                         )}
                     </div>
                 </TooltipContent>
@@ -27,4 +36,3 @@ export function CitationTooltip({ pageNumber, context }: CitationTooltipProps) {
         </TooltipProvider>
     );
 }
-

@@ -122,7 +122,10 @@ function TwoFactorSetupStep({
                                         title="Copy manual setup key"
                                         className="border-l border-border px-3 hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                                     >
-                                        <IconComponent className="w-4" aria-hidden="true" />
+                                        <IconComponent
+                                            className="w-4"
+                                            aria-hidden="true"
+                                        />
                                     </button>
                                 </>
                             )}
