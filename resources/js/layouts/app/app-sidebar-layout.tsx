@@ -65,7 +65,7 @@ export default function AppSidebarLayout({
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -166,6 +166,7 @@ export default function AppSidebarLayout({
                 
                 {/* Estrellas brillantes */}
                 {[...Array(30)].map((_, i) => (
+                    /* eslint-disable react-hooks/purity */
                     <div
                         key={i}
                         className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-twinkle"
@@ -176,6 +177,7 @@ export default function AppSidebarLayout({
                             boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)'
                         }}
                     />
+                    /* eslint-enable react-hooks/purity */
                 ))}
             </div>
 
