@@ -85,7 +85,8 @@ class LocationController extends Controller
             'location_type' => ['required', 'in:castle,city,village,forest,mountain,dungeon,ruins,battlefield,port,temple,cave,tower'],
             'coordinate_x' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
             'coordinate_y' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            // SECURITY: Explicitly restrict mimes to prevent SVG XSS
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
             'is_discovered' => ['boolean'],
         ]);
 
@@ -136,7 +137,8 @@ class LocationController extends Controller
             'location_type' => ['required', 'in:castle,city,village,forest,mountain,dungeon,ruins,battlefield,port,temple,cave,tower'],
             'coordinate_x' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
             'coordinate_y' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            // SECURITY: Explicitly restrict mimes to prevent SVG XSS
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
             'is_discovered' => ['boolean'],
         ]);
 
