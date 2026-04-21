@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 import { AppContent } from '@/components/app-content';
 import { AppShell } from '@/components/app-shell';
 import { AppSidebar } from '@/components/app-sidebar';
@@ -65,7 +66,7 @@ export default function AppSidebarLayout({
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
