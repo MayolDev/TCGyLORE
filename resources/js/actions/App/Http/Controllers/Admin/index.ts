@@ -13,22 +13,23 @@ import ArchetypeController from './ArchetypeController'
 import FactionController from './FactionController'
 import EditionController from './EditionController'
 import ArtistController from './ArtistController'
+
 const Admin = {
     UserController: Object.assign(UserController, UserController),
-WorldController: Object.assign(WorldController, WorldController),
-StoryController: Object.assign(StoryController, StoryController),
-CharacterController: Object.assign(CharacterController, CharacterController),
-LocationController: Object.assign(LocationController, LocationController),
-TimelineEventController: Object.assign(TimelineEventController, TimelineEventController),
-CardController: Object.assign(CardController, CardController),
-ManualSectionController: Object.assign(ManualSectionController, ManualSectionController),
-CardTypeController: Object.assign(CardTypeController, CardTypeController),
-RarityController: Object.assign(RarityController, RarityController),
-AlignmentController: Object.assign(AlignmentController, AlignmentController),
-ArchetypeController: Object.assign(ArchetypeController, ArchetypeController),
-FactionController: Object.assign(FactionController, FactionController),
-EditionController: Object.assign(EditionController, EditionController),
-ArtistController: Object.assign(ArtistController, ArtistController),
+    WorldController: Object.assign(WorldController, WorldController),
+    StoryController: Object.assign(StoryController, StoryController),
+    CharacterController: Object.assign(CharacterController, CharacterController),
+    LocationController: Object.assign(LocationController, LocationController),
+    TimelineEventController: Object.assign(TimelineEventController, TimelineEventController),
+    CardController: Object.assign(CardController, CardController),
+    ManualSectionController: Object.assign(ManualSectionController, ManualSectionController),
+    CardTypeController: Object.assign(CardTypeController, CardTypeController),
+    RarityController: Object.assign(RarityController, RarityController),
+    AlignmentController: Object.assign(AlignmentController, AlignmentController),
+    ArchetypeController: Object.assign(ArchetypeController, ArchetypeController),
+    FactionController: Object.assign(FactionController, FactionController),
+    EditionController: Object.assign(EditionController, EditionController),
+    ArtistController: Object.assign(ArtistController, ArtistController),
 }
 
 export default Admin
