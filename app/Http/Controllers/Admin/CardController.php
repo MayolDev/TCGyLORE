@@ -21,8 +21,10 @@ class CardController extends Controller
 {
     public function index(Request $request)
     {
+        // ⚡ Bolt Optimization: Eager load only necessary relationships and fields for the index view
+        // Unused relationships (archetype, alignment, faction, edition, artist) were removed to reduce N+1 overhead and payload size.
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            ->with(['world:id,name', 'character:id,name', 'cardType:id,name', 'rarity:id,name'])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
