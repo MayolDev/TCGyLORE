@@ -70,6 +70,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     size="icon"
                                     className="mr-2 h-[34px] w-[34px]"
                                 >
+                                    <span className="sr-only">
+                                        Open mobile menu
+                                    </span>
                                     <Menu className="h-5 w-5" />
                                 </Button>
                             </SheetTrigger>
@@ -180,6 +183,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 size="icon"
                                 className="group h-9 w-9 cursor-pointer"
                             >
+                                <span className="sr-only">Search</span>
                                 <Search className="!size-5 opacity-80 group-hover:opacity-100" />
                             </Button>
                             <div className="hidden lg:flex">
