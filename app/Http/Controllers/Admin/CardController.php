@@ -22,7 +22,7 @@ class CardController extends Controller
     public function index(Request $request)
     {
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            ->with(['world:id,name', 'character:id,name', 'cardType:id,name', 'rarity:id,name']) // ⚡ Bolt: Reduced eager loading to only used relationships and columns to optimize memory and JSON payload size.
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })

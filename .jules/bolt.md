@@ -1,0 +1,3 @@
+## 2025-04-24 - Inertia Payload Over-fetching
+**Learning:** In Inertia.js applications, standard Laravel eager loading (`with(['relation1', 'relation2'])`) can blindly pass large amounts of unused data to the frontend, bloating the JSON payload and increasing server memory usage, particularly on index pages with pagination.
+**Action:** Always cross-reference the backend eager-loaded relationships with the frontend TypeScript interfaces (e.g., `CardData` in `Index.tsx`) to identify and remove unused relationships. Furthermore, restrict loaded columns using `relation:col1,col2` syntax for relations that are only used for display labels.
