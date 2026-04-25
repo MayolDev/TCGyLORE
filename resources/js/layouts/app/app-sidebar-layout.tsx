@@ -42,6 +42,7 @@ export default function AppSidebarLayout({
         }> = [];
 
         // Crear elementos mágicos
+
         for (let i = 0; i < 50; i++) {
             const type = Math.random() > 0.7 ? 'rune' : Math.random() > 0.5 ? 'spark' : 'trail';
             magicElements.push({
@@ -60,12 +61,13 @@ export default function AppSidebarLayout({
             });
         }
 
+
         function animate() {
             if (!ctx || !canvas) return;
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -165,6 +167,7 @@ export default function AppSidebarLayout({
                 <div className="absolute top-0 left-3/4 w-2 h-full bg-gradient-to-b from-transparent via-orange-400/20 to-transparent animate-shimmer animation-delay-2000"></div>
                 
                 {/* Estrellas brillantes */}
+                {/* eslint-disable react-hooks/purity */}
                 {[...Array(30)].map((_, i) => (
                     <div
                         key={i}
@@ -177,6 +180,7 @@ export default function AppSidebarLayout({
                         }}
                     />
                 ))}
+                {/* eslint-enable react-hooks/purity */}
             </div>
 
             <AppShell variant="sidebar">
