@@ -16,11 +16,20 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $cardsByRarity = Card::with('rarity')
+        // ⚡ Bolt Optimization: Use DB aggregation instead of loading all N models into memory, O(R) vs O(N)
+        $cardsByRarity = Card::select('rarity_id', \Illuminate\Support\Facades\DB::raw('count(*) as count'))
             ->whereNotNull('rarity_id')
+            ->groupBy('rarity_id')
+            ->with('rarity')
             ->get()
-            ->groupBy(fn ($card) => $card->rarity?->name ?? 'Sin rareza')
-            ->map(fn ($cards) => $cards->count())
+            ->mapWithKeys(function ($card) {
+                // Handle naming conflict between 'rarity' string column and 'rarity()' relationship
+                $rarityName = $card->relationLoaded('rarity') && $card->getRelation('rarity')
+                    ? $card->getRelation('rarity')->name
+                    : 'Sin rareza';
+
+                return [$rarityName => $card->count];
+            })
             ->toArray();
 
         $stats = [

@@ -12,6 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('cards', function (Blueprint $table) {
+            if (!Schema::hasColumn('cards', 'defense')) { $table->integer('defense')->nullable()->after('mind'); }
+            if (!Schema::hasColumn('cards', 'magic_defense')) { $table->integer('magic_defense')->nullable()->after('defense'); }
             $table->integer('health')->nullable()->after('magic_defense');
         });
     }

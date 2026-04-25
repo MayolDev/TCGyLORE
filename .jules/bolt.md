@@ -1,0 +1,3 @@
+## 2026-04-25 - Optimize large collection grouping using DB aggregate
+**Learning:** Using Eloquent's `get()->groupBy()` for large collections causes high memory usage (O(N)), especially for dashboards. Additionally, the `Card` model has a naming conflict between the legacy `rarity` string column and the `rarity()` relationship, so we must access the relation carefully (`$card->getRelation('rarity')`) to avoid trying to access properties on a string.
+**Action:** Use database-level aggregation `select('foreign_id', DB::raw('count(*) as count'))->groupBy('foreign_id')->with('relation')` instead, mapping the results into an array. Check `$model->relationLoaded()` to safely extract the relationship data in closures.
