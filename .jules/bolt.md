@@ -1,0 +1,3 @@
+## 2025-04-27 - Remove Overfetching on Inertia Responses
+**Learning:** Inertia controllers often eagerly load full models (e.g., `->with(['world', 'character'])`) that are either partially used or completely unnecessary, bloating the JSON response size and DB memory. Specifically, Edit endpoints don't need relation data to prepopulate select inputs, only the foreign key ID already present on the model.
+**Action:** Always scope eager-loads using the `relation:col1,col2` syntax for List/Index pages, and avoid loading relations entirely on Edit/Create methods if the frontend only needs foreign keys to initialize dropdown state.
