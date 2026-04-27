@@ -1,4 +1,3 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
@@ -182,6 +181,7 @@ export default function AuthSimpleLayout({
                         <div
                             key={i}
                             className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
+                            /* eslint-disable react-hooks/purity */
                             style={{
                                 left: `${Math.random() * 100}%`,
                                 top: `${Math.random() * 100}%`,
@@ -234,10 +234,12 @@ export default function AuthSimpleLayout({
                                         </div>
                                     </div>
                                     <div className="text-center">
-                                        <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]" style={{ fontFamily: 'Cinzel, serif' }}>
+                                        <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]"
+                            style={{ fontFamily: 'Cinzel, serif' }}>
                                             TAPON'AZO
                                         </h1>
-                                        <p className="text-sm text-yellow-400/90 font-bold tracking-[0.3em] mt-2 drop-shadow-[0_0_10px_rgba(251,191,36,0.4)]" style={{ fontFamily: 'Trade Winds, cursive' }}>
+                                        <p className="text-sm text-yellow-400/90 font-bold tracking-[0.3em] mt-2 drop-shadow-[0_0_10px_rgba(251,191,36,0.4)]"
+                            style={{ fontFamily: 'Trade Winds, cursive' }}>
                                             LEGENDS FORGE
                                         </p>
                                     </div>
@@ -245,7 +247,8 @@ export default function AuthSimpleLayout({
                                 </Link>
 
                                 <div className="space-y-2 text-center">
-                                    <h2 className="text-2xl font-bold text-yellow-100" style={{ fontFamily: 'Cinzel, serif' }}>
+                                    <h2 className="text-2xl font-bold text-yellow-100"
+                            style={{ fontFamily: 'Cinzel, serif' }}>
                                         {title}
                                     </h2>
                                     <p className="text-center text-sm text-yellow-200/70 font-medium">

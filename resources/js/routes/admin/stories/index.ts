@@ -75,7 +75,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\StoryController::create
@@ -153,7 +153,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\StoryController::store
@@ -208,7 +208,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             action: store.url(options),
             method: 'post',
         })
-    
+
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\StoryController::show
@@ -235,7 +235,7 @@ show.url = (args: { story: string | number } | [story: string | number ] | strin
         args = { story: args }
     }
 
-    
+
     if (Array.isArray(args)) {
         args = {
                     story: args[0],
@@ -305,7 +305,7 @@ show.head = (args: { story: string | number } | [story: string | number ] | stri
                     }),
             method: 'get',
         })
-    
+
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\StoryController::edit
@@ -335,7 +335,7 @@ edit.url = (args: { story: number | { id: number } } | [story: number | { id: nu
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { story: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     story: args[0],
@@ -407,7 +407,7 @@ edit.head = (args: { story: number | { id: number } } | [story: number | { id: n
                     }),
             method: 'get',
         })
-    
+
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\StoryController::update
@@ -437,7 +437,7 @@ update.url = (args: { story: number | { id: number } } | [story: number | { id: 
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { story: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     story: args[0],
@@ -519,7 +519,7 @@ update.patch = (args: { story: number | { id: number } } | [story: number | { id
                     }),
             method: 'post',
         })
-    
+
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\StoryController::destroy
@@ -549,7 +549,7 @@ destroy.url = (args: { story: number | { id: number } } | [story: number | { id:
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { story: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     story: args[0],
@@ -608,7 +608,7 @@ destroy.delete = (args: { story: number | { id: number } } | [story: number | { 
                     }),
             method: 'post',
         })
-    
+
     destroy.form = destroyForm
 const stories = {
     index: Object.assign(index, index),
