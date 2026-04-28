@@ -68,6 +68,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 <Button
                                     variant="ghost"
                                     size="icon"
+                                    aria-label="Toggle navigation menu"
                                     className="mr-2 h-[34px] w-[34px]"
                                 >
                                     <Menu className="h-5 w-5" />
@@ -178,6 +179,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                             <Button
                                 variant="ghost"
                                 size="icon"
+                                aria-label="Search"
                                 className="group h-9 w-9 cursor-pointer"
                             >
                                 <Search className="!size-5 opacity-80 group-hover:opacity-100" />

@@ -1,4 +1,3 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
@@ -183,10 +182,10 @@ export default function AuthSimpleLayout({
                             key={i}
                             className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
                             style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 3}s`,
-                                opacity: Math.random() * 0.7 + 0.3
+                                left: `${(i * 13) % 100}%`,
+                                top: `${(i * 17) % 100}%`,
+                                animationDelay: `${(i % 3)}s`,
+                                opacity: ((i % 7) * 0.1) + 0.3
                             }}
                         />
                     ))}
