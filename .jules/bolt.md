@@ -1,0 +1,3 @@
+## 2025-05-18 - Optimized Dashboard Card Grouping
+**Learning:** When grouping collections by relation data, avoiding full model fetches with Eloquent `select('foreign_id', DB::raw('count(*) as count'))->groupBy('foreign_id')->with('relation')` significantly reduces memory overhead from O(N) to O(R), especially avoiding raw joins to handle potential missing relationship mappings gracefully. The `Card` model has a naming conflict `rarity` between relation and column, requiring access via `getRelation('rarity')`.
+**Action:** Always prefer Eloquent `select + groupBy + count` at DB level rather than pulling all rows and doing Collection `groupBy + count` in PHP for dashboards to improve performance and prevent memory issues on large tables.
