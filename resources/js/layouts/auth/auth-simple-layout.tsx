@@ -1,8 +1,16 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import { Head, Link } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
 import { Shield, Sparkles, Swords } from 'lucide-react';
+
+// Igual que en app-sidebar-layout: posiciones fijadas al cargar el modulo, para
+// que el render sea puro y las estrellas no salten en cada repintado.
+const ESTRELLAS = Array.from({ length: 20 }, () => ({
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    animationDelay: `${Math.random() * 3}s`,
+    opacity: Math.random() * 0.7 + 0.3,
+}));
 
 interface AuthLayoutProps {
     name?: string;
@@ -178,16 +186,11 @@ export default function AuthSimpleLayout({
 
                 {/* Estrellas parpadeantes */}
                 <div className="absolute inset-0">
-                    {[...Array(20)].map((_, i) => (
+                    {ESTRELLAS.map((estrella, i) => (
                         <div
                             key={i}
                             className="absolute w-1 h-1 bg-yellow-300 rounded-full animate-twinkle"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 3}s`,
-                                opacity: Math.random() * 0.7 + 0.3
-                            }}
+                            style={estrella}
                         />
                     ))}
                 </div>

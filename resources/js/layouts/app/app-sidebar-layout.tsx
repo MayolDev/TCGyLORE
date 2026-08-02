@@ -6,6 +6,16 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
 
+// Las estrellas se colocan una sola vez al cargar el modulo. Sortearlas dentro
+// del render las movia en cada repintado, que ademas es lo que prohibe la regla
+// react-hooks/purity: el render tiene que dar siempre el mismo resultado.
+const ESTRELLAS = Array.from({ length: 30 }, () => ({
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    animationDelay: `${Math.random() * 3}s`,
+    boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)',
+}));
+
 export default function AppSidebarLayout({
     children,
     breadcrumbs = [],
@@ -65,7 +75,7 @@ export default function AppSidebarLayout({
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            magicElements.forEach((element, index) => {
+            magicElements.forEach((element) => {
                 ctx.save();
                 ctx.globalAlpha = element.opacity;
 
@@ -165,16 +175,11 @@ export default function AppSidebarLayout({
                 <div className="absolute top-0 left-3/4 w-2 h-full bg-gradient-to-b from-transparent via-orange-400/20 to-transparent animate-shimmer animation-delay-2000"></div>
                 
                 {/* Estrellas brillantes */}
-                {[...Array(30)].map((_, i) => (
+                {ESTRELLAS.map((estrella, i) => (
                     <div
                         key={i}
                         className="absolute w-2 h-2 bg-yellow-300 rounded-full animate-twinkle"
-                        style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 3}s`,
-                            boxShadow: '0 0 10px rgba(251, 191, 36, 0.8)'
-                        }}
+                        style={estrella}
                     />
                 ))}
             </div>
