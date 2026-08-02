@@ -4,12 +4,10 @@ name: Deploy to Production
 # pila. No se compila nada aqui, porque el Dockerfile ya trae sus etapas de
 # composer y de assets, y duplicarlo solo daria dos resultados que pueden diferir.
 #
-# Arranca en manual hasta que el primer despliegue a mano salga bien. Para
-# volver al automatico, descomenta el bloque `push`.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
-  # push:
-  #   branches: [main]
 
 concurrency:
   group: deploy-produccion
