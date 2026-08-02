@@ -111,27 +111,29 @@ export default function Welcome() {
                 </div>
 
                 {/* Header Épico */}
-                <header className="relative z-10 w-full max-w-7xl mx-auto px-6 py-8">
-                    <nav className="flex items-center justify-between">
-                        <div className="flex items-center gap-4 group">
+                <header className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-5 sm:py-8">
+                    {/* min-w-0 en la marca y shrink-0 en el boton: sin eso, el nombre
+                        empujaba el boton de acceso 79px fuera de la pantalla. */}
+                    <nav className="flex items-center justify-between gap-3">
+                        <div className="flex min-w-0 items-center gap-2 sm:gap-4 group">
                             <div className="relative">
                                 <div className="absolute inset-0 bg-gradient-to-r from-yellow-600 to-red-600 rounded-xl blur-lg opacity-75 group-hover:opacity-100 transition-opacity"></div>
-                                <div className="relative flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-yellow-600 via-orange-600 to-red-700 shadow-2xl shadow-orange-500/50 border-2 border-yellow-400/50 group-hover:scale-110 transition-transform">
-                                    <Shield className="h-8 w-8 text-yellow-100 drop-shadow-lg" />
+                                <div className="relative flex h-10 w-10 sm:h-14 sm:w-14 items-center justify-center rounded-xl bg-gradient-to-br from-yellow-600 via-orange-600 to-red-700 shadow-2xl shadow-orange-500/50 border-2 border-yellow-400/50 group-hover:scale-110 transition-transform">
+                                    <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-100 drop-shadow-lg" />
                                     <Sparkles className="absolute -top-1 -right-1 h-4 w-4 text-yellow-300 animate-spin-slow" />
                                 </div>
                             </div>
-                            <div>
-                                <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_0_20px_rgba(251,191,36,0.5)]" style={{ fontFamily: 'Cinzel, serif', letterSpacing: '0.05em' }}>
+                            <div className="min-w-0">
+                                <h1 className="truncate text-xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_0_20px_rgba(251,191,36,0.5)]" style={{ fontFamily: 'Cinzel, serif', letterSpacing: '0.05em' }}>
                                     TAPON'AZO
                                 </h1>
-                                <p className="text-xs text-yellow-400/80 font-semibold tracking-widest" style={{ fontFamily: 'Trade Winds, cursive' }}>
+                                <p className="truncate text-[10px] sm:text-xs text-yellow-400/80 font-semibold tracking-widest" style={{ fontFamily: 'Trade Winds, cursive' }}>
                                     LEGENDS FORGE
                                 </p>
                             </div>
                         </div>
                         
-                        <div className="flex items-center gap-4">
+                        <div className="flex shrink-0 items-center gap-4">
                             {auth.user ? (
                                 <Link
                                     href={dashboard()}
@@ -147,7 +149,7 @@ export default function Welcome() {
                             ) : (
                                 <Link
                                     href={login()}
-                                    className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 text-white hover:from-yellow-500 hover:to-red-500 transition-all border-2 border-yellow-400/30 backdrop-blur-sm font-bold shadow-lg shadow-orange-500/30" style={{ fontFamily: 'Cinzel, serif' }}
+                                    className="px-3 py-2 text-xs sm:px-6 sm:py-2.5 sm:text-base whitespace-nowrap rounded-lg bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 text-white hover:from-yellow-500 hover:to-red-500 transition-all border-2 border-yellow-400/30 backdrop-blur-sm font-bold shadow-lg shadow-orange-500/30" style={{ fontFamily: 'Cinzel, serif' }}
                                 >
                                     INICIAR SESIÓN
                                 </Link>
@@ -163,13 +165,13 @@ export default function Welcome() {
                         <div className="inline-block animate-float">
                             <div className="relative">
                                 <div className="absolute inset-0 bg-gradient-to-r from-yellow-600/50 to-red-600/50 rounded-full blur-xl"></div>
-                                <div className="relative px-6 py-3 rounded-full bg-gradient-to-r from-yellow-900/80 to-red-900/80 border-2 border-yellow-500/50 backdrop-blur-sm">
-                                    <div className="flex items-center gap-3">
-                                        <Flame className="w-5 h-5 text-yellow-400 animate-pulse" />
-                                        <span className="text-yellow-200 font-black text-sm tracking-wider" style={{ fontFamily: 'Cinzel, serif' }}>
+                                <div className="relative px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-gradient-to-r from-yellow-900/80 to-red-900/80 border-2 border-yellow-500/50 backdrop-blur-sm">
+                                    <div className="flex items-center justify-center gap-2 sm:gap-3">
+                                        <Flame className="w-4 h-4 sm:w-5 sm:h-5 shrink-0 text-yellow-400 animate-pulse" />
+                                        <span className="text-yellow-200 font-black text-[10px] sm:text-sm tracking-wide sm:tracking-wider" style={{ fontFamily: 'Cinzel, serif' }}>
                                             TCG SYSTEM · UNIVERSE BUILDER · LEGENDARY FORGE
                                         </span>
-                                        <Zap className="w-5 h-5 text-orange-400 animate-pulse animation-delay-500" />
+                                        <Zap className="w-4 h-4 sm:w-5 sm:h-5 shrink-0 text-orange-400 animate-pulse animation-delay-500" />
                                     </div>
                                 </div>
                             </div>
@@ -178,11 +180,13 @@ export default function Welcome() {
                         {/* Título Principal */}
                         <div className="relative">
                             <div className="absolute inset-0 bg-gradient-to-r from-yellow-600/20 via-orange-600/20 to-red-600/20 blur-3xl transform scale-150"></div>
-                            <h1 className="relative text-7xl md:text-9xl font-black leading-none" style={{ fontFamily: 'Cinzel, serif' }}>
+                            {/* "TAPON'AZO" es una sola palabra y no parte: a 72px medía 444px
+                                y arrastraba al contenedor fuera de una pantalla de 375. */}
+                            <h1 className="relative text-4xl sm:text-6xl md:text-9xl font-black leading-none" style={{ fontFamily: 'Cinzel, serif' }}>
                                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200 drop-shadow-[0_0_30px_rgba(251,191,36,0.8)] animate-shine">
                                     TAPON'AZO
                                 </span>
-                                <span className="block text-5xl md:text-7xl mt-4 text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-red-400 to-orange-300 drop-shadow-[0_0_20px_rgba(251,146,60,0.6)]">
+                                <span className="block text-2xl sm:text-4xl md:text-7xl mt-2 md:mt-4 text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-red-400 to-orange-300 drop-shadow-[0_0_20px_rgba(251,146,60,0.6)]">
                                     LEGENDS FORGE
                                 </span>
                             </h1>
@@ -199,13 +203,13 @@ export default function Welcome() {
                         <div className="flex flex-wrap items-center justify-center gap-6 pt-8">
                             <Link
                                 href={auth.user ? dashboard() : login()}
-                                className="group relative px-12 py-5 rounded-2xl bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 text-white font-black text-2xl hover:from-yellow-500 hover:to-red-500 transition-all shadow-2xl shadow-orange-500/60 hover:shadow-orange-400/80 transform hover:scale-110 border-4 border-yellow-400/40 hover:border-yellow-300/60"
+                                className="group relative px-6 sm:px-12 py-4 sm:py-5 rounded-2xl bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 text-white font-black text-base sm:text-2xl hover:from-yellow-500 hover:to-red-500 transition-all shadow-2xl shadow-orange-500/60 hover:shadow-orange-400/80 transform hover:scale-110 border-4 border-yellow-400/40 hover:border-yellow-300/60"
                                 style={{ fontFamily: 'Cinzel, serif' }}
                             >
-                                <span className="relative z-10 flex items-center gap-3">
-                                    <Swords className="w-8 h-8" />
+                                <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-3">
+                                    <Swords className="w-5 h-5 sm:w-8 sm:h-8 shrink-0" />
                                     {auth.user ? 'ENTRAR AL REINO' : 'COMENZAR LA LEYENDA'}
-                                    <Crown className="w-8 h-8" />
+                                    <Crown className="w-5 h-5 sm:w-8 sm:h-8 shrink-0" />
                                 </span>
                                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-yellow-400/0 via-white/30 to-yellow-400/0 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                             </Link>
@@ -293,22 +297,22 @@ export default function Welcome() {
                                 <Sparkles className="w-12 h-12 text-orange-400/50 animate-spin-slow" />
                             </div>
                             
-                            <h2 className="text-5xl font-black text-yellow-100 mb-6" style={{ fontFamily: 'Cinzel, serif' }}>
+                            <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-yellow-100 mb-6" style={{ fontFamily: 'Cinzel, serif' }}>
                                 ¿LISTO PARA FORJAR TU LEYENDA?
                             </h2>
-                            <p className="text-2xl text-yellow-200/90 mb-10 font-bold" style={{ fontFamily: 'Almendra, serif' }}>
+                            <p className="text-base sm:text-xl md:text-2xl text-yellow-200/90 mb-10 font-bold" style={{ fontFamily: 'Almendra, serif' }}>
                                 El poder de crear mundos legendarios te espera.
                                 <br />
                                 <span className="text-orange-300">Tu imperio comienza aquí.</span>
                             </p>
                             <Link
                                 href={auth.user ? dashboard() : login()}
-                                className="inline-flex items-center gap-4 px-12 py-5 rounded-2xl bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 text-white font-black text-2xl hover:from-yellow-500 hover:to-red-500 transition-all shadow-2xl shadow-orange-500/60 hover:shadow-orange-400/80 transform hover:scale-110 border-4 border-yellow-400/40"
+                                className="inline-flex items-center gap-2 sm:gap-4 px-5 sm:px-12 py-4 sm:py-5 rounded-2xl bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 text-white font-black text-base sm:text-2xl hover:from-yellow-500 hover:to-red-500 transition-all shadow-2xl shadow-orange-500/60 hover:shadow-orange-400/80 transform hover:scale-110 border-4 border-yellow-400/40"
                                 style={{ fontFamily: 'Cinzel, serif' }}
                             >
-                                <Shield className="w-8 h-8" />
+                                <Shield className="w-5 h-5 sm:w-8 sm:h-8 shrink-0" />
                                 {auth.user ? 'ENTRAR AL REINO' : 'FORJAR MI DESTINO'}
-                                <Flame className="w-8 h-8" />
+                                <Flame className="w-5 h-5 sm:w-8 sm:h-8 shrink-0" />
                             </Link>
                         </div>
                     </div>
