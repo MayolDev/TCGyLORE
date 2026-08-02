@@ -1,96 +1,34 @@
 name: Deploy to Production
 
+# El despliegue lo hace el servidor: construye las imagenes Docker y levanta la
+# pila. No se compila nada aqui, porque el Dockerfile ya trae sus etapas de
+# composer y de assets, y duplicarlo solo daria dos resultados que pueden diferir.
+#
+# Arranca en manual hasta que el primer despliegue a mano salga bien. Para
+# volver al automatico, descomenta el bloque `push`.
 on:
-  push:
-    branches:
-      - main  # Cambia a tu rama principal (puede ser 'master')
+  workflow_dispatch:
+  # push:
+  #   branches: [main]
+
+concurrency:
+  group: deploy-produccion
+  cancel-in-progress: false
 
 jobs:
   deploy:
     name: Deploy to Server
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, dom, filter, gd, json, zip
-          tools: composer:v2
-
-      - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction --no-dev --optimize-autoloader
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install NPM dependencies
-        run: npm ci
-
-      - name: Build assets
-        run: npm run build
-
-      - name: Deploy to Server
+      - name: Desplegar por SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          command_timeout: 20m
           script: |
-            cd /home/mayoldev-taponazo/htdocs/taponazo.mayoldev.es
-            
-            # Activar modo mantenimiento
-            php artisan down || true
-            
-            # Guardar cambios locales (archivos generados)
-            git stash || true
-            
-            # Pull últimos cambios
-            git fetch origin main
-            git reset --hard origin/main
-            
-            # Limpiar vendor y reinstalar dependencias correctamente
-            rm -rf vendor
-            composer clear-cache
-            composer install --optimize-autoloader --no-interaction
-            
-            # Instalar dependencias de NPM y compilar assets
-            npm ci
-            npm run build
-            
-            # Ejecutar migraciones
-            php artisan migrate --force
-            
-            # Limpiar cachés
-            php artisan config:clear
-            php artisan route:clear
-            php artisan view:clear
-            php artisan cache:clear
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
-            php artisan optimize
-            
-            # Ajustar permisos
-            chmod -R 755 storage bootstrap/cache
-            
-            # Desactivar modo mantenimiento
-            php artisan up
-            
-            echo "✅ Deployment completado!"
-
-      - name: Notify on Success
-        if: success()
-        run: echo "🎉 Deploy exitoso a producción!"
-
-      - name: Notify on Failure
-        if: failure()
-        run: echo "❌ Deploy falló!"
-
+            set -euo pipefail
+            cd ~/apps/taponazo
+            ./deploy.sh

@@ -1,64 +1,48 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Despliegue de taponazo.mayoldev.es
+#
+# El servidor no usa CloudPanel: todo va en Docker detras de Nginx Proxy Manager.
+# Este script se ejecuta EN el servidor, dentro de ~/apps/taponazo.
+#
+#   uso:  ./deploy.sh
+set -euo pipefail
 
-# Script de deploy manual para taponazo.mayoldev.es
-# Uso: ./deploy.sh
+cd "$(dirname "$0")"
+log(){ printf '\n\033[1;33m> %s\033[0m\n' "$*"; }
 
-set -e
+[ -f .env ] || { echo "falta .env"; exit 1; }
 
-echo "🚀 Iniciando deploy..."
+log "Descargando cambios"
+git pull --ff-only origin main
 
-# Colores para output
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-RED='\033[0;31m'
-NC='\033[0m' # No Color
+log "Construyendo imagenes"
+docker compose build --pull
 
-# Directorio del proyecto
-PROJECT_DIR="/home/mayoldev-taponazo/htdocs/taponazo.mayoldev.es"
+log "Levantando la pila"
+docker compose up -d --remove-orphans
 
-cd "$PROJECT_DIR"
+log "Esperando a que la base responda"
+for i in $(seq 1 30); do
+  if docker compose exec -T mysql mysqladmin ping -h127.0.0.1 --silent 2>/dev/null; then break; fi
+  [ "$i" = 30 ] && { echo "la base no arranco"; docker compose logs --tail 30 mysql; exit 1; }
+  sleep 3
+done
 
-echo -e "${YELLOW}📋 Activando modo mantenimiento...${NC}"
-php artisan down || true
+# Las migraciones van aqui y no en el entrypoint: si las lanzara cada contenedor
+# al arrancar, un reinicio automatico o una segunda replica migrarian a la vez
+# sobre la misma base.
+log "Migraciones"
+docker compose exec -T app php artisan migrate --force
 
-echo -e "${YELLOW}📥 Descargando cambios de GitHub...${NC}"
-git pull origin main
+log "Recacheando"
+docker compose exec -T app php artisan config:cache
+docker compose exec -T app php artisan route:cache
+docker compose exec -T app php artisan view:cache
 
-echo -e "${YELLOW}🧹 Limpiando vendor y cache de Composer...${NC}"
-rm -rf vendor
-composer clear-cache
+log "Limpiando imagenes huerfanas"
+docker image prune -f >/dev/null
 
-echo -e "${YELLOW}📦 Instalando dependencias de Composer...${NC}"
-composer install --optimize-autoloader --no-interaction
+log "Estado"
+docker compose ps --format 'table {{.Name}}\t{{.Status}}'
 
-echo -e "${YELLOW}📦 Instalando dependencias de NPM...${NC}"
-npm ci
-
-echo -e "${YELLOW}🔨 Compilando assets...${NC}"
-npm run build
-
-echo -e "${YELLOW}🗄️  Ejecutando migraciones...${NC}"
-php artisan migrate --force
-
-echo -e "${YELLOW}🧹 Limpiando cachés...${NC}"
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
-php artisan cache:clear
-
-echo -e "${YELLOW}🧹 Reconstruyendo cachés...${NC}"
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-php artisan optimize
-
-echo -e "${YELLOW}🔑 Ajustando permisos...${NC}"
-chmod -R 755 storage bootstrap/cache
-chown -R www-data:www-data storage bootstrap/cache
-
-echo -e "${YELLOW}✅ Desactivando modo mantenimiento...${NC}"
-php artisan up
-
-echo -e "${GREEN}🎉 Deploy completado exitosamente!${NC}"
-echo -e "${GREEN}✨ La aplicación está lista en: https://taponazo.mayoldev.es${NC}"
-
+printf '\n\033[0;32mDesplegado — https://taponazo.mayoldev.es\033[0m\n'

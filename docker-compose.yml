@@ -1,0 +1,78 @@
+# Taponazo — pila de produccion.
+#
+# El TLS y el dominio los sirve Nginx Proxy Manager, que vive fuera de esta pila
+# y alcanza a `web` por la red externa `web-proxy`. Por eso nada publica puertos
+# al host.
+#
+#   desplegar:  ./deploy.sh
+#   logs:       docker compose logs -f app
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: runtime
+    image: taponazo-app
+    container_name: taponazo-app
+    restart: unless-stopped
+    expose: ["9000"]
+    env_file: .env
+    volumes:
+      - ./.env:/var/www/html/.env:ro
+      - storage:/var/www/html/storage
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks: [interna]
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: web
+    image: taponazo-web
+    container_name: taponazo-nginx
+    restart: unless-stopped
+    depends_on: [app]
+    networks: [interna, web-proxy]
+
+  mysql:
+    image: mysql:8.4
+    container_name: taponazo-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: "${DB_DATABASE:-taponazo}"
+      MYSQL_USER: "${DB_USERNAME:-taponazo}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:?DB_PASSWORD requerida}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD requerida}"
+    volumes:
+      - datos:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks: [interna]
+
+  scheduler:
+    image: taponazo-app
+    container_name: taponazo-scheduler
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./.env:/var/www/html/.env:ro
+      - storage:/var/www/html/storage
+    depends_on: [app]
+    entrypoint: ["php", "artisan", "schedule:work"]
+    networks: [interna]
+
+volumes:
+  datos:
+  storage:
+
+networks:
+  interna:
+  web-proxy:
+    external: true
