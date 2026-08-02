@@ -5,9 +5,11 @@ FROM node:20-alpine AS assets
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
-# wayfinder genera rutas tipadas leyendo el codigo PHP, asi que necesita el
-# proyecto entero, no solo resources/.
 COPY . .
+# WAYFINDER=0 desactiva la generacion de rutas tipadas, que necesita `php
+# artisan` y aqui no hay PHP. Los ficheros generados vienen versionados en el
+# repositorio, asi que se compila con ellos.
+ENV WAYFINDER=0
 RUN npm run build
 
 # ────────────────────────────── vendor ────────────────────────────────
