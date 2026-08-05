@@ -23,8 +23,10 @@ interface Location {
     name: string;
     description: string | null;
     image_url: string | null;
-    latitude: number | null;
-    longitude: number | null;
+    // Coordenadas del mapa fantasy (0-1536 / 0-754). La BD nunca tuvo
+    // latitude/longitude: leerlas dejaba los badges de "Mapeado" siempre ocultos.
+    coordinate_x: number | null;
+    coordinate_y: number | null;
     world: {
         id: number;
         name: string;
@@ -234,7 +236,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                         </div>
 
                                         {/* Coordinates Badge */}
-                                        {(location.latitude != null && location.longitude != null) && (
+                                        {(location.coordinate_x != null && location.coordinate_y != null) && (
                                             <div className="absolute bottom-2 left-2">
                                                 <Badge variant="outline" className="backdrop-blur-sm bg-slate-900/90 border-amber-500/50 text-amber-200 gap-1 font-bold">
                                                     <Navigation className="h-3 w-3" />
@@ -256,11 +258,11 @@ export default function Index({ locations: initialLocations, filters: initialFil
 
                                     <CardContent className="space-y-4 relative z-10">
                                         {/* Coordinates */}
-                                        {(location.latitude != null && location.longitude != null) && (
+                                        {(location.coordinate_x != null && location.coordinate_y != null) && (
                                             <div className="flex items-center gap-2 text-xs text-yellow-200/70 bg-rose-900/30 border border-rose-500/30 rounded p-2 font-semibold">
                                                 <Navigation className="h-4 w-4 text-rose-400 drop-shadow-[0_0_5px_rgba(244,63,94,0.6)]" />
                                                 <span>
-                                                    {Number(location.latitude).toFixed(4)}, {Number(location.longitude).toFixed(4)}
+                                                    ({Number(location.coordinate_x).toFixed(0)}, {Number(location.coordinate_y).toFixed(0)})
                                                 </span>
                                             </div>
                                         )}
@@ -387,7 +389,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                                         </p>
                                                     </td>
                                                     <td className="px-6 py-4 text-center">
-                                                        {(location.latitude != null && location.longitude != null) ? (
+                                                        {(location.coordinate_x != null && location.coordinate_y != null) ? (
                                                             <Badge variant="outline" className="bg-slate-900/50 border-amber-500/50 text-amber-200 gap-1">
                                                                 <Navigation className="h-3 w-3" />
                                                                 Sí
