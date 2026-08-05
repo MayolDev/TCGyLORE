@@ -1,5 +1,76 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
+ * @see routes/web.php:47
+ * @route '/admin/cards-taller'
+ */
+export const workshop = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: workshop.url(options),
+    method: 'get',
+})
+
+workshop.definition = {
+    methods: ["get","head"],
+    url: '/admin/cards-taller',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+ * @see routes/web.php:47
+ * @route '/admin/cards-taller'
+ */
+workshop.url = (options?: RouteQueryOptions) => {
+    return workshop.definition.url + queryParams(options)
+}
+
+/**
+ * @see routes/web.php:47
+ * @route '/admin/cards-taller'
+ */
+workshop.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: workshop.url(options),
+    method: 'get',
+})
+/**
+ * @see routes/web.php:47
+ * @route '/admin/cards-taller'
+ */
+workshop.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: workshop.url(options),
+    method: 'head',
+})
+
+    /**
+ * @see routes/web.php:47
+ * @route '/admin/cards-taller'
+ */
+    const workshopForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: workshop.url(options),
+        method: 'get',
+    })
+
+            /**
+ * @see routes/web.php:47
+ * @route '/admin/cards-taller'
+ */
+        workshopForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: workshop.url(options),
+            method: 'get',
+        })
+            /**
+ * @see routes/web.php:47
+ * @route '/admin/cards-taller'
+ */
+        workshopForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: workshop.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    workshop.form = workshopForm
+/**
 * @see \App\Http\Controllers\Admin\CardController::index
  * @see app/Http/Controllers/Admin/CardController.php:22
  * @route '/admin/cards'
@@ -611,7 +682,8 @@ destroy.delete = (args: { card: number | { id: number } } | [card: number | { id
     
     destroy.form = destroyForm
 const cards = {
-    index: Object.assign(index, index),
+    workshop: Object.assign(workshop, workshop),
+index: Object.assign(index, index),
 create: Object.assign(create, create),
 store: Object.assign(store, store),
 show: Object.assign(show, show),

@@ -1,0 +1,42 @@
+/*
+ * Tema Tapon'Azo web para el Taller de Cartas.
+ *
+ * El taller original (Taponazo260726/taponazo/herramientas/taller-cartas) viste
+ * pergamino pardo; aqui dentro del panel de administracion se alinea con la
+ * paleta de la web: slate oscuro, oro amber y acentos purpura/rosa.
+ *
+ * SOLO toca variables y fondos del panel de control. El motor de pintado
+ * (js/app.js) y los colores DE LAS CARTAS no se tocan: las cartas exportadas
+ * salen identicas desde aqui y desde el taller original.
+ */
+:root {
+    --bg: #020617;            /* slate-950 */
+    --panel: #0f172a;         /* slate-900 */
+    --panel-2: #1e293b;       /* slate-800 */
+    --edge: #713f12;          /* yellow-900, el borde de la web admin */
+    --edge-soft: #42200699;   /* yellow-950 */
+    --ink: #fef3c7;           /* amber-100 */
+    --ink-dim: #fde68acc;     /* amber-200 */
+    --ink-faint: #fbbf2477;   /* amber-400 tenue */
+    --gold: #fbbf24;          /* amber-400: el dorado de la web */
+    --gold-deep: #b45309;     /* amber-700 */
+    --ember: #fb923c;         /* orange-400 */
+    --sage: #7CB342;
+    --slate: #a855f7;         /* purple-500, acento de la web */
+    --plum: #a855f7;
+    --blood: #f43f5e;         /* rose-500 */
+    --shadow: 0 18px 50px rgba(0, 0, 0, .6);
+}
+
+/* El fondo del cuerpo imita el del panel: slate con brillos purpura y ambar */
+body {
+    background:
+        radial-gradient(900px 500px at 75% -10%, rgba(168, 85, 247, .14) 0%, transparent 60%),
+        radial-gradient(800px 600px at 8% 110%, rgba(251, 146, 60, .10) 0%, transparent 55%),
+        var(--bg) !important;
+}
+
+.lib,
+.insp {
+    background: linear-gradient(180deg, var(--panel) 0%, #0b1120 100%) !important;
+}

@@ -5,10 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class Card extends Model
 {
     use HasFactory;
+
+    /**
+     * El frontend lee `illustration_url`, pero la columna guarda la ruta de
+     * storage. Sin este accessor las ilustraciones subidas no se mostraban
+     * nunca: todas las cartas caian al placeholder.
+     */
+    protected $appends = ['illustration_url'];
+
+    public function getIllustrationUrlAttribute(): ?string
+    {
+        return $this->illustration ? Storage::url($this->illustration) : null;
+    }
 
     protected $fillable = [
         'world_id',

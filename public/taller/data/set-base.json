@@ -1,0 +1,101 @@
+{
+  "set": "TAPONAZO · set base",
+  "version": "0.4",
+  "nota": "48 cartas (Set-Simulacion.md + parche v0.3 + las 6 nuevas de Mazos-Tematicos.md) y los 3 protagonistas aprobados. Los numeros marcados con la bandera en los docs siguen siendo provisionales. El campo 'arte' es el nombre del archivo de ilustracion (sin extension) que el taller busca al cargar la carpeta de arte.",
+  "pie": "TAPONAZO · set base · 0.4",
+  "cartas": [
+    { "id": "campesino-leal", "nombre": "Campesino Leal", "tipo": "creature", "rareza": "comun", "coste": 1, "atq": 1, "def": 2, "ego": 0, "etiquetas": "Humano · Alianza · Neutral", "texto": "Último Aliento: roba 1 carta.", "arte": "campesino-leal" },
+    { "id": "goblin-saqueador", "nombre": "Goblin Saqueador", "tipo": "creature", "rareza": "comun", "coste": 1, "atq": 2, "def": 2, "ego": 1, "etiquetas": "Goblin · Salvaje · Caótico", "texto": "Al hacer daño directo a un protagonista: roba 1 (una vez por ronda).", "arte": "goblin-saqueador" },
+    { "id": "recluta", "nombre": "Recluta", "tipo": "creature", "rareza": "comun", "coste": 1, "atq": 1, "def": 2, "ego": 1, "etiquetas": "Humano · Alianza · Ordenado", "texto": "Adyacente a otra Alianza: +0/+1.", "arte": "recluta" },
+    { "id": "lobo-feral", "nombre": "Lobo Feral", "tipo": "creature", "rareza": "comun", "coste": 2, "atq": 2, "def": 2, "ego": 1, "etiquetas": "Bestia · Salvaje · Neutral", "texto": "Manada: si otra Bestia tuya ya atacó al mismo objetivo esta Batalla, +2 ATQ.", "arte": "lobo-feral" },
+    { "id": "escudero", "nombre": "Escudero", "tipo": "creature", "rareza": "comun", "coste": 2, "atq": 1, "def": 3, "ego": 1, "etiquetas": "Humano · Alianza · Benévolo", "texto": "Guardia.\nCada vez que intercepta: +0/+1 permanente.", "arte": "escudero" },
+    { "id": "arquero-de-la-muralla", "nombre": "Arquero de la Muralla", "tipo": "creature", "rareza": "comun", "coste": 2, "atq": 2, "def": 2, "ego": 1, "etiquetas": "Humano · Alianza · Ordenado", "texto": "A distancia.\n+1 daño a criaturas en Vanguardia.", "arte": "arquero-de-la-muralla" },
+    { "id": "zombi", "nombre": "Zombi", "tipo": "creature", "rareza": "comun", "coste": 2, "atq": 2, "def": 3, "ego": 0, "etiquetas": "No-muerto · — · Hostil", "texto": "La primera vez que muere cada partida: se levanta de nuevo al Cierre.", "arte": "zombi" },
+    { "id": "maton-de-puerto", "nombre": "Matón de Puerto", "tipo": "creature", "rareza": "comun", "coste": 3, "atq": 3, "def": 3, "ego": 2, "etiquetas": "Humano · Hijos del Mar · Caótico", "texto": "Al entrar: el jugador que elijas pierde 1 Vigor.", "arte": "maton-de-puerto" },
+    { "id": "acechador-sombrio", "nombre": "Acechador Sombrío", "tipo": "creature", "rareza": "comun", "coste": 3, "atq": 3, "def": 2, "ego": 2, "etiquetas": "Feles · Hermandad · Caótico", "texto": "Evasión.\n+2 daño a objetivos Marcados.", "arte": "acechador-sombrio" },
+    { "id": "oso-pardo", "nombre": "Oso Pardo", "tipo": "creature", "rareza": "comun", "coste": 3, "atq": 3, "def": 4, "ego": 2, "etiquetas": "Bestia · Salvaje · Neutral", "texto": "Supervivencia: +1/+1.", "arte": "oso-pardo" },
+    { "id": "sacerdotisa-novicia", "nombre": "Sacerdotisa Novicia", "tipo": "creature", "rareza": "comun", "coste": 3, "atq": 1, "def": 3, "ego": 1, "etiquetas": "Humano · Alianza · Benévolo", "texto": "Al entrar: cura 2.\nTus Primeros Auxilios curan además 1 Herida.", "arte": "sacerdotisa-novicia" },
+    { "id": "golem-de-barro", "nombre": "Gólem de Barro", "tipo": "creature", "rareza": "comun", "coste": 3, "atq": 2, "def": 5, "ego": 0, "etiquetas": "Constructo · — · Neutral", "texto": "Guardia.\nInmune a estados.", "arte": "golem-de-barro" },
+
+    { "id": "capitan-de-la-guardia", "nombre": "Capitán de la Guardia", "tipo": "creature", "rareza": "elite", "coste": 4, "atq": 3, "def": 4, "ego": 3, "etiquetas": "Humano · Alianza · Ordenado", "texto": "Guardia.\nTus otras Alianza +1 ATQ mientras esté en el arco.\nNv2: y +1 DEF.", "arte": "capitan-de-la-guardia" },
+    { "id": "berserker-orco", "nombre": "Berserker Orco", "tipo": "creature", "rareza": "elite", "coste": 4, "atq": 5, "def": 3, "ego": 3, "etiquetas": "Orco · Baalish · Caótico", "texto": "Arrollar.\nSi terminas la ronda sin que atacara: chequea lealtad.\nNv2: +1 ATQ mientras esté herido.", "arte": "berserker-orco" },
+    { "id": "espectro-aullante", "nombre": "Espectro Aullante", "tipo": "creature", "rareza": "elite", "coste": 4, "atq": 3, "def": 3, "ego": 0, "etiquetas": "No-muerto · — · Hostil", "texto": "Evasión.\nAl morir: Miedo al asesino.\nNv2: invocable desde tu cadáver por 2.", "arte": "espectro-aullante" },
+    { "id": "arquera-elfica", "nombre": "Arquera Élfica", "tipo": "creature", "rareza": "elite", "coste": 4, "atq": 3, "def": 3, "ego": 2, "etiquetas": "Elfo · Alfar · Neutral", "texto": "A distancia.\n+2 daño a criaturas en Vanguardia.", "arte": "arquera-elfica" },
+    { "id": "asesina-de-la-hermandad", "nombre": "Asesina de la Hermandad", "tipo": "creature", "rareza": "elite", "coste": 5, "atq": 4, "def": 3, "ego": 3, "etiquetas": "Humano · Hermandad · Hostil", "texto": "Evasión.\nSus ataques aplican Marcado.\nNv2: +2 daño a Marcados.", "arte": "asesina-de-la-hermandad" },
+    { "id": "ogro-de-asalto", "nombre": "Ogro de Asalto", "tipo": "creature", "rareza": "elite", "coste": 5, "atq": 5, "def": 5, "ego": 3, "etiquetas": "Ogro · Salvaje · Caótico", "texto": "Cuando se rebela, siempre «va por libre» (nunca se planta).\nNv2: Arrollar.", "arte": "ogro-de-asalto" },
+    { "id": "cleriga-de-batalla", "nombre": "Clériga de Batalla", "tipo": "creature", "rareza": "elite", "coste": 5, "atq": 3, "def": 4, "ego": 2, "etiquetas": "Humano · Alianza · Benévolo", "texto": "Supervivencia: cura 2 repartidas entre unidades.\nNv2: también purifica 1 estado.", "arte": "cleriga-de-batalla" },
+    { "id": "troll-de-las-cienagas", "nombre": "Troll de las Ciénagas", "tipo": "creature", "rareza": "elite", "coste": 6, "atq": 4, "def": 6, "ego": 3, "etiquetas": "Troll · Salvaje · Neutral", "texto": "Supervivencia: se cura 2.\nLos cadáveres de su slot no generan peste (se los come).\nNv2: Guardia.", "arte": "troll-de-las-cienagas" },
+
+    { "id": "dragon-joven", "nombre": "Dragón Joven", "tipo": "creature", "rareza": "legendaria", "coste": 7, "atq": 5, "def": 6, "ego": 5, "etiquetas": "Dragón · Salvaje · Caótico", "texto": "Arrollar. Su EGO nunca se reduce, ni por Afinidad.\nNv3: sus ataques no pueden ser interceptados.\nUA: 2 daño a cada criatura del arco donde muera.", "cita": "«Aún no ha aprendido a temer. Por eso lo temen a él.»", "arte": "dragon-joven" },
+    { "id": "caballero-de-la-llama", "nombre": "Caballero de la Llama", "tipo": "creature", "rareza": "legendaria", "coste": 7, "atq": 5, "def": 5, "ego": 4, "etiquetas": "Humano · Orden Sagrada · Ordenado", "texto": "Guardia. Quien lo ataque gana 1 Quemadura.\nUA: 2 Quemadura a su asesino.", "arte": "caballero-de-la-llama" },
+    { "id": "matriarca-treant", "nombre": "Matriarca Treant", "tipo": "creature", "rareza": "legendaria", "coste": 8, "atq": 4, "def": 7, "ego": 4, "etiquetas": "Treant · Salvaje · Benévolo", "texto": "Guardia. Cierre: cura 1 a adyacentes.\nNv3: cura 2 y purifica.\nUA: su slot se convierte en Bosque Sagrado.", "arte": "matriarca-treant" },
+    { "id": "senor-de-la-cripta", "nombre": "Señor de la Cripta", "tipo": "creature", "rareza": "legendaria", "coste": 8, "atq": 5, "def": 6, "ego": 5, "etiquetas": "No-muerto · — · Hostil", "texto": "Nigromancia (1 resurrección por Consejo pagando coste).\nTus No-muertos +1/+1.\nUA: levanta 2 Esqueletos 1/1 (EGO 0) en tus slots libres.", "arte": "senor-de-la-cripta" },
+
+    { "id": "veterano-de-la-muralla", "nombre": "Veterano de la Muralla", "tipo": "creature", "rareza": "comun", "coste": 3, "atq": 2, "def": 4, "ego": 1, "etiquetas": "Humano · Alianza · Ordenado", "texto": "Guardia.\nMientras haya un cadáver en su slot: +1/+1.", "arte": "veterano-de-la-muralla" },
+    { "id": "ratero-del-gremio", "nombre": "Ratero del Gremio", "tipo": "creature", "rareza": "comun", "coste": 2, "atq": 2, "def": 2, "ego": 1, "etiquetas": "Enano · Hermandad · Caótico", "texto": "Al hacer daño directo a un protagonista: le robas 1 Vigor.", "arte": "ratero-del-gremio" },
+    { "id": "jabali-espinoso", "nombre": "Jabalí Espinoso", "tipo": "creature", "rareza": "comun", "coste": 2, "atq": 2, "def": 3, "ego": 1, "etiquetas": "Bestia · Salvaje · Neutral", "texto": "Cuando recibe daño y sobrevive: 1 daño al atacante.", "arte": "jabali-espinoso" },
+    { "id": "espiritu-del-bosque", "nombre": "Espíritu del Bosque", "tipo": "creature", "rareza": "elite", "coste": 4, "atq": 3, "def": 4, "ego": 0, "etiquetas": "Espíritu · — · Neutral", "texto": "Al morir: su slot se convierte en Bosque Sagrado.", "arte": "espiritu-del-bosque" },
+    { "id": "ciervo-del-claro", "nombre": "Ciervo del Claro", "tipo": "creature", "rareza": "comun", "coste": 3, "atq": 2, "def": 3, "ego": 1, "etiquetas": "Bestia · Salvaje · Benévolo", "texto": "Al entrar: cura 2 entre unidades.\nCura 4 si hay un Bosque Sagrado en tu arco.", "arte": "ciervo-del-claro" },
+
+    { "id": "curacion-menor", "nombre": "Curación Menor", "tipo": "spell", "coste": 1, "etiquetas": "Hechizo · cualquier fase", "texto": "Cura 3 Heridas a una unidad o protagonista.", "arte": "curacion-menor" },
+    { "id": "purificacion", "nombre": "Purificación", "tipo": "spell", "coste": 1, "etiquetas": "Hechizo · cualquier fase", "texto": "Elimina todos los contadores de un tipo de una unidad. Roba 1.", "arte": "purificacion" },
+    { "id": "rayo-certero", "nombre": "Rayo Certero", "tipo": "spell", "coste": 2, "etiquetas": "Hechizo · Batalla", "texto": "1 + MEN de daño a una criatura en Vanguardia.", "arte": "rayo-certero" },
+    { "id": "terror-subito", "nombre": "Terror Súbito", "tipo": "spell", "coste": 2, "etiquetas": "Hechizo · Batalla", "texto": "Miedo a una criatura (EGO 0 inmune).\nSi su EGO es 3+: además chequea lealtad.", "arte": "terror-subito" },
+    { "id": "incitar", "nombre": "Incitar", "tipo": "spell", "coste": 2, "etiquetas": "Hechizo · Batalla", "texto": "Una criatura rival chequea lealtad con DC +4.", "arte": "incitar" },
+    { "id": "bola-de-fuego", "nombre": "Bola de Fuego", "tipo": "spell", "coste": 3, "etiquetas": "Hechizo · Batalla", "texto": "2 + MEN de daño a un slot (voltea los bocabajos por daño).", "arte": "bola-de-fuego" },
+    { "id": "levantamiento", "nombre": "Levantamiento", "tipo": "spell", "coste": 3, "etiquetas": "Hechizo · Consejo", "texto": "Resucita un cadáver común tuyo en un slot libre.\nSi su slot tenía 3+ cadáveres: vuelve con +1/+1.", "arte": "levantamiento" },
+    { "id": "lluvia-de-flechas", "nombre": "Lluvia de Flechas", "tipo": "spell", "coste": 4, "etiquetas": "Hechizo · Batalla", "texto": "1 daño a cada criatura de un arco enemigo.", "arte": "lluvia-de-flechas" },
+    { "id": "golpe-y-fuga", "nombre": "Golpe y Fuga", "tipo": "spell", "coste": 2, "etiquetas": "Hechizo · Batalla", "texto": "Devuelve una criatura tuya de la Vanguardia a su slot. Roba 1.", "arte": "golpe-y-fuga" },
+
+    { "id": "alarma-de-cuervos", "nombre": "Alarma de Cuervos", "tipo": "trap", "coste": 1, "etiquetas": "Trampa · boca abajo", "texto": "Al ser atacado este slot: robas 2 cartas. El ataque continúa.", "arte": "alarma-de-cuervos" },
+    { "id": "foso-de-estacas", "nombre": "Foso de Estacas", "tipo": "trap", "coste": 2, "etiquetas": "Trampa · boca abajo", "texto": "Al ser atacado este slot: 3 daño al atacante.\nSi muere, el ataque se cancela; si no, continúa.", "arte": "foso-de-estacas" },
+    { "id": "red-de-caza", "nombre": "Red de Caza", "tipo": "trap", "coste": 2, "etiquetas": "Trampa · boca abajo", "texto": "Al ser atacado este slot: el ataque se cancela y el atacante gana 2 Debilitado.", "arte": "red-de-caza" },
+    { "id": "muro-reflejo", "nombre": "Muro Reflejo", "tipo": "trap", "coste": 3, "etiquetas": "Trampa · boca abajo", "texto": "Al ser atacado este slot: se convierte en Muro de Hielo (0/5); el ataque lo golpea.", "arte": "muro-reflejo" },
+
+    { "id": "empalizada", "nombre": "Empalizada", "tipo": "wall", "coste": 1, "def": 3, "etiquetas": "Muro", "texto": "—", "arte": "empalizada" },
+    { "id": "muro-de-hielo", "nombre": "Muro de Hielo", "tipo": "wall", "coste": 2, "def": 5, "etiquetas": "Muro", "texto": "—", "arte": "muro-de-hielo" },
+    { "id": "muralla-runica", "nombre": "Muralla Rúnica", "tipo": "wall", "coste": 4, "def": 6, "etiquetas": "Muro", "texto": "Las criaturas en slots adyacentes ganan +1 DEF.", "arte": "muralla-runica" },
+
+    { "id": "daga-del-camino", "nombre": "Daga del Camino", "tipo": "weapon", "coste": 1, "etiquetas": "Arma · equipo · Melé", "texto": "Ataque de héroe: 1 + FUE.\nLigera: tras atacar con ella, tu protagonista no puede Esquivar hasta el Cierre.", "arte": "daga-del-camino" },
+    { "id": "arco-corto", "nombre": "Arco Corto", "tipo": "weapon", "coste": 2, "etiquetas": "Arma · equipo · A distancia", "texto": "Ataque de héroe: 1 + FUE.\nApuntar: disparar consume tu Proeza gratis del turno.", "arte": "arco-corto" },
+    { "id": "martillo-del-padre", "nombre": "Martillo del Padre", "tipo": "weapon", "coste": 3, "etiquetas": "Arma · equipo · Melé", "texto": "Ataque de héroe: 3 + FUE.\nPesado: si atacas con él, tu iniciativa la próxima ronda es −2.", "arte": "martillo-del-padre" }
+  ],
+  "protagonistas": [
+    {
+      "id": "haken", "nombre": "Haken", "tipo": "hero", "etiquetas": "El Padre de Hierro · Guerrero · Humano · Ordenado-Neutral",
+      "fue": 3, "agi": 0, "men": 2, "car": 2, "pv": 20, "capacidad": 5,
+      "texto": "Única — Las Cubiteras: los cadáveres en tus slots no se pudren: no cuentan para la peste y los rivales no pueden robarlos con Nigromancia.\nEl Final — Demasiado Tarde: su hijo se levanta como revenant élite (4/4, EGO 0, sin dueño) en el slot donde murió Haken; ataca a un objetivo aleatorio cada Batalla hasta que lo maten.",
+      "cita": "«Haken conserva a sus muertos.»", "arte": "haken"
+    },
+    {
+      "id": "sosius", "nombre": "Sosius", "tipo": "hero", "etiquetas": "El Ladrón Definitivo · Pícaro · Enano · Caótico-Neutral",
+      "fue": 1, "agi": 4, "men": 0, "car": 2, "pv": 20, "capacidad": 5,
+      "texto": "Única — El Lado Positivo: la primera vez cada ronda que un rival te hace daño (a ti o a tus criaturas), le robas 1 Vigor.\nEl Final — El Tesoro de Sosius: cada rival pierde 1 carta al azar de su mano; todas van a tu Pozo.",
+      "cita": "«Pégale tú, que a mí me cobra.»", "arte": "sosius"
+    },
+    {
+      "id": "ansuz", "nombre": "Ansuz Vientoténue", "tipo": "hero", "etiquetas": "El Fauno que Perdona · Custodio · Fauno · Ordenado-Benévolo",
+      "fue": 0, "agi": 1, "men": 3, "car": 3, "pv": 20, "capacidad": 6,
+      "texto": "Única — El Pacifista: si no dañaste a ningún rival esta ronda, al Cierre curas 2 Heridas a unidades (repartidas) y tu próximo Consejo empieza con +1 Vigor.\nEl Final — El Bosque No Culpa a Nadie: cada protagonista se cura 3 Heridas; toda criatura Hostil recibe 3 Heridas.",
+      "cita": "«El único héroe que gana por no pegar.»", "arte": "ansuz"
+    }
+  ],
+  "fichas": [
+    { "id": "vigor", "nombre": "Vigor", "glifo": "◆", "color": "#b8862f", "forma": "circulo", "nota": "reserva por ronda" },
+    { "id": "herida", "nombre": "Herida", "glifo": "✕", "color": "#8f2f24", "forma": "circulo", "nota": "persistente; ≥ DEF = muerte" },
+    { "id": "armadura", "nombre": "Armadura", "glifo": "▲", "color": "#4a5866", "forma": "circulo", "nota": "absorbe antes de herir; tope 3 en el héroe" },
+    { "id": "veneno", "nombre": "Veneno", "glifo": "☠", "color": "#4f6b3a", "forma": "circulo", "nota": "1 Herida por contador al inicio de tu Consejo" },
+    { "id": "quemadura", "nombre": "Quemadura", "glifo": "♨", "color": "#a8452f", "forma": "circulo", "nota": "1 Herida al actuar" },
+    { "id": "fatiga", "nombre": "Fatiga", "glifo": "≡", "color": "#6a6355", "forma": "circulo", "nota": "DC +2 por contador; con 3, sin Proezas" },
+    { "id": "debilitado", "nombre": "Debilitado", "glifo": "▽", "color": "#6b4a7a", "forma": "circulo", "nota": "−1 ATQ" },
+    { "id": "marcado", "nombre": "Marcado", "glifo": "◎", "color": "#8f2f24", "forma": "cuadrado", "nota": "+1 daño recibido; Proezas contra él DC −2" },
+    { "id": "miedo", "nombre": "Miedo", "glifo": "❢", "color": "#3f3350", "forma": "cuadrado", "nota": "no ataca; EGO 0 inmune" },
+    { "id": "aturdido", "nombre": "Aturdido", "glifo": "✷", "color": "#5b5240", "forma": "cuadrado", "nota": "no actúa ni intercepta" },
+    { "id": "confuso", "nombre": "Confuso", "glifo": "↺", "color": "#6b4a7a", "forma": "cuadrado", "nota": "objetivo al azar" },
+    { "id": "cadaver", "nombre": "Cadáver", "glifo": "☗", "color": "#3a332a", "forma": "circulo", "nota": "se apila en el slot; 3+ = peste" },
+    { "id": "bosque-sagrado", "nombre": "Bosque Sagrado", "glifo": "❦", "color": "#4f6b3a", "forma": "cuadrado", "nota": "el slot cura 1 al ocupante en cada Cierre" },
+    { "id": "guardia", "nombre": "Guardia", "glifo": "⛨", "color": "#3f6072", "forma": "cuadrado", "nota": "cubre su slot y los 2 adyacentes" },
+    { "id": "moribundo", "nombre": "Moribundo", "glifo": "†", "color": "#8f2f24", "forma": "circulo", "nota": "0 PV: tira Supervivencia al inicio de tu Consejo" },
+    { "id": "iniciativa", "nombre": "Iniciativa", "glifo": "➤", "color": "#b8862f", "forma": "cuadrado", "nota": "orden de la Batalla: d20 + AGI" }
+  ]
+}

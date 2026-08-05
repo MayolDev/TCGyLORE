@@ -1,0 +1,348 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TAPONAZO · Taller de Cartas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..800;1,400..700&family=Grenze+Gotisch:wght@300..800&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/theme-web.css">
+
+<div class="app">
+
+  <!-- ═══════════════════════════ BIBLIOTECA ═══════════════════════════ -->
+  <aside class="lib">
+    <div class="brand"><h1>Taponazo</h1><span class="v">Taller</span></div>
+
+    <div class="libsearch">
+      <input id="libsearch" type="text" placeholder="Buscar…">
+      <select id="libfilter">
+        <option value="todo">Todo</option>
+        <option value="carta">Cartas</option>
+        <option value="ficha">Fichas</option>
+        <option value="dorso">Dorsos</option>
+      </select>
+    </div>
+
+    <div id="liblist" class="liblist"></div>
+    <p class="trayhint" id="libhint">Vacía. Pulsa <b>Cargar set base</b> para meter las 48 cartas,
+      los 3 protagonistas y las 16 fichas del reglamento 0.4.</p>
+
+    <div class="libfoot">
+      <span class="count" id="libcount">vacía</span>
+      <div class="btnrow"><button id="loadset" class="wide">Cargar set base</button></div>
+      <div class="btnrow">
+        <button id="libimportbtn">Importar</button>
+        <button id="libexport">Exportar</button>
+        <button id="libclear" class="danger">Vaciar</button>
+      </div>
+      <input id="setfile" type="file" accept="application/json,.json" class="hidden">
+      <input id="libimport" type="file" accept="application/json,.json" class="hidden">
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════ LIENZO ═══════════════════════════ -->
+  <main class="stage">
+    <div class="cardframe">
+      <canvas id="card" width="750" height="1050"></canvas>
+      <div class="sheen" id="sheen"></div>
+    </div>
+
+    <div class="toolbar">
+      <button class="act primary" id="download">⬇ Descargar PNG</button>
+      <button class="act" id="save">★ Guardar</button>
+      <button class="act" id="scale">Calidad: 2×</button>
+    </div>
+
+    <p class="stagehint">El PNG se vuelve a pintar a la resolución elegida — no es la vista previa ampliada.</p>
+  </main>
+
+  <!-- ═══════════════════════════ INSPECTOR ═══════════════════════════ -->
+  <aside class="insp">
+
+    <div class="chips seg" id="mode">
+      <div class="chip" data-mode="carta" aria-pressed="true">Carta</div>
+      <div class="chip" data-mode="dorso" aria-pressed="false">Dorso</div>
+      <div class="chip" data-mode="ficha" aria-pressed="false">Ficha</div>
+    </div>
+
+    <!-- ─────────────── CARTA ─────────────── -->
+    <details class="sec only-carta" open>
+      <summary>Identidad</summary>
+      <div class="body">
+        <label class="f"><span class="lbl-carta">Nombre</span><span class="lbl-heraldo hidden">El titular</span>
+          <input id="name" type="text" value="Dragón Joven"></label>
+        <div class="row">
+          <label class="f" id="costwrap" style="max-width:88px"><span>Coste</span>
+            <input id="cost" type="number" value="7" min="0"></label>
+          <label class="f"><span>Tipo</span>
+            <select id="type">
+              <option value="creature">Criatura</option>
+              <option value="spell">Hechizo</option>
+              <option value="trap">Trampa</option>
+              <option value="wall">Muro</option>
+              <option value="weapon">Arma</option>
+              <option value="hero">Protagonista</option>
+              <option value="heraldo">El Heraldo / Evento</option>
+            </select>
+          </label>
+        </div>
+        <label class="f"><span class="lbl-carta">Etiquetas / subtítulo</span><span class="lbl-heraldo hidden">Antetítulo (ronda y lugar)</span>
+          <input id="tags" type="text" value="Dragón · Salvaje · Caótico"></label>
+
+        <div id="statgroup" class="sub">
+          <p class="sublabel">Atributos</p>
+          <div class="row">
+            <label class="f" id="atkwrap"><span>ATQ</span><input id="atk" type="number" value="5" min="0"></label>
+            <label class="f"><span>DEF</span><input id="def" type="number" value="6" min="0"></label>
+            <label class="f" id="egowrap"><span>EGO</span><input id="ego" type="number" value="5" min="0"></label>
+          </div>
+        </div>
+
+        <div id="herogroup" class="sub hidden">
+          <p class="sublabel">Protagonista</p>
+          <div class="row">
+            <label class="f"><span>FUE</span><input id="fue" type="number" value="3"></label>
+            <label class="f"><span>AGI</span><input id="agi" type="number" value="0"></label>
+            <label class="f"><span>MEN</span><input id="men" type="number" value="2"></label>
+            <label class="f"><span>CAR</span><input id="car" type="number" value="2"></label>
+            <label class="f"><span>PV</span><input id="pv" type="number" value="20"></label>
+          </div>
+          <p class="note">La Habilidad Única y El Final van en el cuadro de texto. Capacidad = CAR + 3.</p>
+        </div>
+
+        <div id="heraldogroup" class="sub hidden">
+          <p class="sublabel">El Heraldo</p>
+          <label class="f"><span>Cabecera</span><input id="hmast" type="text" value="El Heraldo"></label>
+          <label class="f"><span>Efecto — solo si es Evento Global</span>
+            <textarea id="hregla" style="min-height:52px" placeholder="Vacío = pliego de titular"></textarea></label>
+          <label class="f"><span>Quién le rebate desde la barra</span><input id="hvoz" type="text" placeholder="Sosius"></label>
+          <div class="btnrow"><button id="hejemplo" class="wide">Rellenar con un ejemplo</button></div>
+          <p class="note">Es un <b>pliego de cordel</b>. La noticia sale a dos columnas y la cita es
+            la réplica del escéptico. Da conocimiento común sin que nadie gaste crédito político.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="sec only-carta" open>
+      <summary>Texto</summary>
+      <div class="body">
+        <label class="f"><span class="lbl-carta">Habilidad</span><span class="lbl-heraldo hidden">La noticia (dos columnas)</span>
+          <textarea id="body">Arrollar. Su EGO nunca se reduce, ni por Afinidad.
+Nv3: sus ataques no pueden ser interceptados.
+UA: 2 daño a cada criatura del arco donde muera.</textarea></label>
+        <label class="f"><span class="lbl-carta">Cita (opcional)</span><span class="lbl-heraldo hidden">La réplica desde la barra</span>
+          <textarea id="flavor" style="min-height:44px" placeholder="Una línea de sabor…">«Aún no ha aprendido a temer. Por eso lo temen a él.»</textarea></label>
+        <label class="f"><span>Pie de carta</span><input id="foot" type="text" value="TAPONAZO · set base · 0.4"></label>
+      </div>
+    </details>
+
+    <details class="sec only-carta">
+      <summary>Ilustración</summary>
+      <div class="body">
+        <div id="drop" class="drop"><b>Sube una imagen</b> o arrástrala aquí</div>
+        <input id="file" type="file" accept="image/*" class="hidden">
+        <label class="f" style="margin-top:10px"><span>Nombre de archivo (slug)</span>
+          <input id="artslug" type="text" placeholder="dragon-joven"></label>
+        <div class="btnrow">
+          <button class="wide" onclick="document.getElementById('artfolder').click()">📁 Cargar carpeta de arte</button>
+        </div>
+        <input id="artfolder" type="file" accept="image/*" multiple webkitdirectory directory class="hidden">
+        <p class="note">Emparejan por nombre de archivo: <code>dragon-joven.png</code> → «Dragón Joven».
+          Sin tildes ni eñes.</p>
+        <div class="slider"><span>Zoom</span><input id="zoom" type="range" min="50" max="260" value="100"></div>
+        <div class="slider"><span>Horiz.</span><input id="ox" type="range" min="-100" max="100" value="0"></div>
+        <div class="slider"><span>Vert.</span><input id="oy" type="range" min="-100" max="100" value="0"></div>
+      </div>
+    </details>
+
+    <details class="sec only-carta" id="stylegroup">
+      <summary>Marco</summary>
+      <div class="body">
+        <div class="chips" id="style">
+          <div class="chip" data-style="darkest" aria-pressed="true">Darkest</div>
+          <div class="chip" data-style="grafico" aria-pressed="false">Gráfico</div>
+          <div class="chip" data-style="fullbleed" aria-pressed="false">Ilustración completa</div>
+          <div class="chip" data-style="marco" aria-pressed="false">Marco propio</div>
+        </div>
+
+        <div id="rarityrow">
+          <p class="sublabel">Rareza</p>
+          <div class="chips" id="rarity">
+            <div class="chip" data-rar="comun" aria-pressed="false">Común</div>
+            <div class="chip" data-rar="elite" aria-pressed="false">Élite</div>
+            <div class="chip" data-rar="legendaria" aria-pressed="true">Legendaria</div>
+          </div>
+        </div>
+
+        <div class="toggle">
+          <label for="foil">Acabado brillante (foil)</label>
+          <span class="sw"><input id="foil" type="checkbox"><span class="k"></span></span>
+        </div>
+        <div class="slider"><span>Intensidad</span><input id="foilamt" type="range" min="0" max="100" value="55"></div>
+
+        <div id="marcogroup" class="sub hidden">
+          <p class="sublabel">Tu propio marco</p>
+          <label class="f"><span>Para qué tipo</span>
+            <select id="frametarget">
+              <option value="marco:todos">Todos los tipos</option>
+              <option value="marco:comun">Criatura común</option>
+              <option value="marco:elite">Criatura élite</option>
+              <option value="marco:legendaria">Criatura legendaria</option>
+              <option value="marco:spell">Hechizo</option>
+              <option value="marco:trap">Trampa</option>
+              <option value="marco:wall">Muro</option>
+              <option value="marco:weapon">Arma</option>
+              <option value="marco:hero">Protagonista</option>
+              <option value="marco:heraldo">El Heraldo / Evento</option>
+            </select>
+          </label>
+          <div class="btnrow">
+            <button onclick="document.getElementById('framefile').click()">Subir PNG</button>
+            <button onclick="document.getElementById('framefolder').click()">📁 Carpeta</button>
+          </div>
+          <input id="framefile" type="file" accept="image/png" class="hidden">
+          <input id="framefolder" type="file" accept="image/*" multiple class="hidden">
+
+          <div class="btnrow">
+            <button id="stripbg" class="wide accent">✂ Quitar fondo y encajar</button>
+          </div>
+          <p class="note">Hace todo de una vez: recorta el fondo y coloca ventana, título, etiquetas,
+            texto y stats leyendo los paneles de tu marco.
+            <b>Úsalo siempre que subas un marco nuevo.</b></p>
+
+          <details class="fine">
+            <summary>Ajuste fino</summary>
+            <div class="finebody">
+              <div class="btnrow">
+                <button id="detectwin">⌖ Detectar</button>
+                <button id="layoutall">Copiar a todos</button>
+                <button id="layoutreset">Restablecer</button>
+              </div>
+              <div class="toggle">
+                <label for="guides">Mostrar guías</label>
+                <span class="sw"><input id="guides" type="checkbox" checked><span class="k"></span></span>
+              </div>
+              <div class="toggle">
+                <label for="titleDark">Título oscuro (banda clara)</label>
+                <span class="sw"><input id="titleDark" type="checkbox"><span class="k"></span></span>
+              </div>
+              <p class="note">Editando <code id="layoutkey">marco:todos</code>. Las guías no salen en el PNG.</p>
+              <p class="sublabel">Ventana</p>
+              <div class="row">
+                <label class="f"><span>X</span><input id="winX" type="number" value="66"></label>
+                <label class="f"><span>Y</span><input id="winY" type="number" value="150"></label>
+                <label class="f"><span>An.</span><input id="winW" type="number" value="618"></label>
+                <label class="f"><span>Al.</span><input id="winH" type="number" value="520"></label>
+              </div>
+              <p class="sublabel">Bloques</p>
+              <div class="row">
+                <label class="f"><span>Título Y</span><input id="titleY" type="number" value="96"></label>
+                <label class="f"><span>Etiq. Y</span><input id="tagsY" type="number" value="700"></label>
+              </div>
+              <div class="row">
+                <label class="f"><span>Texto X</span><input id="textX" type="number" value="74"></label>
+                <label class="f"><span>Texto an.</span><input id="textW" type="number" value="602"></label>
+              </div>
+              <div class="row">
+                <label class="f"><span>Texto Y</span><input id="textY" type="number" value="730"></label>
+                <label class="f"><span>Texto al.</span><input id="textH" type="number" value="150"></label>
+              </div>
+              <div class="row">
+                <label class="f"><span>Stats Y</span><input id="statsY" type="number" value="900"></label>
+                <label class="f"><span>Pie Y</span><input id="footY" type="number" value="1022"></label>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </details>
+
+    <!-- ─────────────── DORSO ─────────────── -->
+    <details class="sec only-dorso hidden" open>
+      <summary>Dorso</summary>
+      <div class="body">
+        <p class="sublabel">Qué mazo tapa</p>
+        <div class="chips" id="backvariant">
+          <div class="chip" data-back="relato" aria-pressed="true">Relato</div>
+          <div class="chip" data-back="evento" aria-pressed="false">Evento</div>
+          <div class="chip" data-back="senda" aria-pressed="false">Senda</div>
+        </div>
+        <p class="note">Tres barajas ocultas distintas: el mazo del jugador, el mazo central de
+          Eventos y la Senda que va boca abajo tras el héroe. Con dorsos iguales se mezclan en mesa.</p>
+        <div style="height:10px"></div>
+        <label class="f"><span>Título</span><input id="btitle" type="text" value="TAPONAZO"></label>
+        <label class="f"><span>Subtítulo</span><input id="bsub" type="text" value="La Crónica"></label>
+        <label class="f"><span>Pie</span><input id="bfoot" type="text" value="set base · 0.4"></label>
+        <label class="f"><span>Color del lacre</span><input id="bcolor" type="text" value="#8f2f24"></label>
+        <p class="note">Es la página de la Crónica con la entrada sin escribir: renglones ilegibles
+          tachados por un borrón, con el lacre en el centro. La textura de fondo se carga como
+          <code>dorso-textura.png</code> desde la carpeta de marcos.</p>
+      </div>
+    </details>
+
+    <!-- ─────────────── FICHA ─────────────── -->
+    <details class="sec only-ficha hidden" open>
+      <summary>Ficha</summary>
+      <div class="body">
+        <label class="f"><span>Nombre</span><input id="tname" type="text" value="Vigor"></label>
+        <div class="row">
+          <label class="f"><span>Glifo</span><input id="tglyph" type="text" value="◆" maxlength="2"></label>
+          <label class="f"><span>Número (manda)</span><input id="tval" type="text" placeholder="vacío"></label>
+        </div>
+        <label class="f"><span>Nota al pie</span><input id="tnote" type="text" value="reserva por ronda"></label>
+        <label class="f"><span>Color</span><input id="tcolor" type="text" value="#b8862f"></label>
+        <p class="sublabel">Forma</p>
+        <div class="chips" id="tshape">
+          <div class="chip" data-shape="circulo" aria-pressed="true">Círculo</div>
+          <div class="chip" data-shape="cuadrado" aria-pressed="false">Cuadrado</div>
+        </div>
+        <p class="note">Las 16 fichas del reglamento vienen en el set base.</p>
+      </div>
+    </details>
+
+    <!-- ─────────────── PROMPTS ─────────────── -->
+    <details class="sec">
+      <summary>Prompts para Gemini</summary>
+      <div class="body">
+        <label class="f"><span>Dirección de arte</span>
+          <select id="artdir">
+            <option value="ddgrift">Darkest × Griftlands (la de casa)</option>
+            <option value="dd">Darkest Dungeon · solo penumbra</option>
+            <option value="grift">Griftlands · solo caras</option>
+            <option value="oil">Óleo oscuro · dark fantasy</option>
+            <option value="woodcut">Grabado antiguo · xilografía</option>
+          </select>
+        </label>
+        <div class="btnrow"><button id="genprompt" class="wide accent">✦ Ilustración de esta carta</button></div>
+        <div class="btnrow">
+          <button id="genframeprompt">✦ Marco</button>
+          <button id="genbackprompt">✦ Dorso</button>
+        </div>
+        <textarea id="promptout" class="hidden" readonly></textarea>
+        <div id="promptactions" class="btnrow hidden"><button id="copyprompt" class="wide">Copiar</button></div>
+      </div>
+    </details>
+
+    <!-- ─────────────── EXPORTAR ─────────────── -->
+    <details class="sec">
+      <summary>Exportar a Tabletop Simulator</summary>
+      <div class="body">
+        <div class="row">
+          <label class="f"><span>Columnas</span><input id="sheetcols" type="number" value="10" min="1" max="10"></label>
+          <label class="f"><span>Filas</span><input id="sheetrows" type="number" value="7" min="1" max="7"></label>
+        </div>
+        <div class="btnrow"><button id="sheetcards" class="wide accent">Hoja de cartas</button></div>
+        <div class="btnrow">
+          <button id="sheettokens">Hoja de fichas</button>
+          <button id="sheetback">Dorso suelto</button>
+        </div>
+        <p class="note">Rejilla de hasta 10 × 7 y 4096 px por lado; el tamaño de celda se calcula
+          solo. Si hay más cartas que huecos salen varias hojas numeradas.</p>
+      </div>
+    </details>
+
+  </aside>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="js/app.js"></script>

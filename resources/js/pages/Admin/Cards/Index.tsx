@@ -19,7 +19,8 @@ import {
     Sparkles,
     Filter,
     Grid3x3,
-    Table2
+    Table2,
+    Hammer
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -138,12 +139,20 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                             ⚔️ Gestiona las cartas de combate de tu juego épico
                         </p>
                     </div>
-                    <Button variant="magical" size="lg" asChild className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30">
-                        <Link href="/admin/cards/create">
-                            <Plus className="mr-2 h-5 w-5" />
-                            Crear Carta
-                        </Link>
-                    </Button>
+                    <div className="flex flex-wrap items-center gap-3">
+                        <Button variant="outline" size="lg" asChild className="border-2 border-yellow-500/40 text-yellow-200 font-black hover:bg-yellow-600/10">
+                            <Link href="/admin/cards-taller">
+                                <Hammer className="mr-2 h-5 w-5" />
+                                Taller de Cartas
+                            </Link>
+                        </Button>
+                        <Button variant="magical" size="lg" asChild className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30">
+                            <Link href="/admin/cards/create">
+                                <Plus className="mr-2 h-5 w-5" />
+                                Crear Carta
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
 
                 {/* Search & Filters */}

@@ -25,7 +25,8 @@ import {
     Swords,
     UserCircle,
     Flame,
-    BookOpen
+    BookOpen,
+    Hammer
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -72,6 +73,11 @@ const tcgNavItems: NavItem[] = [
         icon: Swords,
     },
     {
+        title: 'Taller de Cartas',
+        href: '/admin/cards-taller',
+        icon: Hammer,
+    },
+    {
         title: 'Manual del Juego',
         href: '/admin/manual-sections',
         icon: BookOpen,
@@ -92,12 +98,12 @@ function NavGroup({ title, items, icon: Icon }: { title: string; items: NavItem[
     const page = usePage();
     
     return (
-        <SidebarGroup className="px-2 py-2">
-            <SidebarGroupLabel className="flex items-center gap-2 text-yellow-400/80 text-xs font-black tracking-wider mb-2 uppercase" style={{ fontFamily: 'Cinzel, serif' }}>
+        <SidebarGroup className="px-2 py-1">
+            <SidebarGroupLabel className="flex items-center gap-2 text-yellow-400/80 text-xs font-black tracking-wider uppercase" style={{ fontFamily: 'Cinzel, serif' }}>
                 {Icon && <Icon className="h-4 w-4 text-yellow-500" />}
                 {title}
             </SidebarGroupLabel>
-            <SidebarMenu>
+            <SidebarMenu className="gap-0.5">
                 {items.map((item) => {
                     const isActive = page.url.startsWith(item.href);
                     return (
@@ -151,7 +157,10 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
+            {/* Sin rail de scroll: en ventanas cortas (portátil, escalado 125 %) el
+                contenido desbordaba ~46 px y Windows pintaba su barra. Compactamos
+                los grupos y, si aun así no cabe, se desplaza con la rueda sin barra. */}
+            <SidebarContent className="[scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 <NavGroup title="Panel Principal" items={dashboardNavItems} icon={LayoutGrid} />
                 <SidebarSeparator className="bg-yellow-900/30" />
                 <NavGroup title="Sistema Lore" items={loreNavItems} icon={BookText} />

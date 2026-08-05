@@ -42,6 +42,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('timeline-events', TimelineEventController::class);
 
         // Sistema TCG
+        // La ruta del taller va con su propio segmento (cards-taller) para no
+        // caer en el comodin cards/{card} del resource.
+        Route::get('cards-taller', fn () => inertia('Admin/Cards/Workshop'))->name('cards.workshop');
         Route::resource('cards', CardController::class);
 
         // Manual del Juego
