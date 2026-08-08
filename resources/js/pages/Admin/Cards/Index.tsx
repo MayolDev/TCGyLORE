@@ -263,6 +263,7 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                             <img 
                                                 src={card.illustration_url} 
                                                 alt={card.name}
+                                                loading="lazy"
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                             />
                                         ) : (
