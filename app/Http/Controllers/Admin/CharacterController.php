@@ -32,7 +32,6 @@ class CharacterController extends Controller
 
         return Inertia::render('Admin/Characters/Index', [
             'characters' => $characters,
-            'worlds' => World::all(['id', 'name']),
             'filters' => $request->only(['search', 'alignment', 'world_id']),
         ]);
     }
