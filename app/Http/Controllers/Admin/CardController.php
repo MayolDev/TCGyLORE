@@ -21,8 +21,20 @@ class CardController extends Controller
 {
     public function index(Request $request)
     {
+        // Optimized: Select only necessary columns for relationships to reduce payload
+        // Validated against resources/js/pages/Admin/Cards/Index.tsx which only uses 'name' and 'id'
         $cards = Card::query()
-            ->with(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist'])
+            ->with([
+                'world:id,name',
+                'character:id,name',
+                'cardType:id,name',
+                'rarity:id,name',
+                'archetype:id,name',
+                'alignment:id,name',
+                'faction:id,name',
+                'edition:id,name',
+                'artist:id,name'
+            ])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
