@@ -1,0 +1,4 @@
+## 2024-03-24 - Interaction Improvement: Button Loading State
+**Learning:** Adding a standardized `loading` prop to the shared `Button` component simplifies the implementation of loading states across the application. It prevents inconsistent loading indicators and reduces boilerplate code in forms.
+**Action:** When creating form submit buttons, use the `loading` prop instead of manually conditionally rendering a spinner.
+**Constraint:** The `loading` prop logic only prepends the spinner if `asChild` is false. This is because Radix UI's `Slot` component (used when `asChild={true}`) expects a single child and merges props, making it complex to inject a sibling spinner element without breaking the composition. For `asChild` buttons, loading states must be handled within the child component or by wrapping the `Button`.
