@@ -27,10 +27,14 @@ L.Marker.prototype.options.icon = DefaultIcon;
  * - coordinate_y = Eje vertical → 0 a 754
  * - Leaflet usa formato [Y, X] (al revés de lo normal)
  *
- * La imagen servida es /images/map-aethermoor.webp (3072×1519, ~200 KB). El
- * original de 11 935×5 900 px y 16 MB vive en resources/art/ y NO debe volver a
- * public/: era el 90 % del peso de la página y el navegador lo reescalaba en
- * cada zoom.
+ * La imagen servida es /images/map-mundo.webp: el mapa del mundo de Tapon'Azo
+ * dibujado por Alex (Alianza de Raikkö, Imperio Baalish, Overchros...), que
+ * sustituye al mapa demo "Aethermoor". El original vive en
+ * resources/art/mapa-mundo-alex-2026-08-08.png (1280×615). Cuando llegue un
+ * export en mas resolucion: regenerar el webp y subir maxZoom.
+ *
+ * Los originales pesados NO deben volver a public/: el mapa antiguo era un PNG
+ * de 16 MB que el navegador reescalaba en cada zoom.
  */
 
 // Tipos de ubicaciones con sus iconos personalizados épicos
@@ -281,7 +285,9 @@ export default function MapView({
                 className="map-fantasy"
                 crs={CRS.Simple}
                 minZoom={-1}
-                maxZoom={4}
+                // maxZoom limitado por la resolucion del mapa actual (1280 px de
+                // ancho): a zoom 4 seria papilla. Subir cuando haya export grande.
+                maxZoom={2}
                 maxBounds={bounds}
                 maxBoundsViscosity={1.0}
                 zoomSnap={0.25}
@@ -289,8 +295,8 @@ export default function MapView({
             >
                 <MapSetup mapRef={mapRef} fitWorld={!center} bounds={bounds} />
 
-                {/* Mapa del mundo: webp de ~200 KB, no el PNG de 16 MB */}
-                <ImageOverlay url="/images/map-aethermoor.webp" bounds={bounds} opacity={1.0} />
+                {/* El mundo de Tapon'Azo, por Alex (75 KB en webp) */}
+                <ImageOverlay url="/images/map-mundo.webp" bounds={bounds} opacity={1.0} />
 
                 {/* Manejador de clicks */}
                 {allowClick && onMapClick && <MapClickHandler onMapClick={onMapClick} />}
