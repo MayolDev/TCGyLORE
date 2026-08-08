@@ -4,6 +4,7 @@ import InputError from '@/components/input-error';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ImageUploadProps {
     label: string;
@@ -52,9 +53,16 @@ export default function ImageUpload({
             return;
         }
 
+        // Validar tipo de archivo
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        if (!validTypes.includes(file.type)) {
+            toast.error('Tipo de archivo no permitido. Solo JPG, PNG, GIF y WEBP.');
+            return;
+        }
+
         // Validar tamaño
         if (file.size > maxSize * 1024 * 1024) {
-            alert(`El archivo debe ser menor a ${maxSize}MB`);
+            toast.error(`El archivo debe ser menor a ${maxSize}MB`);
             return;
         }
 
