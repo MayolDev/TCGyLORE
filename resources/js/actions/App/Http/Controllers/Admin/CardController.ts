@@ -75,7 +75,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::create
@@ -153,7 +153,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
                     }),
             method: 'get',
         })
-    
+
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::store
@@ -208,7 +208,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             action: store.url(options),
             method: 'post',
         })
-    
+
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::show
@@ -235,7 +235,7 @@ show.url = (args: { card: string | number } | [card: string | number ] | string 
         args = { card: args }
     }
 
-    
+
     if (Array.isArray(args)) {
         args = {
                     card: args[0],
@@ -305,7 +305,7 @@ show.head = (args: { card: string | number } | [card: string | number ] | string
                     }),
             method: 'get',
         })
-    
+
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::edit
@@ -335,7 +335,7 @@ edit.url = (args: { card: number | { id: number } } | [card: number | { id: numb
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { card: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     card: args[0],
@@ -407,7 +407,7 @@ edit.head = (args: { card: number | { id: number } } | [card: number | { id: num
                     }),
             method: 'get',
         })
-    
+
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::update
@@ -437,7 +437,7 @@ update.url = (args: { card: number | { id: number } } | [card: number | { id: nu
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { card: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     card: args[0],
@@ -519,7 +519,7 @@ update.patch = (args: { card: number | { id: number } } | [card: number | { id: 
                     }),
             method: 'post',
         })
-    
+
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::destroy
@@ -549,7 +549,7 @@ destroy.url = (args: { card: number | { id: number } } | [card: number | { id: n
             if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
             args = { card: args.id }
         }
-    
+
     if (Array.isArray(args)) {
         args = {
                     card: args[0],
@@ -608,7 +608,7 @@ destroy.delete = (args: { card: number | { id: number } } | [card: number | { id
                     }),
             method: 'post',
         })
-    
+
     destroy.form = destroyForm
 const CardController = { index, create, store, show, edit, update, destroy }
 
