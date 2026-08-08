@@ -173,7 +173,7 @@ export default function Create({ worlds, characters, cardTypes, rarities, archet
                                 <Input
                                     id="illustration"
                                     type="file"
-                                    accept="image/*"
+                                    accept=".jpg,.jpeg,.png,.gif,.webp"
                                     onChange={(e) => setData('illustration', e.target.files?.[0] || null)}
                                 />
                                 <p className="text-xs text-muted-foreground">
