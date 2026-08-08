@@ -1,0 +1,4 @@
+## 2025-05-23 - File Upload Restriction Bypass
+**Vulnerability:** The application relied on Laravel's `image` validation rule for file uploads in `CardController` and `LocationController`. While `image` verifies that the file is an image, it includes SVG files by default. SVG files can contain embedded scripts (XSS), which could be executed if the image is served directly to a user's browser (Stored XSS).
+**Learning:** Laravel's `image` validation rule is insufficient for preventing SVG uploads because it considers SVG a valid image type. Relying solely on `image` can leave applications vulnerable to Stored XSS via malicious SVG files.
+**Prevention:** Always use the `mimes` rule to explicitly whitelist allowed image types (e.g., `mimes:jpeg,png,jpg,gif,webp`) when handling file uploads, especially if SVGs are not strictly required and safely handled.
