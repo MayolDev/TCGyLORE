@@ -1,20 +1,66 @@
 import { EditorContent, useEditor, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
+import Image from '@tiptap/extension-image';
 import { Markdown } from 'tiptap-markdown';
+import { useRef } from 'react';
 import {
     Bold,
     Heading2,
     Heading3,
+    Image as ImageIcon,
     Italic,
+    Link as LinkIcon,
     List,
     ListOrdered,
     Minus,
     Quote,
     Redo2,
     Strikethrough,
+    Underline as UnderlineIcon,
     Undo2,
 } from 'lucide-react';
+
+/**
+ * Sube una imagen al servidor y devuelve su URL pública. Se usa desde el
+ * botón de la barra y desde pegar/arrastrar. El CSRF va en la cabecera
+ * X-XSRF-TOKEN leyendo la cookie que Laravel ya deja en el navegador.
+ */
+async function uploadEditorImage(file: File): Promise<string | null> {
+    if (!file.type.startsWith('image/')) return null;
+    if (file.size > 4 * 1024 * 1024) {
+        alert('La imagen debe pesar menos de 4MB');
+        return null;
+    }
+
+    const xsrf = document.cookie
+        .split('; ')
+        .find((c) => c.startsWith('XSRF-TOKEN='))
+        ?.split('=')[1];
+
+    const body = new FormData();
+    body.append('image', file);
+
+    try {
+        const res = await fetch('/admin/editor-images', {
+            method: 'POST',
+            headers: {
+                'X-XSRF-TOKEN': xsrf ? decodeURIComponent(xsrf) : '',
+                Accept: 'application/json',
+            },
+            body,
+        });
+        if (!res.ok) {
+            alert('No se pudo subir la imagen');
+            return null;
+        }
+        const json = await res.json();
+        return json.url ?? null;
+    } catch {
+        alert('No se pudo subir la imagen');
+        return null;
+    }
+}
 
 /**
  * Editor WYSIWYG que GUARDA MARKDOWN, no HTML.
@@ -67,10 +113,17 @@ function ToolbarButton({
 }
 
 export default function RichTextEditor({ id, value, onChange, placeholder, minHeight = '200px' }: RichTextEditorProps) {
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
     const editor = useEditor({
         extensions: [
-            StarterKit,
-            Markdown,
+            StarterKit.configure({
+                link: { openOnClick: false },
+            }),
+            Image,
+            // html: true → lo que no existe en Markdown (subrayado) se guarda
+            // como HTML inline; el Manual ya renderiza con rehypeRaw.
+            Markdown.configure({ html: true }),
             Placeholder.configure({ placeholder: placeholder ?? '' }),
         ],
         content: value || '',
@@ -83,8 +136,47 @@ export default function RichTextEditor({ id, value, onChange, placeholder, minHe
                 class: 'rte-content focus:outline-none px-3 py-2 text-base leading-relaxed',
                 style: `min-height: ${minHeight}`,
             },
+            // Pegar o soltar una imagen la sube y la inserta donde caiga
+            handlePaste: (view, event) => {
+                const file = Array.from(event.clipboardData?.files ?? []).find((f) => f.type.startsWith('image/'));
+                if (!file) return false;
+                event.preventDefault();
+                uploadEditorImage(file).then((url) => {
+                    if (url) view.dispatch(view.state.tr.replaceSelectionWith(view.state.schema.nodes.image.create({ src: url })));
+                });
+                return true;
+            },
+            handleDrop: (view, event) => {
+                const file = Array.from(event.dataTransfer?.files ?? []).find((f) => f.type.startsWith('image/'));
+                if (!file) return false;
+                event.preventDefault();
+                const pos = view.posAtCoords({ left: event.clientX, top: event.clientY })?.pos ?? view.state.selection.to;
+                uploadEditorImage(file).then((url) => {
+                    if (url) view.dispatch(view.state.tr.insert(pos, view.state.schema.nodes.image.create({ src: url })));
+                });
+                return true;
+            },
         },
     });
+
+    const insertImageFromPicker = (file: File | null) => {
+        if (!file || !editor) return;
+        uploadEditorImage(file).then((url) => {
+            if (url) editor.chain().focus().setImage({ src: url }).run();
+        });
+    };
+
+    const toggleLink = () => {
+        if (!editor) return;
+        if (editor.isActive('link')) {
+            editor.chain().focus().unsetLink().run();
+            return;
+        }
+        const url = window.prompt('URL del enlace:');
+        if (url) {
+            editor.chain().focus().setLink({ href: url }).run();
+        }
+    };
 
     if (!editor) {
         return <div className="rounded-md border border-input" style={{ minHeight }} />;
@@ -103,6 +195,9 @@ export default function RichTextEditor({ id, value, onChange, placeholder, minHe
                 </ToolbarButton>
                 <ToolbarButton editor={editor} title="Tachado" isActive={editor.isActive('strike')} onClick={() => editor.chain().focus().toggleStrike().run()}>
                     <Strikethrough className={iconSize} />
+                </ToolbarButton>
+                <ToolbarButton editor={editor} title="Subrayado" isActive={editor.isActive('underline')} onClick={() => editor.chain().focus().toggleUnderline().run()}>
+                    <UnderlineIcon className={iconSize} />
                 </ToolbarButton>
                 <span className="mx-1 h-4 w-px bg-yellow-900/40" />
                 <ToolbarButton editor={editor} title="Título" isActive={editor.isActive('heading', { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
@@ -125,6 +220,23 @@ export default function RichTextEditor({ id, value, onChange, placeholder, minHe
                     <Minus className={iconSize} />
                 </ToolbarButton>
                 <span className="mx-1 h-4 w-px bg-yellow-900/40" />
+                <ToolbarButton editor={editor} title="Enlace" isActive={editor.isActive('link')} onClick={toggleLink}>
+                    <LinkIcon className={iconSize} />
+                </ToolbarButton>
+                <ToolbarButton editor={editor} title="Insertar imagen" onClick={() => fileInputRef.current?.click()}>
+                    <ImageIcon className={iconSize} />
+                </ToolbarButton>
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                        insertImageFromPicker(e.target.files?.[0] ?? null);
+                        e.target.value = '';
+                    }}
+                />
+                <span className="mx-1 h-4 w-px bg-yellow-900/40" />
                 <ToolbarButton editor={editor} title="Deshacer" onClick={() => editor.chain().focus().undo().run()}>
                     <Undo2 className={iconSize} />
                 </ToolbarButton>
@@ -146,6 +258,9 @@ export default function RichTextEditor({ id, value, onChange, placeholder, minHe
                 .rte-content blockquote { border-left: 3px solid rgba(251,191,36,.45); padding-left: 0.9em; font-style: italic; margin: 0.6em 0; opacity: .9; }
                 .rte-content hr { border: none; border-top: 1px solid rgba(251,191,36,.35); margin: 1em 0; }
                 .rte-content code { background: rgba(148,163,184,.15); border-radius: 4px; padding: 0.1em 0.35em; font-size: 0.9em; }
+                .rte-content img { max-width: 100%; height: auto; border-radius: 8px; margin: 0.6em 0; display: block; }
+                .rte-content img.ProseMirror-selectednode { outline: 3px solid rgba(251,191,36,.7); }
+                .rte-content a { color: #fbbf24; text-decoration: underline; cursor: pointer; }
                 .rte-content p.is-editor-empty:first-child::before {
                     content: attr(data-placeholder);
                     color: var(--muted-foreground, #94a3b8);

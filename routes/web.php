@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CardController;
 use App\Http\Controllers\Admin\CardTypeController;
 use App\Http\Controllers\Admin\CharacterController;
 use App\Http\Controllers\Admin\EditionController;
+use App\Http\Controllers\Admin\EditorImageController;
 use App\Http\Controllers\Admin\FactionController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\ManualSectionController;
@@ -33,6 +34,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['isAdmin'])->prefix('admin')->name('admin.')->group(function () {
         // Gestión de usuarios
         Route::resource('users', UserController::class);
+
+        // Imágenes insertadas desde el editor WYSIWYG
+        Route::post('editor-images', [EditorImageController::class, 'store'])->name('editor-images.store');
 
         // Sistema de Lore
         Route::resource('worlds', WorldController::class);

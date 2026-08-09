@@ -1,4 +1,5 @@
 import UserController from './UserController'
+import EditorImageController from './EditorImageController'
 import WorldController from './WorldController'
 import StoryController from './StoryController'
 import CharacterController from './CharacterController'
@@ -15,6 +16,7 @@ import EditionController from './EditionController'
 import ArtistController from './ArtistController'
 const Admin = {
     UserController: Object.assign(UserController, UserController),
+EditorImageController: Object.assign(EditorImageController, EditorImageController),
 WorldController: Object.assign(WorldController, WorldController),
 StoryController: Object.assign(StoryController, StoryController),
 CharacterController: Object.assign(CharacterController, CharacterController),

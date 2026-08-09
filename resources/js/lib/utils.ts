@@ -27,6 +27,7 @@ export function stripMarkdown(md: string | null | undefined): string {
     return md
         .replace(/```[\s\S]*?```/g, ' ')          // bloques de código
         .replace(/`([^`]*)`/g, '$1')              // código inline
+        .replace(/<[^>]+>/g, ' ')                 // HTML inline (<u>, <img>…)
         .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')    // imágenes
         .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')  // enlaces → texto
         .replace(/^#{1,6}\s+/gm, '')              // encabezados

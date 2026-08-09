@@ -1,4 +1,5 @@
 import users from './users'
+import editorImages from './editor-images'
 import worlds from './worlds'
 import stories from './stories'
 import characters from './characters'
@@ -15,6 +16,7 @@ import editions from './editions'
 import artists from './artists'
 const admin = {
     users: Object.assign(users, users),
+editorImages: Object.assign(editorImages, editorImages),
 worlds: Object.assign(worlds, worlds),
 stories: Object.assign(stories, stories),
 characters: Object.assign(characters, characters),
