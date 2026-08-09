@@ -51,8 +51,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // La ruta del taller va con su propio segmento (cards-taller) para no
         // caer en el comodin cards/{card} del resource.
         Route::get('cards-taller', fn () => inertia('Admin/Cards/Workshop'))->name('cards.workshop');
-        // El taller manda aquí sus cartas para pasarlas a la Biblioteca
+        // El taller manda aquí sus cartas para pasarlas a la Biblioteca,
+        // y las relee al abrir una carta existente (?card=ID)
         Route::post('taller-cards', [TallerCardController::class, 'store'])->name('taller-cards.store');
+        Route::get('taller-cards/{card}', [TallerCardController::class, 'show'])->name('taller-cards.show');
         Route::resource('cards', CardController::class);
 
         // Mazos (constructor estilo Hearthstone)

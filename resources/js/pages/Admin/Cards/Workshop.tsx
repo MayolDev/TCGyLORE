@@ -21,6 +21,10 @@ export default function Workshop() {
     const frameRef = useRef<HTMLDivElement>(null);
     const [fullscreen, setFullscreen] = useState(false);
 
+    // ?card=ID viaja al iframe: el taller carga esa carta de la Biblioteca
+    const cardId = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('card') : null;
+    const tallerSrc = cardId ? `/taller/index.html?card=${encodeURIComponent(cardId)}` : '/taller/index.html';
+
     useEffect(() => {
         const onChange = () => setFullscreen(Boolean(document.fullscreenElement));
         document.addEventListener('fullscreenchange', onChange);
@@ -79,7 +83,7 @@ export default function Workshop() {
                     en localStorage, igual que en la version autonoma. */}
                 <div ref={frameRef} className="min-h-0 flex-1 overflow-hidden rounded-xl border-2 border-yellow-500/30 bg-slate-950 shadow-[0_0_40px_rgba(0,0,0,0.5)]">
                     <iframe
-                        src="/taller/index.html"
+                        src={tallerSrc}
                         title="Taller de Cartas de Tapon'Azo"
                         className="h-full w-full border-0"
                     />

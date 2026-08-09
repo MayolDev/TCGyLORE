@@ -2080,6 +2080,29 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
   draw();
 
+  // ---- carta de la Biblioteca (?card=ID): al abrir el taller desde una
+  // carta de la web, se carga aquí tal cual para seguir editándola.
+  (async function cartaDesdeBiblioteca(){
+    const id = new URLSearchParams(location.search).get('card');
+    if (!id) return;
+    try {
+      const res = await fetch(`/admin/taller-cards/${encodeURIComponent(id)}`, {
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json' },
+      });
+      if (!res.ok){ toast('No pude cargar la carta #' + id + ' (' + res.status + ').'); return; }
+      const j = await res.json();
+      if (j.data){
+        setMode(j.data.kind || 'carta');
+        writeCard(j.data);
+        draw();
+        toast(`«${j.name}» cargada desde la Biblioteca. Al guardar, se actualizará.`);
+      }
+    } catch (e){
+      toast('No pude cargar la carta: ' + e.message);
+    }
+  })();
+
   // ---- marco por defecto: images/marco.png se instala solo al arrancar y
   // el estilo pasa a 'marco'. Decisión de diseño de Iván: la carta nace con
   // su marco ilustrado, no con el procedural. Si el fichero no está (p. ej.

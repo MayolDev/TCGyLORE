@@ -21,6 +21,18 @@ use Illuminate\Support\Facades\Storage;
  */
 class TallerCardController extends Controller
 {
+    /** El taller pide aquí la carta para reabrirla (?card=ID en el iframe). */
+    public function show(Card $card)
+    {
+        abort_unless($card->taller_data, 404, 'Esta carta no nació en el Taller.');
+
+        return response()->json([
+            'id' => $card->id,
+            'name' => $card->name,
+            'data' => json_decode($card->taller_data, true),
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

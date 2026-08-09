@@ -40,3 +40,14 @@ body {
 .insp {
     background: linear-gradient(180deg, var(--panel) 0%, #0b1120 100%) !important;
 }
+
+/* ══════════════ SOLO EN LA WEB: sin borrador local ni exportación TTS ══════════════
+   La Biblioteca de la web ES la biblioteca; el borrador local del taller y la
+   exportación a Tabletop Simulator vivirán en su propia sección de la web.
+   La versión autónoma (workspace TAPONAZO) conserva ambos. */
+.lib { display: none !important; }
+.app { grid-template-columns: 1fr 360px !important; }
+@media (max-width: 1000px) { .app { grid-template-columns: 1fr !important; } }
+
+/* Exportar a TTS: fuera de la web (se hará desde la Biblioteca) */
+details.sec:has(#sheetcards) { display: none !important; }

@@ -194,16 +194,16 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
                                 🔨 Esta carta nació en el <strong>Taller</strong> y se edita allí.
                             </p>
                             <p className="mt-2 text-sm text-yellow-200/60">
-                                Ábrela en el Taller (o recupérala de su biblioteca local), haz los cambios y vuelve a pulsar
-                                <strong> «📚 A Biblioteca»</strong>: al tener el mismo nombre, esta carta se actualizará sola,
-                                render nuevo incluido.
+                                Pulsa <strong>«Abrir en el Taller»</strong>: la carta se carga allí tal cual. Haz los cambios,
+                                dale a <strong>«📚 Guardar en Biblioteca»</strong> y esta carta se actualizará sola, render
+                                nuevo incluido.
                             </p>
                         </div>
                         <div className="flex flex-wrap gap-2">
                             <Button asChild className="bg-gradient-to-r from-yellow-600 to-orange-600 font-black text-white shadow-lg shadow-orange-500/40 hover:from-yellow-500 hover:to-orange-500">
-                                <Link href="/admin/cards-taller">
+                                <Link href={`/admin/cards-taller?card=${card.id}`}>
                                     <Hammer className="mr-2 h-4 w-4" />
-                                    Abrir el Taller
+                                    Abrir en el Taller
                                 </Link>
                             </Button>
                             <Button variant="outline" asChild className="border-yellow-500/40 text-yellow-200 hover:bg-yellow-600/10">

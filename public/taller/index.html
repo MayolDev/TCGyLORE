@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <p class="stagehint">Guardar publica la carta en la Biblioteca web (mismo nombre = se actualiza) y deja copia en el borrador local de la izquierda.</p>
+    <p class="stagehint">Guardar publica la carta en la Biblioteca (mismo nombre = se actualiza). Descargar re-pinta el PNG a la calidad elegida.</p>
   </main>
 
   <!-- ═══════════════════════════ INSPECTOR ═══════════════════════════ -->
@@ -74,10 +74,10 @@
       <summary>Identidad</summary>
       <div class="body">
         <label class="f"><span class="lbl-carta">Nombre</span><span class="lbl-heraldo hidden">El titular</span>
-          <input id="name" type="text" value="Dragón Joven"></label>
+          <input id="name" type="text" value="" placeholder="Nombre de la carta"></label>
         <div class="row">
           <label class="f" id="costwrap" style="max-width:88px"><span>Coste</span>
-            <input id="cost" type="number" value="7" min="0"></label>
+            <input id="cost" type="number" value="" min="0" placeholder="0"></label>
           <label class="f"><span>Tipo</span>
             <select id="type">
               <option value="creature">Criatura</option>
@@ -91,14 +91,14 @@
           </label>
         </div>
         <label class="f"><span class="lbl-carta">Etiquetas / subtítulo</span><span class="lbl-heraldo hidden">Antetítulo (ronda y lugar)</span>
-          <input id="tags" type="text" value="Dragón · Salvaje · Caótico"></label>
+          <input id="tags" type="text" value="" placeholder="Humano · Alianza · Neutral"></label>
 
         <div id="statgroup" class="sub">
           <p class="sublabel">Atributos</p>
           <div class="row">
-            <label class="f" id="atkwrap"><span>ATQ</span><input id="atk" type="number" value="5" min="0"></label>
-            <label class="f"><span>DEF</span><input id="def" type="number" value="6" min="0"></label>
-            <label class="f" id="egowrap"><span>EGO</span><input id="ego" type="number" value="5" min="0"></label>
+            <label class="f" id="atkwrap"><span>ATQ</span><input id="atk" type="number" value="" min="0" placeholder="—"></label>
+            <label class="f"><span>DEF</span><input id="def" type="number" value="" min="0" placeholder="—"></label>
+            <label class="f" id="egowrap"><span>EGO</span><input id="ego" type="number" value="" min="0" placeholder="—"></label>
           </div>
         </div>
 
@@ -131,11 +131,9 @@
       <summary>Texto</summary>
       <div class="body">
         <label class="f"><span class="lbl-carta">Habilidad</span><span class="lbl-heraldo hidden">La noticia (dos columnas)</span>
-          <textarea id="body">Arrollar. Su EGO nunca se reduce, ni por Afinidad.
-Nv3: sus ataques no pueden ser interceptados.
-UA: 2 daño a cada criatura del arco donde muera.</textarea></label>
+          <textarea id="body" placeholder="Arrollar. Nv3: sus ataques no pueden ser interceptados..."></textarea></label>
         <label class="f"><span class="lbl-carta">Cita (opcional)</span><span class="lbl-heraldo hidden">La réplica desde la barra</span>
-          <textarea id="flavor" style="min-height:44px" placeholder="Una línea de sabor…">«Aún no ha aprendido a temer. Por eso lo temen a él.»</textarea></label>
+          <textarea id="flavor" style="min-height:44px" placeholder="«Una línea de sabor…»"></textarea></label>
         <label class="f"><span>Pie de carta</span><input id="foot" type="text" value="TAPONAZO · set base · 0.4"></label>
       </div>
     </details>
