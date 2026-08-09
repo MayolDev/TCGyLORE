@@ -37,7 +37,7 @@ export default function Show({ story }: { story: Story }) {
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title={story.title} />
 
-            <div className="mx-auto max-w-4xl space-y-6 p-6">
+            <div className="mx-auto max-w-6xl space-y-6 p-6">
                 <LoreShowHeader
                     image={story.image_url}
                     icon="📜"

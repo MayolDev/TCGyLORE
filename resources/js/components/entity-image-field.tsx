@@ -27,6 +27,7 @@ export default function EntityImageField({
     errorUrl?: string;
 }) {
     const [filePreview, setFilePreview] = useState<string | null>(null);
+    const [urlRota, setUrlRota] = useState<string | null>(null);
 
     const handleFile = (file: File | null) => {
         setFilePreview(file ? URL.createObjectURL(file) : null);
@@ -35,14 +36,32 @@ export default function EntityImageField({
 
     // Prioridad del preview: fichero recién elegido > URL pegada > imagen actual
     const preview = filePreview || (urlValue.startsWith('http') ? urlValue : null) || current || null;
+    const previewFalla = preview !== null && preview === urlRota;
 
     return (
         <div className="space-y-3">
             <Label>{label}</Label>
 
-            {preview && (
+            {preview && previewFalla && (
+                <div className="rounded-lg border-2 border-red-500/50 bg-red-950/40 px-4 py-3">
+                    <p className="text-sm font-bold text-red-300">
+                        ⚠️ Esa URL no devuelve una imagen
+                    </p>
+                    <p className="mt-1 text-xs text-red-200/70">
+                        Pega la dirección directa de una imagen (.jpg, .png, .webp…): clic derecho sobre la imagen → «Copiar dirección de imagen». Un enlace a una página web no vale.
+                    </p>
+                </div>
+            )}
+
+            {preview && !previewFalla && (
                 <div className="relative overflow-hidden rounded-lg border-2 border-amber-500/40">
-                    <img src={preview} alt="Preview" className="w-full max-h-56 object-cover" />
+                    <img
+                        src={preview}
+                        alt="Preview"
+                        className="w-full max-h-56 object-cover"
+                        onError={() => setUrlRota(preview)}
+                        onLoad={() => setUrlRota(null)}
+                    />
                     <span className="absolute top-2 left-2 rounded-md bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-yellow-200 border border-yellow-500/40">
                         {filePreview ? '🖼️ Nueva (sin guardar)' : urlValue.startsWith('http') ? '🔗 Desde URL' : '🖼️ Actual'}
                     </span>

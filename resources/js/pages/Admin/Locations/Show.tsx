@@ -33,7 +33,7 @@ export default function Show({ location }: { location: Location }) {
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title={location.name} />
 
-            <div className="mx-auto max-w-4xl space-y-6 p-6">
+            <div className="mx-auto max-w-6xl space-y-6 p-6">
                 <LoreShowHeader
                     image={location.image_url}
                     icon={tipo?.icon ?? '📍'}

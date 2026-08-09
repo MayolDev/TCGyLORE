@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
 import { ArrowLeft, Pencil } from 'lucide-react';
+import { useState } from 'react';
 
 /**
  * Cabecera épica de las páginas "Ver" del lore: banner con la imagen de la
@@ -23,11 +24,16 @@ export default function LoreShowHeader({
     backHref: string;
     editHref: string;
 }) {
+    // Si la imagen no carga (URL rota o que no es una imagen), degradado y punto:
+    // un icono de imagen rota en la cabecera es peor que no tener imagen.
+    const [imagenRota, setImagenRota] = useState(false);
+    const mostrarImagen = image && !imagenRota;
+
     return (
         <div className="relative overflow-hidden rounded-xl border-4 border-amber-500/50 shadow-[0_0_50px_rgba(251,191,36,0.35)]">
             <div className="relative h-64 sm:h-80">
-                {image ? (
-                    <img src={image} alt={title} className="absolute inset-0 h-full w-full object-cover" />
+                {mostrarImagen ? (
+                    <img src={image} alt={title} onError={() => setImagenRota(true)} className="absolute inset-0 h-full w-full object-cover" />
                 ) : (
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-900/60 via-slate-900 to-amber-900/40" />
                 )}
@@ -53,7 +59,7 @@ export default function LoreShowHeader({
                         <span className="text-5xl drop-shadow-[0_0_14px_rgba(251,191,36,0.7)]">{icon}</span>
                         <div className="min-w-0">
                             <h1
-                                className="truncate text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_2px_10px_rgba(251,191,36,0.5)] uppercase"
+                                className="break-words text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_2px_10px_rgba(251,191,36,0.5)] uppercase"
                                 style={{ fontFamily: 'Cinzel, serif' }}
                             >
                                 {title}

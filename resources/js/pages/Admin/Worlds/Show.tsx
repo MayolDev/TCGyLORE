@@ -37,7 +37,7 @@ export default function Show({ world }: { world: World }) {
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title={world.name} />
 
-            <div className="mx-auto max-w-4xl space-y-6 p-6">
+            <div className="mx-auto max-w-6xl space-y-6 p-6">
                 <LoreShowHeader
                     image={world.image_url}
                     icon="🌍"
