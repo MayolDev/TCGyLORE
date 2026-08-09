@@ -5,6 +5,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import LoreShowHeader from '@/components/lore-show-header';
 import MarkdownContent from '@/components/markdown-content';
+import LightboxImage from '@/components/lightbox-image';
 
 interface World {
     id: number;
@@ -37,7 +38,7 @@ export default function Show({ world }: { world: World }) {
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title={world.name} />
 
-            <div className="mx-auto max-w-6xl space-y-6 p-6">
+            <div className="space-y-6 p-6">
                 <LoreShowHeader
                     image={world.image_url}
                     icon="🌍"
@@ -78,7 +79,7 @@ export default function Show({ world }: { world: World }) {
                         <h2 className="mb-4 text-xl font-black text-blue-200" style={{ fontFamily: 'Cinzel, serif' }}>
                             🗺️ Mapa del Mundo
                         </h2>
-                        <img
+                        <LightboxImage
                             src={world.map_image_url}
                             alt={`Mapa de ${world.name}`}
                             className="w-full rounded-lg border-2 border-amber-500/40"

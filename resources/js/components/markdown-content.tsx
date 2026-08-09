@@ -1,6 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import LightboxImage from '@/components/lightbox-image';
 
 /**
  * Render de los campos largos del lore (guardados en Markdown por el editor
@@ -10,7 +11,17 @@ import rehypeRaw from 'rehype-raw';
 export default function MarkdownContent({ content, className = '' }: { content: string; className?: string }) {
     return (
         <div className={`lore-markdown text-base leading-relaxed text-yellow-100/90 ${className}`}>
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+            <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+                components={{
+                    // Las imágenes del contenido se amplían a pantalla completa al clic;
+                    // el style conserva el ancho elegido en el editor (width:N%)
+                    img: ({ src, alt, style }) => (
+                        <LightboxImage src={typeof src === 'string' ? src : ''} alt={alt ?? ''} style={style} />
+                    ),
+                }}
+            >
                 {content}
             </ReactMarkdown>
             <style>{`

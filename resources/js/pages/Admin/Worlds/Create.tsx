@@ -139,7 +139,7 @@ export default function Create() {
                                 />
                                 <InputError message={errors.map_image} />
                                 <p className="text-xs text-muted-foreground">
-                                    💡 Recomendado: imagen apaisada (proporción ~2:1), máximo 8MB. WebP o JPG pesan menos.
+                                    💡 Recomendado: imagen apaisada (proporción ~2:1), máximo 20MB. Cuanta más resolución, mejor se verá al hacer zoom.
                                 </p>
                             </div>
                         </CardContent>

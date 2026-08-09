@@ -9,6 +9,7 @@ import { MapPin, Plus, Search, Pencil, Trash2, Sparkles, Navigation, Grid3x3, Ta
 import { useState } from 'react';
 import MapView from '@/components/map-view';
 import { stripMarkdown } from '@/lib/utils';
+import LightboxImage from '@/components/lightbox-image';
 
 interface WorldOption {
     id: number;
@@ -244,7 +245,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                     {/* Location Image */}
                                     <div className="relative h-48 bg-gradient-to-br from-rose-600/30 via-orange-600/20 to-amber-600/30 overflow-hidden border-b-2 border-rose-500/30">
                                         {location.image_url ? (
-                                            <img 
+                                            <LightboxImage 
                                                 src={location.image_url} 
                                                 alt={location.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"

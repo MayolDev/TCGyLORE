@@ -31,7 +31,7 @@ export default function Show({ character }: { character: Character }) {
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title={character.name} />
 
-            <div className="mx-auto max-w-6xl space-y-6 p-6">
+            <div className="space-y-6 p-6">
                 <LoreShowHeader
                     image={character.image_url}
                     icon="⚔️"

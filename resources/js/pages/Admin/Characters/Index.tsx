@@ -9,6 +9,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Users, Plus, Search, Pencil, Trash2, Sparkles, Scroll, User, Grid3x3, Table2, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { stripMarkdown } from '@/lib/utils';
+import LightboxImage from '@/components/lightbox-image';
 
 interface Character {
     id: number;
@@ -173,7 +174,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                     {/* Character Header with Avatar */}
                                     <div className="relative h-48 bg-gradient-to-br from-emerald-600/30 via-teal-600/20 to-cyan-600/30 overflow-hidden border-b-2 border-emerald-500/30">
                                         {character.image_url ? (
-                                            <img 
+                                            <LightboxImage 
                                                 src={character.image_url} 
                                                 alt={character.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"

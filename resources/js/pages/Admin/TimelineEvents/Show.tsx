@@ -29,7 +29,7 @@ export default function Show({ event }: { event: TimelineEvent }) {
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title={event.name} />
 
-            <div className="mx-auto max-w-6xl space-y-6 p-6">
+            <div className="space-y-6 p-6">
                 <LoreShowHeader
                     image={null}
                     icon="⏳"

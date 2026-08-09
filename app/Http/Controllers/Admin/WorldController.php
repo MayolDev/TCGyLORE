@@ -42,7 +42,7 @@ class WorldController extends Controller
             'description' => ['required', 'string'],
             'image' => ['nullable', 'image', 'max:4096'],
             'image_url' => ['nullable', 'string', 'max:2048'],
-            'map_image' => ['nullable', 'image', 'max:8192'],
+            'map_image' => ['nullable', 'image', 'max:20480'],
             'is_active' => ['boolean'],
         ]);
 
@@ -86,7 +86,7 @@ class WorldController extends Controller
             'description' => ['required', 'string'],
             'image' => ['nullable', 'image', 'max:4096'],
             'image_url' => ['nullable', 'string', 'max:2048'],
-            'map_image' => ['nullable', 'image', 'max:8192'],
+            'map_image' => ['nullable', 'image', 'max:20480'],
             'is_active' => ['boolean'],
         ]);
 

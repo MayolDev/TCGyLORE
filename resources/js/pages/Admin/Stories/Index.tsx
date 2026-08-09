@@ -9,6 +9,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { BookText, Plus, Search, Pencil, Trash2, Sparkles, FileText, Grid3x3, Table2, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { stripMarkdown } from '@/lib/utils';
+import LightboxImage from '@/components/lightbox-image';
 
 interface Story {
     id: number;
@@ -180,7 +181,7 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                     {/* Story Image/Header */}
                                     <div className="relative h-40 bg-gradient-to-br from-purple-600/30 via-pink-600/20 to-rose-600/30 overflow-hidden border-b-2 border-purple-500/30">
                                         {story.image_url ? (
-                                            <img 
+                                            <LightboxImage 
                                                 src={story.image_url} 
                                                 alt={story.title}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"

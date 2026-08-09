@@ -8,6 +8,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Globe, BookText, Users, MapPin, Swords, Pencil, Trash2, Plus, Search, Grid3x3, Table2, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { stripMarkdown } from '@/lib/utils';
+import LightboxImage from '@/components/lightbox-image';
 
 interface World {
     id: number;
@@ -171,7 +172,7 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                                     {/* World Image or Gradient Header */}
                                     <div className="relative h-40 bg-gradient-to-br from-purple-600/30 via-blue-600/20 to-indigo-600/30 overflow-hidden border-b-2 border-purple-500/30">
                                         {world.image_url ? (
-                                            <img 
+                                            <LightboxImage 
                                                 src={world.image_url} 
                                                 alt={world.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
