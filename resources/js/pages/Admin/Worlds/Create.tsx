@@ -6,8 +6,11 @@ import WriterLayout from '@/layouts/writer-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
-import { Globe, Plus, X } from 'lucide-react';
+import { Globe, Map, Plus, X } from 'lucide-react';
 import RichTextEditor from '@/components/rich-text-editor';
+import { useState } from 'react';
+
+const DEFAULT_MAP = '/images/map-aethermoor.webp';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
@@ -16,15 +19,28 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Create() {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm<{
+        name: string;
+        description: string;
+        image_url: string;
+        map_image: File | null;
+    }>({
         name: '',
         description: '',
         image_url: '',
+        map_image: null,
     });
+
+    const [mapPreview, setMapPreview] = useState<string | null>(null);
+
+    const handleMapFile = (file: File | null) => {
+        setData('map_image', file);
+        setMapPreview(file ? URL.createObjectURL(file) : null);
+    };
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/admin/worlds');
+        post('/admin/worlds', { forceFormData: true });
     };
 
     const wordCount = data.description.trim().split(/\s+/).filter(Boolean).length;
@@ -87,6 +103,44 @@ export default function Create() {
                                     placeholder="https://example.com/world.jpg"
                                 />
                                 <InputError message={errors.image_url} />
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Mapa del Mundo */}
+                    <Card className="border-primary/20">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Map className="h-5 w-5 text-primary" />
+                                Mapa del Mundo
+                            </CardTitle>
+                            <CardDescription>
+                                Mapa base sobre el que se colocan las ubicaciones de este mundo. Si no subes uno, se usa el mapa por defecto.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="relative overflow-hidden rounded-lg border-2 border-amber-500/40">
+                                <img
+                                    src={mapPreview ?? DEFAULT_MAP}
+                                    alt="Mapa del mundo"
+                                    className="w-full max-h-72 object-cover"
+                                />
+                                <span className="absolute top-2 left-2 rounded-md bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-yellow-200 border border-yellow-500/40">
+                                    {mapPreview ? '🗺️ Mapa nuevo' : '🗺️ Mapa por defecto'}
+                                </span>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="map_image">Subir mapa (opcional)</Label>
+                                <Input
+                                    id="map_image"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleMapFile(e.target.files?.[0] || null)}
+                                />
+                                <InputError message={errors.map_image} />
+                                <p className="text-xs text-muted-foreground">
+                                    💡 Recomendado: imagen apaisada (proporción ~2:1), máximo 8MB. WebP o JPG pesan menos.
+                                </p>
                             </div>
                         </CardContent>
                     </Card>

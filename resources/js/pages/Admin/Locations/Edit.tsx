@@ -16,15 +16,7 @@ import RichTextEditor from '@/components/rich-text-editor';
 interface World {
     id: number;
     name: string;
-}
-
-interface LocationData {
-    id: number;
-    name: string;
-    description?: string;
-    type: string;
-    coordinate_x: number;
-    coordinate_y: number;
+    map_image_url: string;
 }
 
 interface Location {
@@ -41,7 +33,6 @@ interface Location {
 interface Props {
     location: Location;
     worlds: World[];
-    allLocations: LocationData[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -50,7 +41,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Editar' },
 ];
 
-export default function Edit({ location, worlds, allLocations }: Props) {
+export default function Edit({ location, worlds }: Props) {
     const { data, setData, post, processing, errors } = useForm<{
         world_id: string;
         name: string;
@@ -242,7 +233,7 @@ export default function Edit({ location, worlds, allLocations }: Props) {
                         </CardHeader>
                         <CardContent>
                             <MapView
-                                locations={allLocations}
+                                mapUrl={worlds.find((w) => w.id.toString() === data.world_id)?.map_image_url}
                                 center={data.coordinate_x && data.coordinate_y ? [parseFloat(data.coordinate_y), parseFloat(data.coordinate_x)] : undefined}
                                 zoom={data.coordinate_x && data.coordinate_y ? 1 : 0}
                                 allowClick={true}

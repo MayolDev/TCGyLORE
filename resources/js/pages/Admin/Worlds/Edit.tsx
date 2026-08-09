@@ -6,15 +6,18 @@ import WriterLayout from '@/layouts/writer-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
-import { Globe, Save } from 'lucide-react';
+import { Globe, Map, Save } from 'lucide-react';
 import EpicFormHeader from '@/components/epic-form-header';
 import RichTextEditor from '@/components/rich-text-editor';
+import { useState } from 'react';
 
 interface World {
     id: number;
     name: string;
     description: string | null;
     image_url: string | null;
+    map_image: string | null;
+    map_image_url: string;
 }
 
 interface Props {
@@ -28,15 +31,32 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Edit({ world }: Props) {
-    const { data, setData, put, processing, errors } = useForm({
+    // POST + _method PUT: PHP no parsea multipart en peticiones PUT reales,
+    // y sin multipart el fichero del mapa nunca llegaría al servidor.
+    const { data, setData, post, processing, errors } = useForm<{
+        name: string;
+        description: string;
+        image_url: string;
+        map_image: File | null;
+        _method: string;
+    }>({
         name: world.name || '',
         description: world.description || '',
         image_url: world.image_url || '',
+        map_image: null,
+        _method: 'PUT',
     });
+
+    const [mapPreview, setMapPreview] = useState<string | null>(null);
+
+    const handleMapFile = (file: File | null) => {
+        setData('map_image', file);
+        setMapPreview(file ? URL.createObjectURL(file) : null);
+    };
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/admin/worlds/${world.id}`);
+        post(`/admin/worlds/${world.id}`, { forceFormData: true });
     };
 
     const wordCount = data.description.trim().split(/\s+/).filter(Boolean).length;
@@ -87,6 +107,44 @@ export default function Edit({ world }: Props) {
                                     placeholder="https://example.com/world.jpg"
                                 />
                                 <InputError message={errors.image_url} />
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Mapa del Mundo */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Map className="h-5 w-5 text-primary" />
+                                Mapa del Mundo
+                            </CardTitle>
+                            <CardDescription>
+                                Mapa base sobre el que se colocan las ubicaciones de este mundo. Sube uno nuevo para reemplazarlo.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="relative overflow-hidden rounded-lg border-2 border-amber-500/40">
+                                <img
+                                    src={mapPreview ?? world.map_image_url}
+                                    alt={`Mapa de ${world.name}`}
+                                    className="w-full max-h-72 object-cover"
+                                />
+                                <span className="absolute top-2 left-2 rounded-md bg-slate-900/85 px-2.5 py-1 text-xs font-bold text-yellow-200 border border-yellow-500/40">
+                                    {mapPreview ? '🗺️ Mapa nuevo (sin guardar)' : world.map_image ? '🗺️ Mapa propio' : '🗺️ Mapa por defecto'}
+                                </span>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="map_image">Subir mapa nuevo (opcional)</Label>
+                                <Input
+                                    id="map_image"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleMapFile(e.target.files?.[0] || null)}
+                                />
+                                <InputError message={errors.map_image} />
+                                <p className="text-xs text-muted-foreground">
+                                    💡 Recomendado: imagen apaisada (proporción ~2:1), máximo 8MB. WebP o JPG pesan menos.
+                                </p>
                             </div>
                         </CardContent>
                     </Card>

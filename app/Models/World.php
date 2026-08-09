@@ -5,17 +5,29 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class World extends Model
 {
     use HasFactory;
 
+    /** Mapa base que se usa cuando el mundo no tiene uno propio subido. */
+    public const DEFAULT_MAP = '/images/map-aethermoor.webp';
+
     protected $fillable = [
         'name',
         'description',
         'banner_image',
+        'map_image',
         'is_active',
     ];
+
+    protected $appends = ['map_image_url'];
+
+    public function getMapImageUrlAttribute(): string
+    {
+        return $this->map_image ? Storage::url($this->map_image) : self::DEFAULT_MAP;
+    }
 
     protected function casts(): array
     {

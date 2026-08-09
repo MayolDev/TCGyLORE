@@ -15,20 +15,11 @@ import RichTextEditor from '@/components/rich-text-editor';
 interface World {
     id: number;
     name: string;
-}
-
-interface LocationData {
-    id: number;
-    name: string;
-    description?: string;
-    type: string;
-    coordinate_x: number;
-    coordinate_y: number;
+    map_image_url: string;
 }
 
 interface Props {
     worlds: World[];
-    allLocations: LocationData[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -37,7 +28,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Crear' },
 ];
 
-export default function Create({ worlds, allLocations }: Props) {
+export default function Create({ worlds }: Props) {
     const { data, setData, post, processing, errors } = useForm({
         world_id: '',
         name: '',
@@ -196,17 +187,19 @@ export default function Create({ worlds, allLocations }: Props) {
                         </CardContent>
                     </Card>
 
-                    {/* Map Card */}
+                    {/* Map Card: el mapa del mundo elegido, solo con el pin que se coloca */}
                     <Card>
                         <CardHeader>
                             <CardTitle>🗺️ Mapa del Mundo</CardTitle>
                             <CardDescription>
-                                Haz clic en el mapa para colocar tu ubicación
+                                {data.world_id
+                                    ? 'Haz clic en el mapa para colocar tu ubicación'
+                                    : 'Selecciona primero un mundo para ver su mapa'}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <MapView
-                                locations={allLocations}
+                                mapUrl={worlds.find((w) => w.id.toString() === data.world_id)?.map_image_url}
                                 zoom={0}
                                 allowClick={true}
                                 onMapClick={(y, x) => {
@@ -216,6 +209,11 @@ export default function Create({ worlds, allLocations }: Props) {
                                         coordinate_y: Math.round(y).toString(),
                                     });
                                 }}
+                                currentLocationCoords={
+                                    data.coordinate_x !== '' && data.coordinate_y !== ''
+                                        ? { x: Number(data.coordinate_x), y: Number(data.coordinate_y), type: data.location_type }
+                                        : null
+                                }
                                 height="500px"
                             />
                         </CardContent>

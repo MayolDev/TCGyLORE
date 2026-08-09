@@ -28,51 +28,18 @@ class LocationController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        // Cargar todas las ubicaciones para el mapa
-        $allLocations = Location::select('id', 'name', 'description', 'location_type as type', 'coordinate_x', 'coordinate_y')
-            ->whereNotNull('coordinate_x')
-            ->whereNotNull('coordinate_y')
-            ->get()
-            ->map(function ($loc) {
-                return [
-                    'id' => $loc->id,
-                    'name' => $loc->name,
-                    'description' => $loc->description,
-                    'type' => $loc->type,
-                    'coordinate_x' => $loc->coordinate_x,
-                    'coordinate_y' => $loc->coordinate_y,
-                ];
-            });
-
+        // El mapa ya no muestra ubicaciones: solo el mapa base de cada mundo.
         return Inertia::render('Admin/Locations/Index', [
             'locations' => $locations,
-            'worlds' => World::all(['id', 'name']),
+            'worlds' => World::all(['id', 'name', 'map_image']),
             'filters' => $request->only(['search', 'location_type', 'world_id']),
-            'allLocations' => $allLocations,
         ]);
     }
 
     public function create()
     {
-        // Cargar todas las ubicaciones para mostrarlas en el mapa
-        $allLocations = Location::select('id', 'name', 'description', 'location_type as type', 'coordinate_x', 'coordinate_y')
-            ->whereNotNull('coordinate_x')
-            ->whereNotNull('coordinate_y')
-            ->get()
-            ->map(function ($loc) {
-                return [
-                    'id' => $loc->id,
-                    'name' => $loc->name,
-                    'description' => $loc->description,
-                    'type' => $loc->type,
-                    'coordinate_x' => $loc->coordinate_x,
-                    'coordinate_y' => $loc->coordinate_y,
-                ];
-            });
-
         return Inertia::render('Admin/Locations/Create', [
-            'worlds' => World::all(['id', 'name']),
-            'allLocations' => $allLocations,
+            'worlds' => World::all(['id', 'name', 'map_image']),
         ]);
     }
 
@@ -104,26 +71,9 @@ class LocationController extends Controller
     {
         $location->load('world');
 
-        // Cargar todas las ubicaciones para mostrarlas en el mapa (incluyendo la actual)
-        $allLocations = Location::select('id', 'name', 'description', 'location_type as type', 'coordinate_x', 'coordinate_y')
-            ->whereNotNull('coordinate_x')
-            ->whereNotNull('coordinate_y')
-            ->get()
-            ->map(function ($loc) {
-                return [
-                    'id' => $loc->id,
-                    'name' => $loc->name,
-                    'description' => $loc->description,
-                    'type' => $loc->type,
-                    'coordinate_x' => $loc->coordinate_x,
-                    'coordinate_y' => $loc->coordinate_y,
-                ];
-            });
-
         return Inertia::render('Admin/Locations/Edit', [
             'location' => $location,
-            'worlds' => World::all(['id', 'name']),
-            'allLocations' => $allLocations,
+            'worlds' => World::all(['id', 'name', 'map_image']),
         ]);
     }
 

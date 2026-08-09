@@ -146,7 +146,11 @@ interface Location {
 }
 
 interface MapViewProps {
-    locations: Location[];
+    /** Pines a dibujar. Por decisión de diseño el mapa general va SIN ubicaciones;
+        solo los formularios pasan el pin que se está colocando. */
+    locations?: Location[];
+    /** Mapa base del mundo. Cada mundo tiene el suyo; sin él, el de Aethermoor. */
+    mapUrl?: string;
     /** Si se pasa, el mapa abre centrado aquí. Si no, encuadra el mundo entero. */
     center?: [number, number];
     zoom?: number;
@@ -193,7 +197,8 @@ function MapSetup({
 }
 
 export default function MapView({
-    locations,
+    locations = [],
+    mapUrl = '/images/map-aethermoor.webp',
     center,
     zoom = 1,
     onLocationClick,
@@ -290,8 +295,9 @@ export default function MapView({
             >
                 <MapSetup mapRef={mapRef} fitWorld={!center} bounds={bounds} />
 
-                {/* Mapa del mundo: webp de ~200 KB, no el PNG de 16 MB */}
-                <ImageOverlay url="/images/map-aethermoor.webp" bounds={bounds} opacity={1.0} />
+                {/* Mapa base del mundo. key fuerza el remontaje al cambiar de mundo:
+                    ImageOverlay no refresca la url en caliente. */}
+                <ImageOverlay key={mapUrl} url={mapUrl} bounds={bounds} opacity={1.0} />
 
                 {/* Manejador de clicks */}
                 {allowClick && onMapClick && <MapClickHandler onMapClick={onMapClick} />}

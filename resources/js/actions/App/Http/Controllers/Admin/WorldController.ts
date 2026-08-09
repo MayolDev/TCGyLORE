@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\WorldController::index
- * @see app/Http/Controllers/Admin/WorldController.php:12
+ * @see app/Http/Controllers/Admin/WorldController.php:13
  * @route '/admin/worlds'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::index
- * @see app/Http/Controllers/Admin/WorldController.php:12
+ * @see app/Http/Controllers/Admin/WorldController.php:13
  * @route '/admin/worlds'
  */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::index
- * @see app/Http/Controllers/Admin/WorldController.php:12
+ * @see app/Http/Controllers/Admin/WorldController.php:13
  * @route '/admin/worlds'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Admin\WorldController::index
- * @see app/Http/Controllers/Admin/WorldController.php:12
+ * @see app/Http/Controllers/Admin/WorldController.php:13
  * @route '/admin/worlds'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\WorldController::index
- * @see app/Http/Controllers/Admin/WorldController.php:12
+ * @see app/Http/Controllers/Admin/WorldController.php:13
  * @route '/admin/worlds'
  */
     const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -54,7 +54,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\WorldController::index
- * @see app/Http/Controllers/Admin/WorldController.php:12
+ * @see app/Http/Controllers/Admin/WorldController.php:13
  * @route '/admin/worlds'
  */
         indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -63,7 +63,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Admin\WorldController::index
- * @see app/Http/Controllers/Admin/WorldController.php:12
+ * @see app/Http/Controllers/Admin/WorldController.php:13
  * @route '/admin/worlds'
  */
         indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\WorldController::create
- * @see app/Http/Controllers/Admin/WorldController.php:29
+ * @see app/Http/Controllers/Admin/WorldController.php:30
  * @route '/admin/worlds/create'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::create
- * @see app/Http/Controllers/Admin/WorldController.php:29
+ * @see app/Http/Controllers/Admin/WorldController.php:30
  * @route '/admin/worlds/create'
  */
 create.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::create
- * @see app/Http/Controllers/Admin/WorldController.php:29
+ * @see app/Http/Controllers/Admin/WorldController.php:30
  * @route '/admin/worlds/create'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -112,7 +112,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Admin\WorldController::create
- * @see app/Http/Controllers/Admin/WorldController.php:29
+ * @see app/Http/Controllers/Admin/WorldController.php:30
  * @route '/admin/worlds/create'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -122,7 +122,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\WorldController::create
- * @see app/Http/Controllers/Admin/WorldController.php:29
+ * @see app/Http/Controllers/Admin/WorldController.php:30
  * @route '/admin/worlds/create'
  */
     const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -132,7 +132,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\WorldController::create
- * @see app/Http/Controllers/Admin/WorldController.php:29
+ * @see app/Http/Controllers/Admin/WorldController.php:30
  * @route '/admin/worlds/create'
  */
         createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -141,7 +141,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Admin\WorldController::create
- * @see app/Http/Controllers/Admin/WorldController.php:29
+ * @see app/Http/Controllers/Admin/WorldController.php:30
  * @route '/admin/worlds/create'
  */
         createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -157,7 +157,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\WorldController::store
- * @see app/Http/Controllers/Admin/WorldController.php:34
+ * @see app/Http/Controllers/Admin/WorldController.php:35
  * @route '/admin/worlds'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -172,7 +172,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::store
- * @see app/Http/Controllers/Admin/WorldController.php:34
+ * @see app/Http/Controllers/Admin/WorldController.php:35
  * @route '/admin/worlds'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -181,7 +181,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::store
- * @see app/Http/Controllers/Admin/WorldController.php:34
+ * @see app/Http/Controllers/Admin/WorldController.php:35
  * @route '/admin/worlds'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -191,7 +191,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\WorldController::store
- * @see app/Http/Controllers/Admin/WorldController.php:34
+ * @see app/Http/Controllers/Admin/WorldController.php:35
  * @route '/admin/worlds'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -201,7 +201,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\WorldController::store
- * @see app/Http/Controllers/Admin/WorldController.php:34
+ * @see app/Http/Controllers/Admin/WorldController.php:35
  * @route '/admin/worlds'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -309,7 +309,7 @@ show.head = (args: { world: string | number } | [world: string | number ] | stri
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\WorldController::edit
- * @see app/Http/Controllers/Admin/WorldController.php:49
+ * @see app/Http/Controllers/Admin/WorldController.php:57
  * @route '/admin/worlds/{world}/edit'
  */
 export const edit = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -324,7 +324,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::edit
- * @see app/Http/Controllers/Admin/WorldController.php:49
+ * @see app/Http/Controllers/Admin/WorldController.php:57
  * @route '/admin/worlds/{world}/edit'
  */
 edit.url = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -357,7 +357,7 @@ edit.url = (args: { world: number | { id: number } } | [world: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::edit
- * @see app/Http/Controllers/Admin/WorldController.php:49
+ * @see app/Http/Controllers/Admin/WorldController.php:57
  * @route '/admin/worlds/{world}/edit'
  */
 edit.get = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -366,7 +366,7 @@ edit.get = (args: { world: number | { id: number } } | [world: number | { id: nu
 })
 /**
 * @see \App\Http\Controllers\Admin\WorldController::edit
- * @see app/Http/Controllers/Admin/WorldController.php:49
+ * @see app/Http/Controllers/Admin/WorldController.php:57
  * @route '/admin/worlds/{world}/edit'
  */
 edit.head = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -376,7 +376,7 @@ edit.head = (args: { world: number | { id: number } } | [world: number | { id: n
 
     /**
 * @see \App\Http\Controllers\Admin\WorldController::edit
- * @see app/Http/Controllers/Admin/WorldController.php:49
+ * @see app/Http/Controllers/Admin/WorldController.php:57
  * @route '/admin/worlds/{world}/edit'
  */
     const editForm = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -386,7 +386,7 @@ edit.head = (args: { world: number | { id: number } } | [world: number | { id: n
 
             /**
 * @see \App\Http\Controllers\Admin\WorldController::edit
- * @see app/Http/Controllers/Admin/WorldController.php:49
+ * @see app/Http/Controllers/Admin/WorldController.php:57
  * @route '/admin/worlds/{world}/edit'
  */
         editForm.get = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -395,7 +395,7 @@ edit.head = (args: { world: number | { id: number } } | [world: number | { id: n
         })
             /**
 * @see \App\Http\Controllers\Admin\WorldController::edit
- * @see app/Http/Controllers/Admin/WorldController.php:49
+ * @see app/Http/Controllers/Admin/WorldController.php:57
  * @route '/admin/worlds/{world}/edit'
  */
         editForm.head = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -411,7 +411,7 @@ edit.head = (args: { world: number | { id: number } } | [world: number | { id: n
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\WorldController::update
- * @see app/Http/Controllers/Admin/WorldController.php:56
+ * @see app/Http/Controllers/Admin/WorldController.php:64
  * @route '/admin/worlds/{world}'
  */
 export const update = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -426,7 +426,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::update
- * @see app/Http/Controllers/Admin/WorldController.php:56
+ * @see app/Http/Controllers/Admin/WorldController.php:64
  * @route '/admin/worlds/{world}'
  */
 update.url = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -459,7 +459,7 @@ update.url = (args: { world: number | { id: number } } | [world: number | { id: 
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::update
- * @see app/Http/Controllers/Admin/WorldController.php:56
+ * @see app/Http/Controllers/Admin/WorldController.php:64
  * @route '/admin/worlds/{world}'
  */
 update.put = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -468,7 +468,7 @@ update.put = (args: { world: number | { id: number } } | [world: number | { id: 
 })
 /**
 * @see \App\Http\Controllers\Admin\WorldController::update
- * @see app/Http/Controllers/Admin/WorldController.php:56
+ * @see app/Http/Controllers/Admin/WorldController.php:64
  * @route '/admin/worlds/{world}'
  */
 update.patch = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -478,7 +478,7 @@ update.patch = (args: { world: number | { id: number } } | [world: number | { id
 
     /**
 * @see \App\Http\Controllers\Admin\WorldController::update
- * @see app/Http/Controllers/Admin/WorldController.php:56
+ * @see app/Http/Controllers/Admin/WorldController.php:64
  * @route '/admin/worlds/{world}'
  */
     const updateForm = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -493,7 +493,7 @@ update.patch = (args: { world: number | { id: number } } | [world: number | { id
 
             /**
 * @see \App\Http\Controllers\Admin\WorldController::update
- * @see app/Http/Controllers/Admin/WorldController.php:56
+ * @see app/Http/Controllers/Admin/WorldController.php:64
  * @route '/admin/worlds/{world}'
  */
         updateForm.put = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -507,7 +507,7 @@ update.patch = (args: { world: number | { id: number } } | [world: number | { id
         })
             /**
 * @see \App\Http\Controllers\Admin\WorldController::update
- * @see app/Http/Controllers/Admin/WorldController.php:56
+ * @see app/Http/Controllers/Admin/WorldController.php:64
  * @route '/admin/worlds/{world}'
  */
         updateForm.patch = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -523,7 +523,7 @@ update.patch = (args: { world: number | { id: number } } | [world: number | { id
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\WorldController::destroy
- * @see app/Http/Controllers/Admin/WorldController.php:71
+ * @see app/Http/Controllers/Admin/WorldController.php:90
  * @route '/admin/worlds/{world}'
  */
 export const destroy = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -538,7 +538,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::destroy
- * @see app/Http/Controllers/Admin/WorldController.php:71
+ * @see app/Http/Controllers/Admin/WorldController.php:90
  * @route '/admin/worlds/{world}'
  */
 destroy.url = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -571,7 +571,7 @@ destroy.url = (args: { world: number | { id: number } } | [world: number | { id:
 
 /**
 * @see \App\Http\Controllers\Admin\WorldController::destroy
- * @see app/Http/Controllers/Admin/WorldController.php:71
+ * @see app/Http/Controllers/Admin/WorldController.php:90
  * @route '/admin/worlds/{world}'
  */
 destroy.delete = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -581,7 +581,7 @@ destroy.delete = (args: { world: number | { id: number } } | [world: number | { 
 
     /**
 * @see \App\Http\Controllers\Admin\WorldController::destroy
- * @see app/Http/Controllers/Admin/WorldController.php:71
+ * @see app/Http/Controllers/Admin/WorldController.php:90
  * @route '/admin/worlds/{world}'
  */
     const destroyForm = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -596,7 +596,7 @@ destroy.delete = (args: { world: number | { id: number } } | [world: number | { 
 
             /**
 * @see \App\Http\Controllers\Admin\WorldController::destroy
- * @see app/Http/Controllers/Admin/WorldController.php:71
+ * @see app/Http/Controllers/Admin/WorldController.php:90
  * @route '/admin/worlds/{world}'
  */
         destroyForm.delete = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

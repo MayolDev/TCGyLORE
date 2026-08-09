@@ -10,13 +10,10 @@ import { useState } from 'react';
 import MapView from '@/components/map-view';
 import { stripMarkdown } from '@/lib/utils';
 
-interface LocationData {
+interface WorldOption {
     id: number;
     name: string;
-    description?: string;
-    type: string;
-    coordinate_x: number;
-    coordinate_y: number;
+    map_image_url: string;
 }
 
 interface Location {
@@ -48,7 +45,7 @@ interface Props {
     filters?: {
         search?: string;
     };
-    allLocations: LocationData[];
+    worlds?: WorldOption[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -56,11 +53,13 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Ubicaciones', href: '/admin/locations' },
 ];
 
-export default function Index({ locations: initialLocations, filters: initialFilters, allLocations }: Props) {
+export default function Index({ locations: initialLocations, filters: initialFilters, worlds = [] }: Props) {
     const locations = initialLocations || { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0 };
     const filters = initialFilters || { search: '' };
     const [search, setSearch] = useState(filters.search || '');
     const [viewMode, setViewMode] = useState<'grid' | 'table' | 'map'>('grid');
+    const [mapWorldId, setMapWorldId] = useState<number | null>(worlds[0]?.id ?? null);
+    const mapWorld = worlds.find((w) => w.id === mapWorldId) ?? worlds[0];
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -185,25 +184,37 @@ export default function Index({ locations: initialLocations, filters: initialFil
                         </CardContent>
                     </Card>
                 ) : viewMode === 'map' ? (
-                    /* Map View */
+                    /* Map View: un mapa por mundo, sin pines de ubicaciones */
                     <Card className="border-primary/20">
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-yellow-200">
-                                <Navigation className="h-6 w-6 text-yellow-400" />
-                                🗺️ Mapa del Mundo
-                            </CardTitle>
-                            <CardDescription className="text-yellow-200/70">
-                                Vista general de todas las ubicaciones en el mapa - Haz clic en un marcador para editar
-                            </CardDescription>
+                            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                <div>
+                                    <CardTitle className="flex items-center gap-2 text-yellow-200">
+                                        <Navigation className="h-6 w-6 text-yellow-400" />
+                                        🗺️ Mapa de {mapWorld?.name ?? 'Mundo'}
+                                    </CardTitle>
+                                    <CardDescription className="text-yellow-200/70">
+                                        Cada mundo tiene su propio mapa base. Se cambia desde Editar Mundo.
+                                    </CardDescription>
+                                </div>
+                                {worlds.length > 1 && (
+                                    <div className="flex flex-wrap gap-2">
+                                        {worlds.map((w) => (
+                                            <Button
+                                                key={w.id}
+                                                size="sm"
+                                                variant={w.id === mapWorld?.id ? 'magical' : 'outline'}
+                                                onClick={() => setMapWorldId(w.id)}
+                                            >
+                                                🌍 {w.name}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </CardHeader>
                         <CardContent>
-                            <MapView
-                                locations={allLocations}
-                                height="700px"
-                                onLocationClick={(location) => {
-                                    router.visit(`/admin/locations/${location.id}/edit`);
-                                }}
-                            />
+                            <MapView mapUrl={mapWorld?.map_image_url} height="700px" />
                         </CardContent>
                     </Card>
                 ) : viewMode === 'grid' ? (

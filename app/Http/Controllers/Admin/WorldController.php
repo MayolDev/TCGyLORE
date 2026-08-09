@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\World;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class WorldController extends Controller
@@ -37,8 +38,15 @@ class WorldController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'banner_image' => ['nullable', 'string'],
+            'map_image' => ['nullable', 'image', 'max:8192'],
             'is_active' => ['boolean'],
         ]);
+
+        if ($request->hasFile('map_image')) {
+            $validated['map_image'] = Storage::putFile('worlds', $request->file('map_image'), 'public');
+        } else {
+            unset($validated['map_image']);
+        }
 
         World::create($validated);
 
@@ -59,8 +67,19 @@ class WorldController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'banner_image' => ['nullable', 'string'],
+            'map_image' => ['nullable', 'image', 'max:8192'],
             'is_active' => ['boolean'],
         ]);
+
+        // Solo tocar el mapa si llega fichero nuevo; si no, conservar el actual.
+        if ($request->hasFile('map_image')) {
+            if ($world->map_image) {
+                Storage::delete($world->map_image);
+            }
+            $validated['map_image'] = Storage::putFile('worlds', $request->file('map_image'), 'public');
+        } else {
+            unset($validated['map_image']);
+        }
 
         $world->update($validated);
 
@@ -70,6 +89,10 @@ class WorldController extends Controller
 
     public function destroy(World $world)
     {
+        if ($world->map_image) {
+            Storage::delete($world->map_image);
+        }
+
         $world->delete();
 
         return redirect()->route('admin.worlds.index')
