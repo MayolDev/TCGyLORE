@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import WriterLayout from '@/layouts/writer-layout';
@@ -9,6 +8,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { BookText, Plus, X } from 'lucide-react';
+import RichTextEditor from '@/components/rich-text-editor';
 
 interface World {
     id: number;
@@ -156,12 +156,12 @@ export default function Create({ worlds }: Props) {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Textarea
+                            <RichTextEditor
                                 id="content"
                                 value={data.content}
-                                onChange={(e) => setData('content', e.target.value)}
+                                onChange={(md) => setData('content', md)}
                                 placeholder="Había una vez en el reino de Aethermoor..."
-                                className="min-h-[500px] text-base leading-relaxed resize-y font-serif"
+                                minHeight="500px"
                             />
                             <InputError message={errors.content} />
                             <p className="text-xs text-muted-foreground mt-2">

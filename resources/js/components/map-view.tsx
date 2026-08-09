@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css';
 // Fix para los iconos de Leaflet
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import { stripMarkdown } from '@/lib/utils';
 
 const DefaultIcon = L.icon({
     iconUrl: icon,
@@ -334,7 +335,7 @@ export default function MapView({
                                     </div>
                                     {location.description && (
                                         <p className="text-sm text-yellow-100 mb-4 line-clamp-4 leading-relaxed">
-                                            {location.description}
+                                            {stripMarkdown(location.description)}
                                         </p>
                                     )}
                                     {onLocationClick && (

@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import WriterLayout from '@/layouts/writer-layout';
@@ -9,6 +8,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Users, Save, X, Sparkles, MapPin, BookText } from 'lucide-react';
+import RichTextEditor from '@/components/rich-text-editor';
 
 interface World {
     id: number;
@@ -178,12 +178,12 @@ export default function Edit({ character, worlds, locations, stories }: Props) {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Textarea
+                            <RichTextEditor
                                 id="biography"
                                 value={data.biography}
-                                onChange={(e) => setData('biography', e.target.value)}
+                                onChange={(md) => setData('biography', md)}
                                 placeholder="Escribe la historia del personaje, su origen, motivaciones, pasado..."
-                                className="min-h-[400px] text-base leading-relaxed resize-y font-serif"
+                                minHeight="400px"
                             />
                             <InputError message={errors.biography} />
                             <p className="text-xs text-muted-foreground mt-2">
@@ -211,13 +211,12 @@ export default function Edit({ character, worlds, locations, stories }: Props) {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Textarea
+                            <RichTextEditor
                                 id="spells"
                                 value={data.spells}
-                                onChange={(e) => setData('spells', e.target.value)}
+                                onChange={(md) => setData('spells', md)}
                                 placeholder="Bola de Fuego, Escudo Arcano, Teletransporte..."
-                                rows={4}
-                                className="text-base leading-relaxed resize-y"
+                                minHeight="220px"
                             />
                             <InputError message={errors.spells} />
                             <p className="text-xs text-muted-foreground mt-2">

@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
@@ -15,6 +14,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { processManualCitations } from '@/lib/citations';
+import RichTextEditor from '@/components/rich-text-editor';
 
 interface ManualSection {
     id: number;
@@ -228,13 +228,12 @@ export default function Create({ categories, sections, nextOrders }: Props) {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Textarea
+                            <RichTextEditor
                                 id="content"
                                 value={data.content}
-                                onChange={(e) => setData('content', e.target.value)}
+                                onChange={(md) => setData('content', md)}
                                 placeholder="Escribe aquí el contenido de la sección... Puedes usar markdown para formato."
-                                rows={20}
-                                className="font-mono text-base resize-y min-h-[400px]"
+                                minHeight="400px"
                             />
                             <InputError message={errors.content} />
                             <p className="text-sm text-muted-foreground mt-2">

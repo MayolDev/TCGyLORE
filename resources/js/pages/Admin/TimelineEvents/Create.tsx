@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import WriterLayout from '@/layouts/writer-layout';
@@ -9,6 +8,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Clock, Plus, X, Calendar } from 'lucide-react';
+import RichTextEditor from '@/components/rich-text-editor';
 
 interface World {
     id: number;
@@ -214,12 +214,12 @@ export default function Create({ worlds, characters, locations }: Props) {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Textarea
+                            <RichTextEditor
                                 id="description"
                                 value={data.description}
-                                onChange={(e) => setData('description', e.target.value)}
+                                onChange={(md) => setData('description', md)}
                                 placeholder="En el año X, sucedió algo extraordinario que cambiaría el curso de la historia..."
-                                className="min-h-[400px] text-base leading-relaxed resize-y font-serif"
+                                minHeight="400px"
                             />
                             <InputError message={errors.description} />
                             <p className="text-xs text-muted-foreground mt-2">

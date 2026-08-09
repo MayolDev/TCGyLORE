@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import WriterLayout from '@/layouts/writer-layout';
@@ -11,6 +10,7 @@ import InputError from '@/components/input-error';
 import { MapPin, Plus, X } from 'lucide-react';
 import MapView, { LOCATION_TYPES } from '@/components/map-view';
 import ImageUpload from '@/components/image-upload';
+import RichTextEditor from '@/components/rich-text-editor';
 
 interface World {
     id: number;
@@ -243,12 +243,12 @@ export default function Create({ worlds, allLocations }: Props) {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Textarea
+                            <RichTextEditor
                                 id="description"
                                 value={data.description}
-                                onChange={(e) => setData('description', e.target.value)}
+                                onChange={(md) => setData('description', md)}
                                 placeholder="Describe el lugar, su historia, características únicas..."
-                                className="min-h-[300px] text-base leading-relaxed resize-y font-serif"
+                                minHeight="300px"
                             />
                             <InputError message={errors.description} />
                             <p className="text-xs text-muted-foreground mt-2">

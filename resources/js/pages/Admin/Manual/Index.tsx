@@ -14,6 +14,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { processManualCitations } from '@/lib/citations';
+import { stripMarkdown } from '@/lib/utils';
 
 interface ManualSection {
     id: number;
@@ -289,12 +290,12 @@ export default function Index({ sections: initialSections, filters: initialFilte
 
                                     <CardContent>
                                         <CardDescription className="line-clamp-2 text-yellow-200/60 font-semibold">
-                                            {section.content}
+                                            {stripMarkdown(section.content)}
                                         </CardDescription>
                                         <div className="flex items-center justify-between mt-4 pt-4 border-t border-orange-500/20">
                                             <div className="text-xs text-yellow-300/50 font-semibold">
                                                 <FileText className="h-3 w-3 inline mr-1 text-orange-400" />
-                                                {section.content.split(' ').length} palabras
+                                                {stripMarkdown(section.content).split(' ').length} palabras
                                             </div>
                                             <p className="text-xs text-yellow-300/50 font-semibold">
                                                 Creado {new Date(section.created_at).toLocaleDateString('es-ES', { 
@@ -413,10 +414,10 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                     </TableCell>
                                                     <TableCell className="text-yellow-200/70 max-w-md">
                                                         <div className="line-clamp-2">
-                                                            {section.content}
+                                                            {stripMarkdown(section.content)}
                                                         </div>
                                                         <div className="text-xs text-muted-foreground mt-1">
-                                                            {section.content.split(' ').length} palabras
+                                                            {stripMarkdown(section.content).split(' ').length} palabras
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="text-yellow-300/60 text-sm">
@@ -474,7 +475,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                 📖 {previewSection?.title}
                             </DialogTitle>
                             <DialogDescription className="text-yellow-200/70 text-base">
-                                {categories[previewSection?.category || '']} • {previewSection?.content.split(' ').length} palabras
+                                {categories[previewSection?.category || '']} • {stripMarkdown(previewSection?.content).split(' ').length} palabras
                             </DialogDescription>
                         </DialogHeader>
                         <div className="flex-1 overflow-y-auto p-8">

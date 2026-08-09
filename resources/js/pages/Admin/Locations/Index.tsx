@@ -8,6 +8,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { MapPin, Plus, Search, Pencil, Trash2, Sparkles, Navigation, Grid3x3, Table2, Map as MapIcon } from 'lucide-react';
 import { useState } from 'react';
 import MapView from '@/components/map-view';
+import { stripMarkdown } from '@/lib/utils';
 
 interface LocationData {
     id: number;
@@ -252,7 +253,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                             <Sparkles className="h-6 w-6 text-rose-400 shrink-0 drop-shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
                                         </CardTitle>
                                         <CardDescription className="line-clamp-2 text-yellow-200/60 font-semibold">
-                                            {location.description || 'Sin descripción'}
+                                            {stripMarkdown(location.description) || 'Sin descripción'}
                                         </CardDescription>
                                     </CardHeader>
 
@@ -385,7 +386,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <p className="text-sm text-yellow-200/70 line-clamp-2 max-w-md">
-                                                            {location.description || 'Sin descripción'}
+                                                            {stripMarkdown(location.description) || 'Sin descripción'}
                                                         </p>
                                                     </td>
                                                     <td className="px-6 py-4 text-center">

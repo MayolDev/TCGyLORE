@@ -8,6 +8,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Clock, Plus, Search, Pencil, Trash2, Sparkles, Calendar, Users as UsersIcon, MapPin, Grid3x3, Table2 } from 'lucide-react';
 import { useState } from 'react';
+import { stripMarkdown } from '@/lib/utils';
 
 interface TimelineEvent {
     id: number;
@@ -232,7 +233,7 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                                     <Sparkles className="h-6 w-6 text-amber-400 shrink-0 drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
                                                 </CardTitle>
                                                 <CardDescription className="line-clamp-3 text-yellow-200/60 font-semibold">
-                                                    {event.description || 'Sin descripción'}
+                                                    {stripMarkdown(event.description) || 'Sin descripción'}
                                                 </CardDescription>
                                             </CardHeader>
 
@@ -392,7 +393,7 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                                     </TableCell>
                                                     <TableCell className="text-yellow-200/70 max-w-md">
                                                         <div className="line-clamp-2">
-                                                            {event.description || 'Sin descripción'}
+                                                            {stripMarkdown(event.description) || 'Sin descripción'}
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>

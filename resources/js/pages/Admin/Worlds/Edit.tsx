@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import WriterLayout from '@/layouts/writer-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -9,6 +8,7 @@ import { Head, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Globe, Save } from 'lucide-react';
 import EpicFormHeader from '@/components/epic-form-header';
+import RichTextEditor from '@/components/rich-text-editor';
 
 interface World {
     id: number;
@@ -113,12 +113,12 @@ export default function Edit({ world }: Props) {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <Textarea
+                            <RichTextEditor
                                 id="description"
                                 value={data.description}
-                                onChange={(e) => setData('description', e.target.value)}
+                                onChange={(md) => setData('description', md)}
                                 placeholder="Un mundo de fantasía medieval donde la magia y la tecnología conviven..."
-                                className="min-h-[300px] text-base leading-relaxed resize-y font-serif"
+                                minHeight="300px"
                             />
                             <InputError message={errors.description} />
                             <p className="text-xs text-muted-foreground mt-2">

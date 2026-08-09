@@ -7,6 +7,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Globe, BookText, Users, MapPin, Swords, Pencil, Trash2, Plus, Search, Grid3x3, Table2 } from 'lucide-react';
 import { useState } from 'react';
+import { stripMarkdown } from '@/lib/utils';
 
 interface World {
     id: number;
@@ -189,7 +190,7 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                                             <Globe className="h-6 w-6 text-purple-400 shrink-0 drop-shadow-[0_0_6px_rgba(168,85,247,0.8)]" />
                                         </CardTitle>
                                         <CardDescription className="line-clamp-2 text-yellow-200/60 font-semibold">
-                                            {world.description || 'Sin descripción'}
+                                            {stripMarkdown(world.description) || 'Sin descripción'}
                                         </CardDescription>
                                     </CardHeader>
 
@@ -333,7 +334,7 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                                                     </TableCell>
                                                     <TableCell className="text-yellow-200/70 max-w-md">
                                                         <div className="line-clamp-2">
-                                                            {world.description || 'Sin descripción'}
+                                                            {stripMarkdown(world.description) || 'Sin descripción'}
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="text-center text-yellow-200/80">

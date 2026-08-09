@@ -8,6 +8,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { BookText, Plus, Search, Pencil, Trash2, Sparkles, FileText, Grid3x3, Table2 } from 'lucide-react';
 import { useState } from 'react';
+import { stripMarkdown } from '@/lib/utils';
 
 interface Story {
     id: number;
@@ -221,13 +222,13 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                     <CardContent className="space-y-4 flex-1 flex flex-col relative z-10">
                                         {/* Content Preview */}
                                         <CardDescription className="line-clamp-3 flex-1 text-yellow-200/60 font-semibold">
-                                            {story.content}
+                                            {stripMarkdown(story.content)}
                                         </CardDescription>
 
                                         {/* Word Count */}
                                         <div className="text-xs text-yellow-200/70 flex items-center gap-1.5 font-semibold">
                                             <FileText className="h-3 w-3 text-purple-400" />
-                                            <span>{story.content.split(' ').length} palabras</span>
+                                            <span>{stripMarkdown(story.content).split(' ').length} palabras</span>
                                         </div>
 
                                         {/* Actions */}
@@ -346,7 +347,7 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                                     </TableCell>
                                                     <TableCell className="text-yellow-200/70 max-w-md">
                                                         <div className="line-clamp-2">
-                                                            {story.content}
+                                                            {stripMarkdown(story.content)}
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="text-yellow-300/60 text-sm">

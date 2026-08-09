@@ -8,6 +8,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Users, Plus, Search, Pencil, Trash2, Sparkles, Scroll, User, Grid3x3, Table2 } from 'lucide-react';
 import { useState } from 'react';
+import { stripMarkdown } from '@/lib/utils';
 
 interface Character {
     id: number;
@@ -203,7 +204,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                             <Sparkles className="h-6 w-6 text-emerald-400 shrink-0 drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
                                         </CardTitle>
                                         <CardDescription className="line-clamp-2 text-yellow-200/60 font-semibold">
-                                            {character.biography || 'Sin biografía'}
+                                            {stripMarkdown(character.biography) || 'Sin biografía'}
                                         </CardDescription>
                                     </CardHeader>
 
@@ -340,7 +341,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                                     </TableCell>
                                                     <TableCell className="text-yellow-200/70 max-w-md">
                                                         <div className="line-clamp-2">
-                                                            {character.biography || 'Sin biografía'}
+                                                            {stripMarkdown(character.biography) || 'Sin biografía'}
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
