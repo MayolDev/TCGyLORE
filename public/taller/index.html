@@ -48,13 +48,16 @@
     </div>
 
     <div class="toolbar">
-      <button class="act primary" id="download">⬇ Descargar PNG</button>
-      <button class="act" id="save">★ Guardar</button>
-      <button class="act" id="sendlib" title="Crea la carta en la Biblioteca del panel web">📚 A Biblioteca</button>
-      <button class="act" id="scale">Calidad: 2×</button>
+      <button class="act primary" id="save" title="Guarda el borrador aquí y publica la carta en la Biblioteca de la web (si ya existe, se actualiza)">📚 Guardar en Biblioteca</button>
+      <button class="act" id="download" title="Descarga el PNG re-pintado a la resolución elegida">⬇ Descargar PNG</button>
+      <div class="scalechips" id="scalechips" title="Resolución del PNG descargado">
+        <button data-s="1">1×</button>
+        <button data-s="2">2×</button>
+        <button data-s="4">4×</button>
+      </div>
     </div>
 
-    <p class="stagehint">El PNG se vuelve a pintar a la resolución elegida — no es la vista previa ampliada.</p>
+    <p class="stagehint">Guardar publica la carta en la Biblioteca web (mismo nombre = se actualiza) y deja copia en el borrador local de la izquierda.</p>
   </main>
 
   <!-- ═══════════════════════════ INSPECTOR ═══════════════════════════ -->

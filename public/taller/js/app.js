@@ -1654,11 +1654,18 @@
     draw();
   });
 
-  const SCALES = [1, 2, 4];
-  $('#scale').onclick = () => {
-    S.scale = SCALES[(SCALES.indexOf(S.scale) + 1) % SCALES.length];
-    $('#scale').textContent = `Calidad: ${S.scale}× (${W*S.scale}px)`;
-  };
+  // Calidad del PNG como chips (antes era un botón que rotaba: parecía
+  // una acción y nadie sabía qué hacía).
+  function syncScaleChips(){
+    $$('#scalechips button').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.s) === S.scale)));
+  }
+  $$('#scalechips button').forEach(b => {
+    b.onclick = () => {
+      S.scale = Number(b.dataset.s);
+      syncScaleChips();
+      toast(`El PNG se descargará a ${S.scale}× (${W*S.scale}px de ancho).`);
+    };
+  });
 
   // ---- ilustración
   const drop = $('#drop'), fileIn = $('#file');
@@ -1737,27 +1744,31 @@
     saveCanvas(renderAt(d, S.scale, img), `${d.kind}-${name}-${S.scale}x.png`);
   };
 
-  $('#save').onclick = () => {
-    const d = currentData();
-    libUpsert(d);
-    toast('Guardado en la biblioteca.');
-  };
-
-  // ---- enviar a la Biblioteca del panel web (crea una Card real en la BD).
-  // El vocabulario de tipos del taller se traduce a la taxonomía de la web;
-  // el JSON completo viaja en `data` y se guarda en cards.taller_data.
+  // ---- guardar: UNA sola acción. Deja copia en el borrador local de la
+  // izquierda y, si es una carta con nombre, la publica en la Biblioteca de
+  // la web (mismo nombre = se actualiza, no se duplica). El vocabulario de
+  // tipos del taller se traduce a la taxonomía de la web; el JSON completo
+  // viaja en `data` y se guarda en cards.taller_data.
   const TIPOS_BIBLIOTECA = {
     creature: 'Criatura', spell: 'Hechizo', trap: 'Trampa', wall: 'Muro',
     weapon: 'Arma', hero: 'Protagonista', heraldo: 'Evento',
   };
 
-  $('#sendlib').onclick = async () => {
+  $('#save').onclick = async () => {
     const d = currentData();
-    if (d.kind !== 'carta'){ toast('Solo las cartas se envían a la Biblioteca.'); return; }
-    if (!d.nombre){ toast('Ponle un nombre a la carta primero.'); return; }
+    libUpsert(d);
 
-    const btn = $('#sendlib');
-    btn.disabled = true; btn.textContent = '📚 Enviando…';
+    if (d.kind !== 'carta'){
+      toast('Guardado en el borrador local (dorsos y fichas no van a la Biblioteca web).');
+      return;
+    }
+    if (!d.nombre){
+      toast('Guardado en el borrador local. Ponle nombre para publicarla en la Biblioteca.');
+      return;
+    }
+
+    const btn = $('#save');
+    btn.disabled = true; btn.textContent = '📚 Publicando…';
     try {
       const img = ART.get(d.arte) || artEl;
       const canvas = renderAt(d, 2, img);
@@ -1785,16 +1796,16 @@
 
       if (res.status === 201 || res.status === 200){
         const j = await res.json();
-        toast(j.updated ? `«${j.name}» actualizada en la Biblioteca.` : `«${j.name}» creada en la Biblioteca.`);
+        toast(j.updated ? `Guardada: «${j.name}» actualizada en la Biblioteca.` : `Guardada: «${j.name}» creada en la Biblioteca.`);
       } else if (res.status === 401 || res.status === 419 || res.status === 302){
-        toast('Sesión no válida: abre el taller desde el panel web con la sesión iniciada.');
+        toast('Guardado el borrador local. Para publicar en la Biblioteca, abre el taller desde el panel web con sesión.');
       } else {
-        toast('La Biblioteca respondió ' + res.status + '.');
+        toast('Guardado el borrador local, pero la Biblioteca respondió ' + res.status + '.');
       }
     } catch (e){
-      toast('No se pudo conectar con la Biblioteca: ' + e.message);
+      toast('Guardado el borrador local. Sin conexión con la Biblioteca: ' + e.message);
     } finally {
-      btn.disabled = false; btn.textContent = '📚 A Biblioteca';
+      btn.disabled = false; btn.textContent = '📚 Guardar en Biblioteca';
     }
   };
 
@@ -2061,7 +2072,7 @@
   syncChips('#style', 'style', S.style);
   syncChips('#rarity', 'rar', S.rarity);
   syncChips('#tshape', 'shape', S.tokenShape);
-  $('#scale').textContent = `Calidad: ${S.scale}× (${W*S.scale}px)`;
+  syncScaleChips();
   loadLayoutFields();
   libLoad();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);

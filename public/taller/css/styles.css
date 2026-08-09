@@ -94,6 +94,14 @@ button.act:hover{border-color:var(--gold-deep);background:#2c2318}
 button.primary{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#1a1206;border-color:var(--gold)}
 button.primary:hover{filter:brightness(1.07)}
 
+/* Selector de calidad del PNG: chips, no un botón que rota */
+.scalechips{display:flex;align-items:stretch;border:1px solid var(--edge);border-radius:9px;overflow:hidden}
+.scalechips button{font-family:inherit;cursor:pointer;border:none;background:var(--panel-2);
+  color:var(--ink-faint);padding:11px 13px;font-size:13px;font-weight:700;transition:.15s}
+.scalechips button + button{border-left:1px solid var(--edge)}
+.scalechips button:hover{color:var(--ink)}
+.scalechips button[aria-pressed="true"]{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#1a1206}
+
 /* ═══════════════════ INSPECTOR ═══════════════════ */
 .chips.seg{margin:0 0 12px;padding:4px;background:#100c07;border:1px solid var(--edge);border-radius:9px}
 .seg .chip{border:none;background:transparent;padding:8px 6px}
