@@ -5,7 +5,9 @@ import StoryController from './StoryController'
 import CharacterController from './CharacterController'
 import LocationController from './LocationController'
 import TimelineEventController from './TimelineEventController'
+import TallerCardController from './TallerCardController'
 import CardController from './CardController'
+import DeckController from './DeckController'
 import ManualSectionController from './ManualSectionController'
 import CardTypeController from './CardTypeController'
 import RarityController from './RarityController'
@@ -22,7 +24,9 @@ StoryController: Object.assign(StoryController, StoryController),
 CharacterController: Object.assign(CharacterController, CharacterController),
 LocationController: Object.assign(LocationController, LocationController),
 TimelineEventController: Object.assign(TimelineEventController, TimelineEventController),
+TallerCardController: Object.assign(TallerCardController, TallerCardController),
 CardController: Object.assign(CardController, CardController),
+DeckController: Object.assign(DeckController, DeckController),
 ManualSectionController: Object.assign(ManualSectionController, ManualSectionController),
 CardTypeController: Object.assign(CardTypeController, CardTypeController),
 RarityController: Object.assign(RarityController, RarityController),

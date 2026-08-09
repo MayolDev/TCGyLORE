@@ -186,7 +186,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                     <>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {characters.data.map((character) => (
-                                <Card key={character.id} className="group overflow-hidden border-4 border-emerald-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-emerald-400/70 hover:shadow-[0_0_40px_rgba(16,185,129,0.4)] transition-all duration-300 hover:scale-105 hover:-rotate-1 relative">
+                                <Card key={character.id} className="group overflow-hidden pt-0 border-4 border-emerald-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-emerald-400/70 hover:shadow-[0_0_40px_rgba(16,185,129,0.4)] transition-all duration-300 hover:scale-105 hover:-rotate-1 relative">
                                     {/* Brillo interior */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                     

@@ -12,7 +12,9 @@ use App\Http\Controllers\Admin\FactionController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\ManualSectionController;
 use App\Http\Controllers\Admin\RarityController;
+use App\Http\Controllers\Admin\DeckController;
 use App\Http\Controllers\Admin\StoryController;
+use App\Http\Controllers\Admin\TallerCardController;
 use App\Http\Controllers\Admin\TimelineEventController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WorldController;
@@ -49,7 +51,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // La ruta del taller va con su propio segmento (cards-taller) para no
         // caer en el comodin cards/{card} del resource.
         Route::get('cards-taller', fn () => inertia('Admin/Cards/Workshop'))->name('cards.workshop');
+        // El taller manda aquí sus cartas para pasarlas a la Biblioteca
+        Route::post('taller-cards', [TallerCardController::class, 'store'])->name('taller-cards.store');
         Route::resource('cards', CardController::class);
+
+        // Mazos (constructor estilo Hearthstone)
+        Route::resource('decks', DeckController::class)->except(['show']);
 
         // Manual del Juego
         Route::resource('manual-sections', ManualSectionController::class);

@@ -47,6 +47,7 @@ class Card extends Model
         'edition_id',
         'artist_id',
         'flavor_text',
+        'taller_data',
     ];
 
     protected function casts(): array

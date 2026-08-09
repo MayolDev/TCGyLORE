@@ -6,6 +6,8 @@ import characters from './characters'
 import locations from './locations'
 import timelineEvents from './timeline-events'
 import cards from './cards'
+import tallerCards from './taller-cards'
+import decks from './decks'
 import manualSections from './manual-sections'
 import cardTypes from './card-types'
 import rarities from './rarities'
@@ -23,6 +25,8 @@ characters: Object.assign(characters, characters),
 locations: Object.assign(locations, locations),
 timelineEvents: Object.assign(timelineEvents, timelineEvents),
 cards: Object.assign(cards, cards),
+tallerCards: Object.assign(tallerCards, tallerCards),
+decks: Object.assign(decks, decks),
 manualSections: Object.assign(manualSections, manualSections),
 cardTypes: Object.assign(cardTypes, cardTypes),
 rarities: Object.assign(rarities, rarities),

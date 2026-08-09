@@ -256,7 +256,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                     <>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {locations.data.map((location) => (
-                                <Card key={location.id} className="group overflow-hidden border-4 border-rose-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-rose-400/70 hover:shadow-[0_0_40px_rgba(244,63,94,0.4)] transition-all duration-300 hover:scale-105 hover:-rotate-1 relative">
+                                <Card key={location.id} className="group overflow-hidden pt-0 border-4 border-rose-500/40 bg-gradient-to-br from-slate-800/95 to-slate-900/95 hover:border-rose-400/70 hover:shadow-[0_0_40px_rgba(244,63,94,0.4)] transition-all duration-300 hover:scale-105 hover:-rotate-1 relative">
                                     {/* Brillo interior */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-transparent to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                     

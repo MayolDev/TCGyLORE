@@ -1743,6 +1743,61 @@
     toast('Guardado en la biblioteca.');
   };
 
+  // ---- enviar a la Biblioteca del panel web (crea una Card real en la BD).
+  // El vocabulario de tipos del taller se traduce a la taxonomía de la web;
+  // el JSON completo viaja en `data` y se guarda en cards.taller_data.
+  const TIPOS_BIBLIOTECA = {
+    creature: 'Criatura', spell: 'Hechizo', trap: 'Trampa', wall: 'Muro',
+    weapon: 'Arma', hero: 'Protagonista', heraldo: 'Evento',
+  };
+
+  $('#sendlib').onclick = async () => {
+    const d = currentData();
+    if (d.kind !== 'carta'){ toast('Solo las cartas se envían a la Biblioteca.'); return; }
+    if (!d.nombre){ toast('Ponle un nombre a la carta primero.'); return; }
+
+    const btn = $('#sendlib');
+    btn.disabled = true; btn.textContent = '📚 Enviando…';
+    try {
+      const img = ART.get(d.arte) || artEl;
+      const canvas = renderAt(d, 2, img);
+      const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+
+      const xsrf = document.cookie.split('; ').find(c => c.startsWith('XSRF-TOKEN='));
+      const fd = new FormData();
+      fd.append('name', d.nombre);
+      fd.append('type', TIPOS_BIBLIOTECA[d.tipo] || 'Criatura');
+      fd.append('cost', String(parseInt(d.coste, 10) || 0));
+      fd.append('effect', d.texto || '');
+      fd.append('flavor_text', d.cita || '');
+      fd.append('data', JSON.stringify(d));
+      fd.append('image', blob, `${slug(d.nombre)}.png`);
+
+      const res = await fetch('/admin/taller-cards', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'X-XSRF-TOKEN': xsrf ? decodeURIComponent(xsrf.split('=')[1]) : '',
+          'Accept': 'application/json',
+        },
+        body: fd,
+      });
+
+      if (res.status === 201){
+        const j = await res.json();
+        toast(`«${j.name}» creada en la Biblioteca.`);
+      } else if (res.status === 401 || res.status === 419 || res.status === 302){
+        toast('Sesión no válida: abre el taller desde el panel web con la sesión iniciada.');
+      } else {
+        toast('La Biblioteca respondió ' + res.status + '.');
+      }
+    } catch (e){
+      toast('No se pudo conectar con la Biblioteca: ' + e.message);
+    } finally {
+      btn.disabled = false; btn.textContent = '📚 A Biblioteca';
+    }
+  };
+
   // ---- set base
   $('#loadset').onclick = async () => {
     try {

@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
- * @see routes/web.php:51
+ * @see routes/web.php:53
  * @route '/admin/cards-taller'
  */
 export const workshop = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -14,7 +14,7 @@ workshop.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:51
+ * @see routes/web.php:53
  * @route '/admin/cards-taller'
  */
 workshop.url = (options?: RouteQueryOptions) => {
@@ -22,7 +22,7 @@ workshop.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:51
+ * @see routes/web.php:53
  * @route '/admin/cards-taller'
  */
 workshop.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -30,7 +30,7 @@ workshop.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:51
+ * @see routes/web.php:53
  * @route '/admin/cards-taller'
  */
 workshop.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -39,7 +39,7 @@ workshop.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:51
+ * @see routes/web.php:53
  * @route '/admin/cards-taller'
  */
     const workshopForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -48,7 +48,7 @@ workshop.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:51
+ * @see routes/web.php:53
  * @route '/admin/cards-taller'
  */
         workshopForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -56,7 +56,7 @@ workshop.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:51
+ * @see routes/web.php:53
  * @route '/admin/cards-taller'
  */
         workshopForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

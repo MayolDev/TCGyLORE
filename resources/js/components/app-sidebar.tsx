@@ -26,7 +26,8 @@ import {
     UserCircle,
     Flame,
     BookOpen,
-    Hammer
+    Hammer,
+    Layers
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -76,6 +77,11 @@ const tcgNavItems: NavItem[] = [
         title: 'Taller de Cartas',
         href: '/admin/cards-taller',
         icon: Hammer,
+    },
+    {
+        title: 'Mazos',
+        href: '/admin/decks',
+        icon: Layers,
     },
     {
         title: 'Manual del Juego',
