@@ -100,6 +100,62 @@
   // `prefix` lleva estilo y peso (italic, 700…). En CSS van ANTES del tamaño: si se
   // cuelan detrás, la cadena es inválida, el canvas la descarta sin avisar y sigue
   // pintando con la fuente anterior.
+  /**
+   * Cuerpo con marcado ligero, pensado para los protagonistas:
+   *   "## ÚNICA — El Lado Positivo"  → título de sección (ÚNICA en verde,
+   *   EL FINAL en rojo, el resto en el color del texto), y
+   *   "---" en su propia línea      → separador horizontal.
+   * Sin marcado pinta texto plano, como siempre. Devuelve la Y final.
+   */
+  function drawBody(g, texto, bx, bw, ty0, maxh, inkColor, oscuro){
+    const bloques = [];
+    String(texto || '').split('\n').forEach(linea => {
+      const t = linea.trim();
+      if (t === '---') bloques.push({ tipo: 'sep' });
+      else if (t.startsWith('## ')) bloques.push({ tipo: 'titulo', texto: t.slice(3).trim() });
+      else bloques.push({ tipo: 'texto', texto: linea });
+    });
+
+    const colorTitulo = t => {
+      const u = t.toUpperCase();
+      if (u.startsWith('ÚNICA') || u.startsWith('UNICA')) return oscuro ? '#a9bd63' : '#5c6e2a';
+      if (u.startsWith('EL FINAL') || u.startsWith('FINAL')) return oscuro ? '#e0705a' : '#8f2f24';
+      return inkColor;
+    };
+
+    for (let size = 31; size >= 15; size--){
+      const lh = size * 1.34;
+      let alto = 0;
+      const plan = [];
+      for (const b of bloques){
+        if (b.tipo === 'sep'){ plan.push({ ...b, h: lh * 0.7 }); alto += lh * 0.7; continue; }
+        const font = b.tipo === 'titulo'
+          ? `700 ${size}px "Alegreya", serif`
+          : `${size}px "Alegreya", serif`;
+        const lines = wrap(g, b.texto, font, bw);
+        plan.push({ ...b, lines, font });
+        alto += lines.length * lh;
+      }
+      if (alto <= maxh || size === 15){
+        let ty = ty0;
+        for (const p of plan){
+          if (p.tipo === 'sep'){
+            g.strokeStyle = oscuro ? 'rgba(231,221,196,.4)' : 'rgba(21,17,12,.3)';
+            g.lineWidth = 2;
+            g.beginPath(); g.moveTo(bx, ty - lh * 0.42); g.lineTo(bx + bw, ty - lh * 0.42); g.stroke();
+            ty += lh * 0.7;
+            continue;
+          }
+          g.font = p.font;
+          g.fillStyle = p.tipo === 'titulo' ? colorTitulo(p.texto) : inkColor;
+          p.lines.forEach(l => { g.fillText(l, bx, ty); ty += lh; });
+        }
+        return ty;
+      }
+    }
+    return ty0;
+  }
+
   function fitText(g, text, family, maxw, maxh, start, min, prefix){
     const mk = size => `${prefix ? prefix + ' ' : ''}${size}px ${family}`;
     for (let size = start; size >= min; size--){
@@ -550,9 +606,7 @@
     let ty = by + 34;
     const hasCita = !!c.cita;
     const bodyH = bh - 44 - (hasCita ? 66 : 0);
-    const fit = fitText(g, c.texto || '', '"Alegreya", serif', bw-40, bodyH, 33, 17);
-    g.fillStyle = '#181309'; g.font = fit.font;
-    fit.lines.forEach(l => { g.fillText(l, bx+20, ty); ty += fit.lh; });
+    ty = drawBody(g, c.texto, bx+20, bw-40, ty, bodyH, '#181309', false);
 
     if (hasCita){
       ty += 10;
@@ -616,9 +670,7 @@
 
     let ty = by + 62;
     const hasCita = !!c.cita;
-    const fit = fitText(g, c.texto || '', '"Alegreya", serif', bw-44, (bottom-by) - 78 - (hasCita?66:0), 32, 17);
-    g.fillStyle = '#15110c'; g.font = fit.font;
-    fit.lines.forEach(l => { g.fillText(l, bx+22, ty); ty += fit.lh; });
+    ty = drawBody(g, c.texto, bx+22, bw-44, ty, (bottom-by) - 78 - (hasCita?66:0), '#15110c', false);
     if (hasCita){
       ty += 8;
       const ff = fitText(g, c.cita, '"IM Fell English", serif', bw-44, 58, 23, 15, 'italic');
@@ -666,9 +718,7 @@
     g.fillStyle = A.c; g.font = '700 22px Archivo, sans-serif'; g.fillText(A.label, tx, ty); ty += 14;
     g.strokeStyle = 'rgba(184,134,47,.5)'; g.lineWidth = 1.5;
     g.beginPath(); g.moveTo(tx, ty); g.lineTo(tx+tw, ty); g.stroke(); ty += 32;
-    const fit = fitText(g, c.texto || '', '"Alegreya", serif', tw, 170, 33, 17);
-    g.fillStyle = '#efe6d2'; g.font = fit.font;
-    fit.lines.forEach(l => { g.fillText(l, tx, ty); ty += fit.lh; });
+    ty = drawBody(g, c.texto, tx, tw, ty, 170, '#efe6d2', true);
     if (c.cita){
       ty += 8;
       const ff = fitText(g, c.cita, '"IM Fell English", serif', tw, 66, 24, 15, 'italic');
@@ -730,9 +780,7 @@
 
     let ty = L.textY;
     const hasCita = !!c.cita;
-    const fit = fitText(g, c.texto || '', '"Alegreya", serif', bw, L.textH - (hasCita ? 56 : 0), 31, 15);
-    g.fillStyle = '#15110c'; g.font = fit.font;
-    fit.lines.forEach(l => { g.fillText(l, bx, ty); ty += fit.lh; });
+    ty = drawBody(g, c.texto, bx, bw, ty, L.textH - (hasCita ? 56 : 0), '#15110c', false);
     if (hasCita){
       ty += 6;
       const ff = fitText(g, c.cita, '"IM Fell English", serif', bw, 52, 22, 13, 'italic');
