@@ -9,6 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { BookText, Save, X } from 'lucide-react';
 import RichTextEditor from '@/components/rich-text-editor';
+import EntityImageField from '@/components/entity-image-field';
 
 interface World {
     id: number;
@@ -36,17 +37,21 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Edit({ story, worlds }: Props) {
-    const { data, setData, put, processing, errors } = useForm({
+    // POST + _method PUT: PHP no parsea multipart en PUT y la portada llega como fichero.
+    const { data, setData, post, processing, errors } = useForm({
         world_id: story.world_id.toString(),
         title: story.title || '',
         content: story.content || '',
         category: story.category || '',
-        image_url: story.image_url || '',
+        // Solo precargar URLs externas: un /storage/... es fichero nuestro y no debe reenviarse
+        image_url: story.image_url?.startsWith('http') ? story.image_url : '',
+        image: null as File | null,
+        _method: 'PUT',
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/admin/stories/${story.id}`);
+        post(`/admin/stories/${story.id}`, { forceFormData: true });
     };
 
     const wordCount = data.content.trim().split(/\s+/).filter(Boolean).length;
@@ -130,17 +135,15 @@ export default function Edit({ story, worlds }: Props) {
                                 <InputError message={errors.title} />
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="image_url">URL de Imagen (opcional)</Label>
-                                <Input
-                                    id="image_url"
-                                    type="text"
-                                    value={data.image_url}
-                                    onChange={(e) => setData('image_url', e.target.value)}
-                                    placeholder="https://example.com/image.jpg"
-                                />
-                                <InputError message={errors.image_url} />
-                            </div>
+                            <EntityImageField
+                                label="Portada (opcional)"
+                                current={story.image_url}
+                                urlValue={data.image_url}
+                                onFileChange={(f) => setData('image', f)}
+                                onUrlChange={(url) => setData('image_url', url)}
+                                errorImage={errors.image}
+                                errorUrl={errors.image_url}
+                            />
                         </CardContent>
                     </Card>
 

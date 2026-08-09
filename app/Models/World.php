@@ -22,7 +22,19 @@ class World extends Model
         'is_active',
     ];
 
-    protected $appends = ['map_image_url'];
+    protected $appends = ['map_image_url', 'image_url'];
+
+    /** banner_image admite ruta de storage (subida) o URL externa. */
+    public function getImageUrlAttribute(): ?string
+    {
+        if (! $this->banner_image) {
+            return null;
+        }
+
+        return str_starts_with($this->banner_image, 'http')
+            ? $this->banner_image
+            : parse_url(Storage::disk('public')->url($this->banner_image), PHP_URL_PATH);
+    }
 
     public function getMapImageUrlAttribute(): string
     {

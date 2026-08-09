@@ -8,6 +8,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Globe, Map, Plus, X } from 'lucide-react';
 import RichTextEditor from '@/components/rich-text-editor';
+import EntityImageField from '@/components/entity-image-field';
 import { useState } from 'react';
 
 const DEFAULT_MAP = '/images/map-aethermoor.webp';
@@ -23,11 +24,13 @@ export default function Create() {
         name: string;
         description: string;
         image_url: string;
+        image: File | null;
         map_image: File | null;
     }>({
         name: '',
         description: '',
         image_url: '',
+        image: null,
         map_image: null,
     });
 
@@ -93,17 +96,14 @@ export default function Create() {
                                 <InputError message={errors.name} />
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="image_url">URL de Imagen (opcional)</Label>
-                                <Input
-                                    id="image_url"
-                                    type="text"
-                                    value={data.image_url}
-                                    onChange={(e) => setData('image_url', e.target.value)}
-                                    placeholder="https://example.com/world.jpg"
-                                />
-                                <InputError message={errors.image_url} />
-                            </div>
+                            <EntityImageField
+                                label="Imagen del Mundo (opcional)"
+                                urlValue={data.image_url}
+                                onFileChange={(f) => setData('image', f)}
+                                onUrlChange={(url) => setData('image_url', url)}
+                                errorImage={errors.image}
+                                errorUrl={errors.image_url}
+                            />
                         </CardContent>
                     </Card>
 

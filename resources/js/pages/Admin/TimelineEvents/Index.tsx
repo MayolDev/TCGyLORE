@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Clock, Plus, Search, Pencil, Trash2, Sparkles, Calendar, Users as UsersIcon, MapPin, Grid3x3, Table2 } from 'lucide-react';
+import { Clock, Plus, Search, Pencil, Trash2, Sparkles, Calendar, Users as UsersIcon, MapPin, Grid3x3, Table2, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { stripMarkdown } from '@/lib/utils';
 
@@ -270,6 +270,12 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                                 
                                                 {/* Actions */}
                                                 <div className="flex gap-2 pt-2">
+                                                    <Button variant="outline" size="sm" className="flex-1 border-cyan-500/50 text-cyan-200 hover:bg-cyan-600/20 hover:text-cyan-100 font-bold" asChild>
+                                                        <Link href={`/admin/timeline-events/${event.id}`}>
+                                                            <Eye className="mr-2 h-4 w-4" />
+                                                            Ver
+                                                        </Link>
+                                                    </Button>
                                                     <Button variant="outline" size="sm" className="border-amber-500/50 text-amber-200 hover:bg-amber-600/20 hover:text-amber-100 font-bold" asChild>
                                                         <Link href={`/admin/timeline-events/${event.id}/edit`}>
                                                             <Pencil className="mr-2 h-4 w-4" />
@@ -425,6 +431,11 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="flex items-center justify-end gap-2">
+                                                            <Button variant="outline" size="sm" asChild className="bg-cyan-900/50 hover:bg-cyan-800/70 text-cyan-200 hover:text-cyan-100 border-cyan-700/50 hover:border-cyan-500/70">
+                                                                <Link href={`/admin/timeline-events/${event.id}`}>
+                                                                    <Eye className="h-4 w-4" />
+                                                                </Link>
+                                                            </Button>
                                                             <Button 
                                                                 variant="outline" 
                                                                 size="sm"

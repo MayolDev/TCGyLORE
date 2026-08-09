@@ -9,6 +9,7 @@ import InputError from '@/components/input-error';
 import { Globe, Map, Save } from 'lucide-react';
 import EpicFormHeader from '@/components/epic-form-header';
 import RichTextEditor from '@/components/rich-text-editor';
+import EntityImageField from '@/components/entity-image-field';
 import { useState } from 'react';
 
 interface World {
@@ -16,6 +17,7 @@ interface World {
     name: string;
     description: string | null;
     image_url: string | null;
+    banner_image: string | null;
     map_image: string | null;
     map_image_url: string;
 }
@@ -37,12 +39,15 @@ export default function Edit({ world }: Props) {
         name: string;
         description: string;
         image_url: string;
+        image: File | null;
         map_image: File | null;
         _method: string;
     }>({
         name: world.name || '',
         description: world.description || '',
-        image_url: world.image_url || '',
+        // Solo precargar URLs externas: un /storage/... es fichero nuestro y no debe reenviarse
+        image_url: world.image_url?.startsWith('http') ? world.image_url : '',
+        image: null,
         map_image: null,
         _method: 'PUT',
     });
@@ -97,17 +102,15 @@ export default function Edit({ world }: Props) {
                                 <InputError message={errors.name} />
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="image_url">URL de Imagen (opcional)</Label>
-                                <Input
-                                    id="image_url"
-                                    type="text"
-                                    value={data.image_url}
-                                    onChange={(e) => setData('image_url', e.target.value)}
-                                    placeholder="https://example.com/world.jpg"
-                                />
-                                <InputError message={errors.image_url} />
-                            </div>
+                            <EntityImageField
+                                label="Imagen del Mundo (opcional)"
+                                current={world.image_url}
+                                urlValue={data.image_url}
+                                onFileChange={(f) => setData('image', f)}
+                                onUrlChange={(url) => setData('image_url', url)}
+                                errorImage={errors.image}
+                                errorUrl={errors.image_url}
+                            />
                         </CardContent>
                     </Card>
 

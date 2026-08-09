@@ -9,6 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Users, Save, X, Sparkles, MapPin, BookText } from 'lucide-react';
 import RichTextEditor from '@/components/rich-text-editor';
+import EntityImageField from '@/components/entity-image-field';
 
 interface World {
     id: number;
@@ -57,19 +58,23 @@ export default function Edit({ character, worlds, locations, stories }: Props) {
         stories 
     });
 
-    const { data, setData, put, processing, errors } = useForm({
+    // POST + _method PUT: PHP no parsea multipart en PUT y el retrato llega como fichero.
+    const { data, setData, post, processing, errors } = useForm({
         world_id: character.world_id.toString(),
         name: character.name || '',
         biography: character.biography || '',
         spells: Array.isArray(character.spells) ? character.spells.join(', ') : (character.spells || ''),
-        image_url: character.image_url || '',
+        // Solo precargar URLs externas: un /storage/... es fichero nuestro y no debe reenviarse
+        image_url: character.image_url?.startsWith('http') ? character.image_url : '',
+        image: null as File | null,
         location_ids: character.locations?.map(l => l.id.toString()) || [],
         story_ids: character.stories?.map(s => s.id.toString()) || [],
+        _method: 'PUT',
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/admin/characters/${character.id}`);
+        post(`/admin/characters/${character.id}`, { forceFormData: true });
     };
 
     const wordCount = data.biography.trim().split(/\s+/).filter(Boolean).length;
@@ -142,17 +147,15 @@ export default function Edit({ character, worlds, locations, stories }: Props) {
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="image_url">URL de Imagen (opcional)</Label>
-                                <Input
-                                    id="image_url"
-                                    type="text"
-                                    value={data.image_url}
-                                    onChange={(e) => setData('image_url', e.target.value)}
-                                    placeholder="https://example.com/character.jpg"
-                                />
-                                <InputError message={errors.image_url} />
-                            </div>
+                            <EntityImageField
+                                label="Retrato (opcional)"
+                                current={character.image_url}
+                                urlValue={data.image_url}
+                                onFileChange={(f) => setData('image', f)}
+                                onUrlChange={(url) => setData('image_url', url)}
+                                errorImage={errors.image}
+                                errorUrl={errors.image_url}
+                            />
                         </CardContent>
                     </Card>
 

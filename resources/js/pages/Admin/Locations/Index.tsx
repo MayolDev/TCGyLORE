@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { MapPin, Plus, Search, Pencil, Trash2, Sparkles, Navigation, Grid3x3, Table2, Map as MapIcon } from 'lucide-react';
+import { MapPin, Plus, Search, Pencil, Trash2, Sparkles, Navigation, Grid3x3, Table2, Map as MapIcon, Eye } from 'lucide-react';
 import { useState } from 'react';
 import MapView from '@/components/map-view';
 import { stripMarkdown } from '@/lib/utils';
@@ -14,6 +14,16 @@ interface WorldOption {
     id: number;
     name: string;
     map_image_url: string;
+}
+
+interface MapLocation {
+    id: number;
+    name: string;
+    description?: string;
+    type: string;
+    coordinate_x: number;
+    coordinate_y: number;
+    world_id: number;
 }
 
 interface Location {
@@ -46,6 +56,7 @@ interface Props {
         search?: string;
     };
     worlds?: WorldOption[];
+    mapLocations?: MapLocation[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -53,7 +64,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Ubicaciones', href: '/admin/locations' },
 ];
 
-export default function Index({ locations: initialLocations, filters: initialFilters, worlds = [] }: Props) {
+export default function Index({ locations: initialLocations, filters: initialFilters, worlds = [], mapLocations = [] }: Props) {
     const locations = initialLocations || { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0 };
     const filters = initialFilters || { search: '' };
     const [search, setSearch] = useState(filters.search || '');
@@ -194,7 +205,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                         🗺️ Mapa de {mapWorld?.name ?? 'Mundo'}
                                     </CardTitle>
                                     <CardDescription className="text-yellow-200/70">
-                                        Cada mundo tiene su propio mapa base. Se cambia desde Editar Mundo.
+                                        Las ubicaciones de {mapWorld?.name ?? 'este mundo'} sobre su mapa. Clic en un marcador para editar.
                                     </CardDescription>
                                 </div>
                                 {worlds.length > 1 && (
@@ -214,7 +225,12 @@ export default function Index({ locations: initialLocations, filters: initialFil
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <MapView mapUrl={mapWorld?.map_image_url} height="700px" />
+                            <MapView
+                                mapUrl={mapWorld?.map_image_url}
+                                locations={mapLocations.filter((l) => l.world_id === mapWorld?.id)}
+                                onLocationClick={(l) => router.visit(`/admin/locations/${l.id}/edit`)}
+                                height="700px"
+                            />
                         </CardContent>
                     </Card>
                 ) : viewMode === 'grid' ? (
@@ -281,6 +297,12 @@ export default function Index({ locations: initialLocations, filters: initialFil
 
                                         {/* Actions */}
                                         <div className="flex gap-2 pt-2">
+                                            <Button variant="outline" size="sm" className="flex-1 border-cyan-500/50 text-cyan-200 hover:bg-cyan-600/20 hover:text-cyan-100 font-bold" asChild>
+                                                <Link href={`/admin/locations/${location.id}`}>
+                                                    <Eye className="mr-2 h-4 w-4" />
+                                                    Ver
+                                                </Link>
+                                            </Button>
                                             <Button variant="outline" size="sm" className="flex-1 border-rose-500/50 text-rose-200 hover:bg-rose-600/20 hover:text-rose-100 font-bold" asChild>
                                                 <Link href={`/admin/locations/${location.id}/edit`}>
                                                     <Pencil className="mr-2 h-4 w-4" />
@@ -421,6 +443,11 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center justify-end gap-2">
+                                                            <Button variant="outline" size="sm" asChild className="bg-cyan-900/50 hover:bg-cyan-800/70 text-cyan-200 hover:text-cyan-100 border-cyan-700/50 hover:border-cyan-500/70">
+                                                                <Link href={`/admin/locations/${location.id}`}>
+                                                                    <Eye className="h-4 w-4" />
+                                                                </Link>
+                                                            </Button>
                                                             <Button
                                                                 variant="outline"
                                                                 size="sm"

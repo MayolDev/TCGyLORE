@@ -18,9 +18,14 @@ class Location extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        return $this->image
-            ? parse_url(Storage::disk('public')->url($this->image), PHP_URL_PATH)
-            : null;
+        if (! $this->image) {
+            return null;
+        }
+
+        // Admite ruta de storage (subida) o URL externa
+        return str_starts_with($this->image, 'http')
+            ? $this->image
+            : parse_url(Storage::disk('public')->url($this->image), PHP_URL_PATH);
     }
 
     protected $fillable = [

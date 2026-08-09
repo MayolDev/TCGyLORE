@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\ResolvesUploadedImage;
 use App\Http\Controllers\Controller;
 use App\Models\Story;
 use App\Models\World;
@@ -10,6 +11,8 @@ use Inertia\Inertia;
 
 class StoryController extends Controller
 {
+    use ResolvesUploadedImage;
+
     public function index(Request $request)
     {
         $stories = Story::query()
@@ -52,12 +55,28 @@ class StoryController extends Controller
             'era' => ['nullable', 'string', 'max:255'],
             'order' => ['integer'],
             'is_published' => ['boolean'],
+            'image' => ['nullable', 'image', 'max:4096'],
+            'image_url' => ['nullable', 'string', 'max:2048'],
         ]);
+
+        if ($portada = $this->resolveImage($request, null, 'stories')) {
+            $validated['cover_image'] = $portada;
+        }
+        unset($validated['image'], $validated['image_url']);
 
         Story::create($validated);
 
         return redirect()->route('admin.stories.index')
             ->with('success', 'Historia creada exitosamente.');
+    }
+
+    public function show(Story $story)
+    {
+        $story->load(['world', 'characters']);
+
+        return Inertia::render('Admin/Stories/Show', [
+            'story' => $story,
+        ]);
     }
 
     public function edit(Story $story)
@@ -80,7 +99,14 @@ class StoryController extends Controller
             'era' => ['nullable', 'string', 'max:255'],
             'order' => ['integer'],
             'is_published' => ['boolean'],
+            'image' => ['nullable', 'image', 'max:4096'],
+            'image_url' => ['nullable', 'string', 'max:2048'],
         ]);
+
+        if ($portada = $this->resolveImage($request, $story->cover_image, 'stories')) {
+            $validated['cover_image'] = $portada;
+        }
+        unset($validated['image'], $validated['image_url']);
 
         $story->update($validated);
 
@@ -90,6 +116,7 @@ class StoryController extends Controller
 
     public function destroy(Story $story)
     {
+        $this->deleteStoredImage($story->cover_image);
         $story->delete();
 
         return redirect()->route('admin.stories.index')

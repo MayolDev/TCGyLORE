@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Story extends Model
@@ -18,10 +19,25 @@ class Story extends Model
         'slug',
         'content',
         'category',
+        'cover_image',
         'era',
         'order',
         'is_published',
     ];
+
+    protected $appends = ['image_url'];
+
+    /** cover_image admite ruta de storage (subida) o URL externa. */
+    public function getImageUrlAttribute(): ?string
+    {
+        if (! $this->cover_image) {
+            return null;
+        }
+
+        return str_starts_with($this->cover_image, 'http')
+            ? $this->cover_image
+            : parse_url(Storage::disk('public')->url($this->cover_image), PHP_URL_PATH);
+    }
 
     protected function casts(): array
     {

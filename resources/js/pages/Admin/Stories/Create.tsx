@@ -9,6 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { BookText, Plus, X } from 'lucide-react';
 import RichTextEditor from '@/components/rich-text-editor';
+import EntityImageField from '@/components/entity-image-field';
 
 interface World {
     id: number;
@@ -32,11 +33,12 @@ export default function Create({ worlds }: Props) {
         content: '',
         category: '',
         image_url: '',
+        image: null as File | null,
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/admin/stories');
+        post('/admin/stories', { forceFormData: true });
     };
 
     const wordCount = data.content.trim().split(/\s+/).filter(Boolean).length;
@@ -120,17 +122,14 @@ export default function Create({ worlds }: Props) {
                                 <InputError message={errors.title} />
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="image_url">URL de Imagen (opcional)</Label>
-                                <Input
-                                    id="image_url"
-                                    type="text"
-                                    value={data.image_url}
-                                    onChange={(e) => setData('image_url', e.target.value)}
-                                    placeholder="https://example.com/image.jpg"
-                                />
-                                <InputError message={errors.image_url} />
-                            </div>
+                            <EntityImageField
+                                label="Portada (opcional)"
+                                urlValue={data.image_url}
+                                onFileChange={(f) => setData('image', f)}
+                                onUrlChange={(url) => setData('image_url', url)}
+                                errorImage={errors.image}
+                                errorUrl={errors.image_url}
+                            />
                         </CardContent>
                     </Card>
 

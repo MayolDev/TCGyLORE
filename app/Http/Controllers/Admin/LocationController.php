@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\ResolvesUploadedImage;
 use App\Http\Controllers\Controller;
 use App\Models\Location;
 use App\Models\World;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class LocationController extends Controller
 {
+    use ResolvesUploadedImage;
+
     public function index(Request $request)
     {
         $locations = Location::query()
@@ -28,18 +30,39 @@ class LocationController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        // El mapa ya no muestra ubicaciones: solo el mapa base de cada mundo.
         return Inertia::render('Admin/Locations/Index', [
             'locations' => $locations,
             'worlds' => World::all(['id', 'name', 'map_image']),
             'filters' => $request->only(['search', 'location_type', 'world_id']),
+            'mapLocations' => $this->mapLocations(),
         ]);
+    }
+
+    /**
+     * Pines para los mapas. Llevan world_id porque cada mundo tiene su propio
+     * mapa y solo se pintan las ubicaciones del mundo que se está viendo.
+     */
+    private function mapLocations()
+    {
+        return Location::whereNotNull('coordinate_x')
+            ->whereNotNull('coordinate_y')
+            ->get(['id', 'name', 'description', 'location_type', 'coordinate_x', 'coordinate_y', 'world_id'])
+            ->map(fn ($loc) => [
+                'id' => $loc->id,
+                'name' => $loc->name,
+                'description' => $loc->description,
+                'type' => $loc->location_type,
+                'coordinate_x' => $loc->coordinate_x,
+                'coordinate_y' => $loc->coordinate_y,
+                'world_id' => $loc->world_id,
+            ]);
     }
 
     public function create()
     {
         return Inertia::render('Admin/Locations/Create', [
             'worlds' => World::all(['id', 'name', 'map_image']),
+            'mapLocations' => $this->mapLocations(),
         ]);
     }
 
@@ -52,19 +75,31 @@ class LocationController extends Controller
             'location_type' => ['required', 'in:castle,city,village,forest,mountain,dungeon,ruins,battlefield,port,temple,cave,tower'],
             'coordinate_x' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
             'coordinate_y' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            'image' => ['nullable', 'image', 'max:4096'],
+            'image_url' => ['nullable', 'string', 'max:2048'],
             'is_discovered' => ['boolean'],
         ]);
 
-        // Manejar la carga de imagen
-        if ($request->hasFile('image')) {
-            $validated['image'] = Storage::disk('public')->putFile('locations', $request->file('image'));
+        if ($imagen = $this->resolveImage($request, null, 'locations')) {
+            $validated['image'] = $imagen;
+        } else {
+            unset($validated['image']);
         }
+        unset($validated['image_url']);
 
         Location::create($validated);
 
         return redirect()->route('admin.locations.index')
             ->with('success', 'Ubicación creada exitosamente.');
+    }
+
+    public function show(Location $location)
+    {
+        $location->load(['world', 'characters']);
+
+        return Inertia::render('Admin/Locations/Show', [
+            'location' => $location,
+        ]);
     }
 
     public function edit(Location $location)
@@ -74,6 +109,7 @@ class LocationController extends Controller
         return Inertia::render('Admin/Locations/Edit', [
             'location' => $location,
             'worlds' => World::all(['id', 'name', 'map_image']),
+            'mapLocations' => $this->mapLocations(),
         ]);
     }
 
@@ -86,18 +122,17 @@ class LocationController extends Controller
             'location_type' => ['required', 'in:castle,city,village,forest,mountain,dungeon,ruins,battlefield,port,temple,cave,tower'],
             'coordinate_x' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
             'coordinate_y' => ['nullable', 'numeric', 'between:-999999.99,999999.99'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            'image' => ['nullable', 'image', 'max:4096'],
+            'image_url' => ['nullable', 'string', 'max:2048'],
             'is_discovered' => ['boolean'],
         ]);
 
-        // Manejar la carga de imagen
-        if ($request->hasFile('image')) {
-            // Eliminar la imagen anterior si existe
-            if ($location->image) {
-                Storage::disk('public')->delete($location->image);
-            }
-            $validated['image'] = Storage::disk('public')->putFile('locations', $request->file('image'));
+        if ($imagen = $this->resolveImage($request, $location->image, 'locations')) {
+            $validated['image'] = $imagen;
+        } else {
+            unset($validated['image']);
         }
+        unset($validated['image_url']);
 
         $location->update($validated);
 
@@ -107,10 +142,7 @@ class LocationController extends Controller
 
     public function destroy(Location $location)
     {
-        // Eliminar la imagen si existe
-        if ($location->image) {
-            Storage::disk('public')->delete($location->image);
-        }
+        $this->deleteStoredImage($location->image);
 
         $location->delete();
 

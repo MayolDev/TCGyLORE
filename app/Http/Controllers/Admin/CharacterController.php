@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\ResolvesUploadedImage;
 use App\Http\Controllers\Controller;
 use App\Models\Character;
 use App\Models\Location;
@@ -12,6 +13,8 @@ use Inertia\Inertia;
 
 class CharacterController extends Controller
 {
+    use ResolvesUploadedImage;
+
     public function index(Request $request)
     {
         $characters = Character::query()
@@ -53,12 +56,20 @@ class CharacterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'biography' => ['nullable', 'string'],
             'spells' => ['nullable', 'string'],
-            'image_url' => ['nullable', 'string'],
+            'image' => ['nullable', 'image', 'max:4096'],
+            'image_url' => ['nullable', 'string', 'max:2048'],
             'location_ids' => ['nullable', 'array'],
             'location_ids.*' => ['exists:locations,id'],
             'story_ids' => ['nullable', 'array'],
             'story_ids.*' => ['exists:stories,id'],
         ]);
+
+        if ($retrato = $this->resolveImage($request, null, 'characters')) {
+            $validated['image'] = $retrato;
+        } else {
+            unset($validated['image']);
+        }
+        unset($validated['image_url']);
 
         $character = Character::create($validated);
 
@@ -72,6 +83,15 @@ class CharacterController extends Controller
 
         return redirect()->route('admin.characters.index')
             ->with('success', 'Personaje creado exitosamente.');
+    }
+
+    public function show(Character $character)
+    {
+        $character->load(['world', 'locations', 'stories']);
+
+        return Inertia::render('Admin/Characters/Show', [
+            'character' => $character,
+        ]);
     }
 
     public function edit(Character $character)
@@ -93,12 +113,20 @@ class CharacterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'biography' => ['nullable', 'string'],
             'spells' => ['nullable', 'string'],
-            'image_url' => ['nullable', 'string'],
+            'image' => ['nullable', 'image', 'max:4096'],
+            'image_url' => ['nullable', 'string', 'max:2048'],
             'location_ids' => ['nullable', 'array'],
             'location_ids.*' => ['exists:locations,id'],
             'story_ids' => ['nullable', 'array'],
             'story_ids.*' => ['exists:stories,id'],
         ]);
+
+        if ($retrato = $this->resolveImage($request, $character->image, 'characters')) {
+            $validated['image'] = $retrato;
+        } else {
+            unset($validated['image']);
+        }
+        unset($validated['image_url']);
 
         $character->update($validated);
 
@@ -120,6 +148,7 @@ class CharacterController extends Controller
 
     public function destroy(Character $character)
     {
+        $this->deleteStoredImage($character->image);
         $character->delete();
 
         return redirect()->route('admin.characters.index')

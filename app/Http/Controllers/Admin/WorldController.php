@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\ResolvesUploadedImage;
 use App\Http\Controllers\Controller;
 use App\Models\World;
 use Illuminate\Http\Request;
@@ -10,6 +11,8 @@ use Inertia\Inertia;
 
 class WorldController extends Controller
 {
+    use ResolvesUploadedImage;
+
     public function index(Request $request)
     {
         $worlds = World::query()
@@ -37,10 +40,16 @@ class WorldController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'banner_image' => ['nullable', 'string'],
+            'image' => ['nullable', 'image', 'max:4096'],
+            'image_url' => ['nullable', 'string', 'max:2048'],
             'map_image' => ['nullable', 'image', 'max:8192'],
             'is_active' => ['boolean'],
         ]);
+
+        if ($banner = $this->resolveImage($request, null, 'worlds')) {
+            $validated['banner_image'] = $banner;
+        }
+        unset($validated['image'], $validated['image_url']);
 
         if ($request->hasFile('map_image')) {
             $validated['map_image'] = Storage::disk('public')->putFile('worlds', $request->file('map_image'));
@@ -52,6 +61,15 @@ class WorldController extends Controller
 
         return redirect()->route('admin.worlds.index')
             ->with('success', 'Mundo creado exitosamente.');
+    }
+
+    public function show(World $world)
+    {
+        $world->loadCount(['stories', 'characters', 'locations', 'cards']);
+
+        return Inertia::render('Admin/Worlds/Show', [
+            'world' => $world,
+        ]);
     }
 
     public function edit(World $world)
@@ -66,10 +84,16 @@ class WorldController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'banner_image' => ['nullable', 'string'],
+            'image' => ['nullable', 'image', 'max:4096'],
+            'image_url' => ['nullable', 'string', 'max:2048'],
             'map_image' => ['nullable', 'image', 'max:8192'],
             'is_active' => ['boolean'],
         ]);
+
+        if ($banner = $this->resolveImage($request, $world->banner_image, 'worlds')) {
+            $validated['banner_image'] = $banner;
+        }
+        unset($validated['image'], $validated['image_url']);
 
         // Solo tocar el mapa si llega fichero nuevo; si no, conservar el actual.
         if ($request->hasFile('map_image')) {
@@ -92,6 +116,7 @@ class WorldController extends Controller
         if ($world->map_image) {
             Storage::disk('public')->delete($world->map_image);
         }
+        $this->deleteStoredImage($world->banner_image);
 
         $world->delete();
 

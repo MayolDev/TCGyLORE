@@ -74,6 +74,15 @@ class TimelineEventController extends Controller
             ->with('success', 'Evento creado exitosamente.');
     }
 
+    public function show(TimelineEvent $timelineEvent)
+    {
+        $timelineEvent->load(['world', 'characters', 'locations']);
+
+        return Inertia::render('Admin/TimelineEvents/Show', [
+            'event' => $timelineEvent,
+        ]);
+    }
+
     public function edit(TimelineEvent $timelineEvent)
     {
         $timelineEvent->load(['world', 'characters', 'locations']);

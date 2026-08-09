@@ -9,6 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Users, Plus, X, Sparkles, MapPin, BookText } from 'lucide-react';
 import RichTextEditor from '@/components/rich-text-editor';
+import EntityImageField from '@/components/entity-image-field';
 
 interface World {
     id: number;
@@ -44,13 +45,14 @@ export default function Create({ worlds, locations, stories }: Props) {
         biography: '',
         spells: '',
         image_url: '',
+        image: null as File | null,
         location_ids: [] as string[],
         story_ids: [] as string[],
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/admin/characters');
+        post('/admin/characters', { forceFormData: true });
     };
 
     const wordCount = data.biography.trim().split(/\s+/).filter(Boolean).length;
@@ -123,17 +125,14 @@ export default function Create({ worlds, locations, stories }: Props) {
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="image_url">URL de Imagen (opcional)</Label>
-                                <Input
-                                    id="image_url"
-                                    type="text"
-                                    value={data.image_url}
-                                    onChange={(e) => setData('image_url', e.target.value)}
-                                    placeholder="https://example.com/character.jpg"
-                                />
-                                <InputError message={errors.image_url} />
-                            </div>
+                            <EntityImageField
+                                label="Retrato (opcional)"
+                                urlValue={data.image_url}
+                                onFileChange={(f) => setData('image', f)}
+                                onUrlChange={(url) => setData('image_url', url)}
+                                errorImage={errors.image}
+                                errorUrl={errors.image_url}
+                            />
                         </CardContent>
                     </Card>
 

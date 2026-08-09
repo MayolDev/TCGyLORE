@@ -9,7 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { MapPin, Plus, X } from 'lucide-react';
 import MapView, { LOCATION_TYPES } from '@/components/map-view';
-import ImageUpload from '@/components/image-upload';
+import EntityImageField from '@/components/entity-image-field';
 import RichTextEditor from '@/components/rich-text-editor';
 
 interface World {
@@ -18,8 +18,19 @@ interface World {
     map_image_url: string;
 }
 
+interface MapLocation {
+    id: number;
+    name: string;
+    description?: string;
+    type: string;
+    coordinate_x: number;
+    coordinate_y: number;
+    world_id: number;
+}
+
 interface Props {
     worlds: World[];
+    mapLocations?: MapLocation[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -28,7 +39,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Crear' },
 ];
 
-export default function Create({ worlds }: Props) {
+export default function Create({ worlds, mapLocations = [] }: Props) {
     const { data, setData, post, processing, errors } = useForm({
         world_id: '',
         name: '',
@@ -36,6 +47,7 @@ export default function Create({ worlds }: Props) {
         coordinate_x: '',
         coordinate_y: '',
         image: null as File | null,
+        image_url: '',
         location_type: 'city',
     });
 
@@ -115,17 +127,14 @@ export default function Create({ worlds }: Props) {
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="image">Imagen de la Ubicación (opcional)</Label>
-                                <ImageUpload
-                                    value={data.image}
-                                    onChange={(file) => setData('image', file)}
-                                    error={errors.image}
-                                />
-                                <p className="text-xs text-yellow-300/60 font-semibold">
-                                    📸 Sube una imagen para visualizar esta ubicación (máx. 2MB)
-                                </p>
-                            </div>
+                            <EntityImageField
+                                label="Imagen de la Ubicación (opcional)"
+                                urlValue={data.image_url}
+                                onFileChange={(f) => setData('image', f)}
+                                onUrlChange={(url) => setData('image_url', url)}
+                                errorImage={errors.image}
+                                errorUrl={errors.image_url}
+                            />
 
                             <div className="space-y-2">
                                 <Label htmlFor="location_type">Tipo de Ubicación *</Label>
@@ -200,6 +209,7 @@ export default function Create({ worlds }: Props) {
                         <CardContent>
                             <MapView
                                 mapUrl={worlds.find((w) => w.id.toString() === data.world_id)?.map_image_url}
+                                locations={mapLocations.filter((l) => l.world_id.toString() === data.world_id)}
                                 zoom={0}
                                 allowClick={true}
                                 onMapClick={(y, x) => {

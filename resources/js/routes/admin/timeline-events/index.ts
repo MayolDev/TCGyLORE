@@ -212,7 +212,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::show
- * @see app/Http/Controllers/Admin/TimelineEventController.php:0
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:77
  * @route '/admin/timeline-events/{timeline_event}'
  */
 export const show = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -227,7 +227,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::show
- * @see app/Http/Controllers/Admin/TimelineEventController.php:0
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:77
  * @route '/admin/timeline-events/{timeline_event}'
  */
 show.url = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -255,7 +255,7 @@ show.url = (args: { timeline_event: string | number } | [timeline_event: string 
 
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::show
- * @see app/Http/Controllers/Admin/TimelineEventController.php:0
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:77
  * @route '/admin/timeline-events/{timeline_event}'
  */
 show.get = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -264,7 +264,7 @@ show.get = (args: { timeline_event: string | number } | [timeline_event: string 
 })
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::show
- * @see app/Http/Controllers/Admin/TimelineEventController.php:0
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:77
  * @route '/admin/timeline-events/{timeline_event}'
  */
 show.head = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -274,7 +274,7 @@ show.head = (args: { timeline_event: string | number } | [timeline_event: string
 
     /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::show
- * @see app/Http/Controllers/Admin/TimelineEventController.php:0
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:77
  * @route '/admin/timeline-events/{timeline_event}'
  */
     const showForm = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -284,7 +284,7 @@ show.head = (args: { timeline_event: string | number } | [timeline_event: string
 
             /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::show
- * @see app/Http/Controllers/Admin/TimelineEventController.php:0
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:77
  * @route '/admin/timeline-events/{timeline_event}'
  */
         showForm.get = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -293,7 +293,7 @@ show.head = (args: { timeline_event: string | number } | [timeline_event: string
         })
             /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::show
- * @see app/Http/Controllers/Admin/TimelineEventController.php:0
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:77
  * @route '/admin/timeline-events/{timeline_event}'
  */
         showForm.head = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -309,7 +309,7 @@ show.head = (args: { timeline_event: string | number } | [timeline_event: string
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::edit
- * @see app/Http/Controllers/Admin/TimelineEventController.php:77
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:86
  * @route '/admin/timeline-events/{timeline_event}/edit'
  */
 export const edit = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -324,7 +324,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::edit
- * @see app/Http/Controllers/Admin/TimelineEventController.php:77
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:86
  * @route '/admin/timeline-events/{timeline_event}/edit'
  */
 edit.url = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -352,7 +352,7 @@ edit.url = (args: { timeline_event: string | number } | [timeline_event: string 
 
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::edit
- * @see app/Http/Controllers/Admin/TimelineEventController.php:77
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:86
  * @route '/admin/timeline-events/{timeline_event}/edit'
  */
 edit.get = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -361,7 +361,7 @@ edit.get = (args: { timeline_event: string | number } | [timeline_event: string 
 })
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::edit
- * @see app/Http/Controllers/Admin/TimelineEventController.php:77
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:86
  * @route '/admin/timeline-events/{timeline_event}/edit'
  */
 edit.head = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -371,7 +371,7 @@ edit.head = (args: { timeline_event: string | number } | [timeline_event: string
 
     /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::edit
- * @see app/Http/Controllers/Admin/TimelineEventController.php:77
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:86
  * @route '/admin/timeline-events/{timeline_event}/edit'
  */
     const editForm = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -381,7 +381,7 @@ edit.head = (args: { timeline_event: string | number } | [timeline_event: string
 
             /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::edit
- * @see app/Http/Controllers/Admin/TimelineEventController.php:77
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:86
  * @route '/admin/timeline-events/{timeline_event}/edit'
  */
         editForm.get = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -390,7 +390,7 @@ edit.head = (args: { timeline_event: string | number } | [timeline_event: string
         })
             /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::edit
- * @see app/Http/Controllers/Admin/TimelineEventController.php:77
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:86
  * @route '/admin/timeline-events/{timeline_event}/edit'
  */
         editForm.head = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -406,7 +406,7 @@ edit.head = (args: { timeline_event: string | number } | [timeline_event: string
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::update
- * @see app/Http/Controllers/Admin/TimelineEventController.php:89
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:98
  * @route '/admin/timeline-events/{timeline_event}'
  */
 export const update = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -421,7 +421,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::update
- * @see app/Http/Controllers/Admin/TimelineEventController.php:89
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:98
  * @route '/admin/timeline-events/{timeline_event}'
  */
 update.url = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -449,7 +449,7 @@ update.url = (args: { timeline_event: string | number } | [timeline_event: strin
 
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::update
- * @see app/Http/Controllers/Admin/TimelineEventController.php:89
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:98
  * @route '/admin/timeline-events/{timeline_event}'
  */
 update.put = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -458,7 +458,7 @@ update.put = (args: { timeline_event: string | number } | [timeline_event: strin
 })
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::update
- * @see app/Http/Controllers/Admin/TimelineEventController.php:89
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:98
  * @route '/admin/timeline-events/{timeline_event}'
  */
 update.patch = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -468,7 +468,7 @@ update.patch = (args: { timeline_event: string | number } | [timeline_event: str
 
     /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::update
- * @see app/Http/Controllers/Admin/TimelineEventController.php:89
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:98
  * @route '/admin/timeline-events/{timeline_event}'
  */
     const updateForm = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -483,7 +483,7 @@ update.patch = (args: { timeline_event: string | number } | [timeline_event: str
 
             /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::update
- * @see app/Http/Controllers/Admin/TimelineEventController.php:89
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:98
  * @route '/admin/timeline-events/{timeline_event}'
  */
         updateForm.put = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -497,7 +497,7 @@ update.patch = (args: { timeline_event: string | number } | [timeline_event: str
         })
             /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::update
- * @see app/Http/Controllers/Admin/TimelineEventController.php:89
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:98
  * @route '/admin/timeline-events/{timeline_event}'
  */
         updateForm.patch = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -513,7 +513,7 @@ update.patch = (args: { timeline_event: string | number } | [timeline_event: str
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::destroy
- * @see app/Http/Controllers/Admin/TimelineEventController.php:118
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:127
  * @route '/admin/timeline-events/{timeline_event}'
  */
 export const destroy = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -528,7 +528,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::destroy
- * @see app/Http/Controllers/Admin/TimelineEventController.php:118
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:127
  * @route '/admin/timeline-events/{timeline_event}'
  */
 destroy.url = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -556,7 +556,7 @@ destroy.url = (args: { timeline_event: string | number } | [timeline_event: stri
 
 /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::destroy
- * @see app/Http/Controllers/Admin/TimelineEventController.php:118
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:127
  * @route '/admin/timeline-events/{timeline_event}'
  */
 destroy.delete = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -566,7 +566,7 @@ destroy.delete = (args: { timeline_event: string | number } | [timeline_event: s
 
     /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::destroy
- * @see app/Http/Controllers/Admin/TimelineEventController.php:118
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:127
  * @route '/admin/timeline-events/{timeline_event}'
  */
     const destroyForm = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -581,7 +581,7 @@ destroy.delete = (args: { timeline_event: string | number } | [timeline_event: s
 
             /**
 * @see \App\Http\Controllers\Admin\TimelineEventController::destroy
- * @see app/Http/Controllers/Admin/TimelineEventController.php:118
+ * @see app/Http/Controllers/Admin/TimelineEventController.php:127
  * @route '/admin/timeline-events/{timeline_event}'
  */
         destroyForm.delete = (args: { timeline_event: string | number } | [timeline_event: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

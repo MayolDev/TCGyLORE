@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Character extends Model
 {
@@ -22,6 +23,20 @@ class Character extends Model
         'faction',
         'alignment',
     ];
+
+    protected $appends = ['image_url'];
+
+    /** image admite ruta de storage (subida) o URL externa. */
+    public function getImageUrlAttribute(): ?string
+    {
+        if (! $this->image) {
+            return null;
+        }
+
+        return str_starts_with($this->image, 'http')
+            ? $this->image
+            : parse_url(Storage::disk('public')->url($this->image), PHP_URL_PATH);
+    }
 
     public function world(): BelongsTo
     {

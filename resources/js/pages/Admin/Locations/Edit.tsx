@@ -9,7 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { MapPin, Save, X } from 'lucide-react';
 import MapView, { LOCATION_TYPES } from '@/components/map-view';
-import ImageUpload from '@/components/image-upload';
+import EntityImageField from '@/components/entity-image-field';
 import { useMemo } from 'react';
 import RichTextEditor from '@/components/rich-text-editor';
 
@@ -17,6 +17,16 @@ interface World {
     id: number;
     name: string;
     map_image_url: string;
+}
+
+interface MapLocation {
+    id: number;
+    name: string;
+    description?: string;
+    type: string;
+    coordinate_x: number;
+    coordinate_y: number;
+    world_id: number;
 }
 
 interface Location {
@@ -28,11 +38,13 @@ interface Location {
     coordinate_y: number | null;
     location_type: string;
     image: string | null;
+    image_url: string | null;
 }
 
 interface Props {
     location: Location;
     worlds: World[];
+    mapLocations?: MapLocation[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -41,7 +53,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Editar' },
 ];
 
-export default function Edit({ location, worlds }: Props) {
+export default function Edit({ location, worlds, mapLocations = [] }: Props) {
     const { data, setData, post, processing, errors } = useForm<{
         world_id: string;
         name: string;
@@ -49,6 +61,7 @@ export default function Edit({ location, worlds }: Props) {
         coordinate_x: string;
         coordinate_y: string;
         image: File | null;
+        image_url: string;
         location_type: string;
         _method: string;
     }>({
@@ -58,6 +71,8 @@ export default function Edit({ location, worlds }: Props) {
         coordinate_x: location.coordinate_x?.toString() || '',
         coordinate_y: location.coordinate_y?.toString() || '',
         image: null,
+        // Solo precargar URLs externas: un /storage/... es fichero nuestro y no debe reenviarse
+        image_url: location.image_url?.startsWith('http') ? location.image_url : '',
         location_type: location.location_type || 'city',
         _method: 'PUT',
     });
@@ -150,18 +165,15 @@ export default function Edit({ location, worlds }: Props) {
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="image">Imagen de la Ubicación (opcional)</Label>
-                                <ImageUpload
-                                    value={data.image}
-                                    onChange={(file) => setData('image', file)}
-                                    existingImage={location.image ? `/storage/${location.image}` : undefined}
-                                    error={errors.image}
-                                />
-                                <p className="text-xs text-yellow-300/60 font-semibold">
-                                    📸 Sube una imagen para visualizar esta ubicación (máx. 2MB)
-                                </p>
-                            </div>
+                            <EntityImageField
+                                label="Imagen de la Ubicación (opcional)"
+                                current={location.image_url}
+                                urlValue={data.image_url}
+                                onFileChange={(f) => setData('image', f)}
+                                onUrlChange={(url) => setData('image_url', url)}
+                                errorImage={errors.image}
+                                errorUrl={errors.image_url}
+                            />
 
                             <div className="space-y-2">
                                 <Label htmlFor="location_type">Tipo de Ubicación *</Label>
@@ -234,6 +246,7 @@ export default function Edit({ location, worlds }: Props) {
                         <CardContent>
                             <MapView
                                 mapUrl={worlds.find((w) => w.id.toString() === data.world_id)?.map_image_url}
+                                locations={mapLocations.filter((l) => l.world_id.toString() === data.world_id)}
                                 center={data.coordinate_x && data.coordinate_y ? [parseFloat(data.coordinate_y), parseFloat(data.coordinate_x)] : undefined}
                                 zoom={data.coordinate_x && data.coordinate_y ? 1 : 0}
                                 allowClick={true}
