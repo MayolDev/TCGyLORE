@@ -72,7 +72,7 @@ workshop.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     workshop.form = workshopForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::index
- * @see app/Http/Controllers/Admin/CardController.php:22
+ * @see app/Http/Controllers/Admin/CardController.php:23
  * @route '/admin/cards'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -87,7 +87,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::index
- * @see app/Http/Controllers/Admin/CardController.php:22
+ * @see app/Http/Controllers/Admin/CardController.php:23
  * @route '/admin/cards'
  */
 index.url = (options?: RouteQueryOptions) => {
@@ -96,7 +96,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::index
- * @see app/Http/Controllers/Admin/CardController.php:22
+ * @see app/Http/Controllers/Admin/CardController.php:23
  * @route '/admin/cards'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -105,7 +105,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Admin\CardController::index
- * @see app/Http/Controllers/Admin/CardController.php:22
+ * @see app/Http/Controllers/Admin/CardController.php:23
  * @route '/admin/cards'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -115,7 +115,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\CardController::index
- * @see app/Http/Controllers/Admin/CardController.php:22
+ * @see app/Http/Controllers/Admin/CardController.php:23
  * @route '/admin/cards'
  */
     const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -125,7 +125,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\CardController::index
- * @see app/Http/Controllers/Admin/CardController.php:22
+ * @see app/Http/Controllers/Admin/CardController.php:23
  * @route '/admin/cards'
  */
         indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -134,7 +134,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Admin\CardController::index
- * @see app/Http/Controllers/Admin/CardController.php:22
+ * @see app/Http/Controllers/Admin/CardController.php:23
  * @route '/admin/cards'
  */
         indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -150,7 +150,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::create
- * @see app/Http/Controllers/Admin/CardController.php:52
+ * @see app/Http/Controllers/Admin/CardController.php:53
  * @route '/admin/cards/create'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -165,7 +165,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::create
- * @see app/Http/Controllers/Admin/CardController.php:52
+ * @see app/Http/Controllers/Admin/CardController.php:53
  * @route '/admin/cards/create'
  */
 create.url = (options?: RouteQueryOptions) => {
@@ -174,7 +174,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::create
- * @see app/Http/Controllers/Admin/CardController.php:52
+ * @see app/Http/Controllers/Admin/CardController.php:53
  * @route '/admin/cards/create'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -183,7 +183,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Admin\CardController::create
- * @see app/Http/Controllers/Admin/CardController.php:52
+ * @see app/Http/Controllers/Admin/CardController.php:53
  * @route '/admin/cards/create'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -193,7 +193,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\CardController::create
- * @see app/Http/Controllers/Admin/CardController.php:52
+ * @see app/Http/Controllers/Admin/CardController.php:53
  * @route '/admin/cards/create'
  */
     const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -203,7 +203,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\CardController::create
- * @see app/Http/Controllers/Admin/CardController.php:52
+ * @see app/Http/Controllers/Admin/CardController.php:53
  * @route '/admin/cards/create'
  */
         createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -212,7 +212,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Admin\CardController::create
- * @see app/Http/Controllers/Admin/CardController.php:52
+ * @see app/Http/Controllers/Admin/CardController.php:53
  * @route '/admin/cards/create'
  */
         createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -228,7 +228,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::store
- * @see app/Http/Controllers/Admin/CardController.php:67
+ * @see app/Http/Controllers/Admin/CardController.php:59
  * @route '/admin/cards'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -243,7 +243,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::store
- * @see app/Http/Controllers/Admin/CardController.php:67
+ * @see app/Http/Controllers/Admin/CardController.php:59
  * @route '/admin/cards'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -252,7 +252,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::store
- * @see app/Http/Controllers/Admin/CardController.php:67
+ * @see app/Http/Controllers/Admin/CardController.php:59
  * @route '/admin/cards'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -262,7 +262,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\CardController::store
- * @see app/Http/Controllers/Admin/CardController.php:67
+ * @see app/Http/Controllers/Admin/CardController.php:59
  * @route '/admin/cards'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -272,7 +272,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\CardController::store
- * @see app/Http/Controllers/Admin/CardController.php:67
+ * @see app/Http/Controllers/Admin/CardController.php:59
  * @route '/admin/cards'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -380,7 +380,7 @@ show.head = (args: { card: string | number } | [card: string | number ] | string
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::edit
- * @see app/Http/Controllers/Admin/CardController.php:104
+ * @see app/Http/Controllers/Admin/CardController.php:97
  * @route '/admin/cards/{card}/edit'
  */
 export const edit = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -395,7 +395,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::edit
- * @see app/Http/Controllers/Admin/CardController.php:104
+ * @see app/Http/Controllers/Admin/CardController.php:97
  * @route '/admin/cards/{card}/edit'
  */
 edit.url = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -428,7 +428,7 @@ edit.url = (args: { card: number | { id: number } } | [card: number | { id: numb
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::edit
- * @see app/Http/Controllers/Admin/CardController.php:104
+ * @see app/Http/Controllers/Admin/CardController.php:97
  * @route '/admin/cards/{card}/edit'
  */
 edit.get = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -437,7 +437,7 @@ edit.get = (args: { card: number | { id: number } } | [card: number | { id: numb
 })
 /**
 * @see \App\Http\Controllers\Admin\CardController::edit
- * @see app/Http/Controllers/Admin/CardController.php:104
+ * @see app/Http/Controllers/Admin/CardController.php:97
  * @route '/admin/cards/{card}/edit'
  */
 edit.head = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -447,7 +447,7 @@ edit.head = (args: { card: number | { id: number } } | [card: number | { id: num
 
     /**
 * @see \App\Http\Controllers\Admin\CardController::edit
- * @see app/Http/Controllers/Admin/CardController.php:104
+ * @see app/Http/Controllers/Admin/CardController.php:97
  * @route '/admin/cards/{card}/edit'
  */
     const editForm = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -457,7 +457,7 @@ edit.head = (args: { card: number | { id: number } } | [card: number | { id: num
 
             /**
 * @see \App\Http\Controllers\Admin\CardController::edit
- * @see app/Http/Controllers/Admin/CardController.php:104
+ * @see app/Http/Controllers/Admin/CardController.php:97
  * @route '/admin/cards/{card}/edit'
  */
         editForm.get = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -466,7 +466,7 @@ edit.head = (args: { card: number | { id: number } } | [card: number | { id: num
         })
             /**
 * @see \App\Http\Controllers\Admin\CardController::edit
- * @see app/Http/Controllers/Admin/CardController.php:104
+ * @see app/Http/Controllers/Admin/CardController.php:97
  * @route '/admin/cards/{card}/edit'
  */
         editForm.head = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -482,7 +482,7 @@ edit.head = (args: { card: number | { id: number } } | [card: number | { id: num
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::update
- * @see app/Http/Controllers/Admin/CardController.php:122
+ * @see app/Http/Controllers/Admin/CardController.php:115
  * @route '/admin/cards/{card}'
  */
 export const update = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -497,7 +497,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::update
- * @see app/Http/Controllers/Admin/CardController.php:122
+ * @see app/Http/Controllers/Admin/CardController.php:115
  * @route '/admin/cards/{card}'
  */
 update.url = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -530,7 +530,7 @@ update.url = (args: { card: number | { id: number } } | [card: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::update
- * @see app/Http/Controllers/Admin/CardController.php:122
+ * @see app/Http/Controllers/Admin/CardController.php:115
  * @route '/admin/cards/{card}'
  */
 update.put = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -539,7 +539,7 @@ update.put = (args: { card: number | { id: number } } | [card: number | { id: nu
 })
 /**
 * @see \App\Http\Controllers\Admin\CardController::update
- * @see app/Http/Controllers/Admin/CardController.php:122
+ * @see app/Http/Controllers/Admin/CardController.php:115
  * @route '/admin/cards/{card}'
  */
 update.patch = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -549,7 +549,7 @@ update.patch = (args: { card: number | { id: number } } | [card: number | { id: 
 
     /**
 * @see \App\Http\Controllers\Admin\CardController::update
- * @see app/Http/Controllers/Admin/CardController.php:122
+ * @see app/Http/Controllers/Admin/CardController.php:115
  * @route '/admin/cards/{card}'
  */
     const updateForm = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -564,7 +564,7 @@ update.patch = (args: { card: number | { id: number } } | [card: number | { id: 
 
             /**
 * @see \App\Http\Controllers\Admin\CardController::update
- * @see app/Http/Controllers/Admin/CardController.php:122
+ * @see app/Http/Controllers/Admin/CardController.php:115
  * @route '/admin/cards/{card}'
  */
         updateForm.put = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -578,7 +578,7 @@ update.patch = (args: { card: number | { id: number } } | [card: number | { id: 
         })
             /**
 * @see \App\Http\Controllers\Admin\CardController::update
- * @see app/Http/Controllers/Admin/CardController.php:122
+ * @see app/Http/Controllers/Admin/CardController.php:115
  * @route '/admin/cards/{card}'
  */
         updateForm.patch = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -594,7 +594,7 @@ update.patch = (args: { card: number | { id: number } } | [card: number | { id: 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::destroy
- * @see app/Http/Controllers/Admin/CardController.php:170
+ * @see app/Http/Controllers/Admin/CardController.php:175
  * @route '/admin/cards/{card}'
  */
 export const destroy = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -609,7 +609,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::destroy
- * @see app/Http/Controllers/Admin/CardController.php:170
+ * @see app/Http/Controllers/Admin/CardController.php:175
  * @route '/admin/cards/{card}'
  */
 destroy.url = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -642,7 +642,7 @@ destroy.url = (args: { card: number | { id: number } } | [card: number | { id: n
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::destroy
- * @see app/Http/Controllers/Admin/CardController.php:170
+ * @see app/Http/Controllers/Admin/CardController.php:175
  * @route '/admin/cards/{card}'
  */
 destroy.delete = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -652,7 +652,7 @@ destroy.delete = (args: { card: number | { id: number } } | [card: number | { id
 
     /**
 * @see \App\Http\Controllers\Admin\CardController::destroy
- * @see app/Http/Controllers/Admin/CardController.php:170
+ * @see app/Http/Controllers/Admin/CardController.php:175
  * @route '/admin/cards/{card}'
  */
     const destroyForm = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -667,7 +667,7 @@ destroy.delete = (args: { card: number | { id: number } } | [card: number | { id
 
             /**
 * @see \App\Http\Controllers\Admin\CardController::destroy
- * @see app/Http/Controllers/Admin/CardController.php:170
+ * @see app/Http/Controllers/Admin/CardController.php:175
  * @route '/admin/cards/{card}'
  */
         destroyForm.delete = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

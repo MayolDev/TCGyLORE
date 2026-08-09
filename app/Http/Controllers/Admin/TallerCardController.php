@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Alignment;
 use App\Models\Card;
+use App\Models\CardLog;
 use App\Models\CardType;
 use App\Models\Rarity;
 use App\Models\World;
@@ -81,8 +82,22 @@ class TallerCardController extends Controller
                 'rarity_id' => Rarity::where('name', 'Común')->value('id') ?? Rarity::query()->value('id'),
                 'alignment_id' => Alignment::query()->value('id'),
             ]);
+            CardLog::apuntar($card, 'creada', 'taller');
         } else {
+            // Diff legible campo a campo para el historial
+            $antes = $card->only(['name', 'cost', 'effect', 'flavor_text', 'card_type_id']);
             $card->update($atributos);
+            $cambios = [];
+            foreach (['name' => 'nombre', 'cost' => 'coste', 'effect' => 'efecto', 'flavor_text' => 'cita'] as $campo => $etiqueta) {
+                if ((string) $antes[$campo] !== (string) $card->{$campo}) {
+                    $cambios[$etiqueta] = ['de' => $antes[$campo], 'a' => $card->{$campo}];
+                }
+            }
+            if ($antes['card_type_id'] !== $card->card_type_id) {
+                $cambios['tipo'] = ['de' => CardType::find($antes['card_type_id'])?->name, 'a' => $tipo->name];
+            }
+            $cambios['render'] = 'regenerado';
+            CardLog::apuntar($card, 'actualizada', 'taller', $cambios);
         }
 
         if ($request->hasFile('art')) {

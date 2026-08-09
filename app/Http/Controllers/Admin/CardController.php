@@ -7,6 +7,7 @@ use App\Models\Alignment;
 use App\Models\Archetype;
 use App\Models\Artist;
 use App\Models\Card;
+use App\Models\CardLog;
 use App\Models\CardType;
 use App\Models\Character;
 use App\Models\Edition;
@@ -51,17 +52,8 @@ class CardController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/Cards/Create', [
-            'worlds' => World::all(['id', 'name']),
-            'characters' => Character::all(['id', 'name']),
-            'cardTypes' => CardType::all(['id', 'name']),
-            'rarities' => Rarity::all(['id', 'name']),
-            'archetypes' => Archetype::all(['id', 'name']),
-            'alignments' => Alignment::all(['id', 'name']),
-            'factions' => Faction::all(['id', 'name']),
-            'editions' => Edition::all(['id', 'name']),
-            'artists' => Artist::all(['id', 'name']),
-        ]);
+        // Las cartas se crean en el Taller: es la mesa de trabajo.
+        return redirect()->route('admin.cards.workshop');
     }
 
     public function store(Request $request)
@@ -95,7 +87,8 @@ class CardController extends Controller
             $validated['illustration'] = $request->file('illustration')->store('cards', 'public');
         }
 
-        Card::create($validated);
+        $card = Card::create($validated);
+        CardLog::apuntar($card, 'creada', 'web');
 
         return redirect()->route('admin.cards.index')
             ->with('success', 'Carta creada exitosamente.');
@@ -103,7 +96,7 @@ class CardController extends Controller
 
     public function edit(Card $card)
     {
-        $card->load(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist']);
+        $card->load(['world', 'character', 'cardType', 'rarity', 'archetype', 'alignment', 'faction', 'edition', 'artist', 'logs']);
 
         return Inertia::render('Admin/Cards/Edit', [
             'card' => $card,
@@ -161,7 +154,19 @@ class CardController extends Controller
             $validated['illustration'] = $request->file('illustration')->store('cards', 'public');
         }
 
+        // Diff campo a campo para el historial, con valores antiguos
+        $antes = $card->getOriginal();
         $card->update($validated);
+        $cambios = [];
+        foreach ($card->getChanges() as $campo => $nuevo) {
+            if ($campo === 'updated_at') {
+                continue;
+            }
+            $cambios[$campo] = ['de' => $antes[$campo] ?? null, 'a' => $nuevo];
+        }
+        if ($cambios) {
+            CardLog::apuntar($card, 'actualizada', 'web', $cambios);
+        }
 
         return redirect()->route('admin.cards.index')
             ->with('success', 'Carta actualizada exitosamente.');
@@ -176,6 +181,8 @@ class CardController extends Controller
         // Y la ilustración fuente del taller, si la hay
         Storage::disk('public')->delete("cards-art/{$card->id}.png");
 
+        // El registro sobrevive: card_id se anula al borrar (nullOnDelete)
+        CardLog::apuntar($card, 'eliminada', 'web');
         $card->delete();
 
         return redirect()->route('admin.cards.index')

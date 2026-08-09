@@ -1,6 +1,6 @@
 import '../css/app.css';
 
-import { createInertiaApp } from '@inertiajs/react';
+import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -32,3 +32,16 @@ createInertiaApp({
 
 // This will set light / dark mode on load...
 initializeTheme();
+
+// Inertia restaura las páginas del historial SIN pedir al servidor: tras
+// borrar una carta y volver «atrás», el listado enseñaba los datos viejos
+// como fantasmas. En un panel de datos vivos, volver atrás debe re-pedir.
+window.addEventListener('popstate', () => {
+    setTimeout(() => router.reload(), 0);
+});
+// Lo mismo si el navegador resucita la página desde la bfcache
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        router.reload();
+    }
+});

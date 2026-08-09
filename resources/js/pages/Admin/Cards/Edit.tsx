@@ -25,6 +25,14 @@ interface Taxonomy {
     name: string;
 }
 
+interface CardLogEntry {
+    id: number;
+    action: string;
+    source: string;
+    changes: Record<string, { de: unknown; a: unknown } | string> | null;
+    created_at: string;
+}
+
 interface CardData {
     id: number;
     world_id: number;
@@ -50,6 +58,7 @@ interface CardData {
     defense: number | null;
     magic_defense: number | null;
     health: number | null;
+    logs?: CardLogEntry[];
 }
 
 interface Props {
@@ -70,6 +79,48 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Biblioteca', href: '/admin/cards' },
     { title: 'Editar carta' },
 ];
+
+const ACCION_ICONO: Record<string, string> = { creada: '✨', actualizada: '✏️', eliminada: '🗑️' };
+
+/** Historial de cambios de la carta: qué se tocó, cuándo y desde dónde. */
+function HistorialCarta({ logs }: { logs?: CardLogEntry[] }) {
+    if (!logs || logs.length === 0) return null;
+
+    return (
+        <div className="overflow-hidden rounded-lg border border-yellow-500/25 bg-slate-900/70">
+            <p className="border-b border-yellow-500/20 bg-slate-900 px-4 py-2.5 text-sm font-black text-yellow-200" style={{ fontFamily: 'Cinzel, serif' }}>
+                📜 Historial de cambios
+            </p>
+            <ul className="max-h-72 divide-y divide-slate-800 overflow-y-auto">
+                {logs.map((log) => (
+                    <li key={log.id} className="px-4 py-2.5 text-sm">
+                        <div className="flex items-center justify-between gap-2">
+                            <span className="font-bold text-yellow-100">
+                                {ACCION_ICONO[log.action] ?? '•'} {log.action.charAt(0).toUpperCase() + log.action.slice(1)}
+                                <span className="ml-1.5 text-xs font-semibold text-yellow-200/50">desde el {log.source}</span>
+                            </span>
+                            <span className="shrink-0 text-xs text-yellow-200/50">
+                                {new Date(log.created_at).toLocaleString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                        </div>
+                        {log.changes && (
+                            <ul className="mt-1 space-y-0.5">
+                                {Object.entries(log.changes).map(([campo, cambio]) => (
+                                    <li key={campo} className="text-xs text-yellow-200/70">
+                                        <span className="font-semibold text-yellow-200/90">{campo}</span>
+                                        {typeof cambio === 'string'
+                                            ? `: ${cambio}`
+                                            : <>: <span className="text-red-300/80 line-through">{String(cambio.de ?? '—')}</span> → <span className="text-green-300/90">{String(cambio.a ?? '—')}</span></>}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
 
 /** Panel plegable con la voz visual del taller: cabecera dorada, cuerpo oscuro. */
 function Seccion({ titulo, abierta = false, children }: { titulo: string; abierta?: boolean; children: React.ReactNode }) {
@@ -217,6 +268,7 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
                                 Eliminar
                             </Button>
                         </div>
+                        <HistorialCarta logs={card.logs} />
                     </div>
                 </div>
             </AdminLayout>
@@ -383,6 +435,8 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
                                 <InputError message={errors.illustration} />
                             </div>
                         </Seccion>
+
+                        <HistorialCarta logs={card.logs} />
                     </div>
                 </div>
             </form>

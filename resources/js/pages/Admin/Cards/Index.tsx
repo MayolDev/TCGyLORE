@@ -141,9 +141,9 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
                         <Button variant="magical" size="lg" asChild className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30">
-                            <Link href="/admin/cards/create">
+                            <Link href="/admin/cards-taller">
                                 <Plus className="mr-2 h-5 w-5" />
-                                Crear Carta
+                                Crear en el Taller
                             </Link>
                         </Button>
                     </div>

@@ -74,6 +74,11 @@ class Card extends Model
         return $this->belongsTo(Character::class);
     }
 
+    public function logs()
+    {
+        return $this->hasMany(CardLog::class)->orderByDesc('created_at');
+    }
+
     public function cardType(): BelongsTo
     {
         return $this->belongsTo(CardType::class);
