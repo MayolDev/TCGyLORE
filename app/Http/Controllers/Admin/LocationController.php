@@ -58,7 +58,7 @@ class LocationController extends Controller
 
         // Manejar la carga de imagen
         if ($request->hasFile('image')) {
-            $validated['image'] = Storage::putFile('locations', $request->file('image'), 'public');
+            $validated['image'] = Storage::disk('public')->putFile('locations', $request->file('image'));
         }
 
         Location::create($validated);
@@ -94,9 +94,9 @@ class LocationController extends Controller
         if ($request->hasFile('image')) {
             // Eliminar la imagen anterior si existe
             if ($location->image) {
-                Storage::delete($location->image);
+                Storage::disk('public')->delete($location->image);
             }
-            $validated['image'] = Storage::putFile('locations', $request->file('image'), 'public');
+            $validated['image'] = Storage::disk('public')->putFile('locations', $request->file('image'));
         }
 
         $location->update($validated);
@@ -109,7 +109,7 @@ class LocationController extends Controller
     {
         // Eliminar la imagen si existe
         if ($location->image) {
-            Storage::delete($location->image);
+            Storage::disk('public')->delete($location->image);
         }
 
         $location->delete();

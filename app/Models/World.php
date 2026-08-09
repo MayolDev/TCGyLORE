@@ -26,7 +26,9 @@ class World extends Model
 
     public function getMapImageUrlAttribute(): string
     {
-        return $this->map_image ? Storage::url($this->map_image) : self::DEFAULT_MAP;
+        return $this->map_image
+            ? parse_url(Storage::disk('public')->url($this->map_image), PHP_URL_PATH)
+            : self::DEFAULT_MAP;
     }
 
     protected function casts(): array

@@ -43,7 +43,7 @@ class WorldController extends Controller
         ]);
 
         if ($request->hasFile('map_image')) {
-            $validated['map_image'] = Storage::putFile('worlds', $request->file('map_image'), 'public');
+            $validated['map_image'] = Storage::disk('public')->putFile('worlds', $request->file('map_image'));
         } else {
             unset($validated['map_image']);
         }
@@ -74,9 +74,9 @@ class WorldController extends Controller
         // Solo tocar el mapa si llega fichero nuevo; si no, conservar el actual.
         if ($request->hasFile('map_image')) {
             if ($world->map_image) {
-                Storage::delete($world->map_image);
+                Storage::disk('public')->delete($world->map_image);
             }
-            $validated['map_image'] = Storage::putFile('worlds', $request->file('map_image'), 'public');
+            $validated['map_image'] = Storage::disk('public')->putFile('worlds', $request->file('map_image'));
         } else {
             unset($validated['map_image']);
         }
@@ -90,7 +90,7 @@ class WorldController extends Controller
     public function destroy(World $world)
     {
         if ($world->map_image) {
-            Storage::delete($world->map_image);
+            Storage::disk('public')->delete($world->map_image);
         }
 
         $world->delete();

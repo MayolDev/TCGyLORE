@@ -20,7 +20,9 @@ class Card extends Model
 
     public function getIllustrationUrlAttribute(): ?string
     {
-        return $this->illustration ? Storage::url($this->illustration) : null;
+        return $this->illustration
+            ? parse_url(Storage::disk('public')->url($this->illustration), PHP_URL_PATH)
+            : null;
     }
 
     protected $fillable = [

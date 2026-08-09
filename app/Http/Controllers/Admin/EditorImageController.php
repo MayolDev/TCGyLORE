@@ -18,10 +18,14 @@ class EditorImageController extends Controller
             'image' => ['required', 'image', 'max:4096'],
         ]);
 
-        $path = Storage::putFile('editor-images', $request->file('image'), 'public');
+        // Disco "public" explícito: el disco por defecto es privado y nginx
+        // solo sirve storage/app/public.
+        $path = Storage::disk('public')->putFile('editor-images', $request->file('image'));
 
+        // Ruta relativa: la URL absoluta arrastra APP_URL, que en local no
+        // coincide con el host del navegador y rompe la imagen.
         return response()->json([
-            'url' => Storage::url($path),
+            'url' => parse_url(Storage::disk('public')->url($path), PHP_URL_PATH),
         ]);
     }
 }

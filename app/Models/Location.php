@@ -6,10 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 
 class Location extends Model
 {
     use HasFactory;
+
+    // El frontend siempre leyó location.image_url pero el accessor no
+    // existía: las tarjetas de ubicación nunca enseñaron su imagen.
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image
+            ? parse_url(Storage::disk('public')->url($this->image), PHP_URL_PATH)
+            : null;
+    }
 
     protected $fillable = [
         'world_id',
