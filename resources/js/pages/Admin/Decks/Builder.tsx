@@ -7,6 +7,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { ArrowLeft, Save, Search, Layers } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import FoilOverlay from '@/components/foil-overlay';
 
 interface LibraryCard {
     id: number;
@@ -15,6 +16,7 @@ interface LibraryCard {
     effect: string;
     cost: number | null;
     type: string;
+    foil?: boolean;
 }
 
 interface DeckEntry {
@@ -248,6 +250,7 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
                                                     <span className="text-xs text-yellow-200/40">{carta.type}{carta.cost != null ? ` · Coste ${carta.cost}` : ''}</span>
                                                 </div>
                                             )}
+                                            {carta.foil && <FoilOverlay />}
                                             <span className="absolute top-2 right-2 rounded-md bg-yellow-500 px-2 py-0.5 text-lg font-black text-slate-900 opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
                                                 +
                                             </span>
@@ -317,7 +320,10 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
             {preview && (
                 <div className="pointer-events-none fixed bottom-6 left-6 z-[9000] w-64">
                     {preview.image ? (
-                        <img src={preview.image} alt={preview.name} className="w-full rounded-xl border-4 border-yellow-500/70 shadow-[0_0_40px_rgba(251,191,36,0.5)]" />
+                        <div className="relative overflow-hidden rounded-xl">
+                            <img src={preview.image} alt={preview.name} className="w-full rounded-xl border-4 border-yellow-500/70 shadow-[0_0_40px_rgba(251,191,36,0.5)]" />
+                            {preview.foil && <FoilOverlay />}
+                        </div>
                     ) : (
                         <div className="rounded-xl border-4 border-yellow-500/70 bg-slate-900 p-4 shadow-[0_0_40px_rgba(251,191,36,0.5)]">
                             <p className="font-black text-yellow-200" style={{ fontFamily: 'Cinzel, serif' }}>{preview.name}</p>

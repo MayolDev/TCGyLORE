@@ -440,6 +440,10 @@
     $('#artslug').value = c.arte || slug(c.nombre);
     if (c.rareza){ S.rarity = c.rareza; syncChips('#rarity', 'rar', c.rareza); }
     if (c.style){ S.style = c.style; syncChips('#style', 'style', c.style); }
+    // El acabado foil se restaura con la carta: sin esto, reabrir y volver a
+    // guardar horneaba el render sin brillo aunque la carta fuera foil.
+    S.foil = !!c.foil; $('#foil').checked = S.foil;
+    if (c.foilAmt != null){ S.foilAmt = c.foilAmt; if ($('#foilamt')) $('#foilamt').value = c.foilAmt * 100; }
     artEl = ART.get(c.arte || slug(c.nombre)) || null;
     S.zoom = c.zoom ?? 1; S.ox = c.ox ?? 0; S.oy = c.oy ?? 0;
     $('#zoom').value = S.zoom*100; $('#ox').value = S.ox; $('#oy').value = S.oy;

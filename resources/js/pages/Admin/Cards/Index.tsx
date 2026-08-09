@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import LibraryTabs from '@/components/library-tabs';
+import FoilOverlay from '@/components/foil-overlay';
 
 interface CardData {
     id: number;
@@ -33,6 +34,7 @@ interface CardData {
     illustration_url?: string | null;
     /** Presente cuando la carta vino del Taller: la ilustración ES la carta entera renderizada. */
     taller_data?: unknown;
+    is_foil?: boolean;
     effect?: string;
     world: {
         id: number;
@@ -255,9 +257,10 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                     key={card.id}
                                     href={`/admin/cards/${card.id}/edit`}
                                     title={`Editar ${card.name}`}
-                                    className="group overflow-hidden rounded-xl border-2 border-transparent transition-all hover:border-yellow-400/70 hover:shadow-[0_0_30px_rgba(251,191,36,0.35)] hover:scale-[1.02]"
+                                    className="group relative overflow-hidden rounded-xl border-2 border-transparent transition-all hover:border-yellow-400/70 hover:shadow-[0_0_30px_rgba(251,191,36,0.35)] hover:scale-[1.02]"
                                 >
                                     <img src={card.illustration_url} alt={card.name} className="w-full" loading="lazy" />
+                                    {card.is_foil && <FoilOverlay />}
                                 </Link>
                             ) : (
                                 <Card key={card.id} className="card-tcg group overflow-hidden border-primary/20 hover:border-primary/40">

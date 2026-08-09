@@ -106,7 +106,7 @@ class DeckController extends Controller
         return Card::query()
             ->with('cardType:id,name')
             ->orderBy('name')
-            ->get(['id', 'name', 'illustration', 'effect', 'cost', 'card_type_id'])
+            ->get(['id', 'name', 'illustration', 'effect', 'cost', 'card_type_id', 'taller_data'])
             ->map(fn ($card) => [
                 'id' => $card->id,
                 'name' => $card->name,
@@ -114,6 +114,7 @@ class DeckController extends Controller
                 'effect' => $card->effect,
                 'cost' => $card->cost,
                 'type' => $card->cardType?->name ?? 'Sin tipo',
+                'foil' => $card->is_foil,
             ])
             ->all();
     }

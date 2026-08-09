@@ -16,7 +16,18 @@ class Card extends Model
      * storage. Sin este accessor las ilustraciones subidas no se mostraban
      * nunca: todas las cartas caian al placeholder.
      */
-    protected $appends = ['illustration_url'];
+    protected $appends = ['illustration_url', 'is_foil'];
+
+    /** Acabado foil elegido en el taller: la web le pone el brillo animado. */
+    public function getIsFoilAttribute(): bool
+    {
+        if (! $this->taller_data) {
+            return false;
+        }
+        $datos = json_decode($this->taller_data, true);
+
+        return (bool) ($datos['foil'] ?? false);
+    }
 
     public function getIllustrationUrlAttribute(): ?string
     {

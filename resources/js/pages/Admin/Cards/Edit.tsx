@@ -8,6 +8,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import LightboxImage from '@/components/lightbox-image';
+import FoilOverlay from '@/components/foil-overlay';
 import { ArrowLeft, Hammer, Save, Trash2 } from 'lucide-react';
 
 interface World {
@@ -42,6 +43,7 @@ interface CardData {
     illustration: string | null;
     illustration_url: string | null;
     taller_data?: unknown;
+    is_foil?: boolean;
     effect: string;
     cost: number;
     card_type_id: number | null;
@@ -232,11 +234,14 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
                 <div className="mx-auto flex max-w-5xl flex-col items-start gap-6 p-6 lg:flex-row">
                     <div className="w-full max-w-sm shrink-0">
                         {card.illustration_url && (
-                            <LightboxImage
-                                src={card.illustration_url}
-                                alt={card.name}
-                                className="w-full rounded-xl border-2 border-yellow-500/40 shadow-[0_0_35px_rgba(251,191,36,0.25)]"
-                            />
+                            <div className="relative overflow-hidden rounded-xl">
+                                <LightboxImage
+                                    src={card.illustration_url}
+                                    alt={card.name}
+                                    className="w-full rounded-xl border-2 border-yellow-500/40 shadow-[0_0_35px_rgba(251,191,36,0.25)]"
+                                />
+                                {card.is_foil && <FoilOverlay />}
+                            </div>
                         )}
                     </div>
                     <div className="flex-1 space-y-4">
