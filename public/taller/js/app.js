@@ -563,10 +563,11 @@
       ff.lines.forEach(l => { g.fillText(l, bx+20, ty); ty += ff.lh; });
     }
 
-    // ---- stats
+    // ---- stats (el DEF del muro va donde el de criatura)
     if (isCreature){ statbox(g, 44, H-176, 168, 114, 'ATQ', c.atq, C.blood); statbox(g, W-212, H-176, 168, 114, 'DEF', c.def, '#3f6072'); }
-    if (isWall)     statbox(g, W/2-84, H-176, 168, 114, 'DEF', c.def, '#3f6072');
+    if (isWall)     statbox(g, W-212, H-176, 168, 114, 'DEF', c.def, '#3f6072');
     if (isHero)     heroStats(g, c);
+    if (isHero)     heroPV(g, c, nx+nw-58, ny+nh/2, seed+5);
 
     // ---- pie
     g.fillStyle = 'rgba(20,15,9,.55)'; g.font = '18px Archivo, sans-serif';
@@ -626,8 +627,9 @@
     }
 
     if (isCreature){ statbox(g, 40, H-158, 160, 110, 'ATQ', c.atq, C.blood); statbox(g, W-200, H-158, 160, 110, 'DEF', c.def, '#3f6072'); }
-    if (isWall)     statbox(g, W/2-80, H-158, 160, 110, 'DEF', c.def, '#3f6072');
+    if (isWall)     statbox(g, W-200, H-158, 160, 110, 'DEF', c.def, '#3f6072');
     if (isHero)     heroStats(g, c);
+    if (isHero)     heroPV(g, c, W-96, 90, seed+5);
 
     g.fillStyle = 'rgba(231,221,196,.42)'; g.font = '18px Archivo, sans-serif';
     g.fillText(c.pie || '', 34, H-28);
@@ -677,8 +679,9 @@
       statbox(g, 46, H-142, 150, 104, 'ATQ', c.atq, C.blood);
       statbox(g, W-196, H-142, 150, 104, 'DEF', c.def, '#3f6072');
     }
-    if (isWall) statbox(g, W/2-75, H-142, 150, 104, 'DEF', c.def, '#3f6072');
+    if (isWall) statbox(g, W-196, H-142, 150, 104, 'DEF', c.def, '#3f6072');
     if (isHero) heroStats(g, c);
+    if (isHero) heroPV(g, c, W-82, 84, seed+5);
     g.fillStyle = 'rgba(156,142,112,.85)'; g.font = '19px Archivo, sans-serif';
     g.fillText(c.pie || '', tx, H-158);
   }
@@ -741,8 +744,11 @@
       statbox(g, 40, L.statsY, 150, 104, 'ATQ', c.atq, C.blood);
       statbox(g, W-190, L.statsY, 150, 104, 'DEF', c.def, '#3f6072');
     }
-    if (isWall) statbox(g, W/2-75, L.statsY, 150, 104, 'DEF', c.def, '#3f6072');
-    if (isHero) heroStats(g, c, L.statsY);
+    if (isWall) statbox(g, W-190, L.statsY, 150, 104, 'DEF', c.def, '#3f6072');
+    // Atributos un poco más arriba para que respiren sobre el pie,
+    // y los PV arriba a la derecha (donde la criatura lleva el EGO).
+    if (isHero) heroStats(g, c, L.statsY - 28);
+    if (isHero) heroPV(g, c, W-84, L.titleY - 10, seed+5);
 
     g.fillStyle = 'rgba(255,255,255,.92)'; g.font = '17px Archivo, sans-serif';
     centered(g, c.pie || '', W/2, L.footY);
@@ -1045,6 +1051,8 @@
     g.restore();
   }
 
+  // Solo los atributos: los PV del protagonista van arriba a la derecha,
+  // en el mismo sitio donde la criatura lleva su EGO (decisión de Iván).
   function heroStats(g, c, y0){
     const y = y0 == null ? H-158 : y0;
     const items = [['FUE', c.fue], ['AGI', c.agi], ['MEN', c.men], ['CAR', c.car]];
@@ -1054,9 +1062,13 @@
       statbox(g, x, y, bw, 96, l, (v >= 0 ? '+' : '') + v, '#3a3228');
       x += bw + gap;
     });
-    seal(g, W-92, y-48, 44, C.blood, c.pv, hash('pv'+c.nombre));
-    g.fillStyle = C.ink; g.font = '700 18px Archivo, sans-serif';
-    centered(g, 'PV', W-92, y+6);
+  }
+
+  /** Sello rojo de PV del protagonista, arriba a la derecha. */
+  function heroPV(g, c, cx, cy, seed){
+    seal(g, cx, cy, 40, C.blood, c.pv, seed);
+    g.fillStyle = C.bone; g.font = '700 13px Archivo, sans-serif';
+    centered(g, 'PV', cx, cy + 32);
   }
 
   function corners(g, color){
