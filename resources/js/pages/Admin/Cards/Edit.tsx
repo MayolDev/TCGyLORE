@@ -29,6 +29,7 @@ interface CardLogEntry {
     id: number;
     action: string;
     source: string;
+    user_name: string | null;
     changes: Record<string, { de: unknown; a: unknown } | string> | null;
     created_at: string;
 }
@@ -97,7 +98,9 @@ function HistorialCarta({ logs }: { logs?: CardLogEntry[] }) {
                         <div className="flex items-center justify-between gap-2">
                             <span className="font-bold text-yellow-100">
                                 {ACCION_ICONO[log.action] ?? '•'} {log.action.charAt(0).toUpperCase() + log.action.slice(1)}
-                                <span className="ml-1.5 text-xs font-semibold text-yellow-200/50">desde el {log.source}</span>
+                                <span className="ml-1.5 text-xs font-semibold text-yellow-200/50">
+                                    por <span className="text-yellow-200/80">{log.user_name ?? 'desconocido'}</span> · {log.source}
+                                </span>
                             </span>
                             <span className="shrink-0 text-xs text-yellow-200/50">
                                 {new Date(log.created_at).toLocaleString('es-ES', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}

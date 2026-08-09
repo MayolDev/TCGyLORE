@@ -12,6 +12,8 @@ class CardLog extends Model
     protected $fillable = [
         'card_id',
         'card_name',
+        'user_id',
+        'user_name',
         'action',
         'source',
         'changes',
@@ -31,12 +33,16 @@ class CardLog extends Model
         return $this->belongsTo(Card::class);
     }
 
-    /** Apunta una entrada del historial de una carta. */
+    /** Apunta una entrada del historial de una carta, con su autor. */
     public static function apuntar(Card $card, string $action, string $source, ?array $changes = null): void
     {
+        $usuario = auth()->user();
+
         static::create([
             'card_id' => $card->id,
             'card_name' => $card->name,
+            'user_id' => $usuario?->id,
+            'user_name' => $usuario?->name,
             'action' => $action,
             'source' => $source,
             'changes' => $changes ?: null,
