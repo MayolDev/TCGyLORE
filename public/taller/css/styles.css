@@ -17,22 +17,36 @@ body{
   font-size:14px; line-height:1.5;
 }
 
-/* ═══════════════════ ESTRUCTURA ═══════════════════ */
-.app{display:grid; grid-template-columns:250px 1fr 350px; min-height:100vh}
+/* ═══════════════════ ESTRUCTURA ═══════════════════
+   Una sola pantalla: la app ocupa el viewport y cada columna gestiona su
+   propio scroll (fino). El body NUNCA hace scroll — se acabaron las barras
+   dobles. */
+.app{display:grid; grid-template-columns:250px 1fr 350px; height:100vh; height:100dvh; overflow:hidden}
 @media (max-width:1240px){ .app{grid-template-columns:220px 1fr 320px} }
 @media (max-width:1000px){
-  .app{grid-template-columns:1fr}
+  .app{grid-template-columns:1fr; height:auto; overflow:visible}
   .lib,.insp{height:auto!important;position:static!important;border:none!important;
     border-bottom:1px solid var(--edge)!important}
+  .stage{height:auto!important}
 }
+
+body{overflow:hidden}
+@media (max-width:1000px){ body{overflow:auto} }
 
 .lib,.insp{
   background:linear-gradient(180deg,var(--panel) 0%,#171209 100%);
-  height:100vh; position:sticky; top:0; overflow-y:auto;
+  height:100%; min-height:0; overflow-y:auto;
   display:flex; flex-direction:column;
 }
 .lib{border-right:1px solid var(--edge); padding:18px 14px 0}
 .insp{border-left:1px solid var(--edge); padding:16px 14px 40px}
+
+/* Scrollbars finos y del tema, no los grises del sistema */
+.lib,.insp,.liblist,.stage{scrollbar-width:thin;scrollbar-color:var(--edge) transparent}
+.lib::-webkit-scrollbar,.insp::-webkit-scrollbar,.liblist::-webkit-scrollbar,.stage::-webkit-scrollbar{width:8px}
+.lib::-webkit-scrollbar-thumb,.insp::-webkit-scrollbar-thumb,.liblist::-webkit-scrollbar-thumb,.stage::-webkit-scrollbar-thumb{
+  background:var(--edge);border-radius:8px}
+.lib::-webkit-scrollbar-track,.insp::-webkit-scrollbar-track,.liblist::-webkit-scrollbar-track,.stage::-webkit-scrollbar-track{background:transparent}
 
 /* ═══════════════════ MARCA ═══════════════════ */
 .brand{display:flex;align-items:baseline;gap:9px;margin:0 0 16px}
@@ -69,23 +83,25 @@ body{
   letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px}
 
 /* ═══════════════════ LIENZO ═══════════════════ */
-.stage{position:relative;display:flex;flex-direction:column;align-items:center;
-  padding:34px 24px 50px;min-height:100vh}
-.stage::before{content:"";position:absolute;inset:0;pointer-events:none;
+.stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px 24px;height:100%;min-height:0;overflow-y:auto}
+.stage::before{content:"";position:fixed;inset:0;pointer-events:none;
   background:radial-gradient(680px 520px at 50% 32%, rgba(203,162,75,.09), transparent 62%)}
-.cardframe{position:relative;filter:drop-shadow(0 26px 48px rgba(0,0,0,.6))}
-canvas#card{display:block;width:min(420px,64vh);height:auto;aspect-ratio:750/1050;
+.cardframe{position:relative;filter:drop-shadow(0 26px 48px rgba(0,0,0,.6));flex:none}
+/* La carta manda: tan alta como deje el viewport tras la barra de acciones */
+canvas#card{display:block;height:min(calc(100vh - 215px), 980px);width:auto;
+  max-width:min(46vw, 620px);aspect-ratio:750/1050;
   border-radius:12px;background:transparent}
-canvas#card.square{width:min(340px,46vh);aspect-ratio:1/1}
+canvas#card.square{height:min(calc(100vh - 260px), 560px);max-width:min(42vw, 560px);aspect-ratio:1/1}
 .sheen{position:absolute;inset:0;border-radius:12px;pointer-events:none;overflow:hidden;opacity:0}
 .sheen::after{content:"";position:absolute;top:-60%;left:-30%;width:50%;height:220%;
   background:linear-gradient(105deg,transparent,rgba(255,255,255,.55),transparent);
   transform:rotate(8deg);animation:sweep 3.4s ease-in-out infinite}
 @keyframes sweep{0%{left:-40%}55%{left:120%}100%{left:120%}}
 
-.toolbar{display:flex;gap:9px;margin-top:22px;flex-wrap:wrap;justify-content:center;position:relative}
+.toolbar{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap;justify-content:center;position:relative;flex:none}
 .stagehint{font-family:"IM Fell English",serif;font-style:italic;color:var(--ink-faint);
-  margin-top:16px;font-size:13px;text-align:center;max-width:380px;position:relative}
+  margin-top:10px;font-size:12.5px;text-align:center;max-width:460px;position:relative;flex:none}
 
 button.act{font-family:inherit;cursor:pointer;border-radius:9px;padding:11px 18px;font-size:13.5px;
   font-weight:700;letter-spacing:.3px;border:1px solid var(--edge);background:var(--panel-2);

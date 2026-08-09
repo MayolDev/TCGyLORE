@@ -1508,7 +1508,9 @@
   }
 
   // ---- binds
-  S.rarity = 'legendaria'; S.tokenShape = 'circulo'; S.guides = true; S.backVariant = 'relato';
+  // Guías apagadas por defecto: las etiquetas de zonas son herramienta de
+  // maquetación, no parte de la carta. Se activan en «Ajuste fino».
+  S.rarity = 'legendaria'; S.tokenShape = 'circulo'; S.guides = false; S.backVariant = 'relato';
 
   ['name','cost','tags','body','flavor','foot','atk','def','ego','fue','agi','men','car','pv',
    'hmast','hregla','hvoz','artslug','type']
