@@ -2066,4 +2066,26 @@
   libLoad();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
   draw();
+
+  // ---- marco por defecto: images/marco.png se instala solo al arrancar y
+  // el estilo pasa a 'marco'. Decisión de diseño de Iván: la carta nace con
+  // su marco ilustrado, no con el procedural. Si el fichero no está (p. ej.
+  // la versión file:// sin la imagen), todo sigue como antes.
+  (function marcoPorDefecto(){
+    const im = new Image();
+    im.onload = () => {
+      let lienzo = im;
+      const out = stripBackground(im);   // el PNG puede traer el damero pintado
+      if (out) lienzo = out.canvas;
+      installFrame('marco:todos', lienzo);
+      applyZones(FRAMES.get('marco:todos'));
+      if (S.style === 'darkest'){        // no pisar una elección manual previa
+        S.style = 'marco';
+        syncChips('#style', 'style', 'marco');
+      }
+      draw();
+    };
+    im.onerror = () => {};
+    im.src = 'images/marco.png';
+  })();
 })();

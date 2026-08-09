@@ -30,7 +30,7 @@ class TallerCardController extends Controller
             'effect' => ['nullable', 'string'],
             'flavor_text' => ['nullable', 'string'],
             'data' => ['nullable', 'json'],
-            'image' => ['required', 'image', 'max:8192'],
+            'image' => ['required', 'image', 'max:16384'],
         ]);
 
         $tipo = CardType::firstOrCreate(['name' => $validated['type'] ?: 'Criatura']);
