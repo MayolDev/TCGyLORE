@@ -9,6 +9,7 @@ import {
     Heading2,
     Heading3,
     Image as ImageIcon,
+    ImagePlus,
     Italic,
     Link as LinkIcon,
     List,
@@ -166,6 +167,14 @@ export default function RichTextEditor({ id, value, onChange, placeholder, minHe
         });
     };
 
+    const insertImageFromUrl = () => {
+        if (!editor) return;
+        const url = window.prompt('URL de la imagen:');
+        if (url) {
+            editor.chain().focus().setImage({ src: url }).run();
+        }
+    };
+
     const toggleLink = () => {
         if (!editor) return;
         if (editor.isActive('link')) {
@@ -223,8 +232,11 @@ export default function RichTextEditor({ id, value, onChange, placeholder, minHe
                 <ToolbarButton editor={editor} title="Enlace" isActive={editor.isActive('link')} onClick={toggleLink}>
                     <LinkIcon className={iconSize} />
                 </ToolbarButton>
-                <ToolbarButton editor={editor} title="Insertar imagen" onClick={() => fileInputRef.current?.click()}>
+                <ToolbarButton editor={editor} title="Insertar imagen (subir archivo)" onClick={() => fileInputRef.current?.click()}>
                     <ImageIcon className={iconSize} />
+                </ToolbarButton>
+                <ToolbarButton editor={editor} title="Imagen desde URL" onClick={insertImageFromUrl}>
+                    <ImagePlus className={iconSize} />
                 </ToolbarButton>
                 <input
                     ref={fileInputRef}

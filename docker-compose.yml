@@ -35,6 +35,10 @@ services:
     container_name: taponazo-nginx
     restart: unless-stopped
     depends_on: [app]
+    volumes:
+      # Sin esto, nginx no ve los ficheros subidos (mapas, imagenes del
+      # editor, ilustraciones) y /storage/* devuelve 404.
+      - storage:/var/www/html/storage:ro
     networks: [interna, web-proxy]
 
   mysql:
