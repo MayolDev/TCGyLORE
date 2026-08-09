@@ -26,10 +26,15 @@ class TallerCardController extends Controller
     {
         abort_unless($card->taller_data, 404, 'Esta carta no nació en el Taller.');
 
+        // La ilustración FUENTE (no el render) viaja aparte, con ruta
+        // determinista por id, para que el taller la recupere al reabrir.
+        $arte = "cards-art/{$card->id}.png";
+
         return response()->json([
             'id' => $card->id,
             'name' => $card->name,
             'data' => json_decode($card->taller_data, true),
+            'art_url' => Storage::disk('public')->exists($arte) ? "/storage/{$arte}" : null,
         ]);
     }
 
@@ -43,6 +48,9 @@ class TallerCardController extends Controller
             'flavor_text' => ['nullable', 'string'],
             'data' => ['nullable', 'json'],
             'image' => ['required', 'image', 'max:16384'],
+            // Ilustración fuente (opcional): permite reabrir la carta en el
+            // taller con su arte, no solo con el render final.
+            'art' => ['nullable', 'image', 'max:16384'],
         ]);
 
         $tipo = CardType::firstOrCreate(['name' => $validated['type'] ?: 'Criatura']);
@@ -75,6 +83,10 @@ class TallerCardController extends Controller
             ]);
         } else {
             $card->update($atributos);
+        }
+
+        if ($request->hasFile('art')) {
+            Storage::disk('public')->putFileAs('cards-art', $request->file('art'), "{$card->id}.png");
         }
 
         return response()->json([

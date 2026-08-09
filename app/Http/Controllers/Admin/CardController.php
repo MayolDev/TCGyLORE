@@ -173,6 +173,8 @@ class CardController extends Controller
         if ($card->illustration) {
             Storage::disk('public')->delete($card->illustration);
         }
+        // Y la ilustración fuente del taller, si la hay
+        Storage::disk('public')->delete("cards-art/{$card->id}.png");
 
         $card->delete();
 

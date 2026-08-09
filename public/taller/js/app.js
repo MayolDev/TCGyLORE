@@ -744,7 +744,7 @@
     if (isWall) statbox(g, W/2-75, L.statsY, 150, 104, 'DEF', c.def, '#3f6072');
     if (isHero) heroStats(g, c, L.statsY);
 
-    g.fillStyle = 'rgba(231,221,196,.45)'; g.font = '17px Archivo, sans-serif';
+    g.fillStyle = 'rgba(255,255,255,.92)'; g.font = '17px Archivo, sans-serif';
     centered(g, c.pie || '', W/2, L.footY);
 
     if (opts && opts.guides) drawGuides(g, L, isCreature, isWall, isHero);
@@ -756,7 +756,7 @@
   // guarda por tipo de marco.
   const LAYOUT_DEF = {
     winX: 66, winY: 150, winW: 618, winH: 520,
-    titleY: 96, tagsY: 700, textX: 74, textW: 602, textY: 730, textH: 150, statsY: 900, footY: 1022,
+    titleY: 96, tagsY: 700, textX: 74, textW: 602, textY: 730, textH: 150, statsY: 900, footY: 1014,
     titleDark: 0,          // 1 si la banda del título es clara y el texto debe ir en tinta
   };
 
@@ -977,7 +977,7 @@
       L.statsY = Math.max(texto.y1*2 - 62, L.textY + 90);
       L.textH = Math.max(60, Math.min(texto.h*2 - 54, L.statsY - L.textY - 12));
     }
-    L.footY = 1030;
+    L.footY = 1014;
 
     return Object.keys(L).length ? L : null;
   }
@@ -986,6 +986,11 @@
   const LS_LAYOUT = 'taponazo.taller.marcos.v1';
   let LAYOUTS = {};
   try { LAYOUTS = JSON.parse(localStorage.getItem(LS_LAYOUT) || '{}'); } catch { LAYOUTS = {}; }
+  // Migración suave: los defaults antiguos del pie (1022 del DEF, 1030 del
+  // detector) pasan al 1014 actual. Un footY elegido a mano se respeta.
+  Object.values(LAYOUTS).forEach(L => {
+    if (L && (L.footY === 1022 || L.footY === 1030)) L.footY = 1014;
+  });
   function saveLayouts(){
     try { localStorage.setItem(LS_LAYOUT, JSON.stringify(LAYOUTS)); } catch {}
   }
@@ -993,8 +998,18 @@
   function frameKeyFor(c){
     return 'marco:' + (c.tipo === 'creature' ? c.rareza : c.tipo);
   }
+  /**
+   * Clave de layout EFECTIVA: la del marco que realmente se está pintando.
+   * Con un único marco global (marco:todos), TODOS los tipos comparten el
+   * mismo ajuste fino — antes cada tipo guardaba bajo su propia clave y al
+   * cambiar de tipo el layout "se desajustaba" porque leía otra entrada.
+   */
+  function layoutKeyFor(c){
+    const propia = frameKeyFor(c);
+    return FRAMES.has(propia) ? propia : 'marco:todos';
+  }
   function layoutFor(c){
-    const key = frameKeyFor(c);
+    const key = layoutKeyFor(c);
     return Object.assign({}, LAYOUT_DEF, LAYOUTS['marco:todos'] || {}, LAYOUTS[key] || {});
   }
 
@@ -1561,7 +1576,7 @@
 
   function loadLayoutFields(){
     const c = readCard();
-    const key = frameKeyFor(c);
+    const key = layoutKeyFor(c);
     const L = layoutFor(c);
     $('#layoutkey').textContent = key;
     LAYOUT_KEYS.forEach(k => { $('#'+k).value = L[k]; });
@@ -1569,7 +1584,7 @@
   }
 
   function storeLayoutFields(){
-    const key = frameKeyFor(readCard());
+    const key = layoutKeyFor(readCard());
     const L = Object.assign({}, LAYOUT_DEF, LAYOUTS[key] || {});
     LAYOUT_KEYS.forEach(k => {
       const v = parseInt($('#'+k).value, 10);
@@ -1627,14 +1642,14 @@
       : `Fondo quitado (${pct}%), pero la ventana no queda cerrada. Colócala a mano.`);
   };
   $('#layoutall').onclick = () => {
-    const key = frameKeyFor(readCard());
+    const key = layoutKeyFor(readCard());
     const L = Object.assign({}, LAYOUT_DEF, LAYOUTS[key] || {});
     LAYOUTS = { 'marco:todos': L };
     saveLayouts(); loadLayoutFields(); draw();
     toast('Encaje aplicado a todos los tipos de marco.');
   };
   $('#layoutreset').onclick = () => {
-    delete LAYOUTS[frameKeyFor(readCard())];
+    delete LAYOUTS[layoutKeyFor(readCard())];
     saveLayouts(); loadLayoutFields(); draw();
     toast('Encaje restablecido.');
   };
@@ -1785,6 +1800,17 @@
       fd.append('flavor_text', d.cita || '');
       fd.append('data', JSON.stringify(d));
       fd.append('image', blob, `${slug(d.nombre)}.png`);
+
+      // La ilustración FUENTE viaja aparte: sin ella, reabrir la carta en el
+      // taller la dejaba sin arte (el render final no sirve como fuente).
+      if (img && img.width){
+        const oc = document.createElement('canvas');
+        oc.width = img.naturalWidth || img.width;
+        oc.height = img.naturalHeight || img.height;
+        oc.getContext('2d').drawImage(img, 0, 0);
+        const arte = await new Promise(res => oc.toBlob(res, 'image/png'));
+        if (arte) fd.append('art', arte, 'arte.png');
+      }
 
       const res = await fetch('/admin/taller-cards', {
         method: 'POST',
@@ -2095,6 +2121,16 @@
       if (j.data){
         setMode(j.data.kind || 'carta');
         writeCard(j.data);
+        // La ilustración fuente vuelve con la carta
+        if (j.art_url){
+          const im = new Image();
+          im.onload = () => {
+            artEl = im;
+            if (j.data.arte) ART.set(j.data.arte, im);
+            draw();
+          };
+          im.src = j.art_url;
+        }
         draw();
         toast(`«${j.name}» cargada desde la Biblioteca. Al guardar, se actualizará.`);
       }
@@ -2114,7 +2150,13 @@
       const out = stripBackground(im);   // el PNG puede traer el damero pintado
       if (out) lienzo = out.canvas;
       installFrame('marco:todos', lienzo);
-      applyZones(FRAMES.get('marco:todos'));
+      // Autodetectar zonas SOLO la primera vez: si ya hay un encaje guardado,
+      // respetarlo — antes se machacaba el ajuste fino en cada recarga.
+      if (!LAYOUTS['marco:todos']){
+        applyZones(FRAMES.get('marco:todos'));
+      } else {
+        loadLayoutFields();
+      }
       if (S.style === 'darkest'){        // no pisar una elección manual previa
         S.style = 'marco';
         syncChips('#style', 'style', 'marco');
