@@ -23,7 +23,6 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import LibraryTabs from '@/components/library-tabs';
-import LightboxImage from '@/components/lightbox-image';
 
 interface CardData {
     id: number;
@@ -251,36 +250,15 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                     <>
                         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                             {cards.data.map((card) => card.taller_data && card.illustration_url ? (
-                                /* Carta del Taller: se enseña tal cual se creó, marco y fondo incluidos */
-                                <Card key={card.id} className="card-tcg group overflow-hidden pt-0 gap-0 border-primary/20 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(251,191,36,0.25)] transition-all">
-                                    <LightboxImage
-                                        src={card.illustration_url}
-                                        alt={card.name}
-                                        className="w-full transition-transform duration-300 group-hover:scale-[1.02]"
-                                    />
-                                    <CardContent className="space-y-2 pt-3 pb-4">
-                                        <div className="flex items-center justify-between gap-2">
-                                            <span className="truncate text-sm font-bold">{card.name}</span>
-                                            <Badge variant="outline" className="shrink-0 text-[10px]">{card.card_type?.name ?? 'Sin tipo'}</Badge>
-                                        </div>
-                                        <div className="flex gap-2">
-                                            <Button variant="outline" size="sm" className="flex-1" asChild>
-                                                <Link href={`/admin/cards/${card.id}/edit`}>
-                                                    <Pencil className="mr-1.5 h-3 w-3" />
-                                                    Editar
-                                                </Link>
-                                            </Button>
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                className="text-destructive hover:text-destructive"
-                                                onClick={() => handleDelete(card.id, card.name)}
-                                            >
-                                                <Trash2 className="h-3 w-3" />
-                                            </Button>
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                /* Carta del Taller: tal cual se creó. Clic = editar; se borra desde dentro. */
+                                <Link
+                                    key={card.id}
+                                    href={`/admin/cards/${card.id}/edit`}
+                                    title={`Editar ${card.name}`}
+                                    className="group overflow-hidden rounded-xl border-2 border-transparent transition-all hover:border-yellow-400/70 hover:shadow-[0_0_30px_rgba(251,191,36,0.35)] hover:scale-[1.02]"
+                                >
+                                    <img src={card.illustration_url} alt={card.name} className="w-full" loading="lazy" />
+                                </Link>
                             ) : (
                                 <Card key={card.id} className="card-tcg group overflow-hidden border-primary/20 hover:border-primary/40">
                                     {/* Card Illustration Header */}

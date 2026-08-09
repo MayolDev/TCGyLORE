@@ -2,13 +2,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card as UICard, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import WriterLayout from '@/layouts/writer-layout';
+import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
-import { Swords, Save, X } from 'lucide-react';
+import LightboxImage from '@/components/lightbox-image';
+import { ArrowLeft, Hammer, Save, Trash2 } from 'lucide-react';
 
 interface World {
     id: number;
@@ -31,6 +31,8 @@ interface CardData {
     character_id: number | null;
     name: string;
     illustration: string | null;
+    illustration_url: string | null;
+    taller_data?: unknown;
     effect: string;
     cost: number;
     card_type_id: number | null;
@@ -66,11 +68,26 @@ interface Props {
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
     { title: 'Biblioteca', href: '/admin/cards' },
-    { title: 'Editar' },
+    { title: 'Editar carta' },
 ];
 
+/** Panel plegable con la voz visual del taller: cabecera dorada, cuerpo oscuro. */
+function Seccion({ titulo, abierta = false, children }: { titulo: string; abierta?: boolean; children: React.ReactNode }) {
+    return (
+        <details open={abierta} className="group overflow-hidden rounded-lg border border-yellow-500/25 bg-slate-900/70">
+            <summary
+                className="cursor-pointer select-none border-b border-transparent bg-slate-900 px-4 py-2.5 text-sm font-black text-yellow-200 transition-colors group-open:border-yellow-500/20 hover:bg-slate-800"
+                style={{ fontFamily: 'Cinzel, serif' }}
+            >
+                {titulo}
+            </summary>
+            <div className="space-y-4 p-4">{children}</div>
+        </details>
+    );
+}
+
 export default function Edit({ card, worlds, characters, cardTypes, rarities, archetypes, alignments, factions, editions, artists }: Props) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, transform } = useForm({
         _method: 'PUT',
         world_id: card.world_id.toString(),
         character_id: card.character_id?.toString() || '0',
@@ -95,431 +112,225 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
         health: card.health?.toString() || '',
     });
 
+    // '0' = "Ninguno" en los selects opcionales; el backend espera null.
+    transform((datos) => ({
+        ...datos,
+        character_id: datos.character_id === '0' ? null : datos.character_id,
+        archetype_id: datos.archetype_id === '0' ? null : datos.archetype_id,
+        faction_id: datos.faction_id === '0' ? null : datos.faction_id,
+        edition_id: datos.edition_id === '0' ? null : datos.edition_id,
+        artist_id: datos.artist_id === '0' ? null : datos.artist_id,
+    }));
+
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        
-        const submitData = {
-            ...data,
-            character_id: data.character_id === '0' ? null : data.character_id,
-            archetype_id: data.archetype_id === '0' ? null : data.archetype_id,
-            faction_id: data.faction_id === '0' ? null : data.faction_id,
-            edition_id: data.edition_id === '0' ? null : data.edition_id,
-            artist_id: data.artist_id === '0' ? null : data.artist_id,
-        };
-        
-        post(`/admin/cards/${card.id}`, {
-            data: submitData,
-            forceFormData: true,
-        });
+        post(`/admin/cards/${card.id}`, { forceFormData: true });
     };
 
+    const eliminar = () => {
+        if (confirm(`¿Eliminar la carta "${card.name}"? Esta acción no tiene vuelta atrás.`)) {
+            router.delete(`/admin/cards/${card.id}`);
+        }
+    };
+
+    const taxonomia = (
+        id: string,
+        etiqueta: string,
+        valor: string,
+        opciones: Taxonomy[],
+        campo: 'card_type_id' | 'rarity_id' | 'alignment_id' | 'archetype_id' | 'faction_id' | 'edition_id' | 'artist_id',
+        opcional = false,
+    ) => (
+        <div className="space-y-1.5">
+            <Label htmlFor={id} className="text-xs text-yellow-200/70">{etiqueta}</Label>
+            <Select value={valor} onValueChange={(v) => setData(campo, v)}>
+                <SelectTrigger id={id}>
+                    <SelectValue placeholder={etiqueta} />
+                </SelectTrigger>
+                <SelectContent>
+                    {opcional && <SelectItem value="0">Ninguno</SelectItem>}
+                    {opciones.map((o) => (
+                        <SelectItem key={o.id} value={o.id.toString()}>
+                            {o.name}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+            <InputError message={errors[campo]} />
+        </div>
+    );
+
+    const stat = (id: keyof typeof data & string, etiqueta: string) => (
+        <div className="space-y-1.5">
+            <Label htmlFor={id} className="text-xs text-yellow-200/70">{etiqueta}</Label>
+            <Input id={id} type="number" value={data[id] as string} onChange={(e) => setData(id, e.target.value)} placeholder="—" />
+            <InputError message={errors[id]} />
+        </div>
+    );
+
     return (
-        <WriterLayout breadcrumbs={breadcrumbs}>
+        <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title={`Editar ${card.name}`} />
 
-            <div className="space-y-6">
-                {/* Header */}
-                <div className="flex items-start justify-between">
-                    <div>
-                        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent flex items-center gap-3">
-                            <Swords className="h-8 w-8 text-primary" />
-                            Editar Carta TCG
-                        </h1>
-                        <p className="text-muted-foreground mt-2">
-                            Modifica los detalles de tu carta de juego
-                        </p>
-                    </div>
-                    <Button variant="outline" size="lg" asChild>
-                        <Link href="/admin/cards">
-                            <X className="mr-2 h-4 w-4" />
-                            Cancelar
-                        </Link>
-                    </Button>
-                </div>
+            <form onSubmit={submit} className="p-4">
+                <div className="grid gap-4 lg:grid-cols-[360px_1fr]">
+                    {/* La carta, grande y al mando — como en el taller */}
+                    <div className="space-y-3 lg:sticky lg:top-4 lg:self-start">
+                        {card.illustration_url ? (
+                            <LightboxImage
+                                src={card.illustration_url}
+                                alt={card.name}
+                                className="w-full rounded-xl border-2 border-yellow-500/40 shadow-[0_0_35px_rgba(251,191,36,0.25)]"
+                            />
+                        ) : (
+                            <div className="flex aspect-[5/7] w-full items-center justify-center rounded-xl border-2 border-dashed border-yellow-500/30 bg-slate-900/70 p-6 text-center">
+                                <p className="text-sm font-semibold text-yellow-200/50">
+                                    Sin imagen. Súbela en «Ilustración» o crea la carta en el Taller.
+                                </p>
+                            </div>
+                        )}
 
-                <form onSubmit={submit} className="space-y-6 writer-form">
-                    {/* Basic Info */}
-                    <UICard className="border-primary/20">
-                        <CardHeader>
-                            <CardTitle>Información Básica</CardTitle>
-                            <CardDescription>Datos principales de la carta</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div className="grid gap-6 md:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label htmlFor="world_id">Mundo *</Label>
-                                    <Select value={data.world_id} onValueChange={(value) => setData('world_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Selecciona un mundo" />
+                        <Button type="submit" size="lg" disabled={processing} className="w-full bg-gradient-to-r from-yellow-600 to-orange-600 font-black text-white shadow-lg shadow-orange-500/40 hover:from-yellow-500 hover:to-orange-500">
+                            <Save className="mr-2 h-4 w-4" />
+                            {processing ? 'Guardando…' : 'Guardar Carta'}
+                        </Button>
+
+                        <div className="flex gap-2">
+                            <Button type="button" variant="outline" size="sm" asChild className="flex-1 border-yellow-500/40 text-yellow-200 hover:bg-yellow-600/10">
+                                <Link href="/admin/cards">
+                                    <ArrowLeft className="mr-1 h-4 w-4" />
+                                    Biblioteca
+                                </Link>
+                            </Button>
+                            <Button type="button" variant="outline" size="sm" asChild className="flex-1 border-yellow-500/40 text-yellow-200 hover:bg-yellow-600/10">
+                                <Link href="/admin/cards-taller">
+                                    <Hammer className="mr-1 h-4 w-4" />
+                                    Taller
+                                </Link>
+                            </Button>
+                            <Button type="button" variant="outline" size="sm" onClick={eliminar} className="border-red-500/50 text-red-300 hover:bg-red-600/20">
+                                <Trash2 className="h-4 w-4" />
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Inspector, estilo taller */}
+                    <div className="min-w-0 space-y-3">
+                        <Seccion titulo="🃏 Identidad" abierta>
+                            <div className="space-y-1.5">
+                                <Label htmlFor="name" className="text-xs text-yellow-200/70">Nombre *</Label>
+                                <Input id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="Nombre épico de la carta..." className="text-lg font-bold" />
+                                <InputError message={errors.name} />
+                            </div>
+                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                                <div className="space-y-1.5">
+                                    <Label htmlFor="cost" className="text-xs text-yellow-200/70">Coste *</Label>
+                                    <Input id="cost" type="number" value={data.cost} onChange={(e) => setData('cost', e.target.value)} placeholder="0" />
+                                    <InputError message={errors.cost} />
+                                </div>
+                                {taxonomia('card_type_id', 'Tipo *', data.card_type_id, cardTypes, 'card_type_id')}
+                                {taxonomia('rarity_id', 'Rareza *', data.rarity_id, rarities, 'rarity_id')}
+                                {taxonomia('alignment_id', 'Alineación *', data.alignment_id, alignments, 'alignment_id')}
+                            </div>
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                <div className="space-y-1.5">
+                                    <Label htmlFor="world_id" className="text-xs text-yellow-200/70">Mundo *</Label>
+                                    <Select value={data.world_id} onValueChange={(v) => setData('world_id', v)}>
+                                        <SelectTrigger id="world_id">
+                                            <SelectValue placeholder="Mundo" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {worlds.map((world) => (
-                                                <SelectItem key={world.id} value={world.id.toString()}>
-                                                    {world.name}
-                                                </SelectItem>
+                                            {worlds.map((w) => (
+                                                <SelectItem key={w.id} value={w.id.toString()}>{w.name}</SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
                                     <InputError message={errors.world_id} />
                                 </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="character_id">Personaje (opcional)</Label>
-                                    <Select value={data.character_id} onValueChange={(value) => setData('character_id', value)}>
-                                        <SelectTrigger>
+                                <div className="space-y-1.5">
+                                    <Label htmlFor="character_id" className="text-xs text-yellow-200/70">Personaje (opcional)</Label>
+                                    <Select value={data.character_id} onValueChange={(v) => setData('character_id', v)}>
+                                        <SelectTrigger id="character_id">
                                             <SelectValue placeholder="Ninguno" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="0">Ninguno</SelectItem>
-                                            {characters.map((character) => (
-                                                <SelectItem key={character.id} value={character.id.toString()}>
-                                                    {character.name}
-                                                </SelectItem>
+                                            {characters.map((c) => (
+                                                <SelectItem key={c.id} value={c.id.toString()}>{c.name}</SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
                                     <InputError message={errors.character_id} />
                                 </div>
                             </div>
+                        </Seccion>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="name">Nombre de la Carta *</Label>
-                                <Input
-                                    id="name"
-                                    type="text"
-                                    value={data.name}
-                                    onChange={(e) => setData('name', e.target.value)}
-                                    placeholder="Nombre épico de la carta..."
-                                    className="text-lg"
+                        <Seccion titulo="📜 Efecto y cita" abierta>
+                            <div className="space-y-1.5">
+                                <Label htmlFor="effect" className="text-xs text-yellow-200/70">Efecto * — ***negrita***, --- separador</Label>
+                                <Textarea
+                                    id="effect"
+                                    value={data.effect}
+                                    onChange={(e) => setData('effect', e.target.value)}
+                                    placeholder="***Habilidad:*** al entrar en juego..."
+                                    className="min-h-[160px] resize-y font-mono text-sm leading-relaxed"
                                 />
-                                <InputError message={errors.name} />
+                                <InputError message={errors.effect} />
                             </div>
-
-                            <div className="space-y-2">
-                                <Label htmlFor="illustration">Ilustración (formato vertical)</Label>
-                                <div className="flex items-center gap-4">
-                                    {card.illustration && (
-                                        <img 
-                                            src={`/storage/${card.illustration}`} 
-                                            alt="Ilustración actual" 
-                                            className="h-32 w-auto rounded-md object-cover"
-                                        />
-                                    )}
-                                    <div className="flex-1">
-                                        <Input
-                                            id="illustration"
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={(e) => setData('illustration', e.target.files?.[0] || null)}
-                                        />
-                                        <p className="text-xs text-muted-foreground mt-1">
-                                            Formato vertical recomendado (ej: 600x800px)
-                                        </p>
-                                    </div>
-                                </div>
-                                <InputError message={errors.illustration} />
-                            </div>
-
-                            <div className="grid gap-6 md:grid-cols-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="cost">Coste *</Label>
-                                    <Input
-                                        id="cost"
-                                        type="number"
-                                        value={data.cost}
-                                        onChange={(e) => setData('cost', e.target.value)}
-                                        placeholder="0"
-                                    />
-                                    <InputError message={errors.cost} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="card_type_id">Tipo *</Label>
-                                    <Select value={data.card_type_id} onValueChange={(value) => setData('card_type_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Tipo de carta" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {cardTypes.map((type) => (
-                                                <SelectItem key={type.id} value={type.id.toString()}>
-                                                    {type.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.card_type_id} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="rarity_id">Rareza *</Label>
-                                    <Select value={data.rarity_id} onValueChange={(value) => setData('rarity_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Rareza" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {rarities.map((rarity) => (
-                                                <SelectItem key={rarity.id} value={rarity.id.toString()}>
-                                                    {rarity.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.rarity_id} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="alignment_id">Alineación *</Label>
-                                    <Select value={data.alignment_id} onValueChange={(value) => setData('alignment_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Alineación" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {alignments.map((alignment) => (
-                                                <SelectItem key={alignment.id} value={alignment.id.toString()}>
-                                                    {alignment.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.alignment_id} />
-                                </div>
-                            </div>
-                        </CardContent>
-                    </UICard>
-
-                    {/* Effect Text */}
-                    <UICard className="border-primary/20">
-                        <CardHeader>
-                            <CardTitle>Efecto de la Carta *</CardTitle>
-                            <CardDescription>
-                                Usa *** para negrita y --- para separadores
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <Textarea
-                                id="effect"
-                                value={data.effect}
-                                onChange={(e) => setData('effect', e.target.value)}
-                                placeholder="***Habilidad Especial:*** Este personaje puede...&#10;---&#10;Al entrar al campo de batalla..."
-                                className="min-h-[200px] text-base leading-relaxed resize-y font-mono"
-                            />
-                            <InputError message={errors.effect} />
-                            <p className="text-xs text-muted-foreground mt-2">
-                                💡 Tip: Usa ***texto*** para negrita y --- en una línea separada para divisores
-                            </p>
-                        </CardContent>
-                    </UICard>
-
-                    {/* Attributes */}
-                    <UICard className="border-primary/20">
-                        <CardHeader>
-                            <CardTitle>Atributos (opcionales)</CardTitle>
-                            <CardDescription>Stats del personaje</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
-                                <div className="space-y-2">
-                                    <Label htmlFor="strength">💪 Fuerza</Label>
-                                    <Input
-                                        id="strength"
-                                        type="number"
-                                        value={data.strength}
-                                        onChange={(e) => setData('strength', e.target.value)}
-                                        placeholder="0"
-                                    />
-                                    <InputError message={errors.strength} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="agility">⚡ Agilidad</Label>
-                                    <Input
-                                        id="agility"
-                                        type="number"
-                                        value={data.agility}
-                                        onChange={(e) => setData('agility', e.target.value)}
-                                        placeholder="0"
-                                    />
-                                    <InputError message={errors.agility} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="charisma">✨ Carisma</Label>
-                                    <Input
-                                        id="charisma"
-                                        type="number"
-                                        value={data.charisma}
-                                        onChange={(e) => setData('charisma', e.target.value)}
-                                        placeholder="0"
-                                    />
-                                    <InputError message={errors.charisma} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="mind">🧠 Mente</Label>
-                                    <Input
-                                        id="mind"
-                                        type="number"
-                                        value={data.mind}
-                                        onChange={(e) => setData('mind', e.target.value)}
-                                        placeholder="0"
-                                    />
-                                    <InputError message={errors.mind} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="defense">🛡️ Defensa</Label>
-                                    <Input
-                                        id="defense"
-                                        type="number"
-                                        value={data.defense}
-                                        onChange={(e) => setData('defense', e.target.value)}
-                                        placeholder="0"
-                                    />
-                                    <InputError message={errors.defense} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="magic_defense">🔮 Def. Mágica</Label>
-                                    <Input
-                                        id="magic_defense"
-                                        type="number"
-                                        value={data.magic_defense}
-                                        onChange={(e) => setData('magic_defense', e.target.value)}
-                                        placeholder="0"
-                                    />
-                                    <InputError message={errors.magic_defense} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="health">❤️ Puntos de Vida</Label>
-                                    <Input
-                                        id="health"
-                                        type="number"
-                                        value={data.health}
-                                        onChange={(e) => setData('health', e.target.value)}
-                                        placeholder="0"
-                                    />
-                                    <InputError message={errors.health} />
-                                </div>
-                            </div>
-                        </CardContent>
-                    </UICard>
-
-                    {/* Additional Info */}
-                    <UICard className="border-primary/20">
-                        <CardHeader>
-                            <CardTitle>Información Adicional</CardTitle>
-                            <CardDescription>Detalles extra de la carta</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div className="grid gap-6 md:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label htmlFor="archetype_id">Arquetipo</Label>
-                                    <Select value={data.archetype_id} onValueChange={(value) => setData('archetype_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Ninguno" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="0">Ninguno</SelectItem>
-                                            {archetypes.map((archetype) => (
-                                                <SelectItem key={archetype.id} value={archetype.id.toString()}>
-                                                    {archetype.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.archetype_id} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="faction_id">Facción</Label>
-                                    <Select value={data.faction_id} onValueChange={(value) => setData('faction_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Ninguna" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="0">Ninguna</SelectItem>
-                                            {factions.map((faction) => (
-                                                <SelectItem key={faction.id} value={faction.id.toString()}>
-                                                    {faction.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.faction_id} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="edition_id">Edición</Label>
-                                    <Select value={data.edition_id} onValueChange={(value) => setData('edition_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Ninguna" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="0">Ninguna</SelectItem>
-                                            {editions.map((edition) => (
-                                                <SelectItem key={edition.id} value={edition.id.toString()}>
-                                                    {edition.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.edition_id} />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="artist_id">Artista</Label>
-                                    <Select value={data.artist_id} onValueChange={(value) => setData('artist_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Ninguno" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="0">Ninguno</SelectItem>
-                                            {artists.map((artist) => (
-                                                <SelectItem key={artist.id} value={artist.id.toString()}>
-                                                    {artist.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.artist_id} />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label htmlFor="flavor_text">Texto de Sabor</Label>
+                            <div className="space-y-1.5">
+                                <Label htmlFor="flavor_text" className="text-xs text-yellow-200/70">Texto de sabor</Label>
                                 <Textarea
                                     id="flavor_text"
                                     value={data.flavor_text}
                                     onChange={(e) => setData('flavor_text', e.target.value)}
-                                    placeholder="Una cita o texto descriptivo..."
-                                    rows={3}
-                                    className="text-base leading-relaxed resize-y italic"
+                                    placeholder="«Una cita con mala idea...»"
+                                    rows={2}
+                                    className="resize-y italic"
                                 />
                                 <InputError message={errors.flavor_text} />
                             </div>
-                        </CardContent>
-                    </UICard>
+                        </Seccion>
 
-                    {/* Actions */}
-                    <UICard className="border-primary/20 bg-card/50">
-                        <CardContent className="py-4">
-                            <div className="flex justify-between items-center">
-                                <Button type="button" variant="outline" size="lg" asChild>
-                                    <Link href="/admin/cards">
-                                        <X className="mr-2 h-4 w-4" />
-                                        Cancelar
-                                    </Link>
-                                </Button>
-                                <Button type="submit" size="lg" variant="magical" disabled={processing}>
-                                    <Save className="mr-2 h-4 w-4" />
-                                    {processing ? 'Guardando...' : 'Actualizar Carta'}
-                                </Button>
+                        <Seccion titulo="⚔️ Atributos">
+                            <div className="grid gap-4 grid-cols-2 sm:grid-cols-4">
+                                {stat('strength', '💪 Fuerza')}
+                                {stat('agility', '⚡ Agilidad')}
+                                {stat('charisma', '✨ Carisma')}
+                                {stat('mind', '🧠 Mente')}
+                                {stat('defense', '🛡️ Defensa')}
+                                {stat('magic_defense', '🔮 Def. Mágica')}
+                                {stat('health', '❤️ Vida')}
                             </div>
-                        </CardContent>
-                    </UICard>
-                </form>
-            </div>
-        </WriterLayout>
+                        </Seccion>
+
+                        <Seccion titulo="🏷️ Taxonomías extra">
+                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                                {taxonomia('archetype_id', 'Arquetipo', data.archetype_id, archetypes, 'archetype_id', true)}
+                                {taxonomia('faction_id', 'Facción', data.faction_id, factions, 'faction_id', true)}
+                                {taxonomia('edition_id', 'Edición', data.edition_id, editions, 'edition_id', true)}
+                                {taxonomia('artist_id', 'Artista', data.artist_id, artists, 'artist_id', true)}
+                            </div>
+                        </Seccion>
+
+                        <Seccion titulo="🖼️ Ilustración">
+                            <div className="space-y-1.5">
+                                <Input
+                                    id="illustration"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => setData('illustration', e.target.files?.[0] || null)}
+                                />
+                                <p className="text-xs text-yellow-200/50">
+                                    {card.taller_data
+                                        ? 'Esta carta vino del Taller: su imagen es la carta entera renderizada. Si la reemplazas aquí, perderás ese render (puedes regenerarlo desde el Taller).'
+                                        : 'Sustituye la imagen actual. Formato vertical 5:7 recomendado.'}
+                                </p>
+                                <InputError message={errors.illustration} />
+                            </div>
+                        </Seccion>
+                    </div>
+                </div>
+            </form>
+        </AdminLayout>
     );
 }

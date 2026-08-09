@@ -228,7 +228,8 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
                                         : 'Ninguna carta coincide con el filtro.'}
                                 </p>
                             ) : (
-                                <div className="grid max-h-[70vh] grid-cols-3 gap-3 overflow-y-auto pr-1 sm:grid-cols-4 xl:grid-cols-5">
+                                /* Cartas grandes y limpias: la carta ya lleva su nombre y coste pintados */
+                                <div className="grid max-h-[72vh] grid-cols-2 gap-4 overflow-y-auto pr-1 lg:grid-cols-3 2xl:grid-cols-4">
                                     {visibles.map((carta) => (
                                         <button
                                             key={carta.id}
@@ -236,26 +237,18 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
                                             onClick={() => agregar(carta)}
                                             onMouseEnter={() => setPreview(carta)}
                                             onMouseLeave={() => setPreview(null)}
-                                            className="group relative overflow-hidden rounded-lg border-2 border-slate-600/60 bg-slate-800 text-left transition-all hover:border-yellow-400/80 hover:shadow-[0_0_18px_rgba(251,191,36,0.35)] hover:scale-[1.03]"
+                                            className="group relative overflow-hidden rounded-xl border-2 border-slate-600/50 bg-slate-800 text-left transition-all hover:border-yellow-400/80 hover:shadow-[0_0_22px_rgba(251,191,36,0.4)] hover:scale-[1.02]"
                                             style={{ aspectRatio: '5 / 7' }}
                                         >
                                             {carta.image ? (
                                                 <img src={carta.image} alt={carta.name} className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
                                             ) : (
-                                                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-700 to-slate-900 p-2 text-center text-xs font-bold text-yellow-200/70">
-                                                    {carta.name}
+                                                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-slate-700 to-slate-900 p-3 text-center">
+                                                    <span className="text-sm font-bold text-yellow-200/80">{carta.name}</span>
+                                                    <span className="text-xs text-yellow-200/40">{carta.type}{carta.cost != null ? ` · Coste ${carta.cost}` : ''}</span>
                                                 </div>
                                             )}
-                                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-1.5 pt-4">
-                                                <p className="truncate text-[11px] font-bold text-yellow-100">{carta.name}</p>
-                                                <p className="text-[10px] text-yellow-200/50">{carta.type}</p>
-                                            </div>
-                                            {carta.cost != null && (
-                                                <span className="absolute top-1 left-1 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-black text-white shadow">
-                                                    {carta.cost}
-                                                </span>
-                                            )}
-                                            <span className="absolute top-1 right-1 rounded bg-yellow-500 px-1.5 text-sm font-black text-slate-900 opacity-0 transition-opacity group-hover:opacity-100">
+                                            <span className="absolute top-2 right-2 rounded-md bg-yellow-500 px-2 py-0.5 text-lg font-black text-slate-900 opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
                                                 +
                                             </span>
                                         </button>
