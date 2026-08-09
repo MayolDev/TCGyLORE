@@ -594,7 +594,7 @@ update.patch = (args: { card: number | { id: number } } | [card: number | { id: 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\CardController::destroy
- * @see app/Http/Controllers/Admin/CardController.php:163
+ * @see app/Http/Controllers/Admin/CardController.php:170
  * @route '/admin/cards/{card}'
  */
 export const destroy = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -609,7 +609,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::destroy
- * @see app/Http/Controllers/Admin/CardController.php:163
+ * @see app/Http/Controllers/Admin/CardController.php:170
  * @route '/admin/cards/{card}'
  */
 destroy.url = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -642,7 +642,7 @@ destroy.url = (args: { card: number | { id: number } } | [card: number | { id: n
 
 /**
 * @see \App\Http\Controllers\Admin\CardController::destroy
- * @see app/Http/Controllers/Admin/CardController.php:163
+ * @see app/Http/Controllers/Admin/CardController.php:170
  * @route '/admin/cards/{card}'
  */
 destroy.delete = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -652,7 +652,7 @@ destroy.delete = (args: { card: number | { id: number } } | [card: number | { id
 
     /**
 * @see \App\Http\Controllers\Admin\CardController::destroy
- * @see app/Http/Controllers/Admin/CardController.php:163
+ * @see app/Http/Controllers/Admin/CardController.php:170
  * @route '/admin/cards/{card}'
  */
     const destroyForm = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -667,7 +667,7 @@ destroy.delete = (args: { card: number | { id: number } } | [card: number | { id
 
             /**
 * @see \App\Http\Controllers\Admin\CardController::destroy
- * @see app/Http/Controllers/Admin/CardController.php:163
+ * @see app/Http/Controllers/Admin/CardController.php:170
  * @route '/admin/cards/{card}'
  */
         destroyForm.delete = (args: { card: number | { id: number } } | [card: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

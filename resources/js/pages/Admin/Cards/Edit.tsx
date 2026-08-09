@@ -168,6 +168,61 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
         </div>
     );
 
+    // Las cartas del Taller no se editan aquí: el taller es la mesa de
+    // trabajo. Esta vista solo enseña, manda al taller o elimina.
+    if (card.taller_data) {
+        return (
+            <AdminLayout breadcrumbs={breadcrumbs}>
+                <Head title={card.name} />
+
+                <div className="mx-auto flex max-w-5xl flex-col items-start gap-6 p-6 lg:flex-row">
+                    <div className="w-full max-w-sm shrink-0">
+                        {card.illustration_url && (
+                            <LightboxImage
+                                src={card.illustration_url}
+                                alt={card.name}
+                                className="w-full rounded-xl border-2 border-yellow-500/40 shadow-[0_0_35px_rgba(251,191,36,0.25)]"
+                            />
+                        )}
+                    </div>
+                    <div className="flex-1 space-y-4">
+                        <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-400" style={{ fontFamily: 'Cinzel, serif' }}>
+                            {card.name}
+                        </h1>
+                        <div className="rounded-lg border border-yellow-500/25 bg-slate-900/70 p-4">
+                            <p className="text-sm font-semibold text-yellow-200/80">
+                                🔨 Esta carta nació en el <strong>Taller</strong> y se edita allí.
+                            </p>
+                            <p className="mt-2 text-sm text-yellow-200/60">
+                                Ábrela en el Taller (o recupérala de su biblioteca local), haz los cambios y vuelve a pulsar
+                                <strong> «📚 A Biblioteca»</strong>: al tener el mismo nombre, esta carta se actualizará sola,
+                                render nuevo incluido.
+                            </p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                            <Button asChild className="bg-gradient-to-r from-yellow-600 to-orange-600 font-black text-white shadow-lg shadow-orange-500/40 hover:from-yellow-500 hover:to-orange-500">
+                                <Link href="/admin/cards-taller">
+                                    <Hammer className="mr-2 h-4 w-4" />
+                                    Abrir el Taller
+                                </Link>
+                            </Button>
+                            <Button variant="outline" asChild className="border-yellow-500/40 text-yellow-200 hover:bg-yellow-600/10">
+                                <Link href="/admin/cards">
+                                    <ArrowLeft className="mr-2 h-4 w-4" />
+                                    Volver a la Biblioteca
+                                </Link>
+                            </Button>
+                            <Button variant="outline" onClick={eliminar} className="border-red-500/50 text-red-300 hover:bg-red-600/20">
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Eliminar
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </AdminLayout>
+        );
+    }
+
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title={`Editar ${card.name}`} />

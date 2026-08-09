@@ -121,6 +121,13 @@ class CardController extends Controller
 
     public function update(Request $request, Card $card)
     {
+        // Las cartas nacidas en el Taller se editan SOLO en el Taller:
+        // reenviarlas desde allí las actualiza (upsert por nombre).
+        if ($card->taller_data) {
+            return redirect()->route('admin.cards.edit', $card)
+                ->with('error', 'Esta carta se edita desde el Taller.');
+        }
+
         $validated = $request->validate([
             'world_id' => ['required', 'exists:worlds,id'],
             'character_id' => ['nullable', 'exists:characters,id'],

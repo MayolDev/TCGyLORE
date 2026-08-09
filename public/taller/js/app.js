@@ -1783,9 +1783,9 @@
         body: fd,
       });
 
-      if (res.status === 201){
+      if (res.status === 201 || res.status === 200){
         const j = await res.json();
-        toast(`«${j.name}» creada en la Biblioteca.`);
+        toast(j.updated ? `«${j.name}» actualizada en la Biblioteca.` : `«${j.name}» creada en la Biblioteca.`);
       } else if (res.status === 401 || res.status === 419 || res.status === 302){
         toast('Sesión no válida: abre el taller desde el panel web con la sesión iniciada.');
       } else {

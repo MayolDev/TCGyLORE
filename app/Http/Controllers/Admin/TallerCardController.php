@@ -35,23 +35,41 @@ class TallerCardController extends Controller
 
         $tipo = CardType::firstOrCreate(['name' => $validated['type'] ?: 'Criatura']);
 
-        $card = Card::create([
-            'world_id' => World::query()->value('id'),
+        // Upsert por nombre: reenviar la misma carta desde el taller la
+        // ACTUALIZA (render nuevo incluido) en vez de duplicarla. El taller
+        // es la única mesa de trabajo; la web solo la expone.
+        $card = Card::whereNotNull('taller_data')->where('name', $validated['name'])->first();
+        $nueva = $card === null;
+
+        if ($card?->illustration) {
+            Storage::disk('public')->delete($card->illustration);
+        }
+
+        $atributos = [
             'name' => $validated['name'],
             'effect' => $validated['effect'] ?: '—',
             'cost' => $validated['cost'] ?? 0,
             'flavor_text' => $validated['flavor_text'] ?? null,
             'card_type_id' => $tipo->id,
-            'rarity_id' => Rarity::where('name', 'Común')->value('id') ?? Rarity::query()->value('id'),
-            'alignment_id' => Alignment::query()->value('id'),
             'illustration' => Storage::disk('public')->putFile('cards', $request->file('image')),
             'taller_data' => $validated['data'] ?? null,
-        ]);
+        ];
+
+        if ($nueva) {
+            $card = Card::create($atributos + [
+                'world_id' => World::query()->value('id'),
+                'rarity_id' => Rarity::where('name', 'Común')->value('id') ?? Rarity::query()->value('id'),
+                'alignment_id' => Alignment::query()->value('id'),
+            ]);
+        } else {
+            $card->update($atributos);
+        }
 
         return response()->json([
             'id' => $card->id,
             'name' => $card->name,
+            'updated' => ! $nueva,
             'url' => route('admin.cards.edit', $card),
-        ], 201);
+        ], $nueva ? 201 : 200);
     }
 }
