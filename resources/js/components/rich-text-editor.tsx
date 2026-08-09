@@ -23,6 +23,42 @@ import {
 } from 'lucide-react';
 
 /**
+ * Imagen con ancho ajustable. El ancho viaja en el Markdown como HTML inline
+ * (<img src style="width:50%">) porque ![](url) no puede llevar tamaño; el
+ * Manual ya renderiza HTML via rehypeRaw y el editor lo reparsea al abrir.
+ */
+const ResizableImage = Image.extend({
+    addAttributes() {
+        return {
+            ...this.parent?.(),
+            width: {
+                default: null,
+                parseHTML: (element: HTMLElement) => element.style.width || element.getAttribute('width') || null,
+                renderHTML: (attributes: { width: string | null }) =>
+                    attributes.width ? { style: `width: ${attributes.width}` } : {},
+            },
+        };
+    },
+    addStorage() {
+        return {
+            markdown: {
+                serialize(state: { write: (s: string) => void; closeBlock: (n: unknown) => void }, node: { attrs: { src: string; alt: string | null; width: string | null } }) {
+                    const { src, alt, width } = node.attrs;
+                    if (width) {
+                        state.write(`<img src="${src}"${alt ? ` alt="${alt}"` : ''} style="width:${width}">`);
+                    } else {
+                        state.write(`![${alt || ''}](${src})`);
+                    }
+                    state.closeBlock(node);
+                },
+            },
+        };
+    },
+});
+
+const IMAGE_SIZES = ['25%', '50%', '75%', '100%'] as const;
+
+/**
  * Sube una imagen al servidor y devuelve su URL pública. Se usa desde el
  * botón de la barra y desde pegar/arrastrar. El CSRF va en la cabecera
  * X-XSRF-TOKEN leyendo la cookie que Laravel ya deja en el navegador.
@@ -121,12 +157,17 @@ export default function RichTextEditor({ id, value, onChange, placeholder, minHe
             StarterKit.configure({
                 link: { openOnClick: false },
             }),
-            Image,
-            // html: true → lo que no existe en Markdown (subrayado) se guarda
-            // como HTML inline; el Manual ya renderiza con rehypeRaw.
+            ResizableImage,
+            // html: true → lo que no existe en Markdown (subrayado, ancho de
+            // imagen) se guarda como HTML inline; el Manual ya renderiza con
+            // rehypeRaw.
             Markdown.configure({ html: true }),
             Placeholder.configure({ placeholder: placeholder ?? '' }),
         ],
+        // En Tiptap v3 la barra no se re-renderiza en cada transacción por
+        // defecto: sin esto, los botones activos y los tamaños de imagen no
+        // reflejan la selección actual.
+        shouldRerenderOnTransaction: true,
         content: value || '',
         onUpdate: ({ editor }) => {
             onChange(editor.storage.markdown.getMarkdown());
@@ -238,6 +279,27 @@ export default function RichTextEditor({ id, value, onChange, placeholder, minHe
                 <ToolbarButton editor={editor} title="Imagen desde URL" onClick={insertImageFromUrl}>
                     <ImagePlus className={iconSize} />
                 </ToolbarButton>
+                {editor.isActive('image') && (
+                    <span className="ml-1 flex items-center gap-0.5 rounded bg-yellow-600/10 px-1">
+                        <span className="px-1 text-[10px] font-bold text-yellow-200/60 uppercase">Tamaño</span>
+                        {IMAGE_SIZES.map((size) => (
+                            <button
+                                key={size}
+                                type="button"
+                                title={`Ancho ${size}`}
+                                onMouseDown={(e) => e.preventDefault()}
+                                onClick={() => editor.chain().focus().updateAttributes('image', { width: size === '100%' ? null : size }).run()}
+                                className={`rounded px-1.5 py-1 text-[11px] font-bold transition-colors ${
+                                    (editor.getAttributes('image').width ?? '100%') === size
+                                        ? 'bg-yellow-600/25 text-yellow-300'
+                                        : 'text-yellow-200/50 hover:bg-yellow-600/10 hover:text-yellow-200'
+                                }`}
+                            >
+                                {size}
+                            </button>
+                        ))}
+                    </span>
+                )}
                 <input
                     ref={fileInputRef}
                     type="file"
