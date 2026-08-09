@@ -86,6 +86,7 @@
               <option value="wall">Muro</option>
               <option value="weapon">Arma</option>
               <option value="hero">Protagonista</option>
+              <option value="senda">Senda</option>
               <option value="heraldo">El Heraldo / Evento</option>
             </select>
           </label>
@@ -114,6 +115,17 @@
           <p class="note">La Habilidad Única y El Final van en el cuadro de texto. Capacidad = CAR + 3.<br>
             Formato: <code>## ÚNICA — Nombre</code> y <code>## EL FINAL — Nombre</code> como títulos
             (verde y rojo), <code>---</code> en su línea como separador.</p>
+        </div>
+
+        <div id="sendagroup" class="sub hidden">
+          <p class="sublabel">Senda</p>
+          <label class="f"><span>Protagonista al que pertenece</span>
+            <input id="sprota" type="text" placeholder="Sosius"></label>
+          <div class="toggle"><label for="soculta">Senda oculta</label>
+            <span class="sw"><input id="soculta" type="checkbox" checked><span class="k"></span></span></div>
+          <p class="note">El antetítulo se compone solo: <code>SENDA (oculta) · SOSIUS</code>.
+            Los niveles van en el cuadro de texto: <code>## NIVEL 2</code> y <code>## NIVEL 3</code>
+            como títulos (dorado), <code>---</code> como separador.</p>
         </div>
 
         <div id="heraldogroup" class="sub hidden">

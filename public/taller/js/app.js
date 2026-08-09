@@ -120,6 +120,7 @@
       const u = t.toUpperCase();
       if (u.startsWith('ÚNICA') || u.startsWith('UNICA')) return oscuro ? '#a9bd63' : '#5c6e2a';
       if (u.startsWith('EL FINAL') || u.startsWith('FINAL')) return oscuro ? '#e0705a' : '#8f2f24';
+      if (u.startsWith('NIVEL')) return oscuro ? '#d9b34a' : '#8a6b1f';
       return inkColor;
     };
 
@@ -169,6 +170,13 @@
   }
 
   // Ajusta el cuerpo de una fuente midiendo SIEMPRE con la fuente candidata.
+  /** El antetítulo de una senda se compone solo: SENDA (oculta) · SOSIUS. */
+  function etiquetasDe(c){
+    if (c.tipo !== 'senda') return c.etiquetas || '';
+    const prota = (c.sprota || '').toUpperCase();
+    return 'SENDA' + (c.soculta !== false ? ' (oculta)' : '') + (prota ? ' · ' + prota : '');
+  }
+
   function fitLine(g, text, mk, maxw, start, min){
     for (let size = start; size >= min; size -= 1){
       g.font = mk(size);
@@ -406,6 +414,7 @@
       atq: $('#atk').value, def: $('#def').value, ego: $('#ego').value,
       fue: $('#fue').value, agi: $('#agi').value, men: $('#men').value, car: $('#car').value, pv: $('#pv').value,
       hmast: $('#hmast').value, hregla: $('#hregla').value, hvoz: $('#hvoz').value,
+      sprota: $('#sprota').value, soculta: $('#soculta').checked,
       arte:    $('#artslug').value || slug($('#name').value),
       style:   S.style, foil: S.foil, foilAmt: S.foilAmt,
       zoom: S.zoom, ox: S.ox, oy: S.oy,
@@ -417,6 +426,8 @@
     $('#type').value = c.tipo || 'creature';
     $('#cost').value = c.coste ?? 0;
     $('#tags').value = c.etiquetas || '';
+    $('#sprota').value = c.sprota || '';
+    $('#soculta').checked = c.soculta !== false;
     $('#body').value = c.texto || '';
     $('#flavor').value = c.cita || '';
     $('#foot').value = c.pie || $('#foot').value;
@@ -484,7 +495,7 @@
 
     // ---- antetítulo (la ronda, el lugar)
     g.font = 'italic 23px "IM Fell English", serif'; g.fillStyle = 'rgba(34,27,18,.72)';
-    centered(g, c.etiquetas || '', W/2, 196);
+    centered(g, etiquetasDe(c), W/2, 196);
     g.strokeStyle = 'rgba(34,27,18,.35)'; g.lineWidth = 1;
     g.beginPath(); g.moveTo(m, 212); g.lineTo(W-m, 212); g.stroke();
 
@@ -571,7 +582,7 @@
     const nx = 36, ny = 36, nw = W-72, nh = 116;
     cut(g, nx, ny, nw, nh, 16); g.fillStyle = C.ink; g.fill();
     g.lineWidth = 2; g.strokeStyle = A.c; g.stroke();
-    if (!isHero) seal(g, nx+62, ny+nh/2, 40, A.c, c.coste, seed+3);
+    if (!isHero && c.tipo !== 'senda') seal(g, nx+62, ny+nh/2, 40, A.c, c.coste, seed+3);
     // Coste y EGO enmarcan el nombre: son las dos cifras del Consejo.
     if (isCreature) diamond(g, nx+nw-58, ny+nh/2, 38, '#6b4a7a', c.ego, null);
     const tx0 = isHero ? nx+26 : nx+124;
@@ -585,7 +596,7 @@
     g.fillStyle = C.ink; g.font = '700 21px Archivo, sans-serif';
     g.fillText(A.label, 52, 184);
     g.fillStyle = 'rgba(12,10,8,.68)'; g.font = 'italic 24px "IM Fell English", serif';
-    g.fillText(c.etiquetas || '', 36, 218);
+    g.fillText(etiquetasDe(c), 36, 218);
 
     // ---- ventana de arte
     const ax = 36, ay = 230, aw = W-72, ah = 372;
@@ -640,7 +651,7 @@
     // banda superior de color
     cut(g, 30, 30, W-60, 120, 18); g.fillStyle = A.c; g.fill();
     g.lineWidth = 5; g.strokeStyle = C.ink; g.stroke();
-    if (!isHero) seal(g, 92, 90, 40, C.ink, c.coste, seed+3);
+    if (!isHero && c.tipo !== 'senda') seal(g, 92, 90, 40, C.ink, c.coste, seed+3);
     if (isCreature) diamond(g, W-96, 90, 38, '#6b4a7a', c.ego, null);
     const nmax = W - 60 - (isHero ? 60 : 150) - (isCreature ? 100 : 0);
     const nsz = fitLine(g, c.nombre || ' ', s => `600 ${s}px "Grenze Gotisch", "IM Fell English SC", serif`, nmax, 50, 22);
@@ -666,7 +677,7 @@
     g.lineWidth = 5; g.strokeStyle = C.ink; g.stroke();
 
     g.fillStyle = 'rgba(12,10,8,.55)'; g.font = 'italic 20px "IM Fell English", serif';
-    g.fillText(c.etiquetas || '', bx+22, by+30);
+    g.fillText(etiquetasDe(c), bx+22, by+30);
 
     let ty = by + 62;
     const hasCita = !!c.cita;
@@ -702,7 +713,7 @@
 
     g.lineWidth = 6; g.strokeStyle = A.c; rr(g, 9, 9, W-18, H-18, 12); g.stroke();
     g.lineWidth = 2; g.strokeStyle = 'rgba(0,0,0,.55)'; rr(g, 16, 16, W-32, H-32, 8); g.stroke();
-    if (!isHero) seal(g, 82, 84, 44, A.c, c.coste, seed+3);
+    if (!isHero && c.tipo !== 'senda') seal(g, 82, 84, 44, A.c, c.coste, seed+3);
     if (c.tipo === 'creature') diamond(g, W-82, 84, 40, '#6b4a7a', c.ego, null);
 
     const nsz = fitLine(g, c.nombre || ' ', s => `600 ${s}px "Grenze Gotisch", "IM Fell English SC", serif`, W-260, 60, 26);
@@ -761,7 +772,7 @@
     }
 
     // ---- textos, colocados según el layout de este marco
-    if (!isHero && c.tipo !== 'heraldo') seal(g, 84, L.titleY - 10, 40, A.c, c.coste, seed+3);
+    if (!isHero && c.tipo !== 'heraldo' && c.tipo !== 'senda') seal(g, 84, L.titleY - 10, 40, A.c, c.coste, seed+3);
     if (isCreature) diamond(g, W-84, L.titleY - 10, 38, '#6b4a7a', c.ego, null);
     const nsz = fitLine(g, c.nombre || ' ', s => `600 ${s}px "Grenze Gotisch", "IM Fell English SC", serif`, W-280, 46, 20);
     g.font = `600 ${nsz}px "Grenze Gotisch", "IM Fell English SC", serif`;
@@ -776,7 +787,7 @@
 
     const bx = L.textX, bw = L.textW;
     g.fillStyle = 'rgba(12,10,8,.72)'; g.font = 'italic 21px "IM Fell English", serif';
-    centered(g, c.etiquetas || '', W/2, L.tagsY);
+    centered(g, etiquetasDe(c), W/2, L.tagsY);
 
     let ty = L.textY;
     const hasCita = !!c.cita;
@@ -1571,13 +1582,15 @@
     $('#statgroup').classList.toggle('hidden', !(t === 'creature' || t === 'wall'));
     $('#herogroup').classList.toggle('hidden', t !== 'hero');
     $('#heraldogroup').classList.toggle('hidden', !heraldo);
+    $('#sendagroup').classList.toggle('hidden', t !== 'senda');
+    $('#tags').closest('label').classList.toggle('hidden', t === 'senda');
     $('#rarityrow').classList.toggle('hidden', t !== 'creature');
     $('#atkwrap').classList.toggle('hidden', t !== 'creature');
     $('#egowrap').classList.toggle('hidden', t !== 'creature');
     // El Heraldo ignora el estilo de marco y no tiene coste ni foil.
     $('#stylegroup').classList.toggle('hidden', heraldo);
     $('#marcogroup').classList.toggle('hidden', heraldo || S.style !== 'marco');
-    $('#costwrap').classList.toggle('hidden', heraldo);
+    $('#costwrap').classList.toggle('hidden', heraldo || t === 'senda');
     $$('.lbl-carta').forEach(e => e.classList.toggle('hidden', heraldo));
     $$('.lbl-heraldo').forEach(e => e.classList.toggle('hidden', !heraldo));
   }
@@ -1828,7 +1841,7 @@
   // viaja en `data` y se guarda en cards.taller_data.
   const TIPOS_BIBLIOTECA = {
     creature: 'Criatura', spell: 'Hechizo', trap: 'Trampa', wall: 'Muro',
-    weapon: 'Arma', hero: 'Protagonista', heraldo: 'Evento',
+    weapon: 'Arma', hero: 'Protagonista', senda: 'Senda', heraldo: 'Evento',
   };
 
   $('#save').onclick = async () => {
