@@ -318,7 +318,9 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
 
             {/* Preview flotante de la carta bajo el cursor */}
             {preview && (
-                <div className="pointer-events-none fixed bottom-6 left-6 z-[9000] w-64">
+                /* Grande de verdad: a 256px el texto de la carta era ilegible.
+                   Tope por viewport para que nunca se salga por arriba. */
+                <div className="pointer-events-none fixed bottom-6 left-6 z-[9000]" style={{ width: 'min(440px, calc(82vh * 5 / 7))' }}>
                     {preview.image ? (
                         <div className="relative overflow-hidden rounded-xl">
                             <img src={preview.image} alt={preview.name} className="w-full rounded-xl border-4 border-yellow-500/70 shadow-[0_0_40px_rgba(251,191,36,0.5)]" />
