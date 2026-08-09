@@ -25,9 +25,7 @@ import {
     Swords,
     UserCircle,
     Flame,
-    BookOpen,
-    Hammer,
-    Layers
+    BookOpen
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -68,20 +66,11 @@ const loreNavItems: NavItem[] = [
 ];
 
 const tcgNavItems: NavItem[] = [
+    // La Biblioteca une Cartas, Mazos y Taller (pestañas dentro de la sección)
     {
-        title: 'Cartas TCG',
+        title: 'Biblioteca',
         href: '/admin/cards',
         icon: Swords,
-    },
-    {
-        title: 'Taller de Cartas',
-        href: '/admin/cards-taller',
-        icon: Hammer,
-    },
-    {
-        title: 'Mazos',
-        href: '/admin/decks',
-        icon: Layers,
     },
     {
         title: 'Manual del Juego',

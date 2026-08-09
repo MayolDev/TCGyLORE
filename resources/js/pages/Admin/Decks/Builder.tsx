@@ -42,7 +42,7 @@ const ZONAS_NORMAL: { zone: Zone; titulo: string; icono: string }[] = [
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Mazos', href: '/admin/decks' },
+    { title: 'Biblioteca · Mazos', href: '/admin/decks' },
     { title: 'Constructor' },
 ];
 

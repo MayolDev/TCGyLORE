@@ -19,10 +19,10 @@ import {
     Sparkles,
     Filter,
     Grid3x3,
-    Table2,
-    Hammer
+    Table2
 } from 'lucide-react';
 import { useState } from 'react';
+import LibraryTabs from '@/components/library-tabs';
 
 interface CardData {
     id: number;
@@ -65,7 +65,7 @@ interface Props {
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Cartas TCG', href: '/admin/cards' },
+    { title: 'Biblioteca', href: '/admin/cards' },
 ];
 
 const rarityBadgeVariant: Record<string, 'common' | 'rare' | 'epic' | 'legendary' | 'outline'> = {
@@ -126,26 +126,18 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
 
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
-            <Head title="Cartas TCG" />
+            <Head title="Biblioteca · Cartas" />
 
             <div className="space-y-6 p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
+                    <div className="space-y-3">
                         <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_2px_10px_rgba(251,191,36,0.5)]" style={{ fontFamily: 'Cinzel, serif' }}>
-                            CARTAS TCG LEGENDARIAS
+                            BIBLIOTECA
                         </h1>
-                        <p className="text-yellow-200/70 mt-2 font-semibold text-base">
-                            ⚔️ Gestiona las cartas de combate de tu juego épico
-                        </p>
+                        <LibraryTabs active="cartas" />
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
-                        <Button variant="outline" size="lg" asChild className="border-2 border-yellow-500/40 text-yellow-200 font-black hover:bg-yellow-600/10">
-                            <Link href="/admin/cards-taller">
-                                <Hammer className="mr-2 h-5 w-5" />
-                                Taller de Cartas
-                            </Link>
-                        </Button>
                         <Button variant="magical" size="lg" asChild className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30">
                             <Link href="/admin/cards/create">
                                 <Plus className="mr-2 h-5 w-5" />

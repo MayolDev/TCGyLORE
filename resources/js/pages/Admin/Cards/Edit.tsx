@@ -65,7 +65,7 @@ interface Props {
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Cartas TCG', href: '/admin/cards' },
+    { title: 'Biblioteca', href: '/admin/cards' },
     { title: 'Editar' },
 ];
 

@@ -5,6 +5,7 @@ import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Layers, Pencil, Plus, Trash2 } from 'lucide-react';
+import LibraryTabs from '@/components/library-tabs';
 
 interface DeckSummary {
     id: number;
@@ -18,7 +19,7 @@ interface DeckSummary {
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Mazos', href: '/admin/decks' },
+    { title: 'Biblioteca · Mazos', href: '/admin/decks' },
 ];
 
 export default function Index({ decks }: { decks: DeckSummary[] }) {
@@ -30,17 +31,15 @@ export default function Index({ decks }: { decks: DeckSummary[] }) {
 
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
-            <Head title="Mazos" />
+            <Head title="Biblioteca · Mazos" />
 
             <div className="space-y-6 p-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
+                    <div className="space-y-3">
                         <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_2px_10px_rgba(251,191,36,0.5)] uppercase" style={{ fontFamily: 'Cinzel, serif' }}>
-                            Mazos
+                            Biblioteca
                         </h1>
-                        <p className="mt-2 text-base font-semibold text-yellow-200/70">
-                            🃏 Construye mazos con las cartas de tu Biblioteca
-                        </p>
+                        <LibraryTabs active="mazos" />
                     </div>
                     <Button variant="magical" size="lg" asChild className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30" style={{ fontFamily: 'Cinzel, serif' }}>
                         <Link href="/admin/decks/create">
