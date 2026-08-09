@@ -16,7 +16,7 @@ class StoryController extends Controller
     public function index(Request $request)
     {
         $stories = Story::query()
-            ->with('world')
+            ->with('worlds')
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('title', 'like', "%{$search}%")
                     ->orWhere('content', 'like', "%{$search}%");
@@ -25,7 +25,7 @@ class StoryController extends Controller
                 $query->where('category', $category);
             })
             ->when($request->input('world_id'), function ($query, $worldId) {
-                $query->where('world_id', $worldId);
+                $query->whereHas('worlds', fn ($q) => $q->where('worlds.id', $worldId));
             })
             ->latest()
             ->paginate(10)
@@ -48,7 +48,8 @@ class StoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'world_id' => ['required', 'exists:worlds,id'],
+            'world_ids' => ['required', 'array', 'min:1'],
+            'world_ids.*' => ['exists:worlds,id'],
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
             'category' => ['required', 'in:leyenda,cuento,cronica,biografia,mito'],
@@ -62,9 +63,10 @@ class StoryController extends Controller
         if ($portada = $this->resolveImage($request, null, 'stories')) {
             $validated['cover_image'] = $portada;
         }
-        unset($validated['image'], $validated['image_url']);
+        unset($validated['image'], $validated['image_url'], $validated['world_ids']);
 
-        Story::create($validated);
+        $story = Story::create($validated);
+        $story->worlds()->sync($request->input('world_ids'));
 
         return redirect()->route('admin.stories.index')
             ->with('success', 'Historia creada exitosamente.');
@@ -72,7 +74,7 @@ class StoryController extends Controller
 
     public function show(Story $story)
     {
-        $story->load(['world', 'characters']);
+        $story->load(['worlds', 'characters']);
 
         return Inertia::render('Admin/Stories/Show', [
             'story' => $story,
@@ -81,7 +83,7 @@ class StoryController extends Controller
 
     public function edit(Story $story)
     {
-        $story->load('world');
+        $story->load('worlds');
 
         return Inertia::render('Admin/Stories/Edit', [
             'story' => $story,
@@ -92,7 +94,8 @@ class StoryController extends Controller
     public function update(Request $request, Story $story)
     {
         $validated = $request->validate([
-            'world_id' => ['required', 'exists:worlds,id'],
+            'world_ids' => ['required', 'array', 'min:1'],
+            'world_ids.*' => ['exists:worlds,id'],
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
             'category' => ['required', 'in:leyenda,cuento,cronica,biografia,mito'],
@@ -106,9 +109,10 @@ class StoryController extends Controller
         if ($portada = $this->resolveImage($request, $story->cover_image, 'stories')) {
             $validated['cover_image'] = $portada;
         }
-        unset($validated['image'], $validated['image_url']);
+        unset($validated['image'], $validated['image_url'], $validated['world_ids']);
 
         $story->update($validated);
+        $story->worlds()->sync($request->input('world_ids'));
 
         return redirect()->route('admin.stories.index')
             ->with('success', 'Historia actualizada exitosamente.');

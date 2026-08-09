@@ -38,9 +38,16 @@ class Character extends Model
             : parse_url(Storage::disk('public')->url($this->image), PHP_URL_PATH);
     }
 
+    /** Legado: la pertenencia real está en worlds() (pivot character_world). */
     public function world(): BelongsTo
     {
         return $this->belongsTo(World::class);
+    }
+
+    /** Un personaje puede pertenecer a uno o varios mundos. */
+    public function worlds(): BelongsToMany
+    {
+        return $this->belongsToMany(World::class, 'character_world');
     }
 
     public function cards(): HasMany

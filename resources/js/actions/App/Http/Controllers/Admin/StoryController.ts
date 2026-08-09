@@ -212,7 +212,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\StoryController::show
- * @see app/Http/Controllers/Admin/StoryController.php:73
+ * @see app/Http/Controllers/Admin/StoryController.php:75
  * @route '/admin/stories/{story}'
  */
 export const show = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -227,7 +227,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\StoryController::show
- * @see app/Http/Controllers/Admin/StoryController.php:73
+ * @see app/Http/Controllers/Admin/StoryController.php:75
  * @route '/admin/stories/{story}'
  */
 show.url = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -260,7 +260,7 @@ show.url = (args: { story: number | { id: number } } | [story: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\Admin\StoryController::show
- * @see app/Http/Controllers/Admin/StoryController.php:73
+ * @see app/Http/Controllers/Admin/StoryController.php:75
  * @route '/admin/stories/{story}'
  */
 show.get = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -269,7 +269,7 @@ show.get = (args: { story: number | { id: number } } | [story: number | { id: nu
 })
 /**
 * @see \App\Http\Controllers\Admin\StoryController::show
- * @see app/Http/Controllers/Admin/StoryController.php:73
+ * @see app/Http/Controllers/Admin/StoryController.php:75
  * @route '/admin/stories/{story}'
  */
 show.head = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -279,7 +279,7 @@ show.head = (args: { story: number | { id: number } } | [story: number | { id: n
 
     /**
 * @see \App\Http\Controllers\Admin\StoryController::show
- * @see app/Http/Controllers/Admin/StoryController.php:73
+ * @see app/Http/Controllers/Admin/StoryController.php:75
  * @route '/admin/stories/{story}'
  */
     const showForm = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -289,7 +289,7 @@ show.head = (args: { story: number | { id: number } } | [story: number | { id: n
 
             /**
 * @see \App\Http\Controllers\Admin\StoryController::show
- * @see app/Http/Controllers/Admin/StoryController.php:73
+ * @see app/Http/Controllers/Admin/StoryController.php:75
  * @route '/admin/stories/{story}'
  */
         showForm.get = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -298,7 +298,7 @@ show.head = (args: { story: number | { id: number } } | [story: number | { id: n
         })
             /**
 * @see \App\Http\Controllers\Admin\StoryController::show
- * @see app/Http/Controllers/Admin/StoryController.php:73
+ * @see app/Http/Controllers/Admin/StoryController.php:75
  * @route '/admin/stories/{story}'
  */
         showForm.head = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -314,7 +314,7 @@ show.head = (args: { story: number | { id: number } } | [story: number | { id: n
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\StoryController::edit
- * @see app/Http/Controllers/Admin/StoryController.php:82
+ * @see app/Http/Controllers/Admin/StoryController.php:84
  * @route '/admin/stories/{story}/edit'
  */
 export const edit = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -329,7 +329,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\StoryController::edit
- * @see app/Http/Controllers/Admin/StoryController.php:82
+ * @see app/Http/Controllers/Admin/StoryController.php:84
  * @route '/admin/stories/{story}/edit'
  */
 edit.url = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -362,7 +362,7 @@ edit.url = (args: { story: number | { id: number } } | [story: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\Admin\StoryController::edit
- * @see app/Http/Controllers/Admin/StoryController.php:82
+ * @see app/Http/Controllers/Admin/StoryController.php:84
  * @route '/admin/stories/{story}/edit'
  */
 edit.get = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -371,7 +371,7 @@ edit.get = (args: { story: number | { id: number } } | [story: number | { id: nu
 })
 /**
 * @see \App\Http\Controllers\Admin\StoryController::edit
- * @see app/Http/Controllers/Admin/StoryController.php:82
+ * @see app/Http/Controllers/Admin/StoryController.php:84
  * @route '/admin/stories/{story}/edit'
  */
 edit.head = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -381,7 +381,7 @@ edit.head = (args: { story: number | { id: number } } | [story: number | { id: n
 
     /**
 * @see \App\Http\Controllers\Admin\StoryController::edit
- * @see app/Http/Controllers/Admin/StoryController.php:82
+ * @see app/Http/Controllers/Admin/StoryController.php:84
  * @route '/admin/stories/{story}/edit'
  */
     const editForm = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -391,7 +391,7 @@ edit.head = (args: { story: number | { id: number } } | [story: number | { id: n
 
             /**
 * @see \App\Http\Controllers\Admin\StoryController::edit
- * @see app/Http/Controllers/Admin/StoryController.php:82
+ * @see app/Http/Controllers/Admin/StoryController.php:84
  * @route '/admin/stories/{story}/edit'
  */
         editForm.get = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -400,7 +400,7 @@ edit.head = (args: { story: number | { id: number } } | [story: number | { id: n
         })
             /**
 * @see \App\Http\Controllers\Admin\StoryController::edit
- * @see app/Http/Controllers/Admin/StoryController.php:82
+ * @see app/Http/Controllers/Admin/StoryController.php:84
  * @route '/admin/stories/{story}/edit'
  */
         editForm.head = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -416,7 +416,7 @@ edit.head = (args: { story: number | { id: number } } | [story: number | { id: n
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\StoryController::update
- * @see app/Http/Controllers/Admin/StoryController.php:92
+ * @see app/Http/Controllers/Admin/StoryController.php:94
  * @route '/admin/stories/{story}'
  */
 export const update = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -431,7 +431,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\StoryController::update
- * @see app/Http/Controllers/Admin/StoryController.php:92
+ * @see app/Http/Controllers/Admin/StoryController.php:94
  * @route '/admin/stories/{story}'
  */
 update.url = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -464,7 +464,7 @@ update.url = (args: { story: number | { id: number } } | [story: number | { id: 
 
 /**
 * @see \App\Http\Controllers\Admin\StoryController::update
- * @see app/Http/Controllers/Admin/StoryController.php:92
+ * @see app/Http/Controllers/Admin/StoryController.php:94
  * @route '/admin/stories/{story}'
  */
 update.put = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -473,7 +473,7 @@ update.put = (args: { story: number | { id: number } } | [story: number | { id: 
 })
 /**
 * @see \App\Http\Controllers\Admin\StoryController::update
- * @see app/Http/Controllers/Admin/StoryController.php:92
+ * @see app/Http/Controllers/Admin/StoryController.php:94
  * @route '/admin/stories/{story}'
  */
 update.patch = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -483,7 +483,7 @@ update.patch = (args: { story: number | { id: number } } | [story: number | { id
 
     /**
 * @see \App\Http\Controllers\Admin\StoryController::update
- * @see app/Http/Controllers/Admin/StoryController.php:92
+ * @see app/Http/Controllers/Admin/StoryController.php:94
  * @route '/admin/stories/{story}'
  */
     const updateForm = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -498,7 +498,7 @@ update.patch = (args: { story: number | { id: number } } | [story: number | { id
 
             /**
 * @see \App\Http\Controllers\Admin\StoryController::update
- * @see app/Http/Controllers/Admin/StoryController.php:92
+ * @see app/Http/Controllers/Admin/StoryController.php:94
  * @route '/admin/stories/{story}'
  */
         updateForm.put = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -512,7 +512,7 @@ update.patch = (args: { story: number | { id: number } } | [story: number | { id
         })
             /**
 * @see \App\Http\Controllers\Admin\StoryController::update
- * @see app/Http/Controllers/Admin/StoryController.php:92
+ * @see app/Http/Controllers/Admin/StoryController.php:94
  * @route '/admin/stories/{story}'
  */
         updateForm.patch = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -528,7 +528,7 @@ update.patch = (args: { story: number | { id: number } } | [story: number | { id
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\StoryController::destroy
- * @see app/Http/Controllers/Admin/StoryController.php:117
+ * @see app/Http/Controllers/Admin/StoryController.php:121
  * @route '/admin/stories/{story}'
  */
 export const destroy = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -543,7 +543,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\StoryController::destroy
- * @see app/Http/Controllers/Admin/StoryController.php:117
+ * @see app/Http/Controllers/Admin/StoryController.php:121
  * @route '/admin/stories/{story}'
  */
 destroy.url = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -576,7 +576,7 @@ destroy.url = (args: { story: number | { id: number } } | [story: number | { id:
 
 /**
 * @see \App\Http\Controllers\Admin\StoryController::destroy
- * @see app/Http/Controllers/Admin/StoryController.php:117
+ * @see app/Http/Controllers/Admin/StoryController.php:121
  * @route '/admin/stories/{story}'
  */
 destroy.delete = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -586,7 +586,7 @@ destroy.delete = (args: { story: number | { id: number } } | [story: number | { 
 
     /**
 * @see \App\Http\Controllers\Admin\StoryController::destroy
- * @see app/Http/Controllers/Admin/StoryController.php:117
+ * @see app/Http/Controllers/Admin/StoryController.php:121
  * @route '/admin/stories/{story}'
  */
     const destroyForm = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -601,7 +601,7 @@ destroy.delete = (args: { story: number | { id: number } } | [story: number | { 
 
             /**
 * @see \App\Http\Controllers\Admin\StoryController::destroy
- * @see app/Http/Controllers/Admin/StoryController.php:117
+ * @see app/Http/Controllers/Admin/StoryController.php:121
  * @route '/admin/stories/{story}'
  */
         destroyForm.delete = (args: { story: number | { id: number } } | [story: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

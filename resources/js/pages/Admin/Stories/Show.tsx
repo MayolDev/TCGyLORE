@@ -14,7 +14,7 @@ interface Story {
     era: string | null;
     is_published: boolean;
     image_url: string | null;
-    world: { id: number; name: string } | null;
+    worlds: { id: number; name: string }[];
     characters: { id: number; name: string }[];
 }
 
@@ -50,11 +50,11 @@ export default function Show({ story }: { story: Story }) {
                             <Badge className="bg-purple-600/30 text-purple-200 border-purple-500/50 font-bold">
                                 {CATEGORIAS[story.category] ?? story.category}
                             </Badge>
-                            {story.world && (
-                                <Badge className="bg-blue-600/30 text-blue-200 border-blue-500/50 font-bold">
-                                    🌍 {story.world.name}
+                            {story.worlds.map((w) => (
+                                <Badge key={w.id} className="bg-blue-600/30 text-blue-200 border-blue-500/50 font-bold">
+                                    🌍 {w.name}
                                 </Badge>
-                            )}
+                            ))}
                             <Badge className={story.is_published ? 'bg-green-600/30 text-green-200 border-green-500/50 font-bold' : 'bg-slate-600/30 text-slate-300 border-slate-500/50 font-bold'}>
                                 {story.is_published ? '✅ Publicada' : '📝 Borrador'}
                             </Badge>

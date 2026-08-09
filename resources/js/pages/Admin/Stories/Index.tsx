@@ -17,10 +17,10 @@ interface Story {
     content: string;
     category: string | null;
     image_url: string | null;
-    world: {
+    worlds: {
         id: number;
         name: string;
-    };
+    }[];
     created_at: string;
 }
 
@@ -33,9 +33,11 @@ interface PaginatedData {
 }
 
 interface Props {
+    worlds?: { id: number; name: string }[];
     stories?: PaginatedData;
     filters?: {
         search?: string;
+        world_id?: string;
     };
 }
 
@@ -51,15 +53,16 @@ const categoryColors: Record<string, string> = {
     'Legend': 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/30',
 };
 
-export default function Index({ stories: initialStories, filters: initialFilters }: Props) {
+export default function Index({ stories: initialStories, filters: initialFilters, worlds = [] }: Props) {
     const stories = initialStories || { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0 };
     const filters = initialFilters || { search: '' };
     const [search, setSearch] = useState(filters.search || '');
+    const [worldFilter, setWorldFilter] = useState(filters.world_id || '');
     const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get('/admin/stories', { search }, { preserveState: true });
+        router.get('/admin/stories', { search, world_id: worldFilter || undefined }, { preserveState: true });
     };
 
     const handleDelete = (id: number, title: string) => {
@@ -112,6 +115,22 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                     />
                                 </div>
                                 <Button type="submit">Buscar</Button>
+                                <select
+                                    value={worldFilter}
+                                    onChange={(e) => {
+                                        setWorldFilter(e.target.value);
+                                        router.get('/admin/stories', { search, world_id: e.target.value || undefined }, { preserveState: true });
+                                    }}
+                                    className="h-9 rounded-md border border-input bg-transparent px-3 text-sm font-semibold [&>option]:bg-slate-900"
+                                    title="Filtrar por mundo"
+                                >
+                                    <option value="">🌍 Todos los mundos</option>
+                                    {worlds.map((w) => (
+                                        <option key={w.id} value={w.id}>
+                                            {w.name}
+                                        </option>
+                                    ))}
+                                </select>
                                 {filters.search && (
                                     <Button type="button" variant="outline" onClick={clearSearch}>
                                         Limpiar
@@ -208,7 +227,7 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                         {/* World Badge */}
                                         <div className="absolute top-2 right-2">
                                             <Badge variant="secondary" className="backdrop-blur-sm bg-slate-900/90 border-purple-500/30 text-yellow-200 font-bold">
-                                                {story.world.name}
+                                                {story.worlds.map((w) => w.name).join(', ')}
                                             </Badge>
                                         </div>
                                     </div>
@@ -339,7 +358,7 @@ export default function Index({ stories: initialStories, filters: initialFilters
                                                     </TableCell>
                                                     <TableCell className="text-yellow-200/70">
                                                         <Badge variant="outline" className="bg-purple-500/20 border-purple-500/40 text-purple-300">
-                                                            {story.world.name}
+                                                            {story.worlds.map((w) => w.name).join(', ')}
                                                         </Badge>
                                                     </TableCell>
                                                     <TableCell>

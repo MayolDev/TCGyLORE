@@ -17,10 +17,10 @@ interface Character {
     biography: string | null;
     image_url: string | null;
     spells: string[] | null;
-    world: {
+    worlds: {
         id: number;
         name: string;
-    };
+    }[];
     created_at: string;
 }
 
@@ -33,9 +33,11 @@ interface PaginatedData {
 }
 
 interface Props {
+    worlds?: { id: number; name: string }[];
     characters?: PaginatedData;
     filters?: {
         search?: string;
+        world_id?: string;
     };
 }
 
@@ -44,15 +46,16 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Personajes', href: '/admin/characters' },
 ];
 
-export default function Index({ characters: initialCharacters, filters: initialFilters }: Props) {
+export default function Index({ characters: initialCharacters, filters: initialFilters, worlds = [] }: Props) {
     const characters = initialCharacters || { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0 };
     const filters = initialFilters || { search: '' };
     const [search, setSearch] = useState(filters.search || '');
+    const [worldFilter, setWorldFilter] = useState(filters.world_id || '');
     const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get('/admin/characters', { search }, { preserveState: true });
+        router.get('/admin/characters', { search, world_id: worldFilter || undefined }, { preserveState: true });
     };
 
     const handleDelete = (id: number, name: string) => {
@@ -105,6 +108,22 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                     />
                                 </div>
                                 <Button type="submit">Buscar</Button>
+                                <select
+                                    value={worldFilter}
+                                    onChange={(e) => {
+                                        setWorldFilter(e.target.value);
+                                        router.get('/admin/characters', { search, world_id: e.target.value || undefined }, { preserveState: true });
+                                    }}
+                                    className="h-9 rounded-md border border-input bg-transparent px-3 text-sm font-semibold [&>option]:bg-slate-900"
+                                    title="Filtrar por mundo"
+                                >
+                                    <option value="">🌍 Todos los mundos</option>
+                                    {worlds.map((w) => (
+                                        <option key={w.id} value={w.id}>
+                                            {w.name}
+                                        </option>
+                                    ))}
+                                </select>
                                 {filters.search && (
                                     <Button type="button" variant="outline" onClick={clearSearch}>
                                         Limpiar
@@ -194,7 +213,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                         {/* World Badge */}
                                         <div className="absolute top-2 right-2">
                                             <Badge variant="secondary" className="backdrop-blur-sm bg-slate-900/90 border-emerald-500/30 text-yellow-200 font-bold">
-                                                {character.world.name}
+                                                {character.worlds.map((w) => w.name).join(', ')}
                                             </Badge>
                                         </div>
                                     </div>
@@ -343,7 +362,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                                                     </TableCell>
                                                     <TableCell className="text-yellow-200/70">
                                                         <Badge variant="outline" className="bg-emerald-500/20 border-emerald-500/40 text-emerald-300">
-                                                            {character.world.name}
+                                                            {character.worlds.map((w) => w.name).join(', ')}
                                                         </Badge>
                                                     </TableCell>
                                                     <TableCell className="text-yellow-200/70 max-w-md">

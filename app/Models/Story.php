@@ -58,9 +58,16 @@ class Story extends Model
         });
     }
 
+    /** Legado: la pertenencia real está en worlds() (pivot story_world). */
     public function world(): BelongsTo
     {
         return $this->belongsTo(World::class);
+    }
+
+    /** Una historia puede pertenecer a uno o varios mundos. */
+    public function worlds(): BelongsToMany
+    {
+        return $this->belongsToMany(World::class, 'story_world');
     }
 
     public function characters(): BelongsToMany

@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import WriterLayout from '@/layouts/writer-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -10,6 +9,7 @@ import InputError from '@/components/input-error';
 import { Users, Save, X, Sparkles, MapPin, BookText } from 'lucide-react';
 import RichTextEditor from '@/components/rich-text-editor';
 import EntityImageField from '@/components/entity-image-field';
+import WorldMultiSelect from '@/components/world-multi-select';
 
 interface World {
     id: number;
@@ -29,6 +29,8 @@ interface Story {
 interface Character {
     id: number;
     world_id: number;
+
+    worlds?: { id: number; name: string }[];
     name: string;
     biography: string | null;
     spells: string[] | null;
@@ -60,7 +62,7 @@ export default function Edit({ character, worlds, locations, stories }: Props) {
 
     // POST + _method PUT: PHP no parsea multipart en PUT y el retrato llega como fichero.
     const { data, setData, post, processing, errors } = useForm({
-        world_id: character.world_id.toString(),
+        world_ids: character.worlds?.map((w) => w.id.toString()) || [],
         name: character.name || '',
         biography: character.biography || '',
         spells: Array.isArray(character.spells) ? character.spells.join(', ') : (character.spells || ''),
@@ -116,22 +118,12 @@ export default function Edit({ character, worlds, locations, stories }: Props) {
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="grid gap-6 md:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label htmlFor="world_id">Mundo *</Label>
-                                    <Select value={data.world_id} onValueChange={(value) => setData('world_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Selecciona un mundo" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {worlds.map((world) => (
-                                                <SelectItem key={world.id} value={world.id.toString()}>
-                                                    {world.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.world_id} />
-                                </div>
+                                <WorldMultiSelect
+                                    worlds={worlds}
+                                    value={data.world_ids}
+                                    onChange={(ids) => setData('world_ids', ids)}
+                                    error={errors.world_ids}
+                                />
 
                                 <div className="space-y-2">
                                     <Label htmlFor="name">Nombre *</Label>

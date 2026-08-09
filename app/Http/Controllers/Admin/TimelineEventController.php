@@ -15,15 +15,20 @@ class TimelineEventController extends Controller
     public function index(Request $request)
     {
         $events = TimelineEvent::query()
-            ->with(['world', 'characters', 'locations'])
+            ->with(['worlds', 'characters', 'locations'])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
             ->when($request->input('event_type'), function ($query, $type) {
                 $query->where('event_type', $type);
             })
+            // Al filtrar por mundo entran también los eventos globales
+            // (sin ningún mundo asignado): pasan en todos los mundos.
             ->when($request->input('world_id'), function ($query, $worldId) {
-                $query->where('world_id', $worldId);
+                $query->where(function ($q) use ($worldId) {
+                    $q->whereHas('worlds', fn ($w) => $w->where('worlds.id', $worldId))
+                        ->orWhereDoesntHave('worlds');
+                });
             })
             ->orderBy('year')
             ->paginate(15)
@@ -48,7 +53,9 @@ class TimelineEventController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'world_id' => ['required', 'exists:worlds,id'],
+            // Vacío = evento global, de todos los mundos
+            'world_ids' => ['nullable', 'array'],
+            'world_ids.*' => ['exists:worlds,id'],
             'year' => ['required', 'integer'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
@@ -60,7 +67,10 @@ class TimelineEventController extends Controller
             'location_ids.*' => ['exists:locations,id'],
         ]);
 
+        unset($validated['world_ids']);
+
         $event = TimelineEvent::create($validated);
+        $event->worlds()->sync($request->input('world_ids', []));
 
         if ($request->has('character_ids')) {
             $event->characters()->sync($request->character_ids);
@@ -76,7 +86,7 @@ class TimelineEventController extends Controller
 
     public function show(TimelineEvent $timelineEvent)
     {
-        $timelineEvent->load(['world', 'characters', 'locations']);
+        $timelineEvent->load(['worlds', 'characters', 'locations']);
 
         return Inertia::render('Admin/TimelineEvents/Show', [
             'event' => $timelineEvent,
@@ -85,7 +95,7 @@ class TimelineEventController extends Controller
 
     public function edit(TimelineEvent $timelineEvent)
     {
-        $timelineEvent->load(['world', 'characters', 'locations']);
+        $timelineEvent->load(['worlds', 'characters', 'locations']);
 
         return Inertia::render('Admin/TimelineEvents/Edit', [
             'event' => $timelineEvent,
@@ -98,7 +108,9 @@ class TimelineEventController extends Controller
     public function update(Request $request, TimelineEvent $timelineEvent)
     {
         $validated = $request->validate([
-            'world_id' => ['required', 'exists:worlds,id'],
+            // Vacío = evento global, de todos los mundos
+            'world_ids' => ['nullable', 'array'],
+            'world_ids.*' => ['exists:worlds,id'],
             'year' => ['required', 'integer'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
@@ -110,7 +122,10 @@ class TimelineEventController extends Controller
             'location_ids.*' => ['exists:locations,id'],
         ]);
 
+        unset($validated['world_ids']);
+
         $timelineEvent->update($validated);
+        $timelineEvent->worlds()->sync($request->input('world_ids', []));
 
         if ($request->has('character_ids')) {
             $timelineEvent->characters()->sync($request->character_ids);

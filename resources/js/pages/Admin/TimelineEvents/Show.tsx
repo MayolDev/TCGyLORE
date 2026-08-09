@@ -12,8 +12,8 @@ interface TimelineEvent {
     year: number;
     description: string | null;
     event_type: string;
-    importance: number;
-    world: { id: number; name: string } | null;
+    importance: string;
+    worlds: { id: number; name: string }[];
     characters: { id: number; name: string }[];
     locations: { id: number; name: string }[];
 }
@@ -40,11 +40,15 @@ export default function Show({ event }: { event: TimelineEvent }) {
                     badges={
                         <>
                             <Badge className="bg-cyan-600/30 text-cyan-200 border-cyan-500/50 font-bold">🏷️ {event.event_type}</Badge>
-                            {event.world && (
-                                <Badge className="bg-blue-600/30 text-blue-200 border-blue-500/50 font-bold">🌍 {event.world.name}</Badge>
+                            {event.worlds.length > 0 ? (
+                                event.worlds.map((w) => (
+                                    <Badge key={w.id} className="bg-blue-600/30 text-blue-200 border-blue-500/50 font-bold">🌍 {w.name}</Badge>
+                                ))
+                            ) : (
+                                <Badge className="bg-blue-600/30 text-blue-200 border-blue-500/50 font-bold">🌐 Todos los mundos</Badge>
                             )}
                             <Badge className="bg-amber-600/30 text-amber-200 border-amber-500/50 font-bold">
-                                {'⭐'.repeat(Math.max(1, Math.min(5, event.importance)))}
+                                {{ menor: '⭐ Menor', importante: '⭐⭐ Importante', crucial: '⭐⭐⭐ Crucial' }[event.importance] ?? event.importance}
                             </Badge>
                         </>
                     }

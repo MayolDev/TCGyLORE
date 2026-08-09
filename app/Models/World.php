@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
@@ -50,14 +51,14 @@ class World extends Model
         ];
     }
 
-    public function stories(): HasMany
+    public function stories(): BelongsToMany
     {
-        return $this->hasMany(Story::class);
+        return $this->belongsToMany(Story::class, 'story_world');
     }
 
-    public function characters(): HasMany
+    public function characters(): BelongsToMany
     {
-        return $this->hasMany(Character::class);
+        return $this->belongsToMany(Character::class, 'character_world');
     }
 
     public function locations(): HasMany
@@ -65,9 +66,9 @@ class World extends Model
         return $this->hasMany(Location::class);
     }
 
-    public function timelineEvents(): HasMany
+    public function timelineEvents(): BelongsToMany
     {
-        return $this->hasMany(TimelineEvent::class);
+        return $this->belongsToMany(TimelineEvent::class, 'timeline_event_world');
     }
 
     public function cards(): HasMany

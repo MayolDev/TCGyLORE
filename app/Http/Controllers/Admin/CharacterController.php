@@ -18,7 +18,7 @@ class CharacterController extends Controller
     public function index(Request $request)
     {
         $characters = Character::query()
-            ->with('world')
+            ->with('worlds')
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('title', 'like', "%{$search}%");
@@ -27,7 +27,7 @@ class CharacterController extends Controller
                 $query->where('alignment', $alignment);
             })
             ->when($request->input('world_id'), function ($query, $worldId) {
-                $query->where('world_id', $worldId);
+                $query->whereHas('worlds', fn ($q) => $q->where('worlds.id', $worldId));
             })
             ->latest()
             ->paginate(10)
@@ -52,7 +52,8 @@ class CharacterController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'world_id' => ['required', 'exists:worlds,id'],
+            'world_ids' => ['required', 'array', 'min:1'],
+            'world_ids.*' => ['exists:worlds,id'],
             'name' => ['required', 'string', 'max:255'],
             'biography' => ['nullable', 'string'],
             'spells' => ['nullable', 'string'],
@@ -69,9 +70,10 @@ class CharacterController extends Controller
         } else {
             unset($validated['image']);
         }
-        unset($validated['image_url']);
+        unset($validated['image_url'], $validated['world_ids']);
 
         $character = Character::create($validated);
+        $character->worlds()->sync($request->input('world_ids'));
 
         if ($request->has('location_ids')) {
             $character->locations()->sync($request->location_ids);
@@ -87,7 +89,7 @@ class CharacterController extends Controller
 
     public function show(Character $character)
     {
-        $character->load(['world', 'locations', 'stories']);
+        $character->load(['worlds', 'locations', 'stories']);
 
         return Inertia::render('Admin/Characters/Show', [
             'character' => $character,
@@ -96,7 +98,7 @@ class CharacterController extends Controller
 
     public function edit(Character $character)
     {
-        $character->load(['world', 'locations', 'stories']);
+        $character->load(['worlds', 'locations', 'stories']);
 
         return Inertia::render('Admin/Characters/Edit', [
             'character' => $character,
@@ -109,7 +111,8 @@ class CharacterController extends Controller
     public function update(Request $request, Character $character)
     {
         $validated = $request->validate([
-            'world_id' => ['required', 'exists:worlds,id'],
+            'world_ids' => ['required', 'array', 'min:1'],
+            'world_ids.*' => ['exists:worlds,id'],
             'name' => ['required', 'string', 'max:255'],
             'biography' => ['nullable', 'string'],
             'spells' => ['nullable', 'string'],
@@ -126,9 +129,10 @@ class CharacterController extends Controller
         } else {
             unset($validated['image']);
         }
-        unset($validated['image_url']);
+        unset($validated['image_url'], $validated['world_ids']);
 
         $character->update($validated);
+        $character->worlds()->sync($request->input('world_ids'));
 
         if ($request->has('location_ids')) {
             $character->locations()->sync($request->location_ids);

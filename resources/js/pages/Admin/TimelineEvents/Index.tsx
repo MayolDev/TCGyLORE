@@ -17,10 +17,10 @@ interface TimelineEvent {
     year: number;
     event_type: string;
     importance: string;
-    world: {
+    worlds: {
         id: number;
         name: string;
-    };
+    }[];
     characters?: Array<{ id: number; name: string }>;
     locations?: Array<{ id: number; name: string }>;
     created_at: string;
@@ -35,6 +35,7 @@ interface PaginatedData {
 }
 
 interface Props {
+    worlds?: { id: number; name: string }[];
     events?: PaginatedData;
     filters?: {
         search?: string;
@@ -64,15 +65,16 @@ const importanceColors: Record<string, string> = {
     'menor': 'bg-slate-500/10 text-slate-700 dark:text-slate-300 border-slate-500/30',
 };
 
-export default function Index({ events: initialEvents, filters: initialFilters }: Props) {
+export default function Index({ events: initialEvents, filters: initialFilters, worlds = [] }: Props) {
     const events = initialEvents || { data: [], current_page: 1, last_page: 1, per_page: 15, total: 0 };
     const filters = initialFilters || { search: '' };
     const [search, setSearch] = useState(filters.search || '');
+    const [worldFilter, setWorldFilter] = useState(filters.world_id || '');
     const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get('/admin/timeline-events', { search }, { preserveState: true });
+        router.get('/admin/timeline-events', { search, world_id: worldFilter || undefined }, { preserveState: true });
     };
 
     const handleDelete = (id: number, name: string) => {
@@ -128,6 +130,22 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                     />
                                 </div>
                                 <Button type="submit">Buscar</Button>
+                                <select
+                                    value={worldFilter}
+                                    onChange={(e) => {
+                                        setWorldFilter(e.target.value);
+                                        router.get('/admin/timeline-events', { search, world_id: e.target.value || undefined }, { preserveState: true });
+                                    }}
+                                    className="h-9 rounded-md border border-input bg-transparent px-3 text-sm font-semibold [&>option]:bg-slate-900"
+                                    title="Filtrar por mundo"
+                                >
+                                    <option value="">🌍 Todos los mundos</option>
+                                    {worlds.map((w) => (
+                                        <option key={w.id} value={w.id}>
+                                            {w.name}
+                                        </option>
+                                    ))}
+                                </select>
                                 {filters.search && (
                                     <Button type="button" variant="outline" onClick={clearSearch}>
                                         Limpiar
@@ -225,7 +243,7 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                                         </Badge>
                                                     </div>
                                                     <Badge variant="secondary" className="w-fit bg-slate-900/90 border-amber-500/30 text-yellow-200 font-bold">
-                                                        {event.world.name}
+                                                        {event.worlds.length > 0 ? event.worlds.map((w) => w.name).join(', ') : '🌐 Todos los mundos'}
                                                     </Badge>
                                                 </div>
                                                 <CardTitle className="text-xl flex items-center gap-2 text-yellow-100 font-black" style={{ fontFamily: 'Cinzel, serif' }}>
@@ -378,7 +396,7 @@ export default function Index({ events: initialEvents, filters: initialFilters }
                                                     </TableCell>
                                                     <TableCell className="text-yellow-200/70">
                                                         <Badge variant="outline" className="bg-amber-500/20 border-amber-500/40 text-amber-300">
-                                                            {event.world.name}
+                                                            {event.worlds.length > 0 ? event.worlds.map((w) => w.name).join(', ') : '🌐 Todos los mundos'}
                                                         </Badge>
                                                     </TableCell>
                                                     <TableCell>

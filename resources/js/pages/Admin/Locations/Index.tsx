@@ -55,6 +55,7 @@ interface Props {
     locations?: PaginatedData;
     filters?: {
         search?: string;
+        world_id?: string;
     };
     worlds?: WorldOption[];
     mapLocations?: MapLocation[];
@@ -69,13 +70,14 @@ export default function Index({ locations: initialLocations, filters: initialFil
     const locations = initialLocations || { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0 };
     const filters = initialFilters || { search: '' };
     const [search, setSearch] = useState(filters.search || '');
+    const [worldFilter, setWorldFilter] = useState(filters.world_id || '');
     const [viewMode, setViewMode] = useState<'grid' | 'table' | 'map'>('grid');
     const [mapWorldId, setMapWorldId] = useState<number | null>(worlds[0]?.id ?? null);
     const mapWorld = worlds.find((w) => w.id === mapWorldId) ?? worlds[0];
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get('/admin/locations', { search }, { preserveState: true });
+        router.get('/admin/locations', { search, world_id: worldFilter || undefined }, { preserveState: true });
     };
 
     const handleDelete = (id: number, name: string) => {
@@ -128,6 +130,22 @@ export default function Index({ locations: initialLocations, filters: initialFil
                                     />
                                 </div>
                                 <Button type="submit">Buscar</Button>
+                                <select
+                                    value={worldFilter}
+                                    onChange={(e) => {
+                                        setWorldFilter(e.target.value);
+                                        router.get('/admin/locations', { search, world_id: e.target.value || undefined }, { preserveState: true });
+                                    }}
+                                    className="h-9 rounded-md border border-input bg-transparent px-3 text-sm font-semibold [&>option]:bg-slate-900"
+                                    title="Filtrar por mundo"
+                                >
+                                    <option value="">🌍 Todos los mundos</option>
+                                    {worlds.map((w) => (
+                                        <option key={w.id} value={w.id}>
+                                            {w.name}
+                                        </option>
+                                    ))}
+                                </select>
                                 {filters.search && (
                                     <Button type="button" variant="outline" onClick={clearSearch}>
                                         Limpiar

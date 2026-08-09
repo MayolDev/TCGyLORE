@@ -9,6 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Clock, Plus, X, Calendar } from 'lucide-react';
 import RichTextEditor from '@/components/rich-text-editor';
+import WorldMultiSelect from '@/components/world-multi-select';
 
 interface World {
     id: number;
@@ -55,7 +56,7 @@ const IMPORTANCE_LEVELS = [
 
 export default function Create({ worlds, characters, locations }: Props) {
     const { data, setData, post, processing, errors } = useForm({
-        world_id: '',
+        world_ids: [] as string[],
         name: '',
         description: '',
         year: '',
@@ -108,22 +109,14 @@ export default function Create({ worlds, characters, locations }: Props) {
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="grid gap-6 md:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label htmlFor="world_id">Mundo *</Label>
-                                    <Select value={data.world_id} onValueChange={(value) => setData('world_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Selecciona un mundo" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {worlds.map((world) => (
-                                                <SelectItem key={world.id} value={world.id.toString()}>
-                                                    {world.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.world_id} />
-                                </div>
+                                <WorldMultiSelect
+                                    worlds={worlds}
+                                    value={data.world_ids}
+                                    onChange={(ids) => setData('world_ids', ids)}
+                                    error={errors.world_ids}
+                                    required={false}
+                                    emptyMeansAll
+                                />
 
                                 <div className="space-y-2">
                                     <Label htmlFor="year" className="flex items-center gap-2">

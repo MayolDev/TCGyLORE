@@ -27,9 +27,16 @@ class TimelineEvent extends Model
         ];
     }
 
+    /** Legado: la pertenencia real está en worlds() (pivot timeline_event_world). */
     public function world(): BelongsTo
     {
         return $this->belongsTo(World::class);
+    }
+
+    /** 0..N mundos. Sin ninguno = evento global, de todos los mundos. */
+    public function worlds(): BelongsToMany
+    {
+        return $this->belongsToMany(World::class, 'timeline_event_world');
     }
 
     public function characters(): BelongsToMany

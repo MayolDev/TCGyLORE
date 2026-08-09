@@ -15,7 +15,7 @@ interface Character {
     faction: string | null;
     alignment: string | null;
     image_url: string | null;
-    world: { id: number; name: string } | null;
+    worlds: { id: number; name: string }[];
     locations: { id: number; name: string }[];
     stories: { id: number; title: string }[];
 }
@@ -41,9 +41,9 @@ export default function Show({ character }: { character: Character }) {
                     editHref={`/admin/characters/${character.id}/edit`}
                     badges={
                         <>
-                            {character.world && (
-                                <Badge className="bg-blue-600/30 text-blue-200 border-blue-500/50 font-bold">🌍 {character.world.name}</Badge>
-                            )}
+                            {character.worlds.map((w) => (
+                                <Badge key={w.id} className="bg-blue-600/30 text-blue-200 border-blue-500/50 font-bold">🌍 {w.name}</Badge>
+                            ))}
                             {character.faction && (
                                 <Badge className="bg-red-600/30 text-red-200 border-red-500/50 font-bold">🚩 {character.faction}</Badge>
                             )}
