@@ -13,6 +13,8 @@ import { BookOpen, X, Eye } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import { rehypeSanitizeSchema } from '@/lib/rehype-config';
 import { processManualCitations } from '@/lib/citations';
 import RichTextEditor from '@/components/rich-text-editor';
 
@@ -210,7 +212,7 @@ export default function Create({ categories, sections, nextOrders }: Props) {
                                             <div className="prose prose-orange prose-lg max-w-none">
                                                 <ReactMarkdown 
                                                     remarkPlugins={[remarkGfm]}
-                                                    rehypePlugins={[rehypeRaw]}
+                                                    rehypePlugins={[rehypeRaw, [rehypeSanitize, rehypeSanitizeSchema]]}
                                                 >
                                                     {processManualCitations(data.content) || '*No hay contenido para previsualizar*'}
                                                 </ReactMarkdown>

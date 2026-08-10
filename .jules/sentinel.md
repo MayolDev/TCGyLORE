@@ -1,0 +1,4 @@
+## 2025-02-17 - [Stored XSS in Markdown Rendering]
+**Vulnerability:** The application was using `react-markdown` with `rehype-raw` to render HTML embedded in Markdown without any sanitization. This allowed arbitrary HTML (including `<script>`) to be executed if injected into the content.
+**Learning:** When allowing raw HTML in Markdown (via `rehype-raw`), it is critical to pair it with `rehype-sanitize` to filter out unsafe tags and attributes. The schema must be carefully configured to allow necessary styling (e.g., `className` property for React) while blocking vectors like `onerror` or `<iframe`.
+**Prevention:** Always use `rehype-sanitize` when `rehype-raw` is present. Define a centralized schema in `resources/js/lib/rehype-config.ts` to ensure consistency across all Markdown renderers.

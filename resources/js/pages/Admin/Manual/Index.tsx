@@ -13,6 +13,8 @@ import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import { rehypeSanitizeSchema } from '@/lib/rehype-config';
 import { processManualCitations } from '@/lib/citations';
 import { stripMarkdown } from '@/lib/utils';
 
@@ -483,7 +485,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                 <div className="prose prose-orange prose-lg max-w-none">
                                     <ReactMarkdown 
                                         remarkPlugins={[remarkGfm]}
-                                        rehypePlugins={[rehypeRaw]}
+                                        rehypePlugins={[rehypeRaw, [rehypeSanitize, rehypeSanitizeSchema]]}
                                     >
                                         {processManualCitations(previewSection?.content || '')}
                                     </ReactMarkdown>
@@ -526,7 +528,7 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                 </div>
                                                 <ReactMarkdown 
                                                     remarkPlugins={[remarkGfm]}
-                                                    rehypePlugins={[rehypeRaw]}
+                                                    rehypePlugins={[rehypeRaw, [rehypeSanitize, rehypeSanitizeSchema]]}
                                                 >
                                                     {processManualCitations(section.content)}
                                                 </ReactMarkdown>
