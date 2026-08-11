@@ -13,6 +13,8 @@ import { BookOpen, X, Eye } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import { manualSanitizeSchema } from '@/lib/rehype-config';
 import { processManualCitations } from '@/lib/citations';
 import RichTextEditor from '@/components/rich-text-editor';
 
@@ -210,11 +212,20 @@ export default function Edit({ section, categories, sections }: Props) {
                                             <div className="flex-1 overflow-y-auto p-8">
                                                 <div className="max-w-7xl mx-auto bg-slate-800/50 rounded-xl p-12 border-2 border-orange-500/20 shadow-2xl">
                                             <div className="prose prose-orange prose-lg max-w-none">
-                                                <ReactMarkdown 
+                                                <ReactMarkdown
                                                     remarkPlugins={[remarkGfm]}
-                                                    rehypePlugins={[rehypeRaw]}
+                                                    rehypePlugins={[
+                                                        rehypeRaw,
+                                                        [
+                                                            rehypeSanitize,
+                                                            manualSanitizeSchema,
+                                                        ],
+                                                    ]}
                                                 >
-                                                    {processManualCitations(data.content) || '*No hay contenido para previsualizar*'}
+                                                    {processManualCitations(
+                                                        data.content,
+                                                    ) ||
+                                                        '*No hay contenido para previsualizar*'}
                                                 </ReactMarkdown>
                                             </div>
                                                 </div>

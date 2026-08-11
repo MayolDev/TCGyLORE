@@ -13,6 +13,8 @@ import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import { manualSanitizeSchema } from '@/lib/rehype-config';
 import { processManualCitations } from '@/lib/citations';
 import { stripMarkdown } from '@/lib/utils';
 
@@ -481,11 +483,16 @@ export default function Index({ sections: initialSections, filters: initialFilte
                         <div className="flex-1 overflow-y-auto p-8">
                             <div className="max-w-7xl mx-auto bg-slate-800/50 rounded-xl p-12 border-2 border-orange-500/20 shadow-2xl">
                                 <div className="prose prose-orange prose-lg max-w-none">
-                                    <ReactMarkdown 
+                                    <ReactMarkdown
                                         remarkPlugins={[remarkGfm]}
-                                        rehypePlugins={[rehypeRaw]}
+                                        rehypePlugins={[
+                                            rehypeRaw,
+                                            [rehypeSanitize, manualSanitizeSchema],
+                                        ]}
                                     >
-                                        {processManualCitations(previewSection?.content || '')}
+                                        {processManualCitations(
+                                            previewSection?.content || '',
+                                        )}
                                     </ReactMarkdown>
                                 </div>
                             </div>
@@ -524,11 +531,19 @@ export default function Index({ sections: initialSections, filters: initialFilte
                                                     </Badge>
                                                     <h1 className="!mt-2 !mb-4">{section.title}</h1>
                                                 </div>
-                                                <ReactMarkdown 
+                                                <ReactMarkdown
                                                     remarkPlugins={[remarkGfm]}
-                                                    rehypePlugins={[rehypeRaw]}
+                                                    rehypePlugins={[
+                                                        rehypeRaw,
+                                                        [
+                                                            rehypeSanitize,
+                                                            manualSanitizeSchema,
+                                                        ],
+                                                    ]}
                                                 >
-                                                    {processManualCitations(section.content)}
+                                                    {processManualCitations(
+                                                        section.content,
+                                                    )}
                                                 </ReactMarkdown>
                                             </div>
                                         ))}
