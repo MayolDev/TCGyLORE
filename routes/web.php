@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\TimelineEventController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WorldController;
 use App\Http\Controllers\ChronicleController;
+use App\Http\Controllers\RulebookController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,8 +32,9 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-// La Cronica: el lore como libro, publico y sin login.
+// Los dos libros publicos, sin login: el lore y las reglas.
 Route::get('cronica', ChronicleController::class)->name('cronica');
+Route::get('reglas', RulebookController::class)->name('reglas');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

@@ -5,27 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Character;
 use App\Models\Location;
 use App\Models\World;
+use App\Support\AmbienteDeLibro;
+use App\Support\PaginadorDeLibro;
 use Inertia\Inertia;
 
 /**
  * La Cronica: el lore entero como libro antiguo, publico y sin login.
  *
- * Las paginas se arman aqui, en el servidor, y no midiendo en el navegador:
- * con 62 fichas y cerca de 40.000 palabras, medir en cliente significaria
- * recalcular cientos de paginas en cada carga. Se reparte por parrafos con un
- * tope de palabras por pagina, que es como se maqueta un libro de verdad y
- * ademas es estable: la misma pagina 87 siempre enseña lo mismo, asi que se
- * puede compartir el enlace.
+ * El reparto en paginas lo hace PaginadorDeLibro y el fondo y la musica el
+ * trait AmbienteDeLibro, los dos compartidos con el Manual para que ambos
+ * libros se lean exactamente igual.
  */
 class ChronicleController extends Controller
 {
-    /** Palabras que caben comodas en una pagina con esta tipografia. */
-    private const PALABRAS_POR_PAGINA = 140;
+    use AmbienteDeLibro;
 
-    /** Nombres de seccion del documento original: nunca son el epiteto. */
-    private const SECCIONES = ['preludio', 'biografia', 'biografía', 'descripcion', 'descripción'];
-
-    public function __invoke()
+    public function __invoke(PaginadorDeLibro $paginador)
     {
         $mundo = World::orderBy('id')->first();
 
@@ -43,7 +38,6 @@ class ChronicleController extends Controller
         $paginas = [];
         $indice = [];
 
-        // ── Portada ───────────────────────────────────────────────────────
         $paginas[] = [
             'tipo' => 'portada',
             'titulo' => $mundo?->name ?? "Tapon'Azo",
@@ -60,7 +54,7 @@ class ChronicleController extends Controller
         ];
 
         foreach ($ubicaciones as $l) {
-            foreach ($this->repartir($l->description) as $i => $trozo) {
+            foreach ($paginador->repartir($l->description) as $i => $trozo) {
                 $paginas[] = [
                     'tipo' => 'lugar',
                     'titulo' => $i === 0 ? $l->name : null,
@@ -83,13 +77,8 @@ class ChronicleController extends Controller
         foreach ($personajes as $c) {
             [$epiteto, $cuerpo] = $this->separarEpiteto($c->biography);
 
-            $vinculos = $c->relacionesVistas()
-                ->map(fn (array $r) => ['tipo' => $r['tipo'], 'nombre' => $r['personaje']->name])
-                ->all();
-
             $indice[] = ['titulo' => $c->name, 'pagina' => count($paginas), 'sangria' => true];
 
-            // Pagina de entrada: retrato, nombre y vinculos. Luego el texto.
             $paginas[] = [
                 'tipo' => 'personaje',
                 'titulo' => $c->name,
@@ -97,10 +86,12 @@ class ChronicleController extends Controller
                 'imagen' => $c->image_url,
                 'faccion' => $c->faction,
                 'lugares' => $c->locations->pluck('name')->all(),
-                'vinculos' => $vinculos,
+                'vinculos' => $c->relacionesVistas()
+                    ->map(fn (array $r) => ['tipo' => $r['tipo'], 'nombre' => $r['personaje']->name])
+                    ->all(),
             ];
 
-            foreach ($this->repartir($cuerpo) as $trozo) {
+            foreach ($paginador->repartir($cuerpo) as $trozo) {
                 $paginas[] = [
                     'tipo' => 'texto',
                     'titulo' => null,
@@ -111,119 +102,28 @@ class ChronicleController extends Controller
             }
         }
 
-        // ── Colofon ───────────────────────────────────────────────────────
         $paginas[] = [
             'tipo' => 'colofon',
             'titulo' => 'Colofón',
             'texto' => "Aquí se acaba lo que está escrito.\n\nLo que falta lo cuenta cada cual a su manera, y por eso se juega.",
         ];
 
-        // El fondo es la Venta: si alguna tiene ilustracion, se usa; si no, el
-        // libro se apana con la taberna dibujada en CSS.
-        $venta = Location::where('location_type', 'tavern')
-            ->whereNotNull('image')
-            ->first(['id', 'image']);
-
-        return Inertia::render('Cronica', [
+        return Inertia::render('Libro', [
             'paginas' => $paginas,
             'indice' => $indice,
-            'mundo' => $mundo?->name ?? "Tapon'Azo",
-            'fondo' => $venta?->image_url,
+            'titulo' => 'Crónica de '.($mundo?->name ?? "Tapon'Azo"),
+            'rotulo' => 'Crónica',
+            'fondo' => $this->fondoDeTaberna(),
+            'musica' => $this->musicaDeAmbiente(),
+            'hermano' => ['titulo' => 'El Reglamento', 'url' => '/reglas'],
         ]);
-    }
-
-    /**
-     * Reparte un texto en paginas sin cortar parrafos por la mitad. Un parrafo
-     * mas largo que una pagina entera se parte por frases, que es lo menos malo.
-     *
-     * @return list<string>
-     */
-    private function repartir(?string $texto): array
-    {
-        if (! $texto || trim($texto) === '') {
-            return [];
-        }
-
-        $parrafos = preg_split('/\n{2,}/', trim($texto));
-        $paginas = [];
-        $actual = [];
-        $cuenta = 0;
-
-        $cerrar = function () use (&$paginas, &$actual, &$cuenta) {
-            if ($actual) {
-                $paginas[] = implode("\n\n", $actual);
-                $actual = [];
-                $cuenta = 0;
-            }
-        };
-
-        foreach ($parrafos as $p) {
-            $p = trim($p);
-            if ($p === '') {
-                continue;
-            }
-
-            $palabras = $this->palabras($p);
-
-            // Parrafo gigante: se parte por frases.
-            if ($palabras > self::PALABRAS_POR_PAGINA) {
-                $cerrar();
-                foreach ($this->partirPorFrases($p) as $trozo) {
-                    $paginas[] = $trozo;
-                }
-
-                continue;
-            }
-
-            if ($cuenta + $palabras > self::PALABRAS_POR_PAGINA) {
-                $cerrar();
-            }
-
-            $actual[] = $p;
-            $cuenta += $palabras;
-        }
-
-        $cerrar();
-
-        return $paginas;
-    }
-
-    /** @return list<string> */
-    private function partirPorFrases(string $parrafo): array
-    {
-        $frases = preg_split('/(?<=[.!?…])\s+/u', $parrafo);
-        $salida = [];
-        $actual = [];
-        $cuenta = 0;
-
-        foreach ($frases as $f) {
-            $n = $this->palabras($f);
-            if ($cuenta + $n > self::PALABRAS_POR_PAGINA && $actual) {
-                $salida[] = implode(' ', $actual);
-                $actual = [];
-                $cuenta = 0;
-            }
-            $actual[] = $f;
-            $cuenta += $n;
-        }
-
-        if ($actual) {
-            $salida[] = implode(' ', $actual);
-        }
-
-        return $salida;
-    }
-
-    /** str_word_count parte las palabras con tilde: "cancion" cuenta 1, "canción" 2. */
-    private function palabras(string $texto): int
-    {
-        return preg_match_all('/\S+/u', strip_tags($texto)) ?: 0;
     }
 
     /**
      * El epiteto con el que abren las biografias importadas, para lucirlo bajo
      * el nombre en vez de repetirlo dentro del texto. El documento original no
-     * es coherente: unas veces es un encabezado y otras una linea en negrita.
+     * es coherente: unas veces es un encabezado (de cualquier nivel, con o sin
+     * negrita) y otras una linea suelta en negrita.
      *
      * @return array{0: ?string, 1: string}
      */
@@ -233,17 +133,16 @@ class ChronicleController extends Controller
             return [null, ''];
         }
 
+        $secciones = ['preludio', 'biografia', 'biografía', 'descripcion', 'descripción'];
         $lineas = preg_split('/\r?\n/', ltrim($bio));
         $cabecera = trim($lineas[0] ?? '');
 
-        // Tres formas en el mismo documento: encabezado de cualquier nivel,
-        // encabezado con negrita dentro, o una linea suelta en negrita.
         if (preg_match('/^#{1,3}\s*\**\s*(.+?)\s*\**$/u', $cabecera, $m)
             || preg_match('/^\*\*([^*]+)\*\*$/u', $cabecera, $m)) {
             $epiteto = trim(str_replace(['**', '<u>', '</u>'], '', $m[1]));
 
             // "Preludio" y compania son secciones, no el epiteto del personaje.
-            if (! in_array(mb_strtolower($epiteto), self::SECCIONES, true)) {
+            if (! in_array(mb_strtolower($epiteto), $secciones, true)) {
                 return [$epiteto, trim(mb_substr(ltrim($bio), mb_strlen($cabecera)))];
             }
         }

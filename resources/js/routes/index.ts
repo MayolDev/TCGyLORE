@@ -211,7 +211,7 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     register.form = registerForm
 /**
- * @see routes/web.php:28
+ * @see routes/web.php:29
  * @route '/'
  */
 export const home = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -225,7 +225,7 @@ home.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:28
+ * @see routes/web.php:29
  * @route '/'
  */
 home.url = (options?: RouteQueryOptions) => {
@@ -233,7 +233,7 @@ home.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:28
+ * @see routes/web.php:29
  * @route '/'
  */
 home.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -241,7 +241,7 @@ home.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:28
+ * @see routes/web.php:29
  * @route '/'
  */
 home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -250,7 +250,7 @@ home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:28
+ * @see routes/web.php:29
  * @route '/'
  */
     const homeForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -259,7 +259,7 @@ home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:28
+ * @see routes/web.php:29
  * @route '/'
  */
         homeForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -267,7 +267,7 @@ home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:28
+ * @see routes/web.php:29
  * @route '/'
  */
         homeForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -283,7 +283,7 @@ home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     home.form = homeForm
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:28
+ * @see app/Http/Controllers/ChronicleController.php:23
  * @route '/cronica'
  */
 export const cronica = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -298,7 +298,7 @@ cronica.definition = {
 
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:28
+ * @see app/Http/Controllers/ChronicleController.php:23
  * @route '/cronica'
  */
 cronica.url = (options?: RouteQueryOptions) => {
@@ -307,7 +307,7 @@ cronica.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:28
+ * @see app/Http/Controllers/ChronicleController.php:23
  * @route '/cronica'
  */
 cronica.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -316,7 +316,7 @@ cronica.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:28
+ * @see app/Http/Controllers/ChronicleController.php:23
  * @route '/cronica'
  */
 cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -326,7 +326,7 @@ cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:28
+ * @see app/Http/Controllers/ChronicleController.php:23
  * @route '/cronica'
  */
     const cronicaForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -336,7 +336,7 @@ cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:28
+ * @see app/Http/Controllers/ChronicleController.php:23
  * @route '/cronica'
  */
         cronicaForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -345,7 +345,7 @@ cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:28
+ * @see app/Http/Controllers/ChronicleController.php:23
  * @route '/cronica'
  */
         cronicaForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -359,6 +359,84 @@ cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
     
     cronica.form = cronicaForm
+/**
+* @see \App\Http\Controllers\RulebookController::__invoke
+ * @see app/Http/Controllers/RulebookController.php:40
+ * @route '/reglas'
+ */
+export const reglas = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: reglas.url(options),
+    method: 'get',
+})
+
+reglas.definition = {
+    methods: ["get","head"],
+    url: '/reglas',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\RulebookController::__invoke
+ * @see app/Http/Controllers/RulebookController.php:40
+ * @route '/reglas'
+ */
+reglas.url = (options?: RouteQueryOptions) => {
+    return reglas.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\RulebookController::__invoke
+ * @see app/Http/Controllers/RulebookController.php:40
+ * @route '/reglas'
+ */
+reglas.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: reglas.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\RulebookController::__invoke
+ * @see app/Http/Controllers/RulebookController.php:40
+ * @route '/reglas'
+ */
+reglas.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: reglas.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\RulebookController::__invoke
+ * @see app/Http/Controllers/RulebookController.php:40
+ * @route '/reglas'
+ */
+    const reglasForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: reglas.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\RulebookController::__invoke
+ * @see app/Http/Controllers/RulebookController.php:40
+ * @route '/reglas'
+ */
+        reglasForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: reglas.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\RulebookController::__invoke
+ * @see app/Http/Controllers/RulebookController.php:40
+ * @route '/reglas'
+ */
+        reglasForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: reglas.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    reglas.form = reglasForm
 /**
 * @see \App\Http\Controllers\DashboardController::dashboard
  * @see app/Http/Controllers/DashboardController.php:17

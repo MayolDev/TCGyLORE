@@ -45,16 +45,24 @@ function conCapitular(texto: string) {
     return texto.replace(/^([A-ZÁÉÍÓÚÑ«"¿¡])/, (letra) => `<span class="capitular">${letra}</span>`);
 }
 
-export default function Cronica({
+export default function Libro({
     paginas,
     indice,
-    mundo,
+    titulo,
+    rotulo,
     fondo,
+    musica,
+    hermano,
 }: {
     paginas: Pagina[];
     indice: EntradaIndice[];
-    mundo: string;
+    titulo: string;
+    /** Lo que se lee en la barra cuando no hay capítulo. */
+    rotulo: string;
     fondo: string | null;
+    musica: string | null;
+    /** El otro libro, para saltar de uno a otro. */
+    hermano: { titulo: string; url: string } | null;
 }) {
     const inicial = () => {
         if (typeof window === 'undefined') return 0;
@@ -70,6 +78,68 @@ export default function Cronica({
     // La hoja que está cayendo: mientras dura, el libro no acepta más pasos.
     const [giro, setGiro] = useState<{ hacia: 'adelante' | 'atras'; desde: number } | null>(null);
     const temporizador = useRef<number | null>(null);
+
+    // ── La musica ─────────────────────────────────────────────────────────
+    // Arranca callada siempre: el navegador bloquea el sonido automatico y,
+    // aunque no lo hiciera, meterle musica a alguien sin avisar es de mal
+    // gusto. La eleccion se recuerda entre visitas.
+    const audio = useRef<HTMLAudioElement | null>(null);
+    const [suena, setSuena] = useState(false);
+
+    const alternarMusica = useCallback(() => {
+        const el = audio.current;
+        if (!el) return;
+
+        if (suena) {
+            el.pause();
+            setSuena(false);
+            try {
+                localStorage.setItem('cronica-musica', 'no');
+            } catch {
+                /* navegacion privada: da igual, se queda sin recordar */
+            }
+
+            return;
+        }
+
+        el.volume = 0;
+        el.play()
+            .then(() => {
+                setSuena(true);
+                try {
+                    localStorage.setItem('cronica-musica', 'si');
+                } catch {
+                    /* idem */
+                }
+                // Entra despacio, que no pegue un susto.
+                const subir = window.setInterval(() => {
+                    if (!audio.current || audio.current.volume >= 0.34) {
+                        window.clearInterval(subir);
+
+                        return;
+                    }
+                    audio.current.volume = Math.min(0.34, audio.current.volume + 0.02);
+                }, 90);
+            })
+            .catch(() => setSuena(false));
+    }, [suena]);
+
+    // Si ya la habia dejado puesta, se intenta reanudar. El navegador solo lo
+    // permite si ya ha habido algun gesto del usuario en el sitio; si no,
+    // simplemente se queda callada y el altavoz sigue ahi.
+    useEffect(() => {
+        if (!musica) return;
+        let recuerda: string | null = null;
+        try {
+            recuerda = localStorage.getItem('cronica-musica');
+        } catch {
+            recuerda = null;
+        }
+        if (recuerda !== 'si' || !audio.current) return;
+
+        audio.current.volume = 0.34;
+        audio.current.play().then(() => setSuena(true)).catch(() => setSuena(false));
+    }, [musica]);
 
     /**
      * Todas las hojas miden exactamente lo mismo, siempre. El tamaño sale del
@@ -200,11 +270,8 @@ export default function Cronica({
 
     return (
         <>
-            <Head title={`Crónica de ${mundo}`}>
-                <meta
-                    name="description"
-                    content={`La crónica completa de ${mundo}: sus reinos, sus ventas y quienes los caminaron.`}
-                />
+            <Head title={titulo}>
+                <meta name="description" content={`${titulo}. Para leer de principio a fin.`} />
             </Head>
 
             <style>{`
@@ -310,6 +377,8 @@ export default function Cronica({
                 @media print { .no-imprimir { display:none !important } }
             `}</style>
 
+            {musica && <audio ref={audio} src={musica} loop preload="none" />}
+
             {fondo ? (
                 <div className="taberna-foto" style={{ backgroundImage: `url(${fondo})` }} />
             ) : (
@@ -324,6 +393,7 @@ export default function Cronica({
             >
                 {/* Barra */}
                 <div className="no-imprimir mx-auto mb-3 flex max-w-6xl flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
                     <button
                         type="button"
                         onClick={() => setIndiceAbierto((v) => !v)}
@@ -333,11 +403,34 @@ export default function Cronica({
                         {indiceAbierto ? 'Cerrar el índice' : 'Índice'}
                     </button>
 
+                        {musica && (
+                            <button
+                                type="button"
+                                onClick={alternarMusica}
+                                title={suena ? 'Callar la música' : 'Música de la Venta'}
+                                aria-pressed={suena}
+                                className="rounded border border-[#8a6a3f]/50 bg-[#1c1108]/85 px-3 py-1.5 text-sm text-[#e6d3a8] hover:bg-[#2a1a0c]"
+                            >
+                                {suena ? '🔊' : '🔇'}
+                            </button>
+                        )}
+
+                        {hermano && (
+                            <a
+                                href={hermano.url}
+                                className="rounded border border-[#8a6a3f]/50 bg-[#1c1108]/85 px-3 py-1.5 text-sm font-semibold text-[#e6d3a8] hover:bg-[#2a1a0c]"
+                                style={{ fontFamily: 'Cinzel, serif' }}
+                            >
+                                {hermano.titulo}
+                            </a>
+                        )}
+                    </div>
+
                     <p
                         className="text-xs tracking-widest text-[#c9ae7c]/70 uppercase"
                         style={{ fontFamily: 'Cinzel, serif' }}
                     >
-                        {capitulo || 'Crónica'}
+                        {capitulo || rotulo}
                     </p>
 
                     <div className="flex items-center gap-2">
