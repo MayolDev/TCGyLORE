@@ -215,7 +215,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
  * @see app/Http/Controllers/Admin/WorldController.php:66
  * @route '/admin/worlds/{world}'
  */
-export const show = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -230,7 +230,7 @@ show.definition = {
  * @see app/Http/Controllers/Admin/WorldController.php:66
  * @route '/admin/worlds/{world}'
  */
-show.url = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+show.url = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { world: args }
     }
@@ -263,7 +263,7 @@ show.url = (args: { world: number | { id: number } } | [world: number | { id: nu
  * @see app/Http/Controllers/Admin/WorldController.php:66
  * @route '/admin/worlds/{world}'
  */
-show.get = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -272,7 +272,7 @@ show.get = (args: { world: number | { id: number } } | [world: number | { id: nu
  * @see app/Http/Controllers/Admin/WorldController.php:66
  * @route '/admin/worlds/{world}'
  */
-show.head = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
@@ -282,7 +282,7 @@ show.head = (args: { world: number | { id: number } } | [world: number | { id: n
  * @see app/Http/Controllers/Admin/WorldController.php:66
  * @route '/admin/worlds/{world}'
  */
-    const showForm = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const showForm = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: show.url(args, options),
         method: 'get',
     })
@@ -292,7 +292,7 @@ show.head = (args: { world: number | { id: number } } | [world: number | { id: n
  * @see app/Http/Controllers/Admin/WorldController.php:66
  * @route '/admin/worlds/{world}'
  */
-        showForm.get = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.get = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, options),
             method: 'get',
         })
@@ -301,7 +301,7 @@ show.head = (args: { world: number | { id: number } } | [world: number | { id: n
  * @see app/Http/Controllers/Admin/WorldController.php:66
  * @route '/admin/worlds/{world}'
  */
-        showForm.head = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.head = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -317,7 +317,7 @@ show.head = (args: { world: number | { id: number } } | [world: number | { id: n
  * @see app/Http/Controllers/Admin/WorldController.php:75
  * @route '/admin/worlds/{world}/edit'
  */
-export const edit = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const edit = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
@@ -332,7 +332,7 @@ edit.definition = {
  * @see app/Http/Controllers/Admin/WorldController.php:75
  * @route '/admin/worlds/{world}/edit'
  */
-edit.url = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+edit.url = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { world: args }
     }
@@ -365,7 +365,7 @@ edit.url = (args: { world: number | { id: number } } | [world: number | { id: nu
  * @see app/Http/Controllers/Admin/WorldController.php:75
  * @route '/admin/worlds/{world}/edit'
  */
-edit.get = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+edit.get = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(args, options),
     method: 'get',
 })
@@ -374,7 +374,7 @@ edit.get = (args: { world: number | { id: number } } | [world: number | { id: nu
  * @see app/Http/Controllers/Admin/WorldController.php:75
  * @route '/admin/worlds/{world}/edit'
  */
-edit.head = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+edit.head = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: edit.url(args, options),
     method: 'head',
 })
@@ -384,7 +384,7 @@ edit.head = (args: { world: number | { id: number } } | [world: number | { id: n
  * @see app/Http/Controllers/Admin/WorldController.php:75
  * @route '/admin/worlds/{world}/edit'
  */
-    const editForm = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const editForm = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: edit.url(args, options),
         method: 'get',
     })
@@ -394,7 +394,7 @@ edit.head = (args: { world: number | { id: number } } | [world: number | { id: n
  * @see app/Http/Controllers/Admin/WorldController.php:75
  * @route '/admin/worlds/{world}/edit'
  */
-        editForm.get = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        editForm.get = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: edit.url(args, options),
             method: 'get',
         })
@@ -403,7 +403,7 @@ edit.head = (args: { world: number | { id: number } } | [world: number | { id: n
  * @see app/Http/Controllers/Admin/WorldController.php:75
  * @route '/admin/worlds/{world}/edit'
  */
-        editForm.head = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        editForm.head = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: edit.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -419,7 +419,7 @@ edit.head = (args: { world: number | { id: number } } | [world: number | { id: n
  * @see app/Http/Controllers/Admin/WorldController.php:82
  * @route '/admin/worlds/{world}'
  */
-export const update = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -434,7 +434,7 @@ update.definition = {
  * @see app/Http/Controllers/Admin/WorldController.php:82
  * @route '/admin/worlds/{world}'
  */
-update.url = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+update.url = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { world: args }
     }
@@ -467,7 +467,7 @@ update.url = (args: { world: number | { id: number } } | [world: number | { id: 
  * @see app/Http/Controllers/Admin/WorldController.php:82
  * @route '/admin/worlds/{world}'
  */
-update.put = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -476,7 +476,7 @@ update.put = (args: { world: number | { id: number } } | [world: number | { id: 
  * @see app/Http/Controllers/Admin/WorldController.php:82
  * @route '/admin/worlds/{world}'
  */
-update.patch = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update.patch = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(args, options),
     method: 'patch',
 })
@@ -486,7 +486,7 @@ update.patch = (args: { world: number | { id: number } } | [world: number | { id
  * @see app/Http/Controllers/Admin/WorldController.php:82
  * @route '/admin/worlds/{world}'
  */
-    const updateForm = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -501,7 +501,7 @@ update.patch = (args: { world: number | { id: number } } | [world: number | { id
  * @see app/Http/Controllers/Admin/WorldController.php:82
  * @route '/admin/worlds/{world}'
  */
-        updateForm.put = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -515,7 +515,7 @@ update.patch = (args: { world: number | { id: number } } | [world: number | { id
  * @see app/Http/Controllers/Admin/WorldController.php:82
  * @route '/admin/worlds/{world}'
  */
-        updateForm.patch = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.patch = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
@@ -531,7 +531,7 @@ update.patch = (args: { world: number | { id: number } } | [world: number | { id
  * @see app/Http/Controllers/Admin/WorldController.php:114
  * @route '/admin/worlds/{world}'
  */
-export const destroy = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -546,7 +546,7 @@ destroy.definition = {
  * @see app/Http/Controllers/Admin/WorldController.php:114
  * @route '/admin/worlds/{world}'
  */
-destroy.url = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { world: args }
     }
@@ -579,7 +579,7 @@ destroy.url = (args: { world: number | { id: number } } | [world: number | { id:
  * @see app/Http/Controllers/Admin/WorldController.php:114
  * @route '/admin/worlds/{world}'
  */
-destroy.delete = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -589,7 +589,7 @@ destroy.delete = (args: { world: number | { id: number } } | [world: number | { 
  * @see app/Http/Controllers/Admin/WorldController.php:114
  * @route '/admin/worlds/{world}'
  */
-    const destroyForm = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroyForm = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -604,7 +604,7 @@ destroy.delete = (args: { world: number | { id: number } } | [world: number | { 
  * @see app/Http/Controllers/Admin/WorldController.php:114
  * @route '/admin/worlds/{world}'
  */
-        destroyForm.delete = (args: { world: number | { id: number } } | [world: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroyForm.delete = (args: { world: string | number | { id: string | number } } | [world: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

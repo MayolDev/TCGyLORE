@@ -30,11 +30,14 @@ class CharacterController extends Controller
                 $query->whereHas('worlds', fn ($q) => $q->where('worlds.id', $worldId));
             })
             ->latest()
-            ->paginate(10)
+            ->paginate(24)
             ->withQueryString();
 
         return Inertia::render('Admin/Characters/Index', [
-            'characters' => $characters,
+            // deepMerge: al pedir la pagina siguiente, Inertia añade los
+            // personajes a los que ya hay en pantalla en vez de sustituirlos.
+            // Es lo que permite el scroll infinito sin recargar la vista.
+            'characters' => Inertia::deepMerge($characters),
             'worlds' => World::all(['id', 'name']),
             'filters' => $request->only(['search', 'alignment', 'world_id']),
         ]);

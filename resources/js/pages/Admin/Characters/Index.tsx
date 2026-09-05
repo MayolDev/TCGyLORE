@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, WhenVisible, router } from '@inertiajs/react';
 import { Users, Plus, Search, Pencil, Trash2, Sparkles, Scroll, User, Grid3x3, Table2, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { stripMarkdown } from '@/lib/utils';
@@ -293,43 +293,23 @@ export default function Index({ characters: initialCharacters, filters: initialF
                         </div>
 
                         {/* Pagination */}
-                        {characters.last_page > 1 && (
-                            <Card className="border-primary/20">
-                                <CardContent className="flex items-center justify-between p-4">
-                                    <div className="text-sm text-muted-foreground">
-                                        Mostrando <span className="font-medium text-foreground">{characters.data.length}</span> de{' '}
-                                        <span className="font-medium text-foreground">{characters.total}</span> personajes
-                                    </div>
-                                    <div className="flex gap-2">
-                                        {characters.current_page > 1 && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/characters?page=${characters.current_page - 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Anterior
-                                                </Link>
-                                            </Button>
-                                        )}
-                                        <div className="flex items-center gap-2 px-3 text-sm">
-                                            Página {characters.current_page} de {characters.last_page}
-                                        </div>
-                                        {characters.current_page < characters.last_page && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/characters?page=${characters.current_page + 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Siguiente
-                                                </Link>
-                                            </Button>
-                                        )}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        )}
+                        {/* Scroll infinito: al asomar este bloque, Inertia pide la pagina
+                            siguiente y la fusiona con la lista (deepMerge en el controlador). */}
+                        <WhenVisible
+                            always={characters.current_page < characters.last_page}
+                            params={{
+                                data: { page: characters.current_page + 1 },
+                                only: ['characters'],
+                                preserveUrl: true,
+                            }}
+                            fallback={<></>}
+                        >
+                            <div className="py-6 text-center text-sm font-semibold text-yellow-200/60">
+                                {characters.current_page < characters.last_page
+                                    ? `Cargando mas personajes... (${characters.data.length} de ${characters.total})`
+                                    : `${characters.total} personajes en total`}
+                            </div>
+                        </WhenVisible>
                     </>
                 ) : (
                     /* Table View */
@@ -453,43 +433,23 @@ export default function Index({ characters: initialCharacters, filters: initialF
                         </Card>
 
                         {/* Pagination */}
-                        {characters.last_page > 1 && (
-                            <Card className="border-primary/20">
-                                <CardContent className="flex items-center justify-between p-4">
-                                    <div className="text-sm text-muted-foreground">
-                                        Mostrando <span className="font-medium text-foreground">{characters.data.length}</span> de{' '}
-                                        <span className="font-medium text-foreground">{characters.total}</span> personajes
-                                    </div>
-                                    <div className="flex gap-2">
-                                        {characters.current_page > 1 && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/characters?page=${characters.current_page - 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Anterior
-                                                </Link>
-                                            </Button>
-                                        )}
-                                        <div className="flex items-center gap-2 px-3 text-sm">
-                                            Página {characters.current_page} de {characters.last_page}
-                                        </div>
-                                        {characters.current_page < characters.last_page && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/characters?page=${characters.current_page + 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Siguiente
-                                                </Link>
-                                            </Button>
-                                        )}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        )}
+                        {/* Scroll infinito: al asomar este bloque, Inertia pide la pagina
+                            siguiente y la fusiona con la lista (deepMerge en el controlador). */}
+                        <WhenVisible
+                            always={characters.current_page < characters.last_page}
+                            params={{
+                                data: { page: characters.current_page + 1 },
+                                only: ['characters'],
+                                preserveUrl: true,
+                            }}
+                            fallback={<></>}
+                        >
+                            <div className="py-6 text-center text-sm font-semibold text-yellow-200/60">
+                                {characters.current_page < characters.last_page
+                                    ? `Cargando mas personajes... (${characters.data.length} de ${characters.total})`
+                                    : `${characters.total} personajes en total`}
+                            </div>
+                        </WhenVisible>
                     </>
                 )}
             </div>
