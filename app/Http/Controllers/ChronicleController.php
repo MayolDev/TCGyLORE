@@ -118,10 +118,17 @@ class ChronicleController extends Controller
             'texto' => "Aquí se acaba lo que está escrito.\n\nLo que falta lo cuenta cada cual a su manera, y por eso se juega.",
         ];
 
+        // El fondo es la Venta: si alguna tiene ilustracion, se usa; si no, el
+        // libro se apana con la taberna dibujada en CSS.
+        $venta = Location::where('location_type', 'tavern')
+            ->whereNotNull('image')
+            ->first(['id', 'image']);
+
         return Inertia::render('Cronica', [
             'paginas' => $paginas,
             'indice' => $indice,
             'mundo' => $mundo?->name ?? "Tapon'Azo",
+            'fondo' => $venta?->image_url,
         ]);
     }
 
