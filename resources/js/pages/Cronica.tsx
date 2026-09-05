@@ -215,7 +215,7 @@ export default function Cronica({
                    y la sala apagandose hacia los bordes. Todo dibujado: la
                    Cronica tiene que abrir aunque no cargue ninguna imagen. */
                 .taberna {
-                    position: fixed; inset: 0; z-index: -2;
+                    position: fixed; inset: 0; z-index: 0;
                     background-color: #3a2413;
                     background-image:
                         /* juntas entre tablones */
@@ -240,7 +240,7 @@ export default function Cronica({
                 }
                 /* Luz del candil: cae desde arriba sobre la mesa. */
                 .candil {
-                    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+                    position: fixed; inset: 0; z-index: 1; pointer-events: none;
                     background:
                         radial-gradient(52% 40% at 50% 2%, rgba(255,206,128,.42), transparent 72%),
                         radial-gradient(80% 64% at 50% 44%, rgba(255,181,96,.20), transparent 74%),
@@ -251,7 +251,7 @@ export default function Cronica({
                 @keyframes candil { 0%,100% { opacity:.92 } 45% { opacity:1 } 70% { opacity:.95 } }
 
                 .taberna-foto {
-                    position: fixed; inset: 0; z-index: -2;
+                    position: fixed; inset: 0; z-index: 0;
                     background-size: cover; background-position: center;
                     filter: brightness(.42) saturate(.8);
                 }
@@ -317,7 +317,11 @@ export default function Cronica({
             )}
             <div className="candil" />
 
-            <div className="cronica min-h-screen px-3 py-4 sm:px-6" onTouchStart={alTocar} onTouchEnd={alSoltar}>
+            <div
+                className="cronica relative z-10 min-h-screen px-3 py-4 sm:px-6"
+                onTouchStart={alTocar}
+                onTouchEnd={alSoltar}
+            >
                 {/* Barra */}
                 <div className="no-imprimir mx-auto mb-3 flex max-w-6xl flex-wrap items-center justify-between gap-3">
                     <button
