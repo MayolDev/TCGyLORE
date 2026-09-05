@@ -44,6 +44,50 @@ class CharacterController extends Controller
         ]);
     }
 
+    /**
+     * El elenco entero como grafo. Los nodos son personajes y las aristas
+     * relaciones; una fila de relacion es UNA arista, aunque se lea distinto
+     * desde cada lado.
+     *
+     * Se van los personajes sueltos: sin ninguna relacion no aportan nada al
+     * dibujo y solo lo llenan de puntos flotando.
+     */
+    public function graph()
+    {
+        $relaciones = CharacterRelation::query()
+            ->get(['id', 'character_id', 'related_character_id', 'type', 'inverse_type', 'notes']);
+
+        $conRelacion = $relaciones->pluck('character_id')
+            ->merge($relaciones->pluck('related_character_id'))
+            ->unique();
+
+        $personajes = Character::whereIn('id', $conRelacion)
+            ->with('worlds:id,name')
+            ->orderBy('name')
+            ->get(['id', 'name', 'image', 'faction', 'alignment']);
+
+        return Inertia::render('Admin/Characters/Graph', [
+            'nodos' => $personajes->map(fn (Character $c) => [
+                'id' => $c->id,
+                'nombre' => $c->name,
+                'imagen' => $c->image_url,
+                'faccion' => $c->faction,
+                // Grado: cuantas relaciones tiene. Manda en el tamano del nodo.
+                'grado' => $relaciones->where('character_id', $c->id)->count()
+                    + $relaciones->where('related_character_id', $c->id)->count(),
+            ])->values(),
+            'aristas' => $relaciones->map(fn (CharacterRelation $r) => [
+                'id' => $r->id,
+                'origen' => $r->character_id,
+                'destino' => $r->related_character_id,
+                'tipo' => $r->type,
+                'inverso' => $r->inverse_type,
+                'notas' => $r->notes,
+            ])->values(),
+            'sueltos' => Character::whereNotIn('id', $conRelacion)->count(),
+        ]);
+    }
+
     public function create()
     {
         return Inertia::render('Admin/Characters/Create', [

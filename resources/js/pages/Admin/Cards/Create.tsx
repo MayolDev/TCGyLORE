@@ -40,11 +40,11 @@ interface Props {
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
     { title: 'Biblioteca', href: '/admin/cards' },
-    { title: 'Crear' },
+    { title: 'Crear', href: '#' },
 ];
 
 export default function Create({ worlds, characters, cardTypes, rarities, archetypes, alignments, factions, editions, artists }: Props) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, transform } = useForm({
         world_id: '',
         character_id: '0',
         name: '',
@@ -69,22 +69,22 @@ export default function Create({ worlds, characters, cardTypes, rarities, archet
         health: '',
     });
 
+    // '0' = "Ninguno" en los selects opcionales; el backend espera null.
+    // Antes se armaba un objeto y se pasaba como opcion `data` de post(), que
+    // no existe: Inertia lo ignoraba y mandaba los '0' tal cual, asi que crear
+    // una carta sin personaje reventaba la validacion. Igual que en Edit.
+    transform((datos) => ({
+        ...datos,
+        character_id: datos.character_id === '0' ? null : datos.character_id,
+        archetype_id: datos.archetype_id === '0' ? null : datos.archetype_id,
+        faction_id: datos.faction_id === '0' ? null : datos.faction_id,
+        edition_id: datos.edition_id === '0' ? null : datos.edition_id,
+        artist_id: datos.artist_id === '0' ? null : datos.artist_id,
+    }));
+
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        
-        const submitData = {
-            ...data,
-            character_id: data.character_id === '0' ? null : data.character_id,
-            archetype_id: data.archetype_id === '0' ? null : data.archetype_id,
-            faction_id: data.faction_id === '0' ? null : data.faction_id,
-            edition_id: data.edition_id === '0' ? null : data.edition_id,
-            artist_id: data.artist_id === '0' ? null : data.artist_id,
-        };
-        
-        post('/admin/cards', {
-            data: submitData,
-            forceFormData: true,
-        });
+        post('/admin/cards', { forceFormData: true });
     };
 
     return (

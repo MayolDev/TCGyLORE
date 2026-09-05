@@ -43,6 +43,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Sistema de Lore
         Route::resource('worlds', WorldController::class);
         Route::resource('stories', StoryController::class);
+        // El grafo va con su propio segmento para no caer en el comodin
+        // characters/{character} del resource.
+        Route::get('grafo-relaciones', [CharacterController::class, 'graph'])->name('characters.graph');
         Route::resource('characters', CharacterController::class);
         // Relaciones entre personajes: se crean desde la ficha del personaje
         // y se borran por su propio id, que es de la fila de relacion.

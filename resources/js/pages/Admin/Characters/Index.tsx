@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Users, Plus, Search, Pencil, Trash2, Sparkles, Scroll, User, Grid3x3, Table2, Eye } from 'lucide-react';
+import { Eye, Grid3x3, Pencil, Plus, Scroll, Search, Share2, Sparkles, Table2, Trash2, User, Users } from 'lucide-react';
 import { useState } from 'react';
 import { stripMarkdown } from '@/lib/utils';
 import LightboxImage from '@/components/lightbox-image';
@@ -85,12 +85,20 @@ export default function Index({ characters: initialCharacters, filters: initialF
                             👥 Gestiona los héroes y villanos de tus mundos
                         </p>
                     </div>
+                    <div className="flex flex-wrap gap-2">
+                    <Button variant="outline" size="lg" asChild className="border-yellow-500/40 text-yellow-200 hover:bg-yellow-600/10">
+                        <Link href="/admin/grafo-relaciones">
+                            <Share2 className="mr-2 h-5 w-5" />
+                            Quién es quién
+                        </Link>
+                    </Button>
                     <Button variant="magical" size="lg" asChild className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 hover:from-yellow-500 hover:to-red-500 text-white font-black shadow-xl shadow-orange-500/50 border-2 border-yellow-400/30" style={{ fontFamily: 'Cinzel, serif' }}>
                         <Link href="/admin/characters/create">
                             <Plus className="mr-2 h-5 w-5" />
                             Crear Personaje
                         </Link>
                     </Button>
+                    </div>
                 </div>
 
                 {/* Search & View Toggle */}

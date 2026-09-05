@@ -81,7 +81,7 @@ interface Props {
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
     { title: 'Biblioteca', href: '/admin/cards' },
-    { title: 'Editar carta' },
+    { title: 'Editar carta', href: '#' },
 ];
 
 const ACCION_ICONO: Record<string, string> = { creada: '✨', actualizada: '✏️', eliminada: '🗑️' };

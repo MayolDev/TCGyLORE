@@ -1,5 +1,83 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
+* @see \App\Http\Controllers\Admin\CharacterController::graph
+ * @see app/Http/Controllers/Admin/CharacterController.php:55
+ * @route '/admin/grafo-relaciones'
+ */
+export const graph = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: graph.url(options),
+    method: 'get',
+})
+
+graph.definition = {
+    methods: ["get","head"],
+    url: '/admin/grafo-relaciones',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Admin\CharacterController::graph
+ * @see app/Http/Controllers/Admin/CharacterController.php:55
+ * @route '/admin/grafo-relaciones'
+ */
+graph.url = (options?: RouteQueryOptions) => {
+    return graph.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Admin\CharacterController::graph
+ * @see app/Http/Controllers/Admin/CharacterController.php:55
+ * @route '/admin/grafo-relaciones'
+ */
+graph.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: graph.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\Admin\CharacterController::graph
+ * @see app/Http/Controllers/Admin/CharacterController.php:55
+ * @route '/admin/grafo-relaciones'
+ */
+graph.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: graph.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\Admin\CharacterController::graph
+ * @see app/Http/Controllers/Admin/CharacterController.php:55
+ * @route '/admin/grafo-relaciones'
+ */
+    const graphForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: graph.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\Admin\CharacterController::graph
+ * @see app/Http/Controllers/Admin/CharacterController.php:55
+ * @route '/admin/grafo-relaciones'
+ */
+        graphForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: graph.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\Admin\CharacterController::graph
+ * @see app/Http/Controllers/Admin/CharacterController.php:55
+ * @route '/admin/grafo-relaciones'
+ */
+        graphForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: graph.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    graph.form = graphForm
+/**
 * @see \App\Http\Controllers\Admin\CharacterController::index
  * @see app/Http/Controllers/Admin/CharacterController.php:19
  * @route '/admin/characters'
@@ -79,7 +157,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::create
- * @see app/Http/Controllers/Admin/CharacterController.php:47
+ * @see app/Http/Controllers/Admin/CharacterController.php:91
  * @route '/admin/characters/create'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +172,7 @@ create.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::create
- * @see app/Http/Controllers/Admin/CharacterController.php:47
+ * @see app/Http/Controllers/Admin/CharacterController.php:91
  * @route '/admin/characters/create'
  */
 create.url = (options?: RouteQueryOptions) => {
@@ -103,7 +181,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::create
- * @see app/Http/Controllers/Admin/CharacterController.php:47
+ * @see app/Http/Controllers/Admin/CharacterController.php:91
  * @route '/admin/characters/create'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -112,7 +190,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::create
- * @see app/Http/Controllers/Admin/CharacterController.php:47
+ * @see app/Http/Controllers/Admin/CharacterController.php:91
  * @route '/admin/characters/create'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -122,7 +200,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\CharacterController::create
- * @see app/Http/Controllers/Admin/CharacterController.php:47
+ * @see app/Http/Controllers/Admin/CharacterController.php:91
  * @route '/admin/characters/create'
  */
     const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -132,7 +210,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::create
- * @see app/Http/Controllers/Admin/CharacterController.php:47
+ * @see app/Http/Controllers/Admin/CharacterController.php:91
  * @route '/admin/characters/create'
  */
         createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -141,7 +219,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::create
- * @see app/Http/Controllers/Admin/CharacterController.php:47
+ * @see app/Http/Controllers/Admin/CharacterController.php:91
  * @route '/admin/characters/create'
  */
         createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -157,7 +235,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     create.form = createForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::store
- * @see app/Http/Controllers/Admin/CharacterController.php:56
+ * @see app/Http/Controllers/Admin/CharacterController.php:100
  * @route '/admin/characters'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -172,7 +250,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::store
- * @see app/Http/Controllers/Admin/CharacterController.php:56
+ * @see app/Http/Controllers/Admin/CharacterController.php:100
  * @route '/admin/characters'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -181,7 +259,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::store
- * @see app/Http/Controllers/Admin/CharacterController.php:56
+ * @see app/Http/Controllers/Admin/CharacterController.php:100
  * @route '/admin/characters'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -191,7 +269,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\Admin\CharacterController::store
- * @see app/Http/Controllers/Admin/CharacterController.php:56
+ * @see app/Http/Controllers/Admin/CharacterController.php:100
  * @route '/admin/characters'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -201,7 +279,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::store
- * @see app/Http/Controllers/Admin/CharacterController.php:56
+ * @see app/Http/Controllers/Admin/CharacterController.php:100
  * @route '/admin/characters'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -212,7 +290,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::show
- * @see app/Http/Controllers/Admin/CharacterController.php:94
+ * @see app/Http/Controllers/Admin/CharacterController.php:138
  * @route '/admin/characters/{character}'
  */
 export const show = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -227,7 +305,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::show
- * @see app/Http/Controllers/Admin/CharacterController.php:94
+ * @see app/Http/Controllers/Admin/CharacterController.php:138
  * @route '/admin/characters/{character}'
  */
 show.url = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
@@ -260,7 +338,7 @@ show.url = (args: { character: string | number | { id: string | number } } | [ch
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::show
- * @see app/Http/Controllers/Admin/CharacterController.php:94
+ * @see app/Http/Controllers/Admin/CharacterController.php:138
  * @route '/admin/characters/{character}'
  */
 show.get = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -269,7 +347,7 @@ show.get = (args: { character: string | number | { id: string | number } } | [ch
 })
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::show
- * @see app/Http/Controllers/Admin/CharacterController.php:94
+ * @see app/Http/Controllers/Admin/CharacterController.php:138
  * @route '/admin/characters/{character}'
  */
 show.head = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -279,7 +357,7 @@ show.head = (args: { character: string | number | { id: string | number } } | [c
 
     /**
 * @see \App\Http\Controllers\Admin\CharacterController::show
- * @see app/Http/Controllers/Admin/CharacterController.php:94
+ * @see app/Http/Controllers/Admin/CharacterController.php:138
  * @route '/admin/characters/{character}'
  */
     const showForm = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -289,7 +367,7 @@ show.head = (args: { character: string | number | { id: string | number } } | [c
 
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::show
- * @see app/Http/Controllers/Admin/CharacterController.php:94
+ * @see app/Http/Controllers/Admin/CharacterController.php:138
  * @route '/admin/characters/{character}'
  */
         showForm.get = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -298,7 +376,7 @@ show.head = (args: { character: string | number | { id: string | number } } | [c
         })
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::show
- * @see app/Http/Controllers/Admin/CharacterController.php:94
+ * @see app/Http/Controllers/Admin/CharacterController.php:138
  * @route '/admin/characters/{character}'
  */
         showForm.head = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -314,7 +392,7 @@ show.head = (args: { character: string | number | { id: string | number } } | [c
     show.form = showForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::edit
- * @see app/Http/Controllers/Admin/CharacterController.php:114
+ * @see app/Http/Controllers/Admin/CharacterController.php:158
  * @route '/admin/characters/{character}/edit'
  */
 export const edit = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -329,7 +407,7 @@ edit.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::edit
- * @see app/Http/Controllers/Admin/CharacterController.php:114
+ * @see app/Http/Controllers/Admin/CharacterController.php:158
  * @route '/admin/characters/{character}/edit'
  */
 edit.url = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
@@ -362,7 +440,7 @@ edit.url = (args: { character: string | number | { id: string | number } } | [ch
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::edit
- * @see app/Http/Controllers/Admin/CharacterController.php:114
+ * @see app/Http/Controllers/Admin/CharacterController.php:158
  * @route '/admin/characters/{character}/edit'
  */
 edit.get = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -371,7 +449,7 @@ edit.get = (args: { character: string | number | { id: string | number } } | [ch
 })
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::edit
- * @see app/Http/Controllers/Admin/CharacterController.php:114
+ * @see app/Http/Controllers/Admin/CharacterController.php:158
  * @route '/admin/characters/{character}/edit'
  */
 edit.head = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -381,7 +459,7 @@ edit.head = (args: { character: string | number | { id: string | number } } | [c
 
     /**
 * @see \App\Http\Controllers\Admin\CharacterController::edit
- * @see app/Http/Controllers/Admin/CharacterController.php:114
+ * @see app/Http/Controllers/Admin/CharacterController.php:158
  * @route '/admin/characters/{character}/edit'
  */
     const editForm = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -391,7 +469,7 @@ edit.head = (args: { character: string | number | { id: string | number } } | [c
 
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::edit
- * @see app/Http/Controllers/Admin/CharacterController.php:114
+ * @see app/Http/Controllers/Admin/CharacterController.php:158
  * @route '/admin/characters/{character}/edit'
  */
         editForm.get = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -400,7 +478,7 @@ edit.head = (args: { character: string | number | { id: string | number } } | [c
         })
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::edit
- * @see app/Http/Controllers/Admin/CharacterController.php:114
+ * @see app/Http/Controllers/Admin/CharacterController.php:158
  * @route '/admin/characters/{character}/edit'
  */
         editForm.head = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -416,7 +494,7 @@ edit.head = (args: { character: string | number | { id: string | number } } | [c
     edit.form = editForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::update
- * @see app/Http/Controllers/Admin/CharacterController.php:210
+ * @see app/Http/Controllers/Admin/CharacterController.php:254
  * @route '/admin/characters/{character}'
  */
 export const update = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -431,7 +509,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::update
- * @see app/Http/Controllers/Admin/CharacterController.php:210
+ * @see app/Http/Controllers/Admin/CharacterController.php:254
  * @route '/admin/characters/{character}'
  */
 update.url = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
@@ -464,7 +542,7 @@ update.url = (args: { character: string | number | { id: string | number } } | [
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::update
- * @see app/Http/Controllers/Admin/CharacterController.php:210
+ * @see app/Http/Controllers/Admin/CharacterController.php:254
  * @route '/admin/characters/{character}'
  */
 update.put = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -473,7 +551,7 @@ update.put = (args: { character: string | number | { id: string | number } } | [
 })
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::update
- * @see app/Http/Controllers/Admin/CharacterController.php:210
+ * @see app/Http/Controllers/Admin/CharacterController.php:254
  * @route '/admin/characters/{character}'
  */
 update.patch = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -483,7 +561,7 @@ update.patch = (args: { character: string | number | { id: string | number } } |
 
     /**
 * @see \App\Http\Controllers\Admin\CharacterController::update
- * @see app/Http/Controllers/Admin/CharacterController.php:210
+ * @see app/Http/Controllers/Admin/CharacterController.php:254
  * @route '/admin/characters/{character}'
  */
     const updateForm = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -498,7 +576,7 @@ update.patch = (args: { character: string | number | { id: string | number } } |
 
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::update
- * @see app/Http/Controllers/Admin/CharacterController.php:210
+ * @see app/Http/Controllers/Admin/CharacterController.php:254
  * @route '/admin/characters/{character}'
  */
         updateForm.put = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -512,7 +590,7 @@ update.patch = (args: { character: string | number | { id: string | number } } |
         })
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::update
- * @see app/Http/Controllers/Admin/CharacterController.php:210
+ * @see app/Http/Controllers/Admin/CharacterController.php:254
  * @route '/admin/characters/{character}'
  */
         updateForm.patch = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -528,7 +606,7 @@ update.patch = (args: { character: string | number | { id: string | number } } |
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::destroy
- * @see app/Http/Controllers/Admin/CharacterController.php:252
+ * @see app/Http/Controllers/Admin/CharacterController.php:296
  * @route '/admin/characters/{character}'
  */
 export const destroy = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -543,7 +621,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::destroy
- * @see app/Http/Controllers/Admin/CharacterController.php:252
+ * @see app/Http/Controllers/Admin/CharacterController.php:296
  * @route '/admin/characters/{character}'
  */
 destroy.url = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
@@ -576,7 +654,7 @@ destroy.url = (args: { character: string | number | { id: string | number } } | 
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::destroy
- * @see app/Http/Controllers/Admin/CharacterController.php:252
+ * @see app/Http/Controllers/Admin/CharacterController.php:296
  * @route '/admin/characters/{character}'
  */
 destroy.delete = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -586,7 +664,7 @@ destroy.delete = (args: { character: string | number | { id: string | number } }
 
     /**
 * @see \App\Http\Controllers\Admin\CharacterController::destroy
- * @see app/Http/Controllers/Admin/CharacterController.php:252
+ * @see app/Http/Controllers/Admin/CharacterController.php:296
  * @route '/admin/characters/{character}'
  */
     const destroyForm = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -601,7 +679,7 @@ destroy.delete = (args: { character: string | number | { id: string | number } }
 
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::destroy
- * @see app/Http/Controllers/Admin/CharacterController.php:252
+ * @see app/Http/Controllers/Admin/CharacterController.php:296
  * @route '/admin/characters/{character}'
  */
         destroyForm.delete = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -617,7 +695,7 @@ destroy.delete = (args: { character: string | number | { id: string | number } }
     destroy.form = destroyForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::storeRelation
- * @see app/Http/Controllers/Admin/CharacterController.php:159
+ * @see app/Http/Controllers/Admin/CharacterController.php:203
  * @route '/admin/characters/{character}/relations'
  */
 export const storeRelation = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -632,7 +710,7 @@ storeRelation.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::storeRelation
- * @see app/Http/Controllers/Admin/CharacterController.php:159
+ * @see app/Http/Controllers/Admin/CharacterController.php:203
  * @route '/admin/characters/{character}/relations'
  */
 storeRelation.url = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
@@ -665,7 +743,7 @@ storeRelation.url = (args: { character: string | number | { id: string | number 
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::storeRelation
- * @see app/Http/Controllers/Admin/CharacterController.php:159
+ * @see app/Http/Controllers/Admin/CharacterController.php:203
  * @route '/admin/characters/{character}/relations'
  */
 storeRelation.post = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -675,7 +753,7 @@ storeRelation.post = (args: { character: string | number | { id: string | number
 
     /**
 * @see \App\Http\Controllers\Admin\CharacterController::storeRelation
- * @see app/Http/Controllers/Admin/CharacterController.php:159
+ * @see app/Http/Controllers/Admin/CharacterController.php:203
  * @route '/admin/characters/{character}/relations'
  */
     const storeRelationForm = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -685,7 +763,7 @@ storeRelation.post = (args: { character: string | number | { id: string | number
 
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::storeRelation
- * @see app/Http/Controllers/Admin/CharacterController.php:159
+ * @see app/Http/Controllers/Admin/CharacterController.php:203
  * @route '/admin/characters/{character}/relations'
  */
         storeRelationForm.post = (args: { character: string | number | { id: string | number } } | [character: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -696,7 +774,7 @@ storeRelation.post = (args: { character: string | number | { id: string | number
     storeRelation.form = storeRelationForm
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::destroyRelation
- * @see app/Http/Controllers/Admin/CharacterController.php:203
+ * @see app/Http/Controllers/Admin/CharacterController.php:247
  * @route '/admin/character-relations/{relation}'
  */
 export const destroyRelation = (args: { relation: string | number | { id: string | number } } | [relation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -711,7 +789,7 @@ destroyRelation.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::destroyRelation
- * @see app/Http/Controllers/Admin/CharacterController.php:203
+ * @see app/Http/Controllers/Admin/CharacterController.php:247
  * @route '/admin/character-relations/{relation}'
  */
 destroyRelation.url = (args: { relation: string | number | { id: string | number } } | [relation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
@@ -744,7 +822,7 @@ destroyRelation.url = (args: { relation: string | number | { id: string | number
 
 /**
 * @see \App\Http\Controllers\Admin\CharacterController::destroyRelation
- * @see app/Http/Controllers/Admin/CharacterController.php:203
+ * @see app/Http/Controllers/Admin/CharacterController.php:247
  * @route '/admin/character-relations/{relation}'
  */
 destroyRelation.delete = (args: { relation: string | number | { id: string | number } } | [relation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -754,7 +832,7 @@ destroyRelation.delete = (args: { relation: string | number | { id: string | num
 
     /**
 * @see \App\Http\Controllers\Admin\CharacterController::destroyRelation
- * @see app/Http/Controllers/Admin/CharacterController.php:203
+ * @see app/Http/Controllers/Admin/CharacterController.php:247
  * @route '/admin/character-relations/{relation}'
  */
     const destroyRelationForm = (args: { relation: string | number | { id: string | number } } | [relation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -769,7 +847,7 @@ destroyRelation.delete = (args: { relation: string | number | { id: string | num
 
             /**
 * @see \App\Http\Controllers\Admin\CharacterController::destroyRelation
- * @see app/Http/Controllers/Admin/CharacterController.php:203
+ * @see app/Http/Controllers/Admin/CharacterController.php:247
  * @route '/admin/character-relations/{relation}'
  */
         destroyRelationForm.delete = (args: { relation: string | number | { id: string | number } } | [relation: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -783,6 +861,6 @@ destroyRelation.delete = (args: { relation: string | number | { id: string | num
         })
     
     destroyRelation.form = destroyRelationForm
-const CharacterController = { index, create, store, show, edit, update, destroy, storeRelation, destroyRelation }
+const CharacterController = { graph, index, create, store, show, edit, update, destroy, storeRelation, destroyRelation }
 
 export default CharacterController
