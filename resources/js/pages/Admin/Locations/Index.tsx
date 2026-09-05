@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import InfiniteScrollFooter from '@/components/infinite-scroll-footer';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -351,44 +352,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                             ))}
                         </div>
 
-                        {/* Pagination */}
-                        {locations.last_page > 1 && (
-                            <Card className="border-primary/20">
-                                <CardContent className="flex items-center justify-between p-4">
-                                    <div className="text-sm text-muted-foreground">
-                                        Mostrando <span className="font-medium text-foreground">{locations.data.length}</span> de{' '}
-                                        <span className="font-medium text-foreground">{locations.total}</span> ubicaciones
-                                    </div>
-                                    <div className="flex gap-2">
-                                        {locations.current_page > 1 && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/locations?page=${locations.current_page - 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Anterior
-                                                </Link>
-                                            </Button>
-                                        )}
-                                        <div className="flex items-center gap-2 px-3 text-sm">
-                                            Página {locations.current_page} de {locations.last_page}
-                                        </div>
-                                        {locations.current_page < locations.last_page && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/locations?page=${locations.current_page + 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Siguiente
-                                                </Link>
-                                            </Button>
-                                        )}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        )}
+                        <InfiniteScrollFooter pagina={locations} prop="locations" nombre="ubicaciones" />
                     </>
                 ) : (
                     <>
@@ -495,44 +459,7 @@ export default function Index({ locations: initialLocations, filters: initialFil
                             </CardContent>
                         </Card>
 
-                        {/* Pagination */}
-                        {locations.last_page > 1 && (
-                            <Card className="border-primary/20">
-                                <CardContent className="flex items-center justify-between p-4">
-                                    <div className="text-sm text-muted-foreground">
-                                        Mostrando <span className="font-medium text-foreground">{locations.data.length}</span> de{' '}
-                                        <span className="font-medium text-foreground">{locations.total}</span> ubicaciones
-                                    </div>
-                                    <div className="flex gap-2">
-                                        {locations.current_page > 1 && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/locations?page=${locations.current_page - 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Anterior
-                                                </Link>
-                                            </Button>
-                                        )}
-                                        <div className="flex items-center gap-2 px-3 text-sm">
-                                            Página {locations.current_page} de {locations.last_page}
-                                        </div>
-                                        {locations.current_page < locations.last_page && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/locations?page=${locations.current_page + 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Siguiente
-                                                </Link>
-                                            </Button>
-                                        )}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        )}
+                        <InfiniteScrollFooter pagina={locations} prop="locations" nombre="ubicaciones" />
                     </>
                 )}
             </div>

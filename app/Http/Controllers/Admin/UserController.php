@@ -24,11 +24,14 @@ class UserController extends Controller
                     ->orWhere('email', 'like', "%{$search}%");
             })
             ->latest()
-            ->paginate(10)
+            ->paginate(30)
             ->withQueryString();
 
         return Inertia::render('Admin/Users/Index', [
-            'users' => $users,
+            // deepMerge: al pedir la pagina siguiente Inertia anade los
+            // elementos a los que ya hay en pantalla en vez de sustituirlos.
+            // Es lo que permite el scroll infinito sin recargar la vista.
+            'users' => Inertia::deepMerge($users),
             'filters' => $request->only(['search']),
         ]);
     }

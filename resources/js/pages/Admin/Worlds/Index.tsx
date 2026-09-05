@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import InfiniteScrollFooter from '@/components/infinite-scroll-footer';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -269,44 +270,7 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                             ))}
                         </div>
 
-                        {/* Pagination */}
-                        {worlds.last_page > 1 && (
-                            <Card className="border-primary/20">
-                                <CardContent className="flex items-center justify-between p-4">
-                                    <div className="text-sm text-muted-foreground">
-                                        Mostrando <span className="font-medium text-foreground">{worlds.data.length}</span> de{' '}
-                                        <span className="font-medium text-foreground">{worlds.total}</span> mundos
-                                    </div>
-                                    <div className="flex gap-2">
-                                        {worlds.current_page > 1 && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/worlds?page=${worlds.current_page - 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Anterior
-                                                </Link>
-                                            </Button>
-                                        )}
-                                        <div className="flex items-center gap-2 px-3 text-sm">
-                                            Página {worlds.current_page} de {worlds.last_page}
-                                        </div>
-                                        {worlds.current_page < worlds.last_page && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/worlds?page=${worlds.current_page + 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Siguiente
-                                                </Link>
-                                            </Button>
-                                        )}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        )}
+                        <InfiniteScrollFooter pagina={worlds} prop="worlds" nombre="mundos" />
                     </>
                 ) : (
                     /* Table View */
@@ -410,44 +374,7 @@ export default function Index({ worlds: initialWorlds, filters: initialFilters }
                             </CardContent>
                         </Card>
 
-                        {/* Pagination */}
-                        {worlds.last_page > 1 && (
-                            <Card className="border-primary/20">
-                                <CardContent className="flex items-center justify-between p-4">
-                                    <div className="text-sm text-muted-foreground">
-                                        Mostrando <span className="font-medium text-foreground">{worlds.data.length}</span> de{' '}
-                                        <span className="font-medium text-foreground">{worlds.total}</span> mundos
-                                    </div>
-                                    <div className="flex gap-2">
-                                        {worlds.current_page > 1 && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/worlds?page=${worlds.current_page - 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Anterior
-                                                </Link>
-                                            </Button>
-                                        )}
-                                        <div className="flex items-center gap-2 px-3 text-sm">
-                                            Página {worlds.current_page} de {worlds.last_page}
-                                        </div>
-                                        {worlds.current_page < worlds.last_page && (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link
-                                                    href={`/admin/worlds?page=${worlds.current_page + 1}${
-                                                        search ? `&search=${search}` : ''
-                                                    }`}
-                                                >
-                                                    Siguiente
-                                                </Link>
-                                            </Button>
-                                        )}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        )}
+                        <InfiniteScrollFooter pagina={worlds} prop="worlds" nombre="mundos" />
                     </>
                 )}
             </div>

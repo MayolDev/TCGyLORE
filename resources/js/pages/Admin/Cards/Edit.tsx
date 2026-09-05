@@ -57,6 +57,7 @@ interface CardData {
     strength: number | null;
     agility: number | null;
     charisma: number | null;
+    ego: number | null;
     mind: number | null;
     defense: number | null;
     magic_defense: number | null;
@@ -162,6 +163,7 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
         strength: card.strength?.toString() || '',
         agility: card.agility?.toString() || '',
         charisma: card.charisma?.toString() || '',
+        ego: card.ego?.toString() || '',
         mind: card.mind?.toString() || '',
         defense: card.defense?.toString() || '',
         magic_defense: card.magic_defense?.toString() || '',
@@ -412,6 +414,7 @@ export default function Edit({ card, worlds, characters, cardTypes, rarities, ar
                                 {stat('agility', '⚡ Agilidad')}
                                 {stat('charisma', '✨ Carisma')}
                                 {stat('mind', '🧠 Mente')}
+                                {stat('ego', '👑 EGO')}
                                 {stat('defense', '🛡️ Defensa')}
                                 {stat('magic_defense', '🔮 Def. Mágica')}
                                 {stat('health', '❤️ Vida')}

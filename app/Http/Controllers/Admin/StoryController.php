@@ -28,11 +28,14 @@ class StoryController extends Controller
                 $query->whereHas('worlds', fn ($q) => $q->where('worlds.id', $worldId));
             })
             ->latest()
-            ->paginate(10)
+            ->paginate(24)
             ->withQueryString();
 
         return Inertia::render('Admin/Stories/Index', [
-            'stories' => $stories,
+            // deepMerge: al pedir la pagina siguiente Inertia anade los
+            // elementos a los que ya hay en pantalla en vez de sustituirlos.
+            // Es lo que permite el scroll infinito sin recargar la vista.
+            'stories' => Inertia::deepMerge($stories),
             'worlds' => World::all(['id', 'name']),
             'filters' => $request->only(['search', 'category', 'world_id']),
         ]);

@@ -21,11 +21,14 @@ class WorldController extends Controller
             })
             ->withCount(['stories', 'characters', 'locations', 'cards'])
             ->latest()
-            ->paginate(10)
+            ->paginate(24)
             ->withQueryString();
 
         return Inertia::render('Admin/Worlds/Index', [
-            'worlds' => $worlds,
+            // deepMerge: al pedir la pagina siguiente Inertia anade los
+            // elementos a los que ya hay en pantalla en vez de sustituirlos.
+            // Es lo que permite el scroll infinito sin recargar la vista.
+            'worlds' => Inertia::deepMerge($worlds),
             'filters' => $request->only(['search']),
         ]);
     }

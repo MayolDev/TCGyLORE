@@ -67,6 +67,8 @@ class CardController extends Controller
             'strength' => ['nullable', 'integer', 'min:0', 'max:20'],
             'agility' => ['nullable', 'integer', 'min:0', 'max:20'],
             'charisma' => ['nullable', 'integer', 'min:0', 'max:20'],
+            // El EGO tiene su propio rango: 0-6 (Reglamento 0.4, §8).
+            'ego' => ['nullable', 'integer', 'min:0', 'max:6'],
             'mind' => ['nullable', 'integer', 'min:0', 'max:20'],
             'defense' => ['nullable', 'integer', 'min:0', 'max:20'],
             'magic_defense' => ['nullable', 'integer', 'min:0', 'max:20'],
@@ -130,6 +132,8 @@ class CardController extends Controller
             'strength' => ['nullable', 'integer', 'min:0', 'max:20'],
             'agility' => ['nullable', 'integer', 'min:0', 'max:20'],
             'charisma' => ['nullable', 'integer', 'min:0', 'max:20'],
+            // El EGO tiene su propio rango: 0-6 (Reglamento 0.4, §8).
+            'ego' => ['nullable', 'integer', 'min:0', 'max:6'],
             'mind' => ['nullable', 'integer', 'min:0', 'max:20'],
             'defense' => ['nullable', 'integer', 'min:0', 'max:20'],
             'magic_defense' => ['nullable', 'integer', 'min:0', 'max:20'],

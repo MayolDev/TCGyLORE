@@ -27,11 +27,14 @@ class LocationController extends Controller
                 $query->where('world_id', $worldId);
             })
             ->latest()
-            ->paginate(10)
+            ->paginate(24)
             ->withQueryString();
 
         return Inertia::render('Admin/Locations/Index', [
-            'locations' => $locations,
+            // deepMerge: al pedir la pagina siguiente Inertia anade los
+            // elementos a los que ya hay en pantalla en vez de sustituirlos.
+            // Es lo que permite el scroll infinito sin recargar la vista.
+            'locations' => Inertia::deepMerge($locations),
             'worlds' => World::all(['id', 'name', 'map_image']),
             'filters' => $request->only(['search', 'location_type', 'world_id']),
             'mapLocations' => $this->mapLocations(),

@@ -45,6 +45,8 @@ class Card extends Model
         'strength',
         'agility',
         'charisma',
+        // EGO de la criatura (0-6). Solo las criaturas lo tienen: null en el resto.
+        'ego',
         'mind',
         'defense',
         'magic_defense',
@@ -67,6 +69,7 @@ class Card extends Model
             'strength' => 'integer',
             'agility' => 'integer',
             'charisma' => 'integer',
+            'ego' => 'integer',
             'mind' => 'integer',
             'defense' => 'integer',
             'magic_defense' => 'integer',

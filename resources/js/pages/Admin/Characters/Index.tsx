@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
+import InfiniteScrollFooter from '@/components/infinite-scroll-footer';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, WhenVisible, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { Users, Plus, Search, Pencil, Trash2, Sparkles, Scroll, User, Grid3x3, Table2, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { stripMarkdown } from '@/lib/utils';
@@ -295,21 +296,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                         {/* Pagination */}
                         {/* Scroll infinito: al asomar este bloque, Inertia pide la pagina
                             siguiente y la fusiona con la lista (deepMerge en el controlador). */}
-                        <WhenVisible
-                            always={characters.current_page < characters.last_page}
-                            params={{
-                                data: { page: characters.current_page + 1 },
-                                only: ['characters'],
-                                preserveUrl: true,
-                            }}
-                            fallback={<></>}
-                        >
-                            <div className="py-6 text-center text-sm font-semibold text-yellow-200/60">
-                                {characters.current_page < characters.last_page
-                                    ? `Cargando mas personajes... (${characters.data.length} de ${characters.total})`
-                                    : `${characters.total} personajes en total`}
-                            </div>
-                        </WhenVisible>
+                        <InfiniteScrollFooter pagina={characters} prop="characters" nombre="personajes" />
                     </>
                 ) : (
                     /* Table View */
@@ -435,21 +422,7 @@ export default function Index({ characters: initialCharacters, filters: initialF
                         {/* Pagination */}
                         {/* Scroll infinito: al asomar este bloque, Inertia pide la pagina
                             siguiente y la fusiona con la lista (deepMerge en el controlador). */}
-                        <WhenVisible
-                            always={characters.current_page < characters.last_page}
-                            params={{
-                                data: { page: characters.current_page + 1 },
-                                only: ['characters'],
-                                preserveUrl: true,
-                            }}
-                            fallback={<></>}
-                        >
-                            <div className="py-6 text-center text-sm font-semibold text-yellow-200/60">
-                                {characters.current_page < characters.last_page
-                                    ? `Cargando mas personajes... (${characters.data.length} de ${characters.total})`
-                                    : `${characters.total} personajes en total`}
-                            </div>
-                        </WhenVisible>
+                        <InfiniteScrollFooter pagina={characters} prop="characters" nombre="personajes" />
                     </>
                 )}
             </div>

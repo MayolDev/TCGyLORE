@@ -62,6 +62,7 @@ export default function Create({ worlds, characters, cardTypes, rarities, archet
         strength: '',
         agility: '',
         charisma: '',
+        ego: '',
         mind: '',
         defense: '',
         magic_defense: '',
@@ -326,6 +327,21 @@ export default function Create({ worlds, characters, cardTypes, rarities, archet
                                         placeholder="0"
                                     />
                                     <InputError message={errors.mind} />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="ego">👑 EGO</Label>
+                                    <Input
+                                        id="ego"
+                                        type="number"
+                                        min={0}
+                                        max={6}
+                                        value={data.ego}
+                                        onChange={(e) => setData('ego', e.target.value)}
+                                        placeholder="0"
+                                    />
+                                    <p className="text-xs text-muted-foreground">Solo criaturas. 0 a 6: orgullo, no poder.</p>
+                                    <InputError message={errors.ego} />
                                 </div>
 
                                 <div className="space-y-2">

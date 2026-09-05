@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
  * Puente Taller -> Biblioteca. El taller manda su carta (JSON + PNG
  * renderizado) y aquí se convierte en una Card de la biblioteca:
  * la imagen renderizada hace de ilustración y el JSON íntegro se guarda en
- * taller_data para no perder los campos que la BD aún no modela (EGO...).
+ * taller_data para no perder los campos que la BD aún no modela.
  * Los campos obligatorios de taxonomía que el taller no conoce se rellenan
  * con valores por defecto, editables después desde la ficha de la carta.
  */
@@ -66,8 +66,15 @@ class TallerCardController extends Controller
             Storage::disk('public')->delete($card->illustration);
         }
 
+        // El EGO vive en el JSON del taller. Se sube tambien a su columna para
+        // que la web pueda ensenarlo y filtrar por el; solo las criaturas lo
+        // tienen, en el resto se queda a null.
+        $datos = isset($validated['data']) ? json_decode($validated['data'], true) : null;
+        $ego = ($datos['tipo'] ?? null) === 'creature' ? (int) ($datos['ego'] ?? 0) : null;
+
         $atributos = [
             'name' => $validated['name'],
+            'ego' => $ego,
             'effect' => $validated['effect'] ?: '—',
             'cost' => $validated['cost'] ?? 0,
             'flavor_text' => $validated['flavor_text'] ?? null,
@@ -85,10 +92,10 @@ class TallerCardController extends Controller
             CardLog::apuntar($card, 'creada', 'taller');
         } else {
             // Diff legible campo a campo para el historial
-            $antes = $card->only(['name', 'cost', 'effect', 'flavor_text', 'card_type_id']);
+            $antes = $card->only(['name', 'cost', 'effect', 'flavor_text', 'card_type_id', 'ego']);
             $card->update($atributos);
             $cambios = [];
-            foreach (['name' => 'nombre', 'cost' => 'coste', 'effect' => 'efecto', 'flavor_text' => 'cita'] as $campo => $etiqueta) {
+            foreach (['name' => 'nombre', 'cost' => 'coste', 'effect' => 'efecto', 'flavor_text' => 'cita', 'ego' => 'EGO'] as $campo => $etiqueta) {
                 if ((string) $antes[$campo] !== (string) $card->{$campo}) {
                     $cambios[$etiqueta] = ['de' => $antes[$campo], 'a' => $card->{$campo}];
                 }

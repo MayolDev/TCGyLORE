@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import InfiniteScrollFooter from '@/components/infinite-scroll-footer';
 import { Input } from '@/components/ui/input';
 import {
     Table,
@@ -183,37 +184,7 @@ export default function Index({ users, filters }: Props) {
                         </TableBody>
                     </Table>
 
-                    {users.last_page > 1 && (
-                        <div className="flex items-center justify-between border-t p-4">
-                            <div className="text-sm text-muted-foreground">
-                                Mostrando {users.data.length} de {users.total} usuarios
-                            </div>
-                            <div className="flex gap-2">
-                                {users.current_page > 1 && (
-                                    <Link
-                                        href={`/admin/users?page=${users.current_page - 1}${
-                                            search ? `&search=${search}` : ''
-                                        }`}
-                                    >
-                                        <Button variant="outline" size="sm">
-                                            Anterior
-                                        </Button>
-                                    </Link>
-                                )}
-                                {users.current_page < users.last_page && (
-                                    <Link
-                                        href={`/admin/users?page=${users.current_page + 1}${
-                                            search ? `&search=${search}` : ''
-                                        }`}
-                                    >
-                                        <Button variant="outline" size="sm">
-                                            Siguiente
-                                        </Button>
-                                    </Link>
-                                )}
-                            </div>
-                        </div>
-                    )}
+                    <InfiniteScrollFooter pagina={users} prop="users" nombre="usuarios" />
                 </div>
             </div>
         </AdminLayout>
