@@ -121,11 +121,16 @@ html[data-estilo='taberna'] body {
     ) !important;
 }
 
-/* El boton de accion sigue siendo el que manda, pero en laton. */
-[data-estilo='taberna'] button[class*='from-yellow'],
-[data-estilo='taberna'] a[class*='from-yellow'],
-[data-estilo='taberna'] [class*='from-yellow-600'],
-[data-estilo='taberna'] [class*='from-orange-600'] {
+/*
+ * El boton de accion sigue siendo el que manda, pero en laton.
+ *
+ * Lleva el mismo :not() que la regla de arriba a proposito: :not() suma la
+ * especificidad de lo que hay dentro, asi que sin el la regla generica ganaba
+ * y el boton principal se quedaba del color de las tarjetas, casi invisible.
+ */
+html[data-estilo='taberna'] [class*='from-yellow-600']:not(.bg-clip-text),
+html[data-estilo='taberna'] [class*='from-orange-600']:not(.bg-clip-text),
+html[data-estilo='taberna'] [class*='from-yellow-500']:not(.bg-clip-text) {
     background-image: linear-gradient(
         180deg,
         oklch(0.60 0.10 76),
@@ -148,8 +153,20 @@ html[data-estilo='taberna'] body {
     box-shadow: 0 6px 18px oklch(0.06 0.01 60 / 0.6) !important;
 }
 
+/*
+ * Las manchas de color desenfocadas del fondo. Van con mix-blend-screen, asi
+ * que por mucho que se les cambie el color siguen iluminando: se dejan todas
+ * del mismo ambar apagado y muy bajas, para que hagan de resplandor de candil
+ * en vez de cinco focos de discoteca.
+ */
+[data-estilo='taberna'] .mix-blend-screen {
+    background-color: oklch(0.66 0.09 62) !important;
+    opacity: 0.09 !important;
+}
+
 /* Nada palpita ni gira: es un grabado, no una feria. */
 [data-estilo='taberna'] .animate-pulse,
+[data-estilo='taberna'] .animate-pulse-slow,
 [data-estilo='taberna'] .animate-bounce,
 [data-estilo='taberna'] .animate-float,
 [data-estilo='taberna'] .animate-ping {
