@@ -48,6 +48,9 @@ export const LOCATION_TYPES = {
     temple: { label: 'Templo', icon: '⛪', color: '#F9A825' },
     cave: { label: 'Cueva', icon: '🕳️', color: '#424242' },
     tower: { label: 'Torre', icon: '🗼', color: '#6A1B9A' },
+    // Las Ventas son los puntos de encuentro del mundo: es donde arranca la
+    // Cronica y donde se cruzan los personajes.
+    tavern: { label: 'Venta', icon: '🍺', color: '#8D6E63' },
 };
 
 /**
