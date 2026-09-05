@@ -92,7 +92,15 @@ class CharacterController extends Controller
 
     public function show(Character $character)
     {
-        $character->load(['worlds', 'locations', 'stories']);
+        $character->load([
+            'worlds',
+            'locations',
+            'stories',
+            // Sus cartas de la Biblioteca. Las del Taller se pintan enteras,
+            // asi que hace falta la ilustracion y el taller_data (de ahi sale
+            // el foil); el resto cae al mosaico con tipo y rareza.
+            'cards' => fn ($q) => $q->with(['cardType:id,name', 'rarity:id,name'])->orderBy('name'),
+        ]);
 
         return Inertia::render('Admin/Characters/Show', [
             'character' => $character,

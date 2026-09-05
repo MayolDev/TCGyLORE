@@ -6,7 +6,20 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import MarkdownContent from '@/components/markdown-content';
 import LightboxImage from '@/components/lightbox-image';
-import { ArrowLeft, Pencil, Users } from 'lucide-react';
+import FoilOverlay from '@/components/foil-overlay';
+import { ArrowLeft, Pencil, Swords, Users } from 'lucide-react';
+
+interface Carta {
+    id: number;
+    name: string;
+    illustration_url: string | null;
+    /** Presente cuando la carta vino del Taller: la ilustracion ES la carta entera. */
+    taller_data?: unknown;
+    is_foil?: boolean;
+    cost: number | null;
+    card_type: { id: number; name: string } | null;
+    rarity: { id: number; name: string } | null;
+}
 
 interface Character {
     id: number;
@@ -20,6 +33,7 @@ interface Character {
     worlds: { id: number; name: string }[];
     locations: { id: number; name: string }[];
     stories: { id: number; title: string }[];
+    cards: Carta[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -140,6 +154,64 @@ export default function Show({ character }: { character: Character }) {
 
                     {/* ── Su historia ── */}
                     <div className="min-w-0 space-y-5">
+                        {character.cards.length > 0 && (
+                            <Card className="border-2 border-yellow-500/25 bg-slate-900/70">
+                                <CardContent className="px-6 py-6 sm:px-8">
+                                    <h2 className="mb-4 flex items-center gap-2 text-xl font-black text-yellow-200" style={{ fontFamily: 'Cinzel, serif' }}>
+                                        <Swords className="h-5 w-5" />
+                                        En la Biblioteca
+                                        <span className="text-sm font-semibold text-yellow-200/50">
+                                            ({character.cards.length} {character.cards.length === 1 ? 'carta' : 'cartas'})
+                                        </span>
+                                    </h2>
+                                    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                                        {character.cards.map((c) =>
+                                            c.taller_data && c.illustration_url ? (
+                                                /* Carta del Taller: se ensena tal cual se diseno. */
+                                                <Link
+                                                    key={c.id}
+                                                    href={`/admin/cards/${c.id}/edit`}
+                                                    title={`Editar ${c.name}`}
+                                                    className="group relative overflow-hidden rounded-xl border-2 border-transparent transition-all hover:scale-[1.03] hover:border-yellow-400/70 hover:shadow-[0_0_30px_rgba(251,191,36,0.35)]"
+                                                >
+                                                    <img src={c.illustration_url} alt={c.name} className="w-full" loading="lazy" />
+                                                    {c.is_foil && <FoilOverlay />}
+                                                </Link>
+                                            ) : (
+                                                <Link
+                                                    key={c.id}
+                                                    href={`/admin/cards/${c.id}/edit`}
+                                                    title={`Editar ${c.name}`}
+                                                    className="group overflow-hidden rounded-xl border-2 border-yellow-500/20 bg-slate-950/60 transition-all hover:border-yellow-400/60 hover:shadow-[0_0_25px_rgba(251,191,36,0.25)]"
+                                                >
+                                                    <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-purple-900/40 via-slate-900 to-amber-900/30">
+                                                        {c.illustration_url ? (
+                                                            <img src={c.illustration_url} alt={c.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110" loading="lazy" />
+                                                        ) : (
+                                                            <div className="flex h-full items-center justify-center">
+                                                                <Swords className="h-12 w-12 text-yellow-500/25" />
+                                                            </div>
+                                                        )}
+                                                        {c.cost !== null && (
+                                                            <div className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-full border-2 border-yellow-500/40 bg-slate-950/85 text-sm font-black text-yellow-200">
+                                                                {c.cost}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div className="px-3 py-2">
+                                                        <p className="truncate text-sm font-bold text-yellow-100">{c.name}</p>
+                                                        <p className="truncate text-xs text-yellow-200/50">
+                                                            {[c.card_type?.name, c.rarity?.name].filter(Boolean).join(' · ') || 'Sin tipo'}
+                                                        </p>
+                                                    </div>
+                                                </Link>
+                                            ),
+                                        )}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+
                         {cuerpo && (
                             <Card className="border-2 border-amber-500/25 bg-slate-900/70">
                                 <CardContent className="px-6 py-7 sm:px-10">
@@ -159,7 +231,7 @@ export default function Show({ character }: { character: Character }) {
                             </Card>
                         )}
 
-                        {!cuerpo && !character.spells && (
+                        {!cuerpo && !character.spells && character.cards.length === 0 && (
                             <Card className="border-2 border-dashed border-amber-500/25 bg-slate-900/50">
                                 <CardContent className="py-16 text-center">
                                     <p className="font-semibold text-yellow-200/50">Este personaje aún no tiene biografía.</p>
