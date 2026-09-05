@@ -51,16 +51,23 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 /**
  * Las biografías importadas del documento de worldbuilding abren con el
- * epíteto del personaje como encabezado de nivel 3. Se saca del cuerpo para
- * lucirlo bajo el nombre en vez de repetirlo dentro del texto.
+ * epíteto del personaje. Se saca del cuerpo para lucirlo bajo el nombre en
+ * vez de repetirlo dentro del texto.
+ *
+ * El documento no es coherente: unas fichas lo traen como encabezado de
+ * nivel 3 y otras (la mayoría) como una línea suelta en negrita. Se admiten
+ * las dos, y solo si esa línea abre la biografía.
  */
 function separarEpiteto(bio: string | null): { epiteto: string | null; cuerpo: string } {
     if (!bio) return { epiteto: null, cuerpo: '' };
-    const m = bio.match(/^\s*###\s+(.+?)\s*$/m);
-    if (!m || bio.indexOf(m[0]) > 120) return { epiteto: null, cuerpo: bio };
+
+    const cabecera = bio.trimStart().split(/\r?\n/)[0].trim();
+    const m = cabecera.match(/^###\s+(.+)$/) ?? cabecera.match(/^\*\*([^*]+)\*\*$/);
+    if (!m) return { epiteto: null, cuerpo: bio };
+
     return {
         epiteto: m[1].replace(/\*\*/g, '').replace(/<\/?u>/g, '').trim(),
-        cuerpo: bio.replace(m[0], '').trim(),
+        cuerpo: bio.replace(cabecera, '').trim(),
     };
 }
 
