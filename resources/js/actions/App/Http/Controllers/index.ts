@@ -1,8 +1,10 @@
+import ChronicleController from './ChronicleController'
 import DashboardController from './DashboardController'
 import Admin from './Admin'
 import Settings from './Settings'
 const Controllers = {
-    DashboardController: Object.assign(DashboardController, DashboardController),
+    ChronicleController: Object.assign(ChronicleController, ChronicleController),
+DashboardController: Object.assign(DashboardController, DashboardController),
 Admin: Object.assign(Admin, Admin),
 Settings: Object.assign(Settings, Settings),
 }

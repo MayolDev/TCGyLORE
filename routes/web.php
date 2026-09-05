@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\TallerCardController;
 use App\Http\Controllers\Admin\TimelineEventController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WorldController;
+use App\Http\Controllers\ChronicleController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,6 +30,9 @@ Route::get('/', function () {
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
+
+// La Cronica: el lore como libro, publico y sin login.
+Route::get('cronica', ChronicleController::class)->name('cronica');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
