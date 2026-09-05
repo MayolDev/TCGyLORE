@@ -69,29 +69,7 @@ export default function Cronica({
 
     // La hoja que está cayendo: mientras dura, el libro no acepta más pasos.
     const [giro, setGiro] = useState<{ hacia: 'adelante' | 'atras'; desde: number } | null>(null);
-    // La hoja se monta plana y se lanza en el fotograma siguiente: si naciera
-    // ya girada, la transición no tendría de dónde salir y no se veria nada.
-    const [lanzada, setLanzada] = useState(false);
     const temporizador = useRef<number | null>(null);
-
-    useEffect(() => {
-        if (!giro) {
-            setLanzada(false);
-
-            return;
-        }
-        // Dos fotogramas: uno para que el navegador pinte la hoja plana y otro
-        // para el cambio que dispara la transicion.
-        let segundo = 0;
-        const primero = requestAnimationFrame(() => {
-            segundo = requestAnimationFrame(() => setLanzada(true));
-        });
-
-        return () => {
-            cancelAnimationFrame(primero);
-            cancelAnimationFrame(segundo);
-        };
-    }, [giro]);
 
     /**
      * Todas las hojas miden exactamente lo mismo, siempre. El tamaño sale del
@@ -293,9 +271,20 @@ export default function Cronica({
                 .libro-sombra { box-shadow: 0 34px 70px rgba(0,0,0,.72), 0 6px 18px rgba(0,0,0,.5); }
 
                 /* ── El giro ──────────────────────────────────────────────── */
-                .giro { transform-style: preserve-3d; transition: transform ${MS_GIRO}ms cubic-bezier(.42,.02,.36,1); }
-                .giro-adelante { transform-origin: left center;  transform: rotateY(-180deg); }
-                .giro-atras    { transform-origin: right center; transform: rotateY(180deg); }
+                /* Animacion y no transicion: una transicion exige que el
+                   navegador haya pintado antes el estado de partida, y la hoja
+                   nace en el mismo fotograma en que empieza a caer. */
+                .giro { transform-style: preserve-3d; will-change: transform; }
+                .giro-adelante {
+                    transform-origin: left center;
+                    animation: caer-adelante ${MS_GIRO}ms cubic-bezier(.42,.02,.36,1) forwards;
+                }
+                .giro-atras {
+                    transform-origin: right center;
+                    animation: caer-atras ${MS_GIRO}ms cubic-bezier(.42,.02,.36,1) forwards;
+                }
+                @keyframes caer-adelante { from { transform: rotateY(0deg) } to { transform: rotateY(-180deg) } }
+                @keyframes caer-atras    { from { transform: rotateY(0deg) } to { transform: rotateY(180deg) } }
                 .cara { position: absolute; inset: 0; backface-visibility: hidden; }
                 .cara-reverso { transform: rotateY(180deg); }
                 /* Sombra que barre la hoja mientras cae. */
@@ -413,7 +402,7 @@ export default function Cronica({
                         {/* La hoja que cae */}
                         {giro && (
                             <div
-                                className={`giro absolute top-0 ${lanzada ? (adelante ? 'giro-adelante' : 'giro-atras') : ''}`}
+                                className={`giro absolute top-0 ${adelante ? 'giro-adelante' : 'giro-atras'}`}
                                 style={{
                                     ...estilosHoja,
                                     left: doble && adelante ? medida.ancho : 0,
