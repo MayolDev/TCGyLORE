@@ -38,13 +38,31 @@ class SearchController extends Controller
             ]);
         }
 
+        // Las palabras cortas se buscan con limite de palabra: "EGO" con LIKE
+        // caza "juego", "luego" y "riesgo" y llena la pagina de ruido. A partir
+        // de 5 letras el ruido desaparece solo y LIKE va mas rapido.
+        $porPalabra = mb_strlen($q) <= 4;
         $like = '%'.$q.'%';
+        $patron = '\b'.preg_quote($q, '/').'\b';
+
+        /** Aplica la condicion adecuada sobre una columna. */
+        $coincide = function ($query, string $columna, bool $o = true) use ($porPalabra, $like, $patron) {
+            $metodo = $o ? 'orWhere' : 'where';
+
+            return $porPalabra
+                ? $query->{$metodo.'Raw'}("$columna RLIKE ?", [$patron])
+                : $query->{$metodo}($columna, 'like', $like);
+        };
+
         $grupos = [];
 
-        $personajes = Character::where('name', 'like', $like)
-            ->orWhere('title', 'like', $like)
-            ->orWhere('faction', 'like', $like)
-            ->orWhere('biography', 'like', $like)
+        $personajes = Character::query()
+            ->where(function ($q2) use ($coincide) {
+                $coincide($q2, 'name', false);
+                $coincide($q2, 'title');
+                $coincide($q2, 'faction');
+                $coincide($q2, 'biography');
+            })
             ->limit(self::TOPE)
             ->get(['id', 'name', 'title', 'faction', 'biography', 'image']);
 
@@ -61,8 +79,11 @@ class SearchController extends Controller
             ])->all(),
         ];
 
-        $ubicaciones = Location::where('name', 'like', $like)
-            ->orWhere('description', 'like', $like)
+        $ubicaciones = Location::query()
+            ->where(function ($q2) use ($coincide) {
+                $coincide($q2, 'name', false);
+                $coincide($q2, 'description');
+            })
             ->limit(self::TOPE)
             ->get(['id', 'name', 'description', 'location_type', 'image']);
 
@@ -79,9 +100,12 @@ class SearchController extends Controller
             ])->all(),
         ];
 
-        $cartas = Card::where('name', 'like', $like)
-            ->orWhere('effect', 'like', $like)
-            ->orWhere('flavor_text', 'like', $like)
+        $cartas = Card::query()
+            ->where(function ($q2) use ($coincide) {
+                $coincide($q2, 'name', false);
+                $coincide($q2, 'effect');
+                $coincide($q2, 'flavor_text');
+            })
             ->limit(self::TOPE)
             ->get(['id', 'name', 'effect', 'flavor_text', 'illustration', 'cost', 'taller_data']);
 
@@ -98,8 +122,11 @@ class SearchController extends Controller
             ])->all(),
         ];
 
-        $manual = ManualSection::where('title', 'like', $like)
-            ->orWhere('content', 'like', $like)
+        $manual = ManualSection::query()
+            ->where(function ($q2) use ($coincide) {
+                $coincide($q2, 'title', false);
+                $coincide($q2, 'content');
+            })
             ->limit(self::TOPE)
             ->get(['id', 'title', 'category', 'content']);
 
@@ -120,9 +147,11 @@ class SearchController extends Controller
         // "Enemigo") y por el matiz, no por el nombre de los dos personajes:
         // para eso ya estan ellos mas arriba.
         $relaciones = CharacterRelation::with(['character:id,name', 'relatedCharacter:id,name'])
-            ->where('type', 'like', $like)
-            ->orWhere('inverse_type', 'like', $like)
-            ->orWhere('notes', 'like', $like)
+            ->where(function ($q2) use ($coincide) {
+                $coincide($q2, 'type', false);
+                $coincide($q2, 'inverse_type');
+                $coincide($q2, 'notes');
+            })
             ->limit(self::TOPE)
             ->get();
 
@@ -141,8 +170,11 @@ class SearchController extends Controller
                 ])->values()->all(),
         ];
 
-        $historias = Story::where('title', 'like', $like)
-            ->orWhere('content', 'like', $like)
+        $historias = Story::query()
+            ->where(function ($q2) use ($coincide) {
+                $coincide($q2, 'title', false);
+                $coincide($q2, 'content');
+            })
             ->limit(self::TOPE)
             ->get(['id', 'title', 'category', 'content']);
 
@@ -159,8 +191,11 @@ class SearchController extends Controller
             ])->all(),
         ];
 
-        $eventos = TimelineEvent::where('name', 'like', $like)
-            ->orWhere('description', 'like', $like)
+        $eventos = TimelineEvent::query()
+            ->where(function ($q2) use ($coincide) {
+                $coincide($q2, 'name', false);
+                $coincide($q2, 'description');
+            })
             ->limit(self::TOPE)
             ->get(['id', 'name', 'year', 'description']);
 
