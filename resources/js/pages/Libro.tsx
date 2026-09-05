@@ -446,7 +446,15 @@ export default function Libro({
                 .prosa table { width:100%; font-size:.85em; }
                 .prosa code { font-size:.85em; background:rgba(138,106,63,.12); padding:0 .25em; }
                 .prosa pre { font-size:.72em; overflow:hidden; background:rgba(138,106,63,.1); padding:.5rem; }
-                .capitular { float:left; font-family:Cinzel, Georgia, serif; font-size:3.1em; line-height:.82; padding:.1em .1em 0 0; color:#7a4f1c; }
+                /* Capitular de dos lineas justas. A mas tamaño se comia media
+                   columna y dejaba un hueco feo al lado; en movil, donde la
+                   linea es corta, se baja aun mas. */
+                .capitular {
+                    float:left; font-family:Cinzel, Georgia, serif;
+                    font-size:2.5em; line-height:.76;
+                    padding:.06em .09em 0 0; color:#7a4f1c;
+                }
+                @media (max-width: 640px) { .capitular { font-size:2.1em } }
 
                 @media print { .no-imprimir { display:none !important } }
             `}</style>
