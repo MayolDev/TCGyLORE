@@ -32,8 +32,11 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+        {{-- El sello de lacre. El favicon.svg del andamiaje de Laravel se
+             retira: el emblema es un dibujo, no un vector. --}}
         <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="icon" href="/icono-32.png" type="image/png" sizes="32x32">
+        <link rel="icon" href="/icono-192.png" type="image/png" sizes="192x192">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
         {{-- Fuentes TCG - Cinzel para títulos medieval y Philosopher para cuerpo --}}

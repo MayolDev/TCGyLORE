@@ -1,17 +1,28 @@
-import { Shield, Crown } from 'lucide-react';
-
+/**
+ * El sello de lacre del proyecto. Antes habia aqui un escudo y una corona de
+ * iconos genericos con degradado naranja; el emblema es el de verdad.
+ */
 export default function AppLogo() {
     return (
         <>
-            <div className="relative flex aspect-square size-10 items-center justify-center rounded-xl bg-gradient-to-br from-yellow-600 via-orange-600 to-red-700 shadow-xl shadow-orange-500/50 border-2 border-yellow-400/50">
-                <Shield className="absolute size-7 text-yellow-100 drop-shadow-lg" />
-                <Crown className="absolute size-4 text-yellow-300 -top-1 drop-shadow-lg animate-pulse" />
-            </div>
+            <img
+                src="/logo-taponazo.png"
+                alt="Tapon'Azo"
+                className="size-11 shrink-0 object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]"
+                width={512}
+                height={512}
+            />
             <div className="ml-2 grid flex-1 text-left">
-                <span className="truncate leading-tight font-black tracking-wide text-yellow-100 text-base drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" style={{ fontFamily: 'Cinzel, serif' }}>
+                <span
+                    className="truncate text-base leading-tight font-black tracking-wide text-yellow-100 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                    style={{ fontFamily: 'Cinzel, serif' }}
+                >
                     TAPON'AZO
                 </span>
-                <span className="text-[11px] text-yellow-400/90 font-bold tracking-[0.15em]" style={{ fontFamily: 'Trade Winds, cursive' }}>
+                <span
+                    className="text-[11px] font-bold tracking-[0.15em] text-yellow-400/90"
+                    style={{ fontFamily: 'Trade Winds, cursive' }}
+                >
                     Legends Forge
                 </span>
             </div>
