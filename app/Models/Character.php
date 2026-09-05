@@ -50,14 +50,18 @@ class Character extends Model
         return $this->belongsToMany(World::class, 'character_world');
     }
 
-    /** Relaciones que arrancan en este personaje (el es el lado A). */
-    public function relations(): HasMany
+    /**
+     * Relaciones que arrancan en este personaje (el es el lado A). NO puede
+     * llamarse `relations`: Eloquent ya usa esa propiedad para su cache de
+     * relaciones cargadas y desde dentro del modelo tapa al metodo.
+     */
+    public function outgoingRelations(): HasMany
     {
         return $this->hasMany(CharacterRelation::class);
     }
 
     /** Relaciones donde este personaje es el lado B: se leen del reves. */
-    public function inverseRelations(): HasMany
+    public function incomingRelations(): HasMany
     {
         return $this->hasMany(CharacterRelation::class, 'related_character_id');
     }
@@ -69,14 +73,14 @@ class Character extends Model
      */
     public function relacionesVistas(): \Illuminate\Support\Collection
     {
-        $propias = $this->relations->map(fn (CharacterRelation $r) => [
+        $propias = $this->outgoingRelations->map(fn (CharacterRelation $r) => [
             'id' => $r->id,
             'tipo' => $r->type,
             'notas' => $r->notes,
             'personaje' => $r->relatedCharacter,
         ]);
 
-        $ajenas = $this->inverseRelations->map(fn (CharacterRelation $r) => [
+        $ajenas = $this->incomingRelations->map(fn (CharacterRelation $r) => [
             'id' => $r->id,
             // Sin inverso declarado la relacion es simetrica ("Hermano de").
             'tipo' => $r->inverse_type ?: $r->type,

@@ -101,8 +101,8 @@ class CharacterController extends Controller
             // asi que hace falta la ilustracion y el taller_data (de ahi sale
             // el foil); el resto cae al mosaico con tipo y rareza.
             'cards' => fn ($q) => $q->with(['cardType:id,name', 'rarity:id,name'])->orderBy('name'),
-            'relations.relatedCharacter:id,name,title,image',
-            'inverseRelations.character:id,name,title,image',
+            'outgoingRelations.relatedCharacter:id,name,title,image',
+            'incomingRelations.character:id,name,title,image',
         ]);
 
         return Inertia::render('Admin/Characters/Show', [
@@ -117,8 +117,8 @@ class CharacterController extends Controller
             'worlds',
             'locations',
             'stories',
-            'relations.relatedCharacter:id,name,title,image',
-            'inverseRelations.character:id,name,title,image',
+            'outgoingRelations.relatedCharacter:id,name,title,image',
+            'incomingRelations.character:id,name,title,image',
         ]);
 
         return Inertia::render('Admin/Characters/Edit', [
