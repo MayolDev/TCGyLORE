@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\ManualSectionController;
 use App\Http\Controllers\Admin\RarityController;
 use App\Http\Controllers\Admin\DeckController;
+use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\StoryController;
 use App\Http\Controllers\Admin\TallerCardController;
 use App\Http\Controllers\Admin\TimelineEventController;
@@ -39,6 +40,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Imágenes insertadas desde el editor WYSIWYG
         Route::post('editor-images', [EditorImageController::class, 'store'])->name('editor-images.store');
+
+        // Buscador unico sobre todo el proyecto
+        Route::get('buscar', SearchController::class)->name('search');
 
         // Sistema de Lore
         Route::resource('worlds', WorldController::class);

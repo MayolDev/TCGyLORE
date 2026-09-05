@@ -15,18 +15,7 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { 
-    LayoutGrid, 
-    Globe, 
-    BookText, 
-    Users, 
-    MapPin, 
-    Clock, 
-    Swords,
-    UserCircle,
-    Flame,
-    BookOpen
-} from 'lucide-react';
+import { BookOpen, BookText, Clock, Flame, Globe, LayoutGrid, MapPin, Search, Share2, Swords, UserCircle, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const dashboardNavItems: NavItem[] = [
@@ -34,6 +23,14 @@ const dashboardNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+];
+
+const buscarNavItems: NavItem[] = [
+    {
+        title: 'Buscar en todo',
+        href: '/admin/buscar',
+        icon: Search,
     },
 ];
 
@@ -52,6 +49,11 @@ const loreNavItems: NavItem[] = [
         title: 'Personajes',
         href: '/admin/characters',
         icon: Users,
+    },
+    {
+        title: 'Quién es quién',
+        href: '/admin/grafo-relaciones',
+        icon: Share2,
     },
     {
         title: 'Ubicaciones',
@@ -100,7 +102,9 @@ function NavGroup({ title, items, icon: Icon }: { title: string; items: NavItem[
             </SidebarGroupLabel>
             <SidebarMenu className="gap-0.5">
                 {items.map((item) => {
-                    const isActive = page.url.startsWith(item.href);
+                    // href puede venir como cadena o como {url, method} de Wayfinder.
+                    const destino = typeof item.href === 'string' ? item.href : item.href.url;
+                    const isActive = page.url.startsWith(destino);
                     return (
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton
@@ -157,6 +161,7 @@ export function AppSidebar() {
                 los grupos y, si aun así no cabe, se desplaza con la rueda sin barra. */}
             <SidebarContent className="[scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 <NavGroup title="Panel Principal" items={dashboardNavItems} icon={LayoutGrid} />
+                <NavGroup title="Buscar" items={buscarNavItems} icon={Search} />
                 <SidebarSeparator className="bg-yellow-900/30" />
                 <NavGroup title="Sistema Lore" items={loreNavItems} icon={BookText} />
                 <SidebarSeparator className="bg-yellow-900/30" />

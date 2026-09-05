@@ -1,3 +1,4 @@
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
 import users from './users'
 import editorImages from './editor-images'
 import worlds from './worlds'
@@ -16,9 +17,88 @@ import archetypes from './archetypes'
 import factions from './factions'
 import editions from './editions'
 import artists from './artists'
+/**
+* @see \App\Http\Controllers\Admin\SearchController::__invoke
+ * @see app/Http/Controllers/Admin/SearchController.php:29
+ * @route '/admin/buscar'
+ */
+export const search = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: search.url(options),
+    method: 'get',
+})
+
+search.definition = {
+    methods: ["get","head"],
+    url: '/admin/buscar',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Admin\SearchController::__invoke
+ * @see app/Http/Controllers/Admin/SearchController.php:29
+ * @route '/admin/buscar'
+ */
+search.url = (options?: RouteQueryOptions) => {
+    return search.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Admin\SearchController::__invoke
+ * @see app/Http/Controllers/Admin/SearchController.php:29
+ * @route '/admin/buscar'
+ */
+search.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: search.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\Admin\SearchController::__invoke
+ * @see app/Http/Controllers/Admin/SearchController.php:29
+ * @route '/admin/buscar'
+ */
+search.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: search.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\Admin\SearchController::__invoke
+ * @see app/Http/Controllers/Admin/SearchController.php:29
+ * @route '/admin/buscar'
+ */
+    const searchForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: search.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\Admin\SearchController::__invoke
+ * @see app/Http/Controllers/Admin/SearchController.php:29
+ * @route '/admin/buscar'
+ */
+        searchForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: search.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\Admin\SearchController::__invoke
+ * @see app/Http/Controllers/Admin/SearchController.php:29
+ * @route '/admin/buscar'
+ */
+        searchForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: search.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    search.form = searchForm
 const admin = {
     users: Object.assign(users, users),
 editorImages: Object.assign(editorImages, editorImages),
+search: Object.assign(search, search),
 worlds: Object.assign(worlds, worlds),
 stories: Object.assign(stories, stories),
 characters: Object.assign(characters, characters),

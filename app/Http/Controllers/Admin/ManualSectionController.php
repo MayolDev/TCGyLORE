@@ -22,7 +22,10 @@ class ManualSectionController extends Controller
             })
             ->orderBy('category')
             ->orderBy('order')
-            ->paginate(15)
+            // El manual entero de una vez: la vista de lectura arma el
+            // documento completo con lo que llega, y paginado se comeria las
+            // secciones que no cupiesen en la primera pagina.
+            ->paginate(100)
             ->withQueryString();
 
         return Inertia::render('Admin/Manual/Index', [
