@@ -69,7 +69,29 @@ export default function Cronica({
 
     // La hoja que está cayendo: mientras dura, el libro no acepta más pasos.
     const [giro, setGiro] = useState<{ hacia: 'adelante' | 'atras'; desde: number } | null>(null);
+    // La hoja se monta plana y se lanza en el fotograma siguiente: si naciera
+    // ya girada, la transición no tendría de dónde salir y no se veria nada.
+    const [lanzada, setLanzada] = useState(false);
     const temporizador = useRef<number | null>(null);
+
+    useEffect(() => {
+        if (!giro) {
+            setLanzada(false);
+
+            return;
+        }
+        // Dos fotogramas: uno para que el navegador pinte la hoja plana y otro
+        // para el cambio que dispara la transicion.
+        let segundo = 0;
+        const primero = requestAnimationFrame(() => {
+            segundo = requestAnimationFrame(() => setLanzada(true));
+        });
+
+        return () => {
+            cancelAnimationFrame(primero);
+            cancelAnimationFrame(segundo);
+        };
+    }, [giro]);
 
     /**
      * Todas las hojas miden exactamente lo mismo, siempre. El tamaño sale del
@@ -216,28 +238,35 @@ export default function Cronica({
                    Cronica tiene que abrir aunque no cargue ninguna imagen. */
                 .taberna {
                     position: fixed; inset: 0; z-index: -2;
-                    background-color: #24160c;
+                    background-color: #3a2413;
                     background-image:
+                        /* juntas entre tablones */
                         repeating-linear-gradient(
                             180deg,
-                            rgba(0,0,0,.34) 0px, rgba(0,0,0,.34) 2px,
-                            rgba(92,58,28,.10) 2px, rgba(92,58,28,.10) 74px,
-                            rgba(0,0,0,.22) 74px, rgba(0,0,0,.22) 78px,
-                            rgba(74,46,22,.14) 78px, rgba(74,46,22,.14) 150px
+                            rgba(0,0,0,.55) 0px, rgba(0,0,0,.55) 3px,
+                            rgba(126,80,38,.22) 3px, rgba(126,80,38,.22) 82px,
+                            rgba(0,0,0,.42) 82px, rgba(0,0,0,.42) 86px,
+                            rgba(96,60,28,.26) 86px, rgba(96,60,28,.26) 168px
+                        ),
+                        /* veta de la madera */
+                        repeating-linear-gradient(
+                            93deg,
+                            rgba(255,214,150,.055) 0px, rgba(255,214,150,.055) 2px,
+                            transparent 2px, transparent 9px
                         ),
                         repeating-linear-gradient(
-                            97deg,
-                            rgba(255,220,160,.030) 0px, rgba(255,220,160,.030) 3px,
-                            transparent 3px, transparent 11px
+                            88deg,
+                            rgba(40,22,8,.10) 0px, rgba(40,22,8,.10) 5px,
+                            transparent 5px, transparent 23px
                         );
                 }
                 /* Luz del candil: cae desde arriba sobre la mesa. */
                 .candil {
                     position: fixed; inset: 0; z-index: -1; pointer-events: none;
                     background:
-                        radial-gradient(60% 46% at 50% 8%, rgba(255,196,110,.30), transparent 70%),
-                        radial-gradient(78% 62% at 50% 42%, rgba(255,178,92,.17), transparent 72%),
-                        radial-gradient(120% 120% at 50% 55%, transparent 38%, rgba(0,0,0,.62) 82%, rgba(0,0,0,.85) 100%);
+                        radial-gradient(52% 40% at 50% 2%, rgba(255,206,128,.42), transparent 72%),
+                        radial-gradient(80% 64% at 50% 44%, rgba(255,181,96,.20), transparent 74%),
+                        radial-gradient(125% 118% at 50% 52%, transparent 44%, rgba(20,10,4,.52) 84%, rgba(12,6,2,.8) 100%);
                     animation: candil 6.5s ease-in-out infinite;
                 }
                 /* El candil no está quieto: parpadea despacio. */
@@ -384,7 +413,7 @@ export default function Cronica({
                         {/* La hoja que cae */}
                         {giro && (
                             <div
-                                className={`giro absolute top-0 ${giro.hacia === 'adelante' ? 'giro-adelante' : 'giro-atras'}`}
+                                className={`giro absolute top-0 ${lanzada ? (adelante ? 'giro-adelante' : 'giro-atras') : ''}`}
                                 style={{
                                     ...estilosHoja,
                                     left: doble && adelante ? medida.ancho : 0,
