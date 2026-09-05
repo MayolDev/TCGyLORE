@@ -167,7 +167,11 @@ export default function Libro({
             const anchoTotal = aDoble ? ancho * 2 : ancho;
             if (anchoTotal > anchoLibre) {
                 ancho = aDoble ? anchoLibre / 2 : anchoLibre;
-                alto = ancho * PROPORCION;
+                // En un movil manda el ancho, y con la proporcion de un libro
+                // abierto quedaria media pantalla vacia: se deja crecer hasta
+                // 1.8, que es la proporcion de una hoja suelta y no de un
+                // pliego, y aprovecha el telefono entero.
+                alto = Math.min(altoLibre, ancho * (aDoble ? PROPORCION : 1.8));
             }
 
             setDoble(aDoble);
@@ -275,9 +279,16 @@ export default function Libro({
             } catch {
                 /* navegacion privada: se recalibrara la proxima vez */
             }
-            router.get(window.location.pathname, { wpp: bueno, p: 1 }, { replace: true, preserveScroll: true });
+            // Con otro reparto las hojas son otras, asi que la pagina 71 de
+            // antes no es la de ahora: se estima la equivalente por regla de
+            // tres para no devolver al lector al principio del libro.
+            router.get(
+                window.location.pathname,
+                { wpp: bueno, p: Math.max(1, Math.round(((n + 1) * wpp) / bueno)) },
+                { replace: true, preserveScroll: true },
+            );
         },
-        [wpp],
+        [wpp, n],
     );
 
     // Si ya se midio en otra visita, se pide el libro con esa medida de entrada
@@ -298,8 +309,12 @@ export default function Libro({
             return;
         }
         yaCalibrado.current = true;
-        router.get(window.location.pathname, { wpp: guardado, p: 1 }, { replace: true, preserveScroll: true });
-    }, [wpp]);
+        router.get(
+            window.location.pathname,
+            { wpp: guardado, p: Math.max(1, Math.round(((n + 1) * wpp) / guardado)) },
+            { replace: true, preserveScroll: true },
+        );
+    }, [wpp, n]);
 
     const capitulo = useMemo(() => {
         let actual = '';
