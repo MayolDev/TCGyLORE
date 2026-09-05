@@ -50,6 +50,46 @@ class Character extends Model
         return $this->belongsToMany(World::class, 'character_world');
     }
 
+    /** Relaciones que arrancan en este personaje (el es el lado A). */
+    public function relations(): HasMany
+    {
+        return $this->hasMany(CharacterRelation::class);
+    }
+
+    /** Relaciones donde este personaje es el lado B: se leen del reves. */
+    public function inverseRelations(): HasMany
+    {
+        return $this->hasMany(CharacterRelation::class, 'related_character_id');
+    }
+
+    /**
+     * Las relaciones vistas desde este personaje, vengan de donde vengan.
+     * Cada fila se guarda una sola vez; aqui se voltea la que llega por el
+     * lado B para que el texto siempre se lea "este personaje ES X de aquel".
+     */
+    public function relacionesVistas(): \Illuminate\Support\Collection
+    {
+        $propias = $this->relations->map(fn (CharacterRelation $r) => [
+            'id' => $r->id,
+            'tipo' => $r->type,
+            'notas' => $r->notes,
+            'personaje' => $r->relatedCharacter,
+        ]);
+
+        $ajenas = $this->inverseRelations->map(fn (CharacterRelation $r) => [
+            'id' => $r->id,
+            // Sin inverso declarado la relacion es simetrica ("Hermano de").
+            'tipo' => $r->inverse_type ?: $r->type,
+            'notas' => $r->notes,
+            'personaje' => $r->character,
+        ]);
+
+        return $propias->concat($ajenas)
+            ->filter(fn ($r) => $r['personaje'] !== null)
+            ->sortBy('tipo')
+            ->values();
+    }
+
     public function cards(): HasMany
     {
         return $this->hasMany(Card::class);

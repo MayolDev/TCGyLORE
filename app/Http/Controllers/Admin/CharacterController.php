@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Concerns\ResolvesUploadedImage;
 use App\Http\Controllers\Controller;
 use App\Models\Character;
+use App\Models\CharacterRelation;
 use App\Models\Location;
 use App\Models\Story;
 use App\Models\World;
@@ -100,23 +101,110 @@ class CharacterController extends Controller
             // asi que hace falta la ilustracion y el taller_data (de ahi sale
             // el foil); el resto cae al mosaico con tipo y rareza.
             'cards' => fn ($q) => $q->with(['cardType:id,name', 'rarity:id,name'])->orderBy('name'),
+            'relations.relatedCharacter:id,name,title,image',
+            'inverseRelations.character:id,name,title,image',
         ]);
 
         return Inertia::render('Admin/Characters/Show', [
             'character' => $character,
+            'relaciones' => $this->relacionesParaVista($character),
         ]);
     }
 
     public function edit(Character $character)
     {
-        $character->load(['worlds', 'locations', 'stories']);
+        $character->load([
+            'worlds',
+            'locations',
+            'stories',
+            'relations.relatedCharacter:id,name,title,image',
+            'inverseRelations.character:id,name,title,image',
+        ]);
 
         return Inertia::render('Admin/Characters/Edit', [
             'character' => $character,
             'worlds' => World::all(['id', 'name']),
             'locations' => Location::all(['id', 'name']),
             'stories' => Story::all(['id', 'title']),
+            'relaciones' => $this->relacionesParaVista($character),
+            // Para el desplegable de "vincular con": todos menos el mismo.
+            'personajes' => Character::where('id', '!=', $character->id)
+                ->orderBy('name')
+                ->get(['id', 'name']),
         ]);
+    }
+
+    /**
+     * Las relaciones ya volteadas y listas para pintar. Se marca con `propia`
+     * si la fila nacio en este personaje, porque el texto que se guardo es el
+     * de ese lado y al editarla hay que saberlo.
+     */
+    private function relacionesParaVista(Character $character): array
+    {
+        return $character->relacionesVistas()
+            ->map(fn (array $r) => [
+                'id' => $r['id'],
+                'tipo' => $r['tipo'],
+                'notas' => $r['notas'],
+                'personaje' => [
+                    'id' => $r['personaje']->id,
+                    'name' => $r['personaje']->name,
+                    'title' => $r['personaje']->title,
+                    'image_url' => $r['personaje']->image_url,
+                ],
+            ])
+            ->all();
+    }
+
+    public function storeRelation(Request $request, Character $character)
+    {
+        $validated = $request->validate([
+            'related_character_id' => ['required', 'exists:characters,id'],
+            'type' => ['required', 'string', 'max:120'],
+            'inverse_type' => ['nullable', 'string', 'max:120'],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        if ((int) $validated['related_character_id'] === $character->id) {
+            return back()->withErrors(['related_character_id' => 'Un personaje no se relaciona consigo mismo.']);
+        }
+
+        // La pareja es unica sin importar el orden: si ya existe al reves, se
+        // actualiza esa fila en vez de crear una que la contradiga.
+        $existente = CharacterRelation::where(function ($q) use ($character, $validated) {
+            $q->where('character_id', $character->id)
+                ->where('related_character_id', $validated['related_character_id']);
+        })->orWhere(function ($q) use ($character, $validated) {
+            $q->where('character_id', $validated['related_character_id'])
+                ->where('related_character_id', $character->id);
+        })->first();
+
+        if ($existente) {
+            $alReves = $existente->character_id !== $character->id;
+
+            $existente->update($alReves
+                ? ['inverse_type' => $validated['type'], 'type' => $validated['inverse_type'] ?: $existente->type, 'notes' => $validated['notes'] ?? $existente->notes]
+                : ['type' => $validated['type'], 'inverse_type' => $validated['inverse_type'] ?? null, 'notes' => $validated['notes'] ?? null]);
+
+            return back()->with('success', 'Relacion actualizada.');
+        }
+
+        CharacterRelation::create([
+            'character_id' => $character->id,
+            'related_character_id' => $validated['related_character_id'],
+            'type' => $validated['type'],
+            'inverse_type' => $validated['inverse_type'] ?? null,
+            'notes' => $validated['notes'] ?? null,
+        ]);
+
+        return back()->with('success', 'Relacion creada.');
+    }
+
+    public function destroyRelation(CharacterRelation $relation)
+    {
+        $relation->delete();
+
+        return back()->with('success', 'Relacion eliminada.');
     }
 
     public function update(Request $request, Character $character)

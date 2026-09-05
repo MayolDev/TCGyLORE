@@ -7,7 +7,14 @@ import { Head, Link } from '@inertiajs/react';
 import MarkdownContent from '@/components/markdown-content';
 import LightboxImage from '@/components/lightbox-image';
 import FoilOverlay from '@/components/foil-overlay';
-import { ArrowLeft, Pencil, Swords, Users } from 'lucide-react';
+import { ArrowLeft, Link2, Pencil, Swords, Users } from 'lucide-react';
+
+interface Relacion {
+    id: number;
+    tipo: string;
+    notas: string | null;
+    personaje: { id: number; name: string; title: string | null; image_url: string | null };
+}
 
 interface Carta {
     id: number;
@@ -57,7 +64,7 @@ function separarEpiteto(bio: string | null): { epiteto: string | null; cuerpo: s
     };
 }
 
-export default function Show({ character }: { character: Character }) {
+export default function Show({ character, relaciones }: { character: Character; relaciones: Relacion[] }) {
     const { epiteto, cuerpo } = separarEpiteto(character.biography);
 
     return (
@@ -212,6 +219,45 @@ export default function Show({ character }: { character: Character }) {
                             </Card>
                         )}
 
+                        {relaciones.length > 0 && (
+                            <Card className="border-2 border-rose-500/25 bg-slate-900/70">
+                                <CardContent className="px-6 py-6 sm:px-8">
+                                    <h2 className="mb-4 flex items-center gap-2 text-xl font-black text-rose-200" style={{ fontFamily: 'Cinzel, serif' }}>
+                                        <Link2 className="h-5 w-5" />
+                                        Relaciones
+                                        <span className="text-sm font-semibold text-rose-200/50">({relaciones.length})</span>
+                                    </h2>
+                                    <div className="grid gap-3 sm:grid-cols-2">
+                                        {relaciones.map((r) => (
+                                            <Link
+                                                key={r.id}
+                                                href={`/admin/characters/${r.personaje.id}`}
+                                                className="group flex items-center gap-3 rounded-lg border border-rose-500/20 bg-slate-950/50 p-3 transition-all hover:border-rose-400/60 hover:bg-slate-900"
+                                            >
+                                                {r.personaje.image_url ? (
+                                                    <img
+                                                        src={r.personaje.image_url}
+                                                        alt={r.personaje.name}
+                                                        className="h-14 w-14 shrink-0 rounded-full border-2 border-rose-500/40 object-cover"
+                                                        loading="lazy"
+                                                    />
+                                                ) : (
+                                                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-rose-500/30 bg-slate-900">
+                                                        <Users className="h-6 w-6 text-rose-300/40" />
+                                                    </div>
+                                                )}
+                                                <div className="min-w-0">
+                                                    <p className="text-xs font-black uppercase tracking-wider text-rose-300/80">{r.tipo}</p>
+                                                    <p className="truncate font-bold text-yellow-100 group-hover:text-yellow-50">{r.personaje.name}</p>
+                                                    {r.notas && <p className="truncate text-xs text-yellow-200/45">{r.notas}</p>}
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+
                         {cuerpo && (
                             <Card className="border-2 border-amber-500/25 bg-slate-900/70">
                                 <CardContent className="px-6 py-7 sm:px-10">
@@ -231,7 +277,7 @@ export default function Show({ character }: { character: Character }) {
                             </Card>
                         )}
 
-                        {!cuerpo && !character.spells && character.cards.length === 0 && (
+                        {!cuerpo && !character.spells && character.cards.length === 0 && relaciones.length === 0 && (
                             <Card className="border-2 border-dashed border-amber-500/25 bg-slate-900/50">
                                 <CardContent className="py-16 text-center">
                                     <p className="font-semibold text-yellow-200/50">Este personaje aún no tiene biografía.</p>

@@ -10,6 +10,7 @@ import { Users, Save, X, Sparkles, MapPin, BookText } from 'lucide-react';
 import RichTextEditor from '@/components/rich-text-editor';
 import EntityImageField from '@/components/entity-image-field';
 import WorldMultiSelect from '@/components/world-multi-select';
+import CharacterRelationsEditor, { type Relacion } from '@/components/character-relations-editor';
 
 interface World {
     id: number;
@@ -44,22 +45,17 @@ interface Props {
     worlds: World[];
     locations: Location[];
     stories: Story[];
+    relaciones: Relacion[];
+    personajes: { id: number; name: string }[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
     { title: 'Personajes', href: '/admin/characters' },
-    { title: 'Editar' },
+    { title: 'Editar', href: '#' },
 ];
 
-export default function Edit({ character, worlds, locations, stories }: Props) {
-    console.log('DEBUG - Props recibidos:', { 
-        locationsCount: locations?.length, 
-        storiesCount: stories?.length,
-        locations,
-        stories 
-    });
-
+export default function Edit({ character, worlds, locations, stories, relaciones, personajes }: Props) {
     // POST + _method PUT: PHP no parsea multipart en PUT y el retrato llega como fichero.
     const { data, setData, post, processing, errors } = useForm({
         world_ids: character.worlds?.map((w) => w.id.toString()) || [],
@@ -317,6 +313,14 @@ export default function Edit({ character, worlds, locations, stories }: Props) {
                         </CardContent>
                     </Card>
                 </form>
+
+                <div className="mt-6">
+                    <CharacterRelationsEditor
+                        characterId={character.id}
+                        relaciones={relaciones}
+                        personajes={personajes}
+                    />
+                </div>
             </div>
         </WriterLayout>
     );

@@ -44,6 +44,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('worlds', WorldController::class);
         Route::resource('stories', StoryController::class);
         Route::resource('characters', CharacterController::class);
+        // Relaciones entre personajes: se crean desde la ficha del personaje
+        // y se borran por su propio id, que es de la fila de relacion.
+        Route::post('characters/{character}/relations', [CharacterController::class, 'storeRelation'])
+            ->name('characters.relations.store');
+        Route::delete('character-relations/{relation}', [CharacterController::class, 'destroyRelation'])
+            ->name('characters.relations.destroy');
         Route::resource('locations', LocationController::class);
         Route::resource('timeline-events', TimelineEventController::class);
 
