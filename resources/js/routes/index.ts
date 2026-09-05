@@ -283,7 +283,7 @@ home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     home.form = homeForm
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:23
+ * @see app/Http/Controllers/ChronicleController.php:24
  * @route '/cronica'
  */
 export const cronica = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -298,7 +298,7 @@ cronica.definition = {
 
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:23
+ * @see app/Http/Controllers/ChronicleController.php:24
  * @route '/cronica'
  */
 cronica.url = (options?: RouteQueryOptions) => {
@@ -307,7 +307,7 @@ cronica.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:23
+ * @see app/Http/Controllers/ChronicleController.php:24
  * @route '/cronica'
  */
 cronica.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -316,7 +316,7 @@ cronica.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:23
+ * @see app/Http/Controllers/ChronicleController.php:24
  * @route '/cronica'
  */
 cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -326,7 +326,7 @@ cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:23
+ * @see app/Http/Controllers/ChronicleController.php:24
  * @route '/cronica'
  */
     const cronicaForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -336,7 +336,7 @@ cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:23
+ * @see app/Http/Controllers/ChronicleController.php:24
  * @route '/cronica'
  */
         cronicaForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -345,7 +345,7 @@ cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:23
+ * @see app/Http/Controllers/ChronicleController.php:24
  * @route '/cronica'
  */
         cronicaForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -361,7 +361,7 @@ cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     cronica.form = cronicaForm
 /**
 * @see \App\Http\Controllers\RulebookController::__invoke
- * @see app/Http/Controllers/RulebookController.php:40
+ * @see app/Http/Controllers/RulebookController.php:41
  * @route '/reglas'
  */
 export const reglas = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -376,7 +376,7 @@ reglas.definition = {
 
 /**
 * @see \App\Http\Controllers\RulebookController::__invoke
- * @see app/Http/Controllers/RulebookController.php:40
+ * @see app/Http/Controllers/RulebookController.php:41
  * @route '/reglas'
  */
 reglas.url = (options?: RouteQueryOptions) => {
@@ -385,7 +385,7 @@ reglas.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\RulebookController::__invoke
- * @see app/Http/Controllers/RulebookController.php:40
+ * @see app/Http/Controllers/RulebookController.php:41
  * @route '/reglas'
  */
 reglas.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -394,7 +394,7 @@ reglas.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\RulebookController::__invoke
- * @see app/Http/Controllers/RulebookController.php:40
+ * @see app/Http/Controllers/RulebookController.php:41
  * @route '/reglas'
  */
 reglas.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -404,7 +404,7 @@ reglas.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\RulebookController::__invoke
- * @see app/Http/Controllers/RulebookController.php:40
+ * @see app/Http/Controllers/RulebookController.php:41
  * @route '/reglas'
  */
     const reglasForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -414,7 +414,7 @@ reglas.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\RulebookController::__invoke
- * @see app/Http/Controllers/RulebookController.php:40
+ * @see app/Http/Controllers/RulebookController.php:41
  * @route '/reglas'
  */
         reglasForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -423,7 +423,7 @@ reglas.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\RulebookController::__invoke
- * @see app/Http/Controllers/RulebookController.php:40
+ * @see app/Http/Controllers/RulebookController.php:41
  * @route '/reglas'
  */
         reglasForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

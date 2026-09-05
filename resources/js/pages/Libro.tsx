@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
@@ -21,6 +21,7 @@ interface Pagina {
     lugares?: string[];
     vinculos?: Vinculo[];
     texto?: string;
+    palabras?: number;
     cabecera?: string;
     continua?: boolean;
 }
@@ -53,6 +54,7 @@ export default function Libro({
     fondo,
     musica,
     hermano,
+    wpp,
 }: {
     paginas: Pagina[];
     indice: EntradaIndice[];
@@ -63,6 +65,8 @@ export default function Libro({
     musica: string | null;
     /** El otro libro, para saltar de uno a otro. */
     hermano: { titulo: string; url: string } | null;
+    /** Palabras por hoja con las que el servidor ha repartido este libro. */
+    wpp: number;
 }) {
     const inicial = () => {
         if (typeof window === 'undefined') return 0;
@@ -241,6 +245,61 @@ export default function Libro({
         if (Math.abs(d) > 55) pasar(d < 0 ? 'adelante' : 'atras');
         tacto.current = null;
     };
+
+    /**
+     * El reparto en hojas lo hace el servidor, que no sabe de que tamaño es la
+     * pantalla: en un movil cabe la mitad que en un portatil. Aqui se mide una
+     * hoja de texto ya pintada —cuantas palabras lleva y cuanto ocupa de
+     * verdad— y, si el reparto no cuadra, se vuelve a pedir el libro con la
+     * medida buena. Pasa una sola vez por dispositivo: queda recordada.
+     */
+    const yaCalibrado = useRef(false);
+
+    const calibrar = useCallback(
+        (palabras: number, altoUsado: number, altoDisponible: number) => {
+            if (yaCalibrado.current || !palabras || !altoUsado || !altoDisponible) return;
+
+            const cabrian = Math.round((palabras * altoDisponible) / altoUsado * 0.92);
+            const bueno = Math.max(50, Math.min(260, cabrian));
+
+            // Menos de un 12% de diferencia no merece otra peticion.
+            if (Math.abs(bueno - wpp) / wpp < 0.12) {
+                yaCalibrado.current = true;
+
+                return;
+            }
+
+            yaCalibrado.current = true;
+            try {
+                localStorage.setItem('libro-wpp', String(bueno));
+            } catch {
+                /* navegacion privada: se recalibrara la proxima vez */
+            }
+            router.get(window.location.pathname, { wpp: bueno, p: 1 }, { replace: true, preserveScroll: true });
+        },
+        [wpp],
+    );
+
+    // Si ya se midio en otra visita, se pide el libro con esa medida de entrada
+    // y nos ahorramos el repintado.
+    useEffect(() => {
+        if (yaCalibrado.current) return;
+        let guardado: number | null = null;
+        try {
+            const v = localStorage.getItem('libro-wpp');
+            guardado = v ? Number(v) : null;
+        } catch {
+            guardado = null;
+        }
+        if (!guardado || !Number.isFinite(guardado)) return;
+        if (Math.abs(guardado - wpp) / wpp < 0.12) {
+            yaCalibrado.current = true;
+
+            return;
+        }
+        yaCalibrado.current = true;
+        router.get(window.location.pathname, { wpp: guardado, p: 1 }, { replace: true, preserveScroll: true });
+    }, [wpp]);
 
     const capitulo = useMemo(() => {
         let actual = '';
@@ -490,10 +549,10 @@ export default function Libro({
                         {doble ? (
                             <>
                                 <Hoja pagina={paginas[iFija]} lado="izq" numero={iFija + 1} estilos={estilosHoja} />
-                                <Hoja pagina={paginas[dFija]} lado="der" numero={dFija + 1} estilos={estilosHoja} />
+                                <Hoja pagina={paginas[dFija]} lado="der" numero={dFija + 1} estilos={estilosHoja} calibrar={calibrar} />
                             </>
                         ) : (
-                            <Hoja pagina={paginas[destino]} lado={null} numero={destino + 1} estilos={estilosHoja} />
+                            <Hoja pagina={paginas[destino]} lado={null} numero={destino + 1} estilos={estilosHoja} calibrar={calibrar} />
                         )}
 
                         {/* La hoja que cae */}
@@ -551,13 +610,18 @@ function Hoja({
     lado,
     numero,
     estilos,
+    calibrar,
 }: {
     pagina: Pagina | undefined | null;
     lado: 'izq' | 'der' | null;
     numero: number;
     estilos: { width: number; height: number };
+    calibrar?: (palabras: number, altoUsado: number, altoDisponible: number) => void;
 }) {
     const caja = useRef<HTMLDivElement>(null);
+    // El texto va envuelto porque la caja nunca mide menos que su propia
+    // altura: para saber cuanto ocupa DE VERDAD hay que medir lo de dentro.
+    const dentro = useRef<HTMLDivElement>(null);
 
     // El tamaño de letra lo escribe este efecto directamente en el nodo, no un
     // atributo style: si estuviera en las props, React lo devolveria a 1rem en
@@ -566,17 +630,23 @@ function Hoja({
         const el = caja.current;
         if (!el) return;
 
-        let e = 1;
         el.style.fontSize = '1rem';
 
-        // Encoge de a poco hasta que entre. Con las paginas repartidas por
-        // palabras casi nunca hace falta; esto es la red de seguridad para que
-        // ninguna hoja crezca ni corte el texto.
-        while (el.scrollHeight > el.clientHeight + 1 && e > 0.74) {
+        // Con el texto a su tamaño natural: cuanto ocupa de verdad esta hoja.
+        // De ahi sale el reparto para esta pantalla.
+        if (calibrar && pagina?.palabras && dentro.current) {
+            calibrar(pagina.palabras, dentro.current.offsetHeight, el.clientHeight);
+        }
+
+        // Encoge de a poco hasta que entre. Es la red de seguridad mientras el
+        // reparto se ajusta; si aun asi no cupiese, la hoja se desliza por
+        // dentro antes que comerse una linea.
+        let e = 1;
+        while (el.scrollHeight > el.clientHeight + 1 && e > 0.72) {
             e -= 0.04;
             el.style.fontSize = `${e}rem`;
         }
-    }, [pagina, estilos.width, estilos.height]);
+    }, [pagina, estilos.width, estilos.height, calibrar]);
 
     const clase = `hoja ${lado === 'izq' ? 'hoja-izq' : lado === 'der' ? 'hoja-der' : ''} relative flex flex-col px-6 py-7 sm:px-9 sm:py-9`;
 
@@ -691,10 +761,12 @@ function Hoja({
                 </div>
             )}
 
-            <div ref={caja} className="prosa min-h-0 flex-1 overflow-hidden">
-                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                    {primeraDelCapitulo && pagina.texto ? conCapitular(pagina.texto) : (pagina.texto ?? '')}
-                </ReactMarkdown>
+            <div ref={caja} className="prosa min-h-0 flex-1 overflow-y-auto">
+                <div ref={dentro}>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                        {primeraDelCapitulo && pagina.texto ? conCapitular(pagina.texto) : (pagina.texto ?? '')}
+                    </ReactMarkdown>
+                </div>
             </div>
 
             <NumeroHoja n={numero} />

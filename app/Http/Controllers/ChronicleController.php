@@ -7,6 +7,7 @@ use App\Models\Location;
 use App\Models\World;
 use App\Support\AmbienteDeLibro;
 use App\Support\PaginadorDeLibro;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 /**
@@ -20,8 +21,15 @@ class ChronicleController extends Controller
 {
     use AmbienteDeLibro;
 
-    public function __invoke(PaginadorDeLibro $paginador)
+    public function __invoke(Request $request)
     {
+        // Cuantas palabras caben depende del tamano real de la hoja, que solo
+        // conoce el navegador: en un movil entra la mitad que en un portatil.
+        // El libro se mide solo y vuelve a pedir la pagina con su medida.
+        $paginador = new PaginadorDeLibro(
+            max(50, min(260, (int) $request->integer('wpp', 140)))
+        );
+
         $mundo = World::orderBy('id')->first();
 
         $personajes = Character::with([
@@ -62,6 +70,7 @@ class ChronicleController extends Controller
                     'etiqueta' => $i === 0 ? $this->nombreTipo($l->location_type) : null,
                     'imagen' => $i === 0 ? $l->image_url : null,
                     'texto' => $trozo,
+                    'palabras' => $paginador->palabras($trozo),
                 ];
             }
         }
@@ -98,6 +107,7 @@ class ChronicleController extends Controller
                     'continua' => true,
                     'cabecera' => $c->name,
                     'texto' => $trozo,
+                    'palabras' => $paginador->palabras($trozo),
                 ];
             }
         }
@@ -116,6 +126,7 @@ class ChronicleController extends Controller
             'fondo' => $this->fondoDeTaberna(),
             'musica' => $this->musicaDeAmbiente(),
             'hermano' => ['titulo' => 'El Reglamento', 'url' => '/reglas'],
+            'wpp' => $paginador->porPagina(),
         ]);
     }
 

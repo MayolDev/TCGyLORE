@@ -18,6 +18,12 @@ class PaginadorDeLibro
         private int $porPagina = 140,
     ) {}
 
+    /** El tope con el que se ha repartido, para devolverselo al navegador. */
+    public function porPagina(): int
+    {
+        return $this->porPagina;
+    }
+
     /**
      * Reparte un texto sin cortar parrafos por la mitad. Un parrafo mas largo
      * que una pagina entera se parte por frases, que es lo menos malo.

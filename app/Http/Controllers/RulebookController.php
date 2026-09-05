@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ManualSection;
 use App\Support\AmbienteDeLibro;
 use App\Support\PaginadorDeLibro;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 /**
@@ -37,8 +38,15 @@ class RulebookController extends Controller
         'desarrollo' => 'Lo que aún no está cerrado.',
     ];
 
-    public function __invoke(PaginadorDeLibro $paginador)
+    public function __invoke(Request $request)
     {
+        // Cuantas palabras caben depende del tamano real de la hoja, que solo
+        // conoce el navegador: en un movil entra la mitad que en un portatil.
+        // El libro se mide solo y vuelve a pedir la pagina con su medida.
+        $paginador = new PaginadorDeLibro(
+            max(50, min(260, (int) $request->integer('wpp', 140)))
+        );
+
         $secciones = ManualSection::where('is_published', true)
             ->get(['id', 'title', 'category', 'content', 'order'])
             // Clave compuesta: primero el bloque, luego el orden dentro de el.
@@ -90,6 +98,7 @@ class RulebookController extends Controller
                     'continua' => $i > 0,
                     'cabecera' => $i === 0 ? null : $s->title,
                     'texto' => $trozo,
+                    'palabras' => $paginador->palabras($trozo),
                 ];
             }
         }
@@ -108,6 +117,7 @@ class RulebookController extends Controller
             'fondo' => $this->fondoDeTaberna(),
             'musica' => $this->musicaDeAmbiente(),
             'hermano' => ['titulo' => 'La Crónica', 'url' => '/cronica'],
+            'wpp' => $paginador->porPagina(),
         ]);
     }
 }
