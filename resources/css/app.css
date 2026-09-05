@@ -8,6 +8,10 @@
 /* Fuentes épicas de Google Fonts */
 @import url('https://fonts.bunny.net/css?family=almendra:700|cinzel:700,900|trade-winds:400');
 
+/* El estilo alternativo. Solo actua bajo [data-estilo='taberna']; sin ese
+   atributo no cambia absolutamente nada. */
+@import './tema-taberna.css';
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {

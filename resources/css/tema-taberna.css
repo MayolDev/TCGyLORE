@@ -1,0 +1,194 @@
+/* ============================================================================
+   TEMA TABERNA
+   ----------------------------------------------------------------------------
+   El estilo del arte del juego: Darkest Dungeon por la oscuridad y Griftlands
+   por las caras. Tinta negra, ocre, hueso y la luz del candil.
+
+   Va como capa aparte y solo se aplica bajo [data-estilo='taberna']. El tema
+   de siempre no se toca ni una linea: se quita el atributo y vuelve entero.
+
+   Dos partes:
+     1. Las fichas de color, que es lo que usan tarjetas, campos y bordes.
+     2. Los apaños para lo que esta escrito a mano en las pantallas —
+        degradados naranjas, brillos y parpadeos— que no pasa por las fichas.
+   ========================================================================= */
+
+/* ── 1. Fichas de color ──────────────────────────────────────────────────── */
+
+[data-estilo='taberna'] {
+    /* Fondos: madera quemada, casi negro pero caliente. Nada de purpura. */
+    --background: oklch(0.16 0.014 62);
+    --foreground: oklch(0.89 0.035 82); /* hueso */
+    --card: oklch(0.21 0.018 60);
+    --card-foreground: oklch(0.89 0.035 82);
+    --popover: oklch(0.19 0.016 60);
+    --popover-foreground: oklch(0.89 0.035 82);
+
+    /* Laton viejo, no oro brillante. */
+    --primary: oklch(0.66 0.105 78);
+    --primary-foreground: oklch(0.15 0.015 60);
+
+    /* Lacre: el rojo del sello. */
+    --secondary: oklch(0.42 0.115 30);
+    --secondary-foreground: oklch(0.91 0.03 82);
+
+    --muted: oklch(0.24 0.016 62);
+    --muted-foreground: oklch(0.66 0.03 78);
+
+    --accent: oklch(0.44 0.12 32);
+    --accent-foreground: oklch(0.91 0.03 82);
+
+    --destructive: oklch(0.47 0.155 27);
+    --destructive-foreground: oklch(0.95 0.01 80);
+
+    /* Bordes de tinta, no de oro: lineas oscuras, como el contorno del dibujo. */
+    --border: oklch(0.33 0.026 66);
+    --input: oklch(0.235 0.018 60);
+    --ring: oklch(0.66 0.105 78);
+
+    --chart-1: oklch(0.66 0.105 78);
+    --chart-2: oklch(0.52 0.09 45);
+    --chart-3: oklch(0.44 0.12 32);
+    --chart-4: oklch(0.52 0.05 130);
+    --chart-5: oklch(0.60 0.04 90);
+
+    /* Esquinas casi rectas: el grabado no tiene bordes redondeados. */
+    --radius: 0.25rem;
+
+    --sidebar: oklch(0.13 0.014 60);
+    --sidebar-foreground: oklch(0.83 0.035 82);
+    --sidebar-primary: oklch(0.66 0.105 78);
+    --sidebar-primary-foreground: oklch(0.14 0.014 60);
+    --sidebar-accent: oklch(0.22 0.02 60);
+    --sidebar-accent-foreground: oklch(0.89 0.035 82);
+    --sidebar-border: oklch(0.30 0.026 66);
+    --sidebar-ring: oklch(0.66 0.105 78);
+
+    /* La luz del candil, mucho mas apagada que los fuegos de antes. */
+    --glow-fire: oklch(0.62 0.11 52);
+    --glow-amber: oklch(0.68 0.10 72);
+    --glow-gold: oklch(0.72 0.09 84);
+
+    --rarity-common: oklch(0.46 0.02 70);
+    --rarity-rare: oklch(0.52 0.07 230);
+    --rarity-epic: oklch(0.50 0.08 320);
+    --rarity-legendary: oklch(0.68 0.11 78);
+
+    /* Propias del tema, para los apaños de abajo. */
+    --taberna-tinta: oklch(0.11 0.012 60);
+    --taberna-laton: oklch(0.66 0.105 78);
+    --taberna-hueso: oklch(0.87 0.04 84);
+    --taberna-lacre: oklch(0.40 0.115 30);
+}
+
+/* La noche cierra un poco mas, sin cambiar de paleta. */
+[data-estilo='taberna'].dark {
+    --background: oklch(0.115 0.012 60);
+    --card: oklch(0.165 0.016 60);
+    --sidebar: oklch(0.10 0.012 60);
+}
+
+/* ── 2. Lo escrito a mano en las pantallas ───────────────────────────────── */
+
+/* El fondo del documento, que el andamiaje pone en purpura. */
+html[data-estilo='taberna'],
+html[data-estilo='taberna'] body {
+    background-color: oklch(0.16 0.014 62);
+}
+
+/*
+ * Titulos con degradado recortado sobre el texto. No se puede quitar el
+ * degradado sin mas: el texto es transparente y desapareceria. Se cambia por
+ * hueso macizo, que ademas se lee mucho mejor.
+ */
+[data-estilo='taberna'] .bg-clip-text {
+    background-image: none !important;
+    color: var(--taberna-hueso) !important;
+    -webkit-text-fill-color: var(--taberna-hueso) !important;
+    text-shadow: 0 1px 0 oklch(0.10 0.01 60);
+    filter: none !important;
+}
+
+/*
+ * Degradados de relleno: botones, cabeceras y adornos. Se sustituyen por
+ * color plano. Solo los que NO recortan texto, que ya van arriba.
+ */
+[data-estilo='taberna'] [class*='bg-gradient-to-']:not(.bg-clip-text) {
+    background-image: linear-gradient(
+        180deg,
+        oklch(from var(--card) calc(l + 0.03) c h),
+        var(--card)
+    ) !important;
+}
+
+/* El boton de accion sigue siendo el que manda, pero en laton. */
+[data-estilo='taberna'] button[class*='from-yellow'],
+[data-estilo='taberna'] a[class*='from-yellow'],
+[data-estilo='taberna'] [class*='from-yellow-600'],
+[data-estilo='taberna'] [class*='from-orange-600'] {
+    background-image: linear-gradient(
+        180deg,
+        oklch(0.60 0.10 76),
+        oklch(0.50 0.09 70)
+    ) !important;
+    color: oklch(0.14 0.014 60) !important;
+    border-color: oklch(0.42 0.06 70) !important;
+}
+
+/*
+ * Los halos de colores. En el arte la luz sale de un candil, no de los
+ * objetos: se apagan todos y se deja una sombra de tinta honesta.
+ */
+[data-estilo='taberna'] [class*='shadow-orange-'],
+[data-estilo='taberna'] [class*='shadow-yellow-'],
+[data-estilo='taberna'] [class*='shadow-purple-'],
+[data-estilo='taberna'] [class*='shadow-red-'],
+[data-estilo='taberna'] [class*='shadow-amber-'] {
+    --tw-shadow-color: oklch(0.08 0.01 60 / 0.75) !important;
+    box-shadow: 0 6px 18px oklch(0.06 0.01 60 / 0.6) !important;
+}
+
+/* Nada palpita ni gira: es un grabado, no una feria. */
+[data-estilo='taberna'] .animate-pulse,
+[data-estilo='taberna'] .animate-bounce,
+[data-estilo='taberna'] .animate-float,
+[data-estilo='taberna'] .animate-ping {
+    animation: none !important;
+}
+
+/* Bordes: linea de tinta en vez de filo dorado. */
+[data-estilo='taberna'] [class*='border-yellow-'],
+[data-estilo='taberna'] [class*='border-orange-'],
+[data-estilo='taberna'] [class*='border-amber-'],
+[data-estilo='taberna'] [class*='border-purple-'] {
+    border-color: var(--border) !important;
+}
+
+/* Textos en oro chillon o morado, a hueso y laton. */
+[data-estilo='taberna'] [class*='text-yellow-1'],
+[data-estilo='taberna'] [class*='text-yellow-2'],
+[data-estilo='taberna'] [class*='text-amber-1'],
+[data-estilo='taberna'] [class*='text-amber-2'] {
+    color: var(--taberna-hueso) !important;
+}
+[data-estilo='taberna'] [class*='text-yellow-4'],
+[data-estilo='taberna'] [class*='text-yellow-5'],
+[data-estilo='taberna'] [class*='text-orange-4'],
+[data-estilo='taberna'] [class*='text-purple-3'],
+[data-estilo='taberna'] [class*='text-purple-4'] {
+    color: var(--taberna-laton) !important;
+}
+
+/* Fondos de color translucido (etiquetas, avisos): al marron de la casa. */
+[data-estilo='taberna'] [class*='bg-yellow-6'],
+[data-estilo='taberna'] [class*='bg-orange-6'],
+[data-estilo='taberna'] [class*='bg-purple-6'],
+[data-estilo='taberna'] [class*='bg-blue-6'] {
+    background-color: oklch(0.30 0.03 66 / 0.5) !important;
+}
+[data-estilo='taberna'] [class*='bg-red-6'] {
+    background-color: oklch(0.36 0.09 30 / 0.5) !important;
+}
+
+/* La Cronica y el Reglamento no llevan ninguna de estas clases: nacieron ya
+   con esta paleta y escriben sus colores a mano. No les afecta nada de esto. */

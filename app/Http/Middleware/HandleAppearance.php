@@ -18,6 +18,11 @@ class HandleAppearance
     {
         View::share('appearance', $request->cookie('appearance') ?? 'system');
 
+        // El estilo visual: 'forja' es el de siempre, 'taberna' el nuevo.
+        // Va en cookie para poder pintarlo ya en el HTML y que no haya
+        // parpadeo entre el tema de arranque y el elegido.
+        View::share('estilo', $request->cookie('estilo') ?? 'forja');
+
         return $next($request);
     }
 }

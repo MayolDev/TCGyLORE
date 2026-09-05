@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
 
 import AppearanceTabs from '@/components/appearance-tabs';
+import EstiloTabs from '@/components/estilo-tabs';
 import HeadingSmall from '@/components/heading-small';
 import { type BreadcrumbItem } from '@/types';
 
@@ -27,6 +28,14 @@ export default function Appearance() {
                         description="Update your account's appearance settings"
                     />
                     <AppearanceTabs />
+
+                    <div className="border-t border-border pt-6">
+                        <HeadingSmall
+                            title="Estilo visual"
+                            description="Dos pieles para la misma web. Se cambia al momento y no toca ningún contenido."
+                        />
+                        <EstiloTabs className="mt-4" />
+                    </div>
                 </div>
             </SettingsLayout>
         </AppLayout>

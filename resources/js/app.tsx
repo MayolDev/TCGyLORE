@@ -5,6 +5,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
+import { initializeEstilo } from './hooks/use-estilo';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -32,6 +33,7 @@ createInertiaApp({
 
 // This will set light / dark mode on load...
 initializeTheme();
+initializeEstilo();
 
 // Inertia restaura las páginas del historial SIN pedir al servidor: tras
 // borrar una carta y volver «atrás», el listado enseñaba los datos viejos
