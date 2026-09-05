@@ -20,7 +20,10 @@ use Inertia\Inertia;
 class ChronicleController extends Controller
 {
     /** Palabras que caben comodas en una pagina con esta tipografia. */
-    private const PALABRAS_POR_PAGINA = 190;
+    private const PALABRAS_POR_PAGINA = 140;
+
+    /** Nombres de seccion del documento original: nunca son el epiteto. */
+    private const SECCIONES = ['preludio', 'biografia', 'biografía', 'descripcion', 'descripción'];
 
     public function __invoke()
     {
@@ -153,7 +156,7 @@ class ChronicleController extends Controller
                 continue;
             }
 
-            $palabras = str_word_count(strip_tags($p));
+            $palabras = $this->palabras($p);
 
             // Parrafo gigante: se parte por frases.
             if ($palabras > self::PALABRAS_POR_PAGINA) {
@@ -187,7 +190,7 @@ class ChronicleController extends Controller
         $cuenta = 0;
 
         foreach ($frases as $f) {
-            $n = str_word_count(strip_tags($f));
+            $n = $this->palabras($f);
             if ($cuenta + $n > self::PALABRAS_POR_PAGINA && $actual) {
                 $salida[] = implode(' ', $actual);
                 $actual = [];
@@ -202,6 +205,12 @@ class ChronicleController extends Controller
         }
 
         return $salida;
+    }
+
+    /** str_word_count parte las palabras con tilde: "cancion" cuenta 1, "canción" 2. */
+    private function palabras(string $texto): int
+    {
+        return preg_match_all('/\S+/u', strip_tags($texto)) ?: 0;
     }
 
     /**
@@ -220,10 +229,16 @@ class ChronicleController extends Controller
         $lineas = preg_split('/\r?\n/', ltrim($bio));
         $cabecera = trim($lineas[0] ?? '');
 
-        if (preg_match('/^###\s+(.+)$/', $cabecera, $m) || preg_match('/^\*\*([^*]+)\*\*$/', $cabecera, $m)) {
+        // Tres formas en el mismo documento: encabezado de cualquier nivel,
+        // encabezado con negrita dentro, o una linea suelta en negrita.
+        if (preg_match('/^#{1,3}\s*\**\s*(.+?)\s*\**$/u', $cabecera, $m)
+            || preg_match('/^\*\*([^*]+)\*\*$/u', $cabecera, $m)) {
             $epiteto = trim(str_replace(['**', '<u>', '</u>'], '', $m[1]));
 
-            return [$epiteto, trim(substr(ltrim($bio), strlen($cabecera)))];
+            // "Preludio" y compania son secciones, no el epiteto del personaje.
+            if (! in_array(mb_strtolower($epiteto), self::SECCIONES, true)) {
+                return [$epiteto, trim(mb_substr(ltrim($bio), mb_strlen($cabecera)))];
+            }
         }
 
         return [null, $bio];

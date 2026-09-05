@@ -283,7 +283,7 @@ home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     home.form = homeForm
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:25
+ * @see app/Http/Controllers/ChronicleController.php:28
  * @route '/cronica'
  */
 export const cronica = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -298,7 +298,7 @@ cronica.definition = {
 
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:25
+ * @see app/Http/Controllers/ChronicleController.php:28
  * @route '/cronica'
  */
 cronica.url = (options?: RouteQueryOptions) => {
@@ -307,7 +307,7 @@ cronica.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:25
+ * @see app/Http/Controllers/ChronicleController.php:28
  * @route '/cronica'
  */
 cronica.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -316,7 +316,7 @@ cronica.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:25
+ * @see app/Http/Controllers/ChronicleController.php:28
  * @route '/cronica'
  */
 cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -326,7 +326,7 @@ cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:25
+ * @see app/Http/Controllers/ChronicleController.php:28
  * @route '/cronica'
  */
     const cronicaForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -336,7 +336,7 @@ cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:25
+ * @see app/Http/Controllers/ChronicleController.php:28
  * @route '/cronica'
  */
         cronicaForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -345,7 +345,7 @@ cronica.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\ChronicleController::__invoke
- * @see app/Http/Controllers/ChronicleController.php:25
+ * @see app/Http/Controllers/ChronicleController.php:28
  * @route '/cronica'
  */
         cronicaForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

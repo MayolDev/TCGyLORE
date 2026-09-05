@@ -61,9 +61,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 function separarEpiteto(bio: string | null): { epiteto: string | null; cuerpo: string } {
     if (!bio) return { epiteto: null, cuerpo: '' };
 
+    // Tres formas en el mismo documento: encabezado de cualquier nivel,
+    // encabezado con la negrita dentro, o una línea suelta en negrita.
     const cabecera = bio.trimStart().split(/\r?\n/)[0].trim();
-    const m = cabecera.match(/^###\s+(.+)$/) ?? cabecera.match(/^\*\*([^*]+)\*\*$/);
+    const m = cabecera.match(/^#{1,3}\s*\**\s*(.+?)\s*\**$/) ?? cabecera.match(/^\*\*([^*]+)\*\*$/);
     if (!m) return { epiteto: null, cuerpo: bio };
+
+    // «Preludio» y compañía son secciones del documento, no el epíteto.
+    const SECCIONES = ['preludio', 'biografia', 'biografía', 'descripcion', 'descripción'];
+    if (SECCIONES.includes(m[1].replace(/\*\*/g, '').trim().toLowerCase())) {
+        return { epiteto: null, cuerpo: bio };
+    }
 
     return {
         epiteto: m[1].replace(/\*\*/g, '').replace(/<\/?u>/g, '').trim(),
