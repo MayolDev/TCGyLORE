@@ -230,12 +230,16 @@ export default function AuthSimpleLayout({
                                     href={home()}
                                     className="group flex flex-col items-center gap-3 font-medium"
                                 >
-                                    <div className="relative">
-                                        <div className="absolute inset-0 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-2xl blur-lg opacity-75 group-hover:opacity-100 transition-opacity"></div>
-                                        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-yellow-600 via-orange-600 to-red-700 shadow-2xl shadow-orange-500/50 border-2 border-yellow-400/50 group-hover:scale-110 transition-transform">
-                                            <Shield className="h-9 w-9 text-yellow-100 drop-shadow-lg" />
-                                        </div>
-                                    </div>
+                                    {/* El sello de lacre, sin caja ni degradado
+                                        detras: el emblema ya trae su propio
+                                        contorno y encerrarlo lo ensucia. */}
+                                    <img
+                                        src="/logo-taponazo.png"
+                                        alt="Tapon'Azo"
+                                        width={512}
+                                        height={512}
+                                        className="h-24 w-24 object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.7)] transition-transform group-hover:scale-105"
+                                    />
                                     <div className="text-center">
                                         <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-orange-500 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]" style={{ fontFamily: 'Cinzel, serif' }}>
                                             TAPON'AZO
