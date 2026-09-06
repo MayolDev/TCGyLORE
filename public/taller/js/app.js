@@ -1053,6 +1053,8 @@
   const FRAME_WINDOW = { x:LAYOUT_DEF.winX, y:LAYOUT_DEF.winY, w:LAYOUT_DEF.winW, h:LAYOUT_DEF.winH };
 
   const LS_LAYOUT = 'taponazo.taller.marcos.v1';
+  // Huella del marco por defecto ya instalado, para saber si ha cambiado.
+  const LS_MARCO = 'taponazo.taller.marco.huella';
   let LAYOUTS = {};
   try { LAYOUTS = JSON.parse(localStorage.getItem(LS_LAYOUT) || '{}'); } catch { LAYOUTS = {}; }
   // Migración suave: los defaults antiguos del pie (1022 del DEF, 1030 del
@@ -2222,6 +2224,23 @@
     }
   })();
 
+  /**
+   * Huella del marco instalado: medidas mas un muestreo grueso del canal
+   * alfa. No hace falta que sea criptografica — solo tiene que cambiar
+   * cuando cambie el dibujo, para volver a detectar las zonas.
+   */
+  function huellaMarco(lienzo){
+    const w = lienzo.width, h = lienzo.height;
+    const cv = document.createElement('canvas');
+    cv.width = 24; cv.height = 32;
+    const g2 = cv.getContext('2d');
+    g2.drawImage(lienzo, 0, 0, 24, 32);
+    const d = g2.getImageData(0, 0, 24, 32).data;
+    let acc = 0;
+    for (let i = 3; i < d.length; i += 4) acc = (acc * 31 + d[i]) % 1000000007;
+    return `${w}x${h}:${acc}`;
+  }
+
   // ---- marco por defecto: images/marco.png se instala solo al arrancar y
   // el estilo pasa a 'marco'. Decisión de diseño de Iván: la carta nace con
   // su marco ilustrado, no con el procedural. Si el fichero no está (p. ej.
@@ -2233,10 +2252,18 @@
       const out = stripBackground(im);   // el PNG puede traer el damero pintado
       if (out) lienzo = out.canvas;
       installFrame('marco:todos', lienzo);
-      // Autodetectar zonas SOLO la primera vez: si ya hay un encaje guardado,
-      // respetarlo — antes se machacaba el ajuste fino en cada recarga.
-      if (!LAYOUTS['marco:todos']){
+      // Autodetectar zonas la primera vez Y cada vez que cambie el marco:
+      // el encaje guardado pertenece a UN dibujo concreto, asi que si se
+      // sustituye images/marco.png las zonas viejas ya no cuadran. Se guarda
+      // una huella del marco instalado para notarlo sin tener que acordarse
+      // de subir ningun numero de version a mano.
+      const huella = huellaMarco(lienzo);
+      let previa = null;
+      try { previa = localStorage.getItem(LS_MARCO); } catch {}
+
+      if (!LAYOUTS['marco:todos'] || previa !== huella){
         applyZones(FRAMES.get('marco:todos'));
+        try { localStorage.setItem(LS_MARCO, huella); } catch {}
       } else {
         loadLayoutFields();
       }
