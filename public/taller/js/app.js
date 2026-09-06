@@ -1118,13 +1118,19 @@
   // en el mismo sitio donde la criatura lleva su EGO (decisión de Iván).
   function heroStats(g, c, y0){
     const y = y0 == null ? H-158 : y0;
-    const items = [['FUE', c.fue], ['AGI', c.agi], ['MEN', c.men], ['CAR', c.car]];
-    const bw = 118, gap = 12, total = items.length*bw + (items.length-1)*gap;
+    const atributos = [['FUE', c.fue], ['AGI', c.agi], ['MEN', c.men], ['CAR', c.car]];
+    // La Capacidad de EGO no se teclea: es CAR + 3 (Reglamento 0.4, seccion 8).
+    // Calculada no puede quedarse desfasada del CAR ni de la regla.
+    const cap = Number(c.car || 0) + 3;
+    const bw = 106, gap = 10;
+    const total = (atributos.length + 1)*bw + atributos.length*gap;
     let x = (W - total)/2;
-    items.forEach(([l, v]) => {
+    atributos.forEach(([l, v]) => {
       statbox(g, x, y, bw, 96, l, (v >= 0 ? '+' : '') + v, '#3a3228');
       x += bw + gap;
     });
+    // En morado, el color del EGO de las criaturas: es un tope, no un atributo.
+    statbox(g, x, y, bw, 96, 'CAP', cap, '#4a3352');
   }
 
   /** Sello rojo de PV del protagonista, arriba a la derecha. */
