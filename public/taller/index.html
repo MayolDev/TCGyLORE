@@ -4,8 +4,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..800;1,400..700&family=Grenze+Gotisch:wght@300..800&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
-<link rel="stylesheet" href="css/theme-web.css">
+<!-- El servidor cachea css, js e imagenes 30 dias, pero este index no se
+     cachea. Por eso las referencias van con ?v=: al cambiar el numero, el
+     navegador se trae la version nueva sin que nadie tenga que vaciar la
+     cache. HAY QUE SUBIRLO al tocar cualquiera de esos ficheros. -->
+<link rel="stylesheet" href="css/styles.css?v=20260906">
+<link rel="stylesheet" href="css/theme-web.css?v=20260906">
 
 <div class="app">
 
@@ -363,4 +367,4 @@
 </div>
 
 <div id="toast" class="toast"></div>
-<script src="js/app.js"></script>
+<script src="js/app.js?v=20260906"></script>

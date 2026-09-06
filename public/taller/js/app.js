@@ -2274,6 +2274,6 @@
       draw();
     };
     im.onerror = () => {};
-    im.src = 'images/marco.png';
+    im.src = 'images/marco.png?v=20260906';   // ver la nota del ?v= en index.html
   })();
 })();
