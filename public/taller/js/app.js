@@ -284,11 +284,22 @@
   }
 
   // Ajusta el cuerpo de una fuente midiendo SIEMPRE con la fuente candidata.
-  /** El antetítulo de una senda se compone solo: SENDA (oculta) · SOSIUS. */
+  /**
+   * El antetítulo de una senda se compone solo: SENDA (oculta) · SOSIUS.
+   * El de un pacto también, con su duración: PACTO · 2 RONDAS. En el pacto se
+   * respeta lo que se haya escrito a mano; en la senda no, porque ahí el
+   * antetítulo es la ficha entera.
+   */
   function etiquetasDe(c){
-    if (c.tipo !== 'senda') return c.etiquetas || '';
-    const prota = (c.sprota || '').toUpperCase();
-    return 'SENDA' + (c.soculta !== false ? ' (oculta)' : '') + (prota ? ' · ' + prota : '');
+    if (c.tipo === 'senda'){
+      const prota = (c.sprota || '').toUpperCase();
+      return 'SENDA' + (c.soculta !== false ? ' (oculta)' : '') + (prota ? ' · ' + prota : '');
+    }
+    if (c.tipo === 'pacto' && !(c.etiquetas || '').trim()){
+      const dur = DURACIONES_PACTO[c.duracion];
+      return 'PACTO' + (dur ? ' · ' + dur : '');
+    }
+    return c.etiquetas || '';
   }
 
   function fitLine(g, text, mk, maxw, start, min){
@@ -1219,7 +1230,7 @@
     };
     // Si falta el fichero no pasa nada: se queda con el marco base.
     im.onerror = () => {};
-    im.src = `images/marcos/marco-${tipo}.png?v=20260914`;
+    im.src = `images/marcos/marco-${tipo}.png?v=20260915`;
   }
   /**
    * Clave de layout EFECTIVA: la del marco que realmente se está pintando.
@@ -1769,7 +1780,7 @@
   S.rarity = 'legendaria'; S.tokenShape = 'circulo'; S.guides = false; S.backVariant = 'relato';
 
   ['name','cost','tags','body','flavor','foot','atk','def','ego','fue','agi','men','car','pv',
-   'hmast','hregla','hvoz','artslug','type']
+   'hmast','hregla','hvoz','artslug','pduracion','type']
     .forEach(id => $('#'+id).addEventListener('input', () => {
       if (id === 'type'){ toggleFields(); loadLayoutFields(); }
       if (id === 'artslug') artEl = ART.get($('#artslug').value) || artEl;
@@ -2431,6 +2442,6 @@
       draw();
     };
     im.onerror = () => {};
-    im.src = 'images/marco.png?v=20260906';   // ver la nota del ?v= en index.html
+    im.src = 'images/marco.png?v=20260915';   // ver la nota del ?v= en index.html
   })();
 })();
