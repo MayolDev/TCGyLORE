@@ -3,6 +3,11 @@
 @import "tw-animate-css";
 
 @source '../views';
+/* Tailwind rastrea todo el proyecto buscando clases, y ahi entran los scripts
+   de herramientas/, que no son interfaz. Uno de ellos rompia la compilacion
+   entera con "Invalid code point" al colarse como candidato un trozo de
+   cadena binaria. No hay nada que rastrear ahi: fuera. */
+@source not '../../herramientas';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
 /* Fuentes épicas de Google Fonts */
