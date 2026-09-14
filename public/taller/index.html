@@ -8,8 +8,8 @@
      cachea. Por eso las referencias van con ?v=: al cambiar el numero, el
      navegador se trae la version nueva sin que nadie tenga que vaciar la
      cache. HAY QUE SUBIRLO al tocar cualquiera de esos ficheros. -->
-<link rel="stylesheet" href="css/styles.css?v=20260906">
-<link rel="stylesheet" href="css/theme-web.css?v=20260906">
+<link rel="stylesheet" href="css/styles.css?v=20260914">
+<link rel="stylesheet" href="css/theme-web.css?v=20260914">
 
 <div class="app">
 
@@ -151,7 +151,10 @@
       <summary>Texto</summary>
       <div class="body">
         <label class="f"><span class="lbl-carta">Habilidad</span><span class="lbl-heraldo hidden">La noticia (dos columnas)</span>
-          <textarea id="body" placeholder="Arrollar. Nv3: sus ataques no pueden ser interceptados..."></textarea></label>
+          <textarea id="body" placeholder="Arrollar. Nv3: sus ataques no pueden ser interceptados..."></textarea>
+          <small class="ayuda-marcado">
+            <b>**negrita**</b> · <i>*cursiva*</i> · <code>## Título</code> · <code>- viñeta</code> · <code>---</code> separador
+          </small></label>
         <label class="f"><span class="lbl-carta">Cita (opcional)</span><span class="lbl-heraldo hidden">La réplica desde la barra</span>
           <textarea id="flavor" style="min-height:44px" placeholder="«Una línea de sabor…»"></textarea></label>
         <label class="f"><span>Pie de carta</span><input id="foot" type="text" value="TAPONAZO · set base · 0.4"></label>
@@ -367,4 +370,4 @@
 </div>
 
 <div id="toast" class="toast"></div>
-<script src="js/app.js?v=20260906"></script>
+<script src="js/app.js?v=20260914"></script>

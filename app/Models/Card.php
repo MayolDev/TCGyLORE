@@ -180,16 +180,45 @@ class Card extends Model
         return $this->belongsTo(Artist::class);
     }
 
+    /**
+     * El mismo marcado ligero que pinta el Taller en la carta, para que la
+     * web enseñe el efecto igual que se ve impreso. Antes esto usaba `***`
+     * para la negrita, que no es lo que entiende el Taller, y no lo llamaba
+     * nadie.
+     */
     public function getFormattedEffectAttribute(): string
     {
-        $text = $this->effect;
+        $lineas = [];
 
-        // Convertir ***texto*** a <strong>texto</strong>
-        $text = preg_replace('/\*\*\*(.*?)\*\*\*/', '<strong>$1</strong>', $text);
+        foreach (explode("\n", (string) $this->effect) as $linea) {
+            $t = trim($linea);
 
-        // Convertir --- a <hr>
-        $text = str_replace('---', '<hr class="my-2">', $text);
+            if ($t === '---') {
+                $lineas[] = '<hr class="my-2 border-current/30">';
 
-        return $text;
+                continue;
+            }
+
+            $esTitulo = str_starts_with($t, '## ');
+            $esVineta = (bool) preg_match('/^[-•]\s+/u', $t);
+
+            $cuerpo = $esTitulo ? substr($t, 3) : preg_replace('/^[-•]\s+/u', '', $t);
+            $cuerpo = e($cuerpo);
+
+            // Orden importante: el triple antes que el doble y que el simple.
+            $cuerpo = preg_replace('/\*\*\*(.+?)\*\*\*/s', '<strong><em>$1</em></strong>', $cuerpo);
+            $cuerpo = preg_replace('/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $cuerpo);
+            $cuerpo = preg_replace('/\*(.+?)\*/s', '<em>$1</em>', $cuerpo);
+
+            if ($esTitulo) {
+                $lineas[] = '<strong class="block mt-2 uppercase tracking-wide">'.$cuerpo.'</strong>';
+            } elseif ($esVineta) {
+                $lineas[] = '<span class="block pl-4 -indent-3">• '.$cuerpo.'</span>';
+            } else {
+                $lineas[] = '<span class="block">'.$cuerpo.'</span>';
+            }
+        }
+
+        return implode('', $lineas);
     }
 }

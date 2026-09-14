@@ -101,10 +101,85 @@
   // cuelan detrás, la cadena es inválida, el canvas la descarta sin avisar y sigue
   // pintando con la fuente anterior.
   /**
-   * Cuerpo con marcado ligero, pensado para los protagonistas:
+   * Parte una línea en tramos con estilo. Marcado en línea:
+   *   **negrita**   *cursiva*   ***las dos***
+   * El asterisco suelto se queda como está: en el texto de carta se usa para
+   * notas y no debe romper nada.
+   */
+  function parseInline(linea){
+    const tramos = [];
+    const re = /(\*\*\*|\*\*|\*)/g;
+    let resto = String(linea), pos = 0, negrita = false, cursiva = false, buf = '';
+    const empujar = () => { if (buf){ tramos.push({ txt: buf, b: negrita, i: cursiva }); buf = ''; } };
+
+    let m;
+    while ((m = re.exec(resto)) !== null){
+      const marca = m[1];
+      // El cierre tiene que existir más adelante; si no, es un asterisco suelto.
+      const cierra = (marca === '***' && negrita && cursiva) || (marca === '**' && negrita) || (marca === '*' && cursiva);
+      if (!cierra && resto.indexOf(marca, m.index + marca.length) === -1){ continue; }
+
+      buf += resto.slice(pos, m.index);
+      empujar();
+      if (marca === '***'){ negrita = !negrita; cursiva = !cursiva; }
+      else if (marca === '**'){ negrita = !negrita; }
+      else { cursiva = !cursiva; }
+      pos = m.index + marca.length;
+    }
+    buf += resto.slice(pos);
+    empujar();
+    return tramos.length ? tramos : [{ txt: '', b: false, i: false }];
+  }
+
+  /** Fuente de un tramo, con el estilo delante del tamaño (lo exige el canvas). */
+  function fuenteTramo(t, size){
+    const peso = t.b ? '700 ' : '';
+    const estilo = t.i ? 'italic ' : '';
+    return `${estilo}${peso}${size}px "Alegreya", serif`;
+  }
+
+  /**
+   * Ajusta una línea con tramos a un ancho, midiendo cada palabra con SU
+   * fuente: una palabra en negrita ocupa más que en redonda, y medir todo
+   * con una sola fuente descuadraba el corte.
+   * Devuelve líneas visuales, cada una con sus piezas ya listas para pintar.
+   */
+  function wrapTramos(g, tramos, size, maxw){
+    const lineas = [];
+    let actual = [], ancho = 0;
+
+    for (const tramo of tramos){
+      const font = fuenteTramo(tramo, size);
+      g.font = font;
+      const palabras = tramo.txt.split(' ');
+
+      palabras.forEach((palabra, idx) => {
+        // El separador va pegado a la palabra que le sigue, salvo al empezar línea.
+        const conEspacio = (idx > 0 || actual.length > 0) && palabra !== '' ? ' ' + palabra : palabra;
+        if (conEspacio === '') return;
+        const w = g.measureText(conEspacio).width;
+
+        if (ancho + w > maxw && actual.length){
+          lineas.push(actual);
+          actual = [{ txt: palabra, font }];
+          ancho = g.measureText(palabra).width;
+        } else {
+          actual.push({ txt: conEspacio, font });
+          ancho += w;
+        }
+      });
+    }
+    if (actual.length) lineas.push(actual);
+    return lineas.length ? lineas : [[]];
+  }
+
+  /**
+   * Cuerpo con marcado ligero:
    *   "## ÚNICA — El Lado Positivo"  → título de sección (ÚNICA en verde,
-   *   EL FINAL en rojo, el resto en el color del texto), y
-   *   "---" en su propia línea      → separador horizontal.
+   *   EL FINAL en rojo, el resto en el color del texto),
+   *   "---" en su propia línea      → separador horizontal,
+   *   "- algo"                      → viñeta con sangría,
+   *   **negrita** y *cursiva*       → dentro de cualquier línea.
    * Sin marcado pinta texto plano, como siempre. Devuelve la Y final.
    */
   function drawBody(g, texto, bx, bw, ty0, maxh, inkColor, oscuro){
@@ -113,6 +188,7 @@
       const t = linea.trim();
       if (t === '---') bloques.push({ tipo: 'sep' });
       else if (t.startsWith('## ')) bloques.push({ tipo: 'titulo', texto: t.slice(3).trim() });
+      else if (/^[-•]\s+/.test(t)) bloques.push({ tipo: 'vineta', texto: t.replace(/^[-•]\s+/, '') });
       else bloques.push({ tipo: 'texto', texto: linea });
     });
 
@@ -124,19 +200,26 @@
       return inkColor;
     };
 
+    // Sangría de la viñeta, proporcional al tamaño para que no baile.
+    const sangria = s => s * 0.9;
+
     for (let size = 31; size >= 15; size--){
       const lh = size * 1.34;
       let alto = 0;
       const plan = [];
       for (const b of bloques){
         if (b.tipo === 'sep'){ plan.push({ ...b, h: lh * 0.7 }); alto += lh * 0.7; continue; }
-        const font = b.tipo === 'titulo'
-          ? `700 ${size}px "Alegreya", serif`
-          : `${size}px "Alegreya", serif`;
-        const lines = wrap(g, b.texto, font, bw);
-        plan.push({ ...b, lines, font });
+
+        // El título va entero en negrita; el resto admite marcado en línea.
+        const tramos = b.tipo === 'titulo'
+          ? [{ txt: b.texto, b: true, i: false }]
+          : parseInline(b.texto);
+        const ancho = b.tipo === 'vineta' ? bw - sangria(size) : bw;
+        const lines = wrapTramos(g, tramos, size, ancho);
+        plan.push({ ...b, lines });
         alto += lines.length * lh;
       }
+
       if (alto <= maxh || size === 15){
         let ty = ty0;
         for (const p of plan){
@@ -147,9 +230,24 @@
             ty += lh * 0.7;
             continue;
           }
-          g.font = p.font;
+
           g.fillStyle = p.tipo === 'titulo' ? colorTitulo(p.texto) : inkColor;
-          p.lines.forEach(l => { g.fillText(l, bx, ty); ty += lh; });
+          const x0 = p.tipo === 'vineta' ? bx + sangria(size) : bx;
+
+          p.lines.forEach((piezas, iLinea) => {
+            if (p.tipo === 'vineta' && iLinea === 0){
+              g.font = `${size}px "Alegreya", serif`;
+              g.fillText('•', bx, ty);
+            }
+            let x = x0;
+            // Pieza a pieza: cada una con su fuente, avanzando la X a mano.
+            for (const pieza of piezas){
+              g.font = pieza.font;
+              g.fillText(pieza.txt, x, ty);
+              x += g.measureText(pieza.txt).width;
+            }
+            ty += lh;
+          });
         }
         return ty;
       }

@@ -225,3 +225,18 @@ details.fine[open]>summary::after{transform:rotate(180deg);display:inline-block}
   padding:11px 18px;border-radius:9px;font-size:13px;box-shadow:var(--shadow);
   opacity:0;pointer-events:none;transition:.2s;z-index:50;max-width:80vw;text-align:center}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* Chuleta del marcado del cuerpo de la carta, bajo su textarea. */
+.ayuda-marcado{
+  display:block;
+  margin-top:4px;
+  font-size:11px;
+  line-height:1.5;
+  opacity:.62;
+}
+.ayuda-marcado code{
+  font-size:11px;
+  padding:0 3px;
+  border-radius:3px;
+  background:rgba(255,255,255,.08);
+}
