@@ -585,6 +585,10 @@
       const dur = DURACIONES_PACTO[c.duracion] || '';
       return { c: TYPES.pacto.c, label: dur ? `PACTO · ${dur}` : 'PACTO' };
     }
+    // Con marco y con efecto ya no es un pliego: es la carta de Evento Global.
+    if (c.tipo === 'heraldo' && c.style === 'marco' && (c.hregla || '').trim()){
+      return { c: '#6b2f5a', label: 'EVENTO GLOBAL' };
+    }
     return TYPES[c.tipo] || ACCENT.comun;
   }
 
@@ -596,8 +600,10 @@
     const isWall = c.tipo === 'wall';
     const isHero = c.tipo === 'hero';
 
-    // El Heraldo tiene plantilla propia: es un pliego, no una carta de juego.
-    if (c.tipo === 'heraldo')         paintHeraldo(g, c, img, A, seed);
+    // El Heraldo nace como pliego —es un romance de ciego, no una carta— pero
+    // puede pintarse con marco: un Evento Global SI es una carta que va al mazo
+    // central, y con el pliego no habia forma de darle marco.
+    if (c.tipo === 'heraldo' && c.style !== 'marco') paintHeraldo(g, c, img, A, seed);
     else if (c.style === 'fullbleed') paintFullbleed(g, c, img, A, seed);
     else if (c.style === 'grafico')   paintGrafico(g, c, img, A, seed, isCreature, isWall, isHero);
     else if (c.style === 'marco')     paintMarco(g, c, img, A, seed, isCreature, isWall, isHero, opts);
@@ -1201,7 +1207,11 @@
   }
 
   function frameKeyFor(c){
-    return 'marco:' + (c.tipo === 'creature' ? c.rareza : c.tipo);
+    if (c.tipo === 'creature') return 'marco:' + c.rareza;
+    // Un Heraldo con efecto es un Evento Global: carta de verdad, mazo central
+    // y marco propio. Sin efecto es solo el pliego del titular.
+    if (c.tipo === 'heraldo') return (c.hregla || '').trim() ? 'marco:evento' : 'marco:heraldo';
+    return 'marco:' + c.tipo;
   }
 
   // ---- marcos por tipo -------------------------------------------------------
@@ -1213,7 +1223,7 @@
   // arranque serian 2,7 MB antes de poder tocar nada. Mientras llega el suyo,
   // la carta se pinta con el marco base.
   const MARCOS_POR_TIPO = new Set([
-    'comun', 'elite', 'legendaria', 'spell', 'trap', 'wall', 'weapon', 'hero', 'heraldo', 'pacto',
+    'comun', 'elite', 'legendaria', 'spell', 'trap', 'wall', 'weapon', 'hero', 'heraldo', 'pacto', 'evento',
   ]);
   const marcosPedidos = new Set();
 
@@ -1230,7 +1240,7 @@
     };
     // Si falta el fichero no pasa nada: se queda con el marco base.
     im.onerror = () => {};
-    im.src = `images/marcos/marco-${tipo}.png?v=20260915`;
+    im.src = `images/marcos/marco-${tipo}.png?v=20260916`;
   }
   /**
    * Clave de layout EFECTIVA: la del marco que realmente se está pintando.
@@ -1767,9 +1777,10 @@
     $('#atkwrap').classList.toggle('hidden', t !== 'creature');
     $('#egowrap').classList.toggle('hidden', t !== 'creature');
     // El Heraldo ignora el estilo de marco y no tiene coste ni foil.
-    $('#stylegroup').classList.toggle('hidden', heraldo);
-    $('#marcogroup').classList.toggle('hidden', heraldo || S.style !== 'marco');
-    $('#costwrap').classList.toggle('hidden', heraldo || t === 'senda');
+    // El Heraldo ya puede elegir estilo: pliego (lo suyo) o marco (Evento Global).
+    $('#stylegroup').classList.toggle('hidden', false);
+    $('#marcogroup').classList.toggle('hidden', S.style !== 'marco');
+    $('#costwrap').classList.toggle('hidden', (heraldo && S.style !== 'marco') || t === 'senda');
     $$('.lbl-carta').forEach(e => e.classList.toggle('hidden', heraldo));
     $$('.lbl-heraldo').forEach(e => e.classList.toggle('hidden', !heraldo));
   }
@@ -2442,6 +2453,6 @@
       draw();
     };
     im.onerror = () => {};
-    im.src = 'images/marco.png?v=20260915';   // ver la nota del ?v= en index.html
+    im.src = 'images/marco.png?v=20260916';   // ver la nota del ?v= en index.html
   })();
 })();
