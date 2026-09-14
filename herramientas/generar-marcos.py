@@ -14,6 +14,7 @@ entre todos los pares para que no vuelva a colarse una colision.
 import colorsys
 import itertools
 import os
+import random
 import sys
 
 from PIL import Image, ImageDraw
@@ -31,18 +32,18 @@ SC = r'C:\Users\ivmab\AppData\Local\Temp\claude\C--Users-ivmab-Documents-Taponaz
 # sin ese techo el optimizador saca verdes lima que separan de maravilla y no
 # son este juego. Minima resultante: 36 sobre 255.
 PALETA = {
-    # tono · saturacion · luz · brillo
-    'comun':      (95,  0.50, 0.88, 0.0),   # verde, mas oscuro: la humilde no compite con el oro
-    'elite':      (45,  0.70, 1.25, 0.55),  # ORO con luz
-    'legendaria': (48,  0.80, 1.45, 1.00),  # ORO RADIANTE: el escalon de arriba
-    'spell':      (285, 0.52, 1.10, 0.0),   # morado
-    'trap':       (2,   0.60, 0.85, 0.0),   # rojo sangre, oscuro
-    'wall':       (35,  0.05, 1.20, 0.0),   # PIEDRA: gris neutro
-    'weapon':     (212, 0.55, 0.70, 0.0),   # acero, azul oscuro
-    'hero':       (18,  0.50, 1.30, 0.0),   # teja
-    'heraldo':    (30,  0.10, 0.75, 0.0),   # carbon
-    'pacto':      (162, 0.55, 1.00, 0.0),   # verde azulado
-    'evento':     (330, 0.55, 1.15, 0.0),   # vino
+    # tono · saturacion · luz · destellos
+    'comun':      (95,  0.50, 0.88, 0),    # verde: la humilde, sin adornos
+    'elite':      (45,  0.70, 1.25, 90),   # ORO con destellos
+    'legendaria': (48,  0.80, 1.45, 220),  # ORO y el doble de destellos
+    'spell':      (285, 0.52, 1.10, 0),    # morado
+    'trap':       (2,   0.60, 0.85, 0),    # rojo sangre, oscuro
+    'wall':       (35,  0.05, 1.20, 0),    # PIEDRA: gris neutro
+    'weapon':     (212, 0.55, 0.70, 0),    # acero, azul oscuro
+    'hero':       (18,  0.50, 1.30, 0),    # teja
+    'heraldo':    (30,  0.10, 0.75, 0),    # carbon
+    'pacto':      (162, 0.55, 1.00, 0),    # verde azulado
+    'evento':     (330, 0.55, 1.15, 0),    # vino
 }
 
 im = Image.open(ORIG)
@@ -55,12 +56,8 @@ sel = [i for i in range(254)
        if (h * 360 < 20 or h * 360 >= 340) and s >= 0.25 and v >= 0.12]
 
 
-def recolorear(tono, sat, luz, brillo=0.0):
-    """brillo levanta SOLO los realces y les quita color, que es como se ve
-    la luz sobre el metal: la sombra sigue siendo oro y el brillo tira a
-    blanco. Subir el valor entero, en cambio, solo hace el oro mas palido."""
+def recolorear(tono, sat, luz):
     nuevo = pal[:]
-    vmax = max(colorsys.rgb_to_hsv(*[c / 255 for c in pal[i * 3:i * 3 + 3]])[2] for i in sel)
     for i in sel:
         _, s, v = colorsys.rgb_to_hsv(*[c / 255 for c in pal[i * 3:i * 3 + 3]])
         # La saturacion sale de la pedida, modulada por la del pixel para no
@@ -68,11 +65,6 @@ def recolorear(tono, sat, luz, brillo=0.0):
         # conserva el sombreado y a la vez separa familias de color.
         s2 = min(1.0, sat * (0.55 + 0.6 * s))
         v2 = max(0.0, min(1.0, v * luz))
-        if brillo > 0:
-            # Cuanto mas claro era el pixel, mas le pega la luz.
-            k = (v / vmax) ** 2.2 * brillo
-            v2 = min(1.0, v2 + k * (1.0 - v2) * 0.95)
-            s2 = s2 * (1.0 - 0.75 * k)
         nr, ng, nb = colorsys.hsv_to_rgb(tono / 360, s2, v2)
         nuevo[i * 3:i * 3 + 3] = [int(round(x * 255)) for x in (nr, ng, nb)]
     c = im.copy()
@@ -81,18 +73,82 @@ def recolorear(tono, sat, luz, brillo=0.0):
     return c
 
 
+def sembrar_destellos(img, cuantos, semilla=7):
+    """Chispas de gema sobre la franja de espinas: un nucleo blanco y cuatro
+    brazos que se apagan. No es un resplandor suave repartido por todo —eso
+    solo aclara el oro—: son puntos de luz separados, que es lo que brilla.
+
+    Solo se siembran sobre pixeles de la propia franja, asi la madera, el
+    pergamino y la ventana transparente quedan intactos.
+    """
+    if not cuantos:
+        return img.convert('RGBA')
+
+    idx = img.convert('P').load()
+    out = img.convert('RGBA')
+    px = out.load()
+    W, H = out.size
+    rnd = random.Random(semilla)
+
+    puestos = 0
+    intentos = 0
+    while puestos < cuantos and intentos < cuantos * 400:
+        intentos += 1
+        x = rnd.randrange(4, W - 4)
+        y = rnd.randrange(4, H - 4)
+        if idx[x, y] not in sel:
+            continue
+
+        # Tamanos variados: unas pocas grandes mandan, el resto son polvo.
+        grande = rnd.random() < 0.18
+        brazo = rnd.choice([2, 3, 4]) if grande else rnd.choice([1, 2])
+        calor = rnd.uniform(0.85, 1.0)
+
+        def mezclar(cx, cy, fuerza):
+            if not (0 <= cx < W and 0 <= cy < H):
+                return
+            r, g, b, a = px[cx, cy]
+            if a == 0:
+                return
+            f = max(0.0, min(1.0, fuerza))
+            # Hacia blanco calido, no hacia blanco puro: es oro, no un flash.
+            px[cx, cy] = (int(r + (255 - r) * f),
+                          int(g + (252 - g) * f),
+                          int(b + (228 - b) * f), a)
+
+        mezclar(x, y, calor)
+        for d in range(1, brazo + 1):
+            f = calor * (1 - d / (brazo + 1)) ** 1.6
+            mezclar(x + d, y, f); mezclar(x - d, y, f)
+            mezclar(x, y + d, f); mezclar(x, y - d, f)
+        if grande:
+            for d in (1, 2):
+                f = calor * 0.28 / d
+                mezclar(x + d, y + d, f); mezclar(x - d, y - d, f)
+                mezclar(x + d, y - d, f); mezclar(x - d, y + d, f)
+        puestos += 1
+    return out
+
+
 os.makedirs(DEST, exist_ok=True)
 medias = {}
 
-for clave, (tono, sat, luz, brillo) in PALETA.items():
-    img = recolorear(tono, sat, luz, brillo)
+for clave, (tono, sat, luz, destellos) in PALETA.items():
+    img = recolorear(tono, sat, luz)
+    base_paleta = img          # se mide ANTES: en RGBA los indices ya no valen
+    if destellos:
+        # Con destellos hay que salir de la paleta: las chispas son colores
+        # que no existen en ella. Se guarda en RGBA y punto — requantizar
+        # reconstruye la paleta entera y desviaba el color de TODO el marco
+        # (la trampa salia marron en vez de roja).
+        img = sembrar_destellos(img, destellos)
     img.save(os.path.join(DEST, f'marco-{clave}.png'), optimize=True)
 
     # Media del fondo de las espinas. Solo cuentan los pixeles que pertenecen
     # a esa franja: medir el rectangulo entero mete madera y tinta, que son
     # iguales en los once y diluyen las diferencias hasta esconderlas.
-    idx = img.convert('P').load()
-    rgb = img.convert('RGB')
+    idx = base_paleta.convert('P').load()
+    rgb = base_paleta.convert('RGB')
     r = g = b = n = 0
     for y in range(400, 1200, 8):
         for x in range(40, 95, 2):
