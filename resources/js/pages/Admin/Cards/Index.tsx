@@ -32,6 +32,8 @@ interface CardData {
     rarity: { id: number; name: string } | null;
     cost: number;
     illustration_url?: string | null;
+    /** Copia reducida para la rejilla; cae al original si aun no se ha generado. */
+    illustration_thumb_url?: string | null;
     /** Presente cuando la carta vino del Taller: la ilustración ES la carta entera renderizada. */
     taller_data?: unknown;
     is_foil?: boolean;
@@ -259,7 +261,16 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                     title={`Editar ${card.name}`}
                                     className="group relative overflow-hidden rounded-xl border-2 border-transparent transition-all hover:border-yellow-400/70 hover:shadow-[0_0_30px_rgba(251,191,36,0.35)] hover:scale-[1.02]"
                                 >
-                                    <img src={card.illustration_url} alt={card.name} className="w-full" loading="lazy" />
+                                    {/* La miniatura, no el PNG de 9 MB: la rejilla la pinta a ~300 px. */}
+                                    <img
+                                        src={card.illustration_thumb_url ?? card.illustration_url}
+                                        alt={card.name}
+                                        className="w-full"
+                                        width={600}
+                                        height={804}
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
                                     {card.is_foil && <FoilOverlay />}
                                 </Link>
                             ) : (
@@ -267,10 +278,12 @@ export default function Index({ cards: initialCards, filters: initialFilters }: 
                                     {/* Card Illustration Header */}
                                     <div className={`relative h-48 bg-gradient-to-br ${rarityGradient[card.rarity?.name || 'comun'] || 'from-gray-400 to-gray-600'} overflow-hidden`}>
                                         {card.illustration_url ? (
-                                            <img 
-                                                src={card.illustration_url} 
+                                            <img
+                                                src={card.illustration_thumb_url ?? card.illustration_url}
                                                 alt={card.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                                loading="lazy"
+                                                decoding="async"
                                             />
                                         ) : (
                                             <div className="absolute inset-0 flex items-center justify-center">

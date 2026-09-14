@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\MiniaturaDeCarta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,7 +17,7 @@ class Card extends Model
      * storage. Sin este accessor las ilustraciones subidas no se mostraban
      * nunca: todas las cartas caian al placeholder.
      */
-    protected $appends = ['illustration_url', 'is_foil'];
+    protected $appends = ['illustration_url', 'illustration_thumb_url', 'is_foil'];
 
     /** Acabado foil elegido en el taller: la web le pone el brillo animado. */
     public function getIsFoilAttribute(): bool
@@ -34,6 +35,26 @@ class Card extends Model
         return $this->illustration
             ? parse_url(Storage::disk('public')->url($this->illustration), PHP_URL_PATH)
             : null;
+    }
+
+    /**
+     * Version ligera para las rejillas. El original es un PNG de 1792x2400 y
+     * hasta 9,5 MB; pintar doce de esos era lo que colgaba la Biblioteca.
+     *
+     * Si la miniatura todavia no existe cae al original, asi que una carta
+     * recien subida se ve igual aunque pese: nunca se rompe la imagen.
+     */
+    public function getIllustrationThumbUrlAttribute(): ?string
+    {
+        if (! $this->illustration) {
+            return null;
+        }
+
+        $mini = MiniaturaDeCarta::ruta($this->illustration);
+
+        return Storage::disk('public')->exists($mini)
+            ? parse_url(Storage::disk('public')->url($mini), PHP_URL_PATH)
+            : $this->illustration_url;
     }
 
     protected $fillable = [
@@ -76,6 +97,37 @@ class Card extends Model
             'health' => 'integer',
             'cost' => 'integer',
         ];
+    }
+
+    /**
+     * La ilustracion se guarda desde tres sitios (el Taller, y el alta y la
+     * edicion del panel). En vez de acordarse en los tres, la miniatura se
+     * genera aqui siempre que la columna cambie.
+     *
+     * Va en caliente y no en cola a proposito: tarda cerca de un segundo y
+     * es una accion de administracion, y asi la carta nunca queda sin
+     * miniatura si la cola esta parada.
+     */
+    protected static function booted(): void
+    {
+        static::saved(function (self $carta) {
+            if (! $carta->wasChanged('illustration') || ! $carta->illustration) {
+                return;
+            }
+
+            $anterior = $carta->getOriginal('illustration');
+            if ($anterior && $anterior !== $carta->illustration) {
+                Storage::disk('public')->delete(MiniaturaDeCarta::ruta($anterior));
+            }
+
+            MiniaturaDeCarta::generar($carta->illustration);
+        });
+
+        static::deleted(function (self $carta) {
+            if ($carta->illustration) {
+                Storage::disk('public')->delete(MiniaturaDeCarta::ruta($carta->illustration));
+            }
+        });
     }
 
     public function world(): BelongsTo
