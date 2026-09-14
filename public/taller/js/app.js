@@ -1252,7 +1252,7 @@
     };
     // Si falta el fichero no pasa nada: se queda con el marco base.
     im.onerror = () => {};
-    im.src = `images/marcos/marco-${tipo}.png?v=20260924`;
+    im.src = `images/marcos/marco-${tipo}.png?v=20260925`;
   }
   /**
    * Clave de layout EFECTIVA: la del marco que realmente se está pintando.
@@ -1930,13 +1930,11 @@
   };
   $$('#rarity .chip').forEach(c => c.onclick = () => {
     S.rarity = c.dataset.rar; syncChips('#rarity','rar',S.rarity);
-    // El foil sigue a la rareza en LAS DOS direcciones. Antes solo lo
-    // encendia al pasar por legendaria y no lo apagaba nunca: bastaba tocar
-    // esa rareza una vez para que todas las cartas siguientes salieran con
-    // el barrido, sin que se viera de donde venia. Se puede desmarcar a mano
-    // despues, que para eso esta la casilla.
-    S.foil = S.rarity === 'legendaria';
-    $('#foil').checked = S.foil;
+    // La rareza ya NO toca el foil. Antes la legendaria lo encendia sola y no
+    // lo apagaba al salir, asi que se quedaba pegado en todas las cartas
+    // siguientes. Y ahora sobra: quien marca la rareza son los destellos del
+    // marco, y el barrido diagonal del foil justamente los tapaba. Queda como
+    // casilla manual, para la carta que de verdad quieras especial.
     loadLayoutFields(); draw();
   });
   $$('#tshape .chip').forEach(c => c.onclick = () => { S.tokenShape = c.dataset.shape; syncChips('#tshape','shape',S.tokenShape); draw(); });
@@ -2471,6 +2469,6 @@
       draw();
     };
     im.onerror = () => {};
-    im.src = 'images/marco.png?v=20260924';   // ver la nota del ?v= en index.html
+    im.src = 'images/marco.png?v=20260925';   // ver la nota del ?v= en index.html
   })();
 })();
