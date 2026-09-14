@@ -880,6 +880,7 @@
     const L = layoutFor(c);
     g.fillStyle = C.ink; g.fillRect(0, 0, W, H);
     const key = frameKeyFor(c);
+    pedirMarcoDeTipo(key);
     const fr  = FRAMES.get(key) || FRAMES.get('marco:todos');
 
     art(g, L.winX, L.winY, L.winW, L.winH, img, 'rect');
@@ -1191,6 +1192,35 @@
   function frameKeyFor(c){
     return 'marco:' + (c.tipo === 'creature' ? c.rareza : c.tipo);
   }
+
+  // ---- marcos por tipo -------------------------------------------------------
+  // Son el mismo dibujo con la franja de espinas recoloreada al color de acento
+  // del tipo, generados desde images/marco.png. Al ser identicos pixel a pixel
+  // salvo la paleta, comparten el encaje de zonas (ver layoutKeyFor).
+  //
+  // Se cargan BAJO DEMANDA: son diez PNG de 278 KB y meterlos todos en el
+  // arranque serian 2,7 MB antes de poder tocar nada. Mientras llega el suyo,
+  // la carta se pinta con el marco base.
+  const MARCOS_POR_TIPO = new Set([
+    'comun', 'elite', 'legendaria', 'spell', 'trap', 'wall', 'weapon', 'hero', 'heraldo', 'pacto',
+  ]);
+  const marcosPedidos = new Set();
+
+  function pedirMarcoDeTipo(clave){
+    const tipo = clave.slice('marco:'.length);
+    if (!MARCOS_POR_TIPO.has(tipo) || marcosPedidos.has(tipo) || FRAMES.has(clave)) return;
+    marcosPedidos.add(tipo);
+
+    const im = new Image();
+    im.onload = () => {
+      const out = stripBackground(im);
+      installFrame(clave, out ? out.canvas : im);
+      draw();                       // ya podemos pintarlo con el suyo
+    };
+    // Si falta el fichero no pasa nada: se queda con el marco base.
+    im.onerror = () => {};
+    im.src = `images/marcos/marco-${tipo}.png?v=20260914`;
+  }
   /**
    * Clave de layout EFECTIVA: la del marco que realmente se está pintando.
    * Con un único marco global (marco:todos), TODOS los tipos comparten el
@@ -1198,8 +1228,11 @@
    * cambiar de tipo el layout "se desajustaba" porque leía otra entrada.
    */
   function layoutKeyFor(c){
-    const propia = frameKeyFor(c);
-    return FRAMES.has(propia) ? propia : 'marco:todos';
+    // Los marcos por tipo son el MISMO dibujo con otra paleta, asi que el
+    // encaje es identico y debe seguir siendo uno solo. Sin este ancla,
+    // FRAMES.has('marco:spell') pasaria a ser cierto y el ajuste fino se
+    // guardaria por tipo, que es justo el desajuste que ya se corrigio.
+    return 'marco:todos';
   }
   function layoutFor(c){
     const key = layoutKeyFor(c);
