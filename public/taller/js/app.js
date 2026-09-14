@@ -1252,7 +1252,7 @@
     };
     // Si falta el fichero no pasa nada: se queda con el marco base.
     im.onerror = () => {};
-    im.src = `images/marcos/marco-${tipo}.png?v=20260922`;
+    im.src = `images/marcos/marco-${tipo}.png?v=20260923`;
   }
   /**
    * Clave de layout EFECTIVA: la del marco que realmente se está pintando.
@@ -1930,7 +1930,13 @@
   };
   $$('#rarity .chip').forEach(c => c.onclick = () => {
     S.rarity = c.dataset.rar; syncChips('#rarity','rar',S.rarity);
-    if (S.rarity === 'legendaria'){ $('#foil').checked = true; S.foil = true; }
+    // El foil sigue a la rareza en LAS DOS direcciones. Antes solo lo
+    // encendia al pasar por legendaria y no lo apagaba nunca: bastaba tocar
+    // esa rareza una vez para que todas las cartas siguientes salieran con
+    // el barrido, sin que se viera de donde venia. Se puede desmarcar a mano
+    // despues, que para eso esta la casilla.
+    S.foil = S.rarity === 'legendaria';
+    $('#foil').checked = S.foil;
     loadLayoutFields(); draw();
   });
   $$('#tshape .chip').forEach(c => c.onclick = () => { S.tokenShape = c.dataset.shape; syncChips('#tshape','shape',S.tokenShape); draw(); });
@@ -2465,6 +2471,6 @@
       draw();
     };
     im.onerror = () => {};
-    im.src = 'images/marco.png?v=20260922';   // ver la nota del ?v= en index.html
+    im.src = 'images/marco.png?v=20260923';   // ver la nota del ?v= en index.html
   })();
 })();
