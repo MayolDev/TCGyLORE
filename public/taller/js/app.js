@@ -1226,6 +1226,37 @@
     return 'marco:' + c.tipo;
   }
 
+  /**
+   * Enciende el centelleo de las gemas sobre la vista previa. Solo aplica a
+   * las rarezas que llevan destellos y solo con el marco ilustrado.
+   *
+   * Es una capa CSS encima del lienzo, no dibujo: animar esto en canvas
+   * obligaria a repintar la carta entera treinta veces por segundo, y
+   * componer el texto es lo caro de este taller. Ademas el PNG exportado
+   * debe llevar los destellos QUIETOS, y asi sale gratis: los lleva pintados
+   * el propio marco.
+   */
+  const CON_DESTELLOS = new Set(['elite', 'legendaria']);
+
+  function actualizarCentelleo(c){
+    const el = $('#centelleo');
+    if (!el) return;
+
+    const rar = c.tipo === 'creature' ? c.rareza : null;
+    const activo = c.kind !== 'ficha' && c.kind !== 'dorso'
+      && c.style === 'marco' && CON_DESTELLOS.has(rar);
+
+    el.classList.toggle('on', !!activo);
+    if (!activo) return;
+
+    if (el.dataset.rareza !== rar){
+      el.dataset.rareza = rar;
+      $$('#centelleo i').forEach((capa, n) => {
+        capa.style.backgroundImage = `url("images/marcos/marco-${rar}-destellos${n + 1}.png?v=20260926")`;
+      });
+    }
+  }
+
   // ---- marcos por tipo -------------------------------------------------------
   // Son el mismo dibujo con la franja de espinas recoloreada al color de acento
   // del tipo, generados desde images/marco.png. Al ser identicos pixel a pixel
@@ -1252,7 +1283,7 @@
     };
     // Si falta el fichero no pasa nada: se queda con el marco base.
     im.onerror = () => {};
-    im.src = `images/marcos/marco-${tipo}.png?v=20260925`;
+    im.src = `images/marcos/marco-${tipo}.png?v=20260926`;
   }
   /**
    * Clave de layout EFECTIVA: la del marco que realmente se está pintando.
@@ -1622,6 +1653,7 @@
     // Las guías son solo de pantalla: renderAt() nunca las pasa.
     paintAny(ctx, d, d.kind === 'carta' ? artEl : undefined, { guides: S.guides });
     $('#sheen').style.opacity = S.foil && d.kind !== 'ficha' ? Math.min(.85, S.foilAmt) : 0;
+    actualizarCentelleo(d);
   }
 
   // Re-pinta a la resolución pedida. Nada de estirar el canvas de pantalla.
@@ -2469,6 +2501,6 @@
       draw();
     };
     im.onerror = () => {};
-    im.src = 'images/marco.png?v=20260925';   // ver la nota del ?v= en index.html
+    im.src = 'images/marco.png?v=20260926';   // ver la nota del ?v= en index.html
   })();
 })();

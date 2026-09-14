@@ -89,12 +89,21 @@ def sembrar_destellos(img, cuantos, semilla=7):
     pergamino y la ventana transparente quedan intactos.
     """
     if not cuantos:
-        return img.convert('RGBA')
+        return img.convert('RGBA'), None
 
     idx = img.convert('P').load()
     out = img.convert('RGBA')
     px = out.load()
     W, H = out.size
+    # Capa suelta con SOLO los destellos, en las mismas posiciones exactas.
+    # La web y el taller la ponen encima y le laten la opacidad: asi centellean
+    # sin repintar la carta, y alineados porque salen de aqui mismo.
+    # TRES capas, no una: con una sola parpadearian todos a la vez y se nota
+    # el truco. Repartidos en tres grupos y latiendo desacompasados, el ojo lo
+    # lee como centelleo de verdad.
+    capas = [Image.new('RGBA', (W, H), (0, 0, 0, 0)) for _ in range(3)]
+    cpxs = [c.load() for c in capas]
+    grupo = [0]
     rnd = random.Random(semilla)
 
     def mezclar(cx, cy, fuerza):
@@ -108,6 +117,10 @@ def sembrar_destellos(img, cuantos, semilla=7):
         px[cx, cy] = (int(r + (255 - r) * f),
                       int(g + (253 - g) * f),
                       int(b + (235 - b) * f), a)
+        # En la capa suelta el destello va con su alfa, no mezclado.
+        cpx = cpxs[grupo[0]]
+        if f * 255 > cpx[cx, cy][3]:
+            cpx[cx, cy] = (255, 253, 235, int(f * 255))
 
     puestos = intentos = 0
     while puestos < cuantos and intentos < cuantos * 500:
@@ -117,6 +130,7 @@ def sembrar_destellos(img, cuantos, semilla=7):
         if idx[x, y] not in sel:
             continue
 
+        grupo[0] = puestos % 3
         grande = rnd.random() < 0.30
         brazo = rnd.randint(9, 14) if grande else rnd.randint(5, 8)
         nucleo = 2 if grande else 1
@@ -144,7 +158,7 @@ def sembrar_destellos(img, cuantos, semilla=7):
                 mezclar(x + d, y + d, f); mezclar(x - d, y - d, f)
                 mezclar(x + d, y - d, f); mezclar(x - d, y + d, f)
         puestos += 1
-    return out
+    return out, capas
 
 
 os.makedirs(DEST, exist_ok=True)
@@ -153,13 +167,17 @@ medias = {}
 for clave, (tono, sat, luz, destellos) in PALETA.items():
     img = recolorear(tono, sat, luz)
     base_paleta = img          # se mide ANTES: en RGBA los indices ya no valen
+    capas = None
     if destellos:
         # Con destellos hay que salir de la paleta: las chispas son colores
         # que no existen en ella. Se guarda en RGBA y punto — requantizar
         # reconstruye la paleta entera y desviaba el color de TODO el marco
         # (la trampa salia marron en vez de roja).
-        img = sembrar_destellos(img, destellos)
+        img, capas = sembrar_destellos(img, destellos)
     img.save(os.path.join(DEST, f'marco-{clave}.png'), optimize=True)
+    if capas:
+        for n, capa in enumerate(capas, 1):
+            capa.save(os.path.join(DEST, f'marco-{clave}-destellos{n}.png'), optimize=True)
 
     # Media del fondo de las espinas. Solo cuentan los pixeles que pertenecen
     # a esa franja: medir el rectangulo entero mete madera y tinta, que son

@@ -8,8 +8,8 @@
      cachea. Por eso las referencias van con ?v=: al cambiar el numero, el
      navegador se trae la version nueva sin que nadie tenga que vaciar la
      cache. HAY QUE SUBIRLO al tocar cualquiera de esos ficheros. -->
-<link rel="stylesheet" href="css/styles.css?v=20260925">
-<link rel="stylesheet" href="css/theme-web.css?v=20260925">
+<link rel="stylesheet" href="css/styles.css?v=20260926">
+<link rel="stylesheet" href="css/theme-web.css?v=20260926">
 
 <div class="app">
 
@@ -49,6 +49,13 @@
     <div class="cardframe">
       <canvas id="card" width="750" height="1050"></canvas>
       <div class="sheen" id="sheen"></div>
+      <!-- Centelleo de las gemas del marco. Van tres capas con los destellos
+           repartidos, latiendo desacompasadas: con una sola parpadearian
+           todos a la vez. Solo es la vista previa — el PNG exportado lleva
+           los destellos pintados y quietos, que es lo que va a TTS. -->
+      <div class="centelleo" id="centelleo">
+        <i></i><i></i><i></i>
+      </div>
     </div>
 
     <div class="toolbar">
@@ -389,4 +396,4 @@
 </div>
 
 <div id="toast" class="toast"></div>
-<script src="js/app.js?v=20260925"></script>
+<script src="js/app.js?v=20260926"></script>

@@ -240,3 +240,19 @@ details.fine[open]>summary::after{transform:rotate(180deg);display:inline-block}
   border-radius:3px;
   background:rgba(255,255,255,.08);
 }
+
+/* Centelleo de las gemas del marco (elite y legendaria). Tres capas con los
+   destellos repartidos, latiendo a ritmos distintos y sin coincidir: una sola
+   capa parpadeando entera se nota que es un truco. */
+.centelleo{position:absolute;inset:0;border-radius:12px;pointer-events:none;opacity:0;transition:opacity .2s}
+.centelleo.on{opacity:1}
+.centelleo i{position:absolute;inset:0;display:block;
+  background-size:100% 100%;background-repeat:no-repeat;opacity:0}
+.centelleo.on i:nth-child(1){animation:chispa 2.6s ease-in-out infinite}
+.centelleo.on i:nth-child(2){animation:chispa 3.4s ease-in-out infinite .9s}
+.centelleo.on i:nth-child(3){animation:chispa 4.1s ease-in-out infinite 1.7s}
+@keyframes chispa{0%,100%{opacity:0}15%{opacity:.95}30%{opacity:.15}45%{opacity:.7}70%{opacity:0}}
+
+@media (prefers-reduced-motion: reduce){
+  .centelleo.on i{animation:none;opacity:.55}
+}
