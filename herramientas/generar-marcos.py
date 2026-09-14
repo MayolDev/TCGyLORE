@@ -22,7 +22,7 @@ ACENTOS = {
     'pacto':      '#2f6b5a',
     # El Evento Global: vino oscuro, el unico tono que quedaba libre y que no
     # se confunde con el rojo de trampa ni con el teja del protagonista.
-    'evento':     '#6b2f5a',
+    'evento':     '#52243f',
 }
 
 im = Image.open(ORIG)

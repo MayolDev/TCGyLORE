@@ -587,7 +587,7 @@
     }
     // Con marco y con efecto ya no es un pliego: es la carta de Evento Global.
     if (c.tipo === 'heraldo' && c.style === 'marco' && (c.hregla || '').trim()){
-      return { c: '#6b2f5a', label: 'EVENTO GLOBAL' };
+      return { c: '#52243f', label: 'EVENTO GLOBAL' };
     }
     return TYPES[c.tipo] || ACCENT.comun;
   }
@@ -935,7 +935,7 @@
 
     let ty = L.textY;
     const hasCita = !!c.cita;
-    ty = drawBody(g, c.texto, bx, bw, ty, L.textH - (hasCita ? 56 : 0), '#15110c', false);
+    ty = drawBody(g, textoDeCuerpo(c), bx, bw, ty, L.textH - (hasCita ? 56 : 0), '#15110c', false);
     if (hasCita){
       ty += 6;
       const ff = fitText(g, c.cita, '"IM Fell English", serif', bw, 52, 22, 13, 'italic');
@@ -1206,6 +1206,19 @@
     try { localStorage.setItem(LS_LAYOUT, JSON.stringify(LAYOUTS)); } catch {}
   }
 
+  /**
+   * Texto que va al cuadro del cuerpo. En un Evento Global con marco lo que
+   * importa es el EFECTO, que en el Heraldo vive en su propio campo; el campo
+   * de cuerpo es la noticia del pliego y ahi seria puro sabor. Si no hay
+   * efecto escrito se cae al cuerpo, para no dejar la carta muda.
+   */
+  function textoDeCuerpo(c){
+    if (c.tipo === 'heraldo' && c.style === 'marco' && (c.hregla || '').trim()){
+      return c.hregla;
+    }
+    return c.texto;
+  }
+
   function frameKeyFor(c){
     if (c.tipo === 'creature') return 'marco:' + c.rareza;
     // Un Heraldo con efecto es un Evento Global: carta de verdad, mazo central
@@ -1240,7 +1253,7 @@
     };
     // Si falta el fichero no pasa nada: se queda con el marco base.
     im.onerror = () => {};
-    im.src = `images/marcos/marco-${tipo}.png?v=20260916`;
+    im.src = `images/marcos/marco-${tipo}.png?v=20260917`;
   }
   /**
    * Clave de layout EFECTIVA: la del marco que realmente se está pintando.
@@ -2453,6 +2466,6 @@
       draw();
     };
     im.onerror = () => {};
-    im.src = 'images/marco.png?v=20260916';   // ver la nota del ?v= en index.html
+    im.src = 'images/marco.png?v=20260917';   // ver la nota del ?v= en index.html
   })();
 })();
