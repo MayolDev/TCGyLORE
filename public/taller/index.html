@@ -8,8 +8,8 @@
      cachea. Por eso las referencias van con ?v=: al cambiar el numero, el
      navegador se trae la version nueva sin que nadie tenga que vaciar la
      cache. HAY QUE SUBIRLO al tocar cualquiera de esos ficheros. -->
-<link rel="stylesheet" href="css/styles.css?v=20260918">
-<link rel="stylesheet" href="css/theme-web.css?v=20260918">
+<link rel="stylesheet" href="css/styles.css?v=20260919">
+<link rel="stylesheet" href="css/theme-web.css?v=20260919">
 
 <div class="app">
 
@@ -98,6 +98,15 @@
         </div>
         <label class="f"><span class="lbl-carta">Etiquetas / subtítulo</span><span class="lbl-heraldo hidden">Antetítulo (ronda y lugar)</span>
           <input id="tags" type="text" value="" placeholder="Humano · Alianza · Neutral"></label>
+
+        <div id="rarityrow" class="sub">
+          <p class="sublabel">Rareza</p>
+          <div class="chips" id="rarity">
+            <div class="chip" data-rar="comun" aria-pressed="false">Común</div>
+            <div class="chip" data-rar="elite" aria-pressed="false">Élite</div>
+            <div class="chip" data-rar="legendaria" aria-pressed="true">Legendaria</div>
+          </div>
+        </div>
 
         <div id="statgroup" class="sub">
           <p class="sublabel">Atributos</p>
@@ -208,14 +217,6 @@
           <div class="chip" data-style="marco" aria-pressed="false">Marco propio</div>
         </div>
 
-        <div id="rarityrow">
-          <p class="sublabel">Rareza</p>
-          <div class="chips" id="rarity">
-            <div class="chip" data-rar="comun" aria-pressed="false">Común</div>
-            <div class="chip" data-rar="elite" aria-pressed="false">Élite</div>
-            <div class="chip" data-rar="legendaria" aria-pressed="true">Legendaria</div>
-          </div>
-        </div>
 
         <div class="toggle">
           <label for="foil">Acabado brillante (foil)</label>
@@ -388,4 +389,4 @@
 </div>
 
 <div id="toast" class="toast"></div>
-<script src="js/app.js?v=20260918"></script>
+<script src="js/app.js?v=20260919"></script>
