@@ -32,7 +32,7 @@ SC = r'C:\Users\ivmab\AppData\Local\Temp\claude\C--Users-ivmab-Documents-Taponaz
 # son este juego. Minima resultante: 36 sobre 255.
 PALETA = {
     # tono · saturacion · luz · brillo
-    'comun':      (75,  0.50, 1.05, 0.0),   # verde oliva: la mas humilde
+    'comun':      (95,  0.50, 0.88, 0.0),   # verde, mas oscuro: la humilde no compite con el oro
     'elite':      (45,  0.70, 1.25, 0.55),  # ORO con luz
     'legendaria': (48,  0.80, 1.45, 1.00),  # ORO RADIANTE: el escalon de arriba
     'spell':      (285, 0.52, 1.10, 0.0),   # morado
