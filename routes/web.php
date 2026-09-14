@@ -78,6 +78,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Mazos (constructor estilo Hearthstone)
         Route::resource('decks', DeckController::class)->except(['show']);
+        // Descarga del mazo en hojas de rejilla para Tabletop Simulator.
+        Route::get('decks/{deck}/tts', [DeckController::class, 'tts'])->name('decks.tts');
 
         // Manual del Juego
         Route::resource('manual-sections', ManualSectionController::class);

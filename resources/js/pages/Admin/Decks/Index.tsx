@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Layers, Pencil, Plus, Trash2 } from 'lucide-react';
+import { Download, Layers, Pencil, Plus, Trash2 } from 'lucide-react';
 import LibraryTabs from '@/components/library-tabs';
 
 interface DeckSummary {
@@ -99,6 +99,12 @@ export default function Index({ decks }: { decks: DeckSummary[] }) {
                                                 <Pencil className="mr-2 h-4 w-4" />
                                                 Abrir
                                             </Link>
+                                        </Button>
+                                        {/* Hojas de rejilla listas para Tabletop Simulator. */}
+                                        <Button variant="outline" size="sm" className="border-emerald-500/50 text-emerald-200 hover:bg-emerald-600/20" asChild title="Descargar para Tabletop Simulator">
+                                            <a href={`/admin/decks/${deck.id}/tts`}>
+                                                <Download className="h-4 w-4" />
+                                            </a>
                                         </Button>
                                         <Button variant="outline" size="sm" onClick={() => handleDelete(deck)} className="border-red-500/50 text-red-300 hover:bg-red-600/20">
                                             <Trash2 className="h-4 w-4" />
