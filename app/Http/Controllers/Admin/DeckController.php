@@ -35,6 +35,7 @@ class DeckController extends Controller
                         'side' => $porZona->get('side', 0),
                         'senda' => $porZona->get('senda', 0),
                         'eventos' => $porZona->get('eventos', 0),
+                        'pacto' => $porZona->get('pacto', 0),
                     ],
                     'updated_at' => $deck->updated_at?->toDateString(),
                 ];
@@ -196,10 +197,10 @@ class DeckController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'type' => ['required', 'in:normal,eventos'],
+            'type' => ['required', 'in:normal,eventos,social'],
             'cards' => ['array'],
             'cards.*.card_id' => ['required', 'exists:cards,id'],
-            'cards.*.zone' => ['required', 'in:protagonista,senda,principal,side,eventos'],
+            'cards.*.zone' => ['required', 'in:protagonista,senda,principal,side,eventos,pacto'],
             'cards.*.quantity' => ['required', 'integer', 'min:1', 'max:20'],
         ]);
 
@@ -212,6 +213,9 @@ class DeckController extends Controller
         }
         if ($validated['type'] === 'eventos' && $cards->contains(fn ($c) => $c['zone'] !== 'eventos')) {
             abort(422, 'Un mazo de eventos solo puede contener cartas en la zona de eventos.');
+        }
+        if ($validated['type'] === 'social' && $cards->contains(fn ($c) => $c['zone'] !== 'pacto')) {
+            abort(422, 'Un mazo social solo puede contener Pactos.');
         }
 
         return [

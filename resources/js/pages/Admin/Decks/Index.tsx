@@ -11,9 +11,9 @@ interface DeckSummary {
     id: number;
     name: string;
     description: string | null;
-    type: 'normal' | 'eventos';
+    type: 'normal' | 'eventos' | 'social';
     protagonista: { name: string; image: string | null } | null;
-    totales: { principal: number; side: number; senda: number; eventos: number };
+    totales: { principal: number; side: number; senda: number; eventos: number; pacto: number };
     updated_at: string | null;
 }
 
@@ -70,7 +70,7 @@ export default function Index({ decks }: { decks: DeckSummary[] }) {
                                     )}
                                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent" />
                                     <Badge className="absolute top-2 right-2 border-amber-500/50 bg-slate-900/90 font-bold text-yellow-200 backdrop-blur-sm">
-                                        {deck.type === 'eventos' ? '⚡ Eventos' : '🃏 Normal'}
+                                        {deck.type === 'eventos' ? '⚡ Eventos' : deck.type === 'social' ? '🤝 Social' : '🃏 Normal'}
                                     </Badge>
                                 </div>
                                 <CardContent className="space-y-3">
@@ -85,6 +85,8 @@ export default function Index({ decks }: { decks: DeckSummary[] }) {
                                     <div className="flex flex-wrap gap-1.5 text-xs">
                                         {deck.type === 'eventos' ? (
                                             <Badge variant="outline" className="border-cyan-500/50 text-cyan-200 font-bold">⚡ {deck.totales.eventos} eventos</Badge>
+                                        ) : deck.type === 'social' ? (
+                                            <Badge variant="outline" className="border-emerald-500/50 text-emerald-200 font-bold">🤝 {deck.totales.pacto} pactos</Badge>
                                         ) : (
                                             <>
                                                 <Badge variant="outline" className="border-yellow-500/50 text-yellow-200 font-bold">🃏 {deck.totales.principal}</Badge>

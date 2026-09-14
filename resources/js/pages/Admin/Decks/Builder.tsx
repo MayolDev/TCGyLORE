@@ -30,11 +30,12 @@ interface DeckData {
     id: number;
     name: string;
     description: string | null;
-    type: 'normal' | 'eventos';
+    type: TipoMazo;
     cards: DeckEntry[];
 }
 
-type Zone = 'protagonista' | 'senda' | 'principal' | 'side' | 'eventos';
+type Zone = 'protagonista' | 'senda' | 'principal' | 'side' | 'eventos' | 'pacto';
+type TipoMazo = 'normal' | 'eventos' | 'social';
 
 const ZONAS_NORMAL: { zone: Zone; titulo: string; icono: string }[] = [
     { zone: 'protagonista', titulo: 'Protagonista', icono: '👑' },
@@ -65,12 +66,19 @@ function limiteDeCopias(carta: LibraryCard): number {
 /** Mínimo de cartas del mazo principal (§13). Sin máximo: el tamaño es una apuesta. */
 const MINIMO_PRINCIPAL = 25;
 
+/** La Baraja de Pactos de Protagonistas-2 §1 son 20 cartas distintas. */
+const MINIMO_PACTOS = 20;
+
 /** Zona a la que va una carta según su tipo (y el destino elegido para las normales). */
-function zonaParaCarta(carta: LibraryCard, tipoMazo: 'normal' | 'eventos', destino: 'principal' | 'side'): Zone | null {
+function zonaParaCarta(carta: LibraryCard, tipoMazo: TipoMazo, destino: 'principal' | 'side'): Zone | null {
     if (tipoMazo === 'eventos') {
         return carta.type === 'Evento' ? 'eventos' : null;
     }
-    if (carta.type === 'Evento') return null; // los eventos van en su propio mazo
+    if (tipoMazo === 'social') {
+        return carta.type === 'Pacto' ? 'pacto' : null;
+    }
+    // Eventos y Pactos tienen mazo propio: no se mezclan con el principal.
+    if (carta.type === 'Evento' || carta.type === 'Pacto') return null;
     if (carta.type === 'Protagonista') return 'protagonista';
     if (carta.type === 'Senda') return 'senda';
     return destino;
@@ -78,7 +86,7 @@ function zonaParaCarta(carta: LibraryCard, tipoMazo: 'normal' | 'eventos', desti
 
 export default function Builder({ deck, library }: { deck: DeckData | null; library: LibraryCard[] }) {
     const [name, setName] = useState(deck?.name ?? '');
-    const [type, setType] = useState<'normal' | 'eventos'>(deck?.type ?? 'normal');
+    const [type, setType] = useState<TipoMazo>(deck?.type ?? 'normal');
     const [entries, setEntries] = useState<DeckEntry[]>(deck?.cards ?? []);
     const [search, setSearch] = useState('');
     const [typeFilter, setTypeFilter] = useState('');
@@ -95,6 +103,7 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
         if (search && !c.name.toLowerCase().includes(search.toLowerCase())) return false;
         if (typeFilter && c.type !== typeFilter) return false;
         if (type === 'eventos' && c.type !== 'Evento') return false;
+        if (type === 'social' && c.type !== 'Pacto') return false;
         return true;
     });
 
@@ -115,7 +124,11 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
     const agregar = (carta: LibraryCard, cuantas: number = lote) => {
         const zone = zonaParaCarta(carta, type, destino);
         if (!zone) {
-            avisar(type === 'eventos' ? 'Un mazo de eventos solo admite cartas de tipo Evento' : 'Los Eventos van en su propio mazo de eventos');
+            avisar(
+                type === 'eventos' ? 'Un mazo de eventos solo admite cartas de tipo Evento'
+                : type === 'social' ? 'Un mazo social solo admite Pactos'
+                : 'Los Eventos y los Pactos van en su propio mazo',
+            );
             return;
         }
         if (zone === 'protagonista') {
@@ -165,7 +178,7 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
 
     /** Rellena el mazo al tope de copias de todo lo visible. Para montar rápido. */
     const meterTodasLasVisibles = () => {
-        const aptas = visibles.filter((c) => zonaParaCarta(c, type, destino) === destino);
+        const aptas = visibles.filter((c) => zonaParaCarta(c, type, destino) !== null);
         if (aptas.length === 0) {
             avisar('Nada que meter con este filtro');
             return;
@@ -183,13 +196,16 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
         }
     };
 
-    const cambiarTipo = (nuevo: 'normal' | 'eventos') => {
+    const cambiarTipo = (nuevo: TipoMazo) => {
         if (nuevo !== type && entries.length > 0 && !confirm('Cambiar el tipo vacía el mazo. ¿Seguro?')) return;
         if (nuevo !== type) setEntries([]);
         setType(nuevo);
     };
 
-    const zonas = type === 'eventos' ? [{ zone: 'eventos' as Zone, titulo: 'Eventos', icono: '⚡' }] : ZONAS_NORMAL;
+    const zonas =
+        type === 'eventos' ? [{ zone: 'eventos' as Zone, titulo: 'Eventos', icono: '⚡' }]
+        : type === 'social' ? [{ zone: 'pacto' as Zone, titulo: 'Baraja de Pactos', icono: '🤝' }]
+        : ZONAS_NORMAL;
     const total = entries.reduce((acc, e) => acc + e.quantity, 0);
     const enPrincipal = entries.filter((e) => e.zone === 'principal').reduce((a, e) => a + e.quantity, 0);
 
@@ -199,6 +215,9 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
         if (type === 'normal') {
             if (!entries.some((e) => e.zone === 'protagonista')) fallos.push('falta el Protagonista');
             if (enPrincipal < MINIMO_PRINCIPAL) fallos.push(`faltan ${MINIMO_PRINCIPAL - enPrincipal} en el principal`);
+        } else if (type === 'social') {
+            // La Baraja de Pactos son 20 cartas distintas (Protagonistas-2 §1).
+            if (total < MINIMO_PACTOS) fallos.push(`faltan ${MINIMO_PACTOS - total} Pactos`);
         } else if (total < MINIMO_PRINCIPAL) {
             fallos.push(`faltan ${MINIMO_PRINCIPAL - total} eventos`);
         }
@@ -226,7 +245,7 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
                             className="w-72 text-lg font-bold"
                         />
                         <div className="flex overflow-hidden rounded-md border border-input">
-                            {(['normal', 'eventos'] as const).map((t) => (
+                            {(['normal', 'eventos', 'social'] as const).map((t) => (
                                 <button
                                     key={t}
                                     type="button"
@@ -235,7 +254,7 @@ export default function Builder({ deck, library }: { deck: DeckData | null; libr
                                         type === t ? 'bg-yellow-600 text-white' : 'text-yellow-200/60 hover:bg-yellow-600/10'
                                     }`}
                                 >
-                                    {t === 'normal' ? '🃏 Normal' : '⚡ Eventos'}
+                                    {t === 'normal' ? '🃏 Normal' : t === 'eventos' ? '⚡ Eventos' : '🤝 Social'}
                                 </button>
                             ))}
                         </div>

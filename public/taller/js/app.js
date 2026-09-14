@@ -37,6 +37,17 @@
     weapon:   { c:'#4a5866', label:'ARMA · EQUIPO' },
     hero:     { c:'#a8452f', label:'PROTAGONISTA' },
     heraldo:  { c:'#3a3228', label:'EL HERALDO' },
+    // El Pacto es la carta social: verde azulado, que no lo comparte nadie.
+    pacto:    { c:'#2f6b5a', label:'PACTO' },
+  };
+
+  /** Duraciones del Pacto. La etiqueta va pegada al tipo: "PACTO · 2 RONDAS". */
+  const DURACIONES_PACTO = {
+    instantaneo: 'INSTANTÁNEO',
+    r1: '1 RONDA',
+    r2: '2 RONDAS',
+    r3: '3 RONDAS',
+    partida: 'RESTO DE LA PARTIDA',
   };
 
   // ---------------------------------------------------------------- estado
@@ -197,6 +208,11 @@
       if (u.startsWith('ÚNICA') || u.startsWith('UNICA')) return oscuro ? '#a9bd63' : '#5c6e2a';
       if (u.startsWith('EL FINAL') || u.startsWith('FINAL')) return oscuro ? '#e0705a' : '#8f2f24';
       if (u.startsWith('NIVEL')) return oscuro ? '#d9b34a' : '#8a6b1f';
+      // Las tres ramas del Pacto. Se leen de un vistazo por el color, que es
+      // lo que hace falta cuando tienes que decidir en segundos.
+      if (u.startsWith('ACEPTA')) return oscuro ? '#7fc4a3' : '#256b4d';
+      if (u.startsWith('RECHAZA')) return oscuro ? '#e0b45a' : '#8a6b1f';
+      if (u.startsWith('TRAICIÓN') || u.startsWith('TRAICION')) return oscuro ? '#e0705a' : '#8f2f24';
       return inkColor;
     };
 
@@ -513,6 +529,7 @@
       fue: $('#fue').value, agi: $('#agi').value, men: $('#men').value, car: $('#car').value, pv: $('#pv').value,
       hmast: $('#hmast').value, hregla: $('#hregla').value, hvoz: $('#hvoz').value,
       sprota: $('#sprota').value, soculta: $('#soculta').checked,
+      duracion: $('#pduracion') ? $('#pduracion').value : 'instantaneo',
       arte:    $('#artslug').value || slug($('#name').value),
       style:   S.style, foil: S.foil, foilAmt: S.foilAmt,
       zoom: S.zoom, ox: S.ox, oy: S.oy,
@@ -524,6 +541,7 @@
     $('#type').value = c.tipo || 'creature';
     $('#cost').value = c.coste ?? 0;
     $('#tags').value = c.etiquetas || '';
+    if ($('#pduracion')) $('#pduracion').value = c.duracion || 'instantaneo';
     $('#sprota').value = c.sprota || '';
     $('#soculta').checked = c.soculta !== false;
     $('#body').value = c.texto || '';
@@ -550,6 +568,12 @@
 
   function accentOf(c){
     if (c.tipo === 'creature') return ACCENT[c.rareza] || ACCENT.comun;
+    // El Pacto lleva su duración en la propia etiqueta: saber cuánto dura es
+    // la mitad de la decisión, y buscarla en el cuerpo es perder tiempo.
+    if (c.tipo === 'pacto'){
+      const dur = DURACIONES_PACTO[c.duracion] || '';
+      return { c: TYPES.pacto.c, label: dur ? `PACTO · ${dur}` : 'PACTO' };
+    }
     return TYPES[c.tipo] || ACCENT.comun;
   }
 
@@ -1693,6 +1717,7 @@
     $('#herogroup').classList.toggle('hidden', t !== 'hero');
     $('#heraldogroup').classList.toggle('hidden', !heraldo);
     $('#sendagroup').classList.toggle('hidden', t !== 'senda');
+    $('#pactogroup').classList.toggle('hidden', t !== 'pacto');
     $('#tags').closest('label').classList.toggle('hidden', t === 'senda');
     $('#rarityrow').classList.toggle('hidden', t !== 'creature');
     $('#atkwrap').classList.toggle('hidden', t !== 'creature');
@@ -1952,6 +1977,7 @@
   const TIPOS_BIBLIOTECA = {
     creature: 'Criatura', spell: 'Hechizo', trap: 'Trampa', wall: 'Muro',
     weapon: 'Arma', hero: 'Protagonista', senda: 'Senda', heraldo: 'Evento',
+    pacto: 'Pacto',
   };
 
   $('#save').onclick = async () => {

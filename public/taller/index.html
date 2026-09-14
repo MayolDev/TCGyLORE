@@ -91,6 +91,7 @@
               <option value="weapon">Arma</option>
               <option value="hero">Protagonista</option>
               <option value="senda">Senda</option>
+              <option value="pacto">Pacto (mazo social)</option>
               <option value="heraldo">El Heraldo / Evento</option>
             </select>
           </label>
@@ -121,6 +122,23 @@
             La Habilidad Única y El Final van en el cuadro de texto.<br>
             Formato: <code>## ÚNICA — Nombre</code> y <code>## EL FINAL — Nombre</code> como títulos
             (verde y rojo), <code>---</code> en su línea como separador.</p>
+        </div>
+
+        <div id="pactogroup" class="sub hidden">
+          <p class="sublabel">Pacto</p>
+          <label class="f"><span>Duración</span>
+            <select id="pduracion">
+              <option value="instantaneo">Instantáneo</option>
+              <option value="r1">1 ronda</option>
+              <option value="r2">2 rondas</option>
+              <option value="r3">3 rondas</option>
+              <option value="partida">Resto de la partida</option>
+            </select></label>
+          <p class="note">La duración se pinta sola en la etiqueta: <code>PACTO · 2 RONDAS</code>.<br>
+            Las tres ramas van en el cuadro de texto como títulos, y salen con su color:
+            <code>## ACEPTA</code> (verde), <code>## RECHAZA</code> (ámbar) y
+            <code>## TRAICIÓN</code> (rojo).<br>
+            Los instantáneos no llevan TRAICIÓN: se resuelven y se acabó.</p>
         </div>
 
         <div id="sendagroup" class="sub hidden">
