@@ -33,15 +33,17 @@ SC = r'C:\Users\ivmab\AppData\Local\Temp\claude\C--Users-ivmab-Documents-Taponaz
 # son este juego. Minima resultante: 36 sobre 255.
 PALETA = {
     # tono · saturacion · luz · destellos
-    'comun':      (95,  0.50, 0.88, 0),    # verde: la humilde, sin adornos
-    'elite':      (45,  0.70, 1.25, 90),   # ORO con destellos
-    'legendaria': (48,  0.80, 1.45, 220),  # ORO y el doble de destellos
+    # Las tres criaturas comparten tono: son la misma familia y asi se leen.
+    # Lo que sube con la rareza es la LUZ y los DESTELLOS, no el color.
+    'comun':      (36,  0.58, 0.98, 0),    # ocre anaranjado, sin adornos
+    'elite':      (45,  0.70, 1.18, 90),   # oro con destellos
+    'legendaria': (48,  0.80, 1.45, 220),  # oro radiante, el doble de destellos
     'spell':      (285, 0.52, 1.10, 0),    # morado
-    'trap':       (2,   0.60, 0.85, 0),    # rojo sangre, oscuro
+    'trap':       (357, 0.68, 0.70, 0),    # rojo sangre, mas oscuro que el ocre
     'wall':       (35,  0.05, 1.20, 0),    # PIEDRA: gris neutro
     'weapon':     (212, 0.55, 0.70, 0),    # acero, azul oscuro
     'hero':       (18,  0.50, 1.30, 0),    # teja
-    'heraldo':    (30,  0.10, 0.75, 0),    # carbon
+    'heraldo':    (30,  0.08, 0.45, 0),    # carbon casi negro: se separa del ocre por la luz, no por el tono
     'pacto':      (162, 0.55, 1.00, 0),    # verde azulado
     'evento':     (330, 0.55, 1.15, 0),    # vino
 }
