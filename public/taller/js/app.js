@@ -1252,7 +1252,7 @@
     if (el.dataset.rareza !== rar){
       el.dataset.rareza = rar;
       $$('#centelleo i').forEach((capa, n) => {
-        capa.style.backgroundImage = `url("images/marcos/marco-${rar}-destellos${n + 1}.png?v=20260927")`;
+        capa.style.backgroundImage = `url("images/marcos/marco-${rar}-destellos${n + 1}.png?v=20260928")`;
       });
     }
   }
@@ -1284,7 +1284,7 @@
     };
     // Si falta el fichero no pasa nada: se queda con el marco base.
     im.onerror = () => {};
-    im.src = `images/marcos/marco-${tipo}.png?v=20260927`;
+    im.src = `images/marcos/marco-${tipo}.png?v=20260928`;
   }
   /**
    * Clave de layout EFECTIVA: la del marco que realmente se está pintando.
@@ -2502,6 +2502,6 @@
       draw();
     };
     im.onerror = () => {};
-    im.src = 'images/marco.png?v=20260927';   // ver la nota del ?v= en index.html
+    im.src = 'images/marco.png?v=20260928';   // ver la nota del ?v= en index.html
   })();
 })();

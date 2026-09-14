@@ -43,12 +43,12 @@ PALETA = {
     'wall':       (35,  0.05, 1.20, 0),    # PIEDRA: gris neutro
     'weapon':     (212, 0.55, 0.70, 0),    # acero, azul oscuro
     'hero':       (18,  0.50, 1.30, 0),    # teja
-    'heraldo':    (30,  0.10, 0.58, 0),    # carbon: separado del ocre por la luz, y de la senda por el tono
+    'heraldo':    (28,  0.20, 0.62, 0),    # tinta parda: se separa del negro de la Senda por la luz
     'pacto':      (162, 0.55, 1.00, 0),    # verde azulado
     'evento':     (330, 0.55, 1.15, 0),    # vino
     # La Senda se juega boca abajo y es lo que aun no has contado: casi negra.
     # Le queda un fondo verde de bosque para que no sea un agujero plano.
-    'senda':      (118, 0.50, 0.28, 0),    # negro verdoso, la mas oscura de todas
+    'senda':      (30,  0.04, 0.26, 0),    # negro neutro: la mas oscura, sin tinte de color
 }
 
 im = Image.open(ORIG)
