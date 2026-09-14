@@ -69,12 +69,7 @@ class HojaTTS
         $cartas = array_slice($cartas, 0, self::POR_HOJA);
         $total = count($cartas);
 
-        // TTS reparte la imagen en columnas x filas exactas, asi que la
-        // rejilla se ajusta al numero real de cartas: si sobran celdas, las
-        // ultimas salen en blanco y en TTS se borran. Menos celdas vacias
-        // cuanto mejor cuadre.
-        $columnas = min(self::COLUMNAS, max(1, $total));
-        $filas = (int) ceil($total / $columnas);
+        [$columnas, $filas] = self::rejillaPara($total);
 
         $hoja = imagecreatetruecolor($columnas * self::ANCHO_CELDA, $filas * self::ALTO_CELDA);
 
@@ -123,6 +118,41 @@ class HojaTTS
         imagedestroy($hoja);
 
         return ['png' => $png, 'columnas' => $columnas, 'filas' => $filas, 'cartas' => $total];
+    }
+
+    /**
+     * Elige la cuadricula que menos celdas desperdicia, porque cada celda
+     * sobrante es una carta en blanco que hay que borrar a mano dentro de
+     * TTS. Con 11 cartas, 10x2 deja nueve vacias y 6x2 solo una.
+     *
+     * A igualdad de desperdicio gana la mas ancha: las hojas apaisadas se
+     * suben y se ven mejor.
+     *
+     * @return array{0: int, 1: int}
+     */
+    public static function rejillaPara(int $total): array
+    {
+        $total = max(1, min($total, self::POR_HOJA));
+        $mejor = [1, $total];
+        $desperdicioMejor = PHP_INT_MAX;
+
+        for ($columnas = 1; $columnas <= self::COLUMNAS; $columnas++) {
+            $filas = (int) ceil($total / $columnas);
+
+            if ($filas > self::FILAS) {
+                continue; // no cabe en una hoja de TTS
+            }
+
+            $desperdicio = $columnas * $filas - $total;
+
+            if ($desperdicio < $desperdicioMejor
+                || ($desperdicio === $desperdicioMejor && $columnas > $mejor[0])) {
+                $desperdicioMejor = $desperdicio;
+                $mejor = [$columnas, $filas];
+            }
+        }
+
+        return $mejor;
     }
 
     /** Celda de relleno para una carta sin ilustracion: que se vea cual falta. */
