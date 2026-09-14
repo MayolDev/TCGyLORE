@@ -36,8 +36,8 @@ PALETA = {
     # Las tres criaturas comparten tono: son la misma familia y asi se leen.
     # Lo que sube con la rareza es la LUZ y los DESTELLOS, no el color.
     'comun':      (36,  0.58, 0.98, 0),    # ocre anaranjado, sin adornos
-    'elite':      (45,  0.70, 1.18, 90),   # oro con destellos
-    'legendaria': (48,  0.80, 1.45, 220),  # oro radiante, el doble de destellos
+    'elite':      (45,  0.70, 1.18, 26),   # oro con destellos
+    'legendaria': (48,  0.80, 1.45, 60),   # oro radiante, el doble de destellos
     'spell':      (285, 0.52, 1.10, 0),    # morado
     'trap':       (357, 0.68, 0.70, 0),    # rojo sangre, mas oscuro que el ocre
     'wall':       (35,  0.05, 1.20, 0),    # PIEDRA: gris neutro
@@ -76,9 +76,14 @@ def recolorear(tono, sat, luz):
 
 
 def sembrar_destellos(img, cuantos, semilla=7):
-    """Chispas de gema sobre la franja de espinas: un nucleo blanco y cuatro
-    brazos que se apagan. No es un resplandor suave repartido por todo —eso
-    solo aclara el oro—: son puntos de luz separados, que es lo que brilla.
+    """Chispas de gema sobre la franja de espinas: nucleo claro y cuatro
+    brazos que se apagan.
+
+    Van GRANDES a proposito. El marco mide 1027 de ancho y se pinta a 750,
+    asi que todo se reduce a 0,73: las chispas finas de uno o dos pixeles se
+    deshacian al reducir y en la carta no se veia nada. Mejor pocas y
+    gordas, que se lean como gemas, que muchas y finas, que se leen como
+    ruido y encima desaparecen.
 
     Solo se siembran sobre pixeles de la propia franja, asi la madera, el
     pergamino y la ventana transparente quedan intactos.
@@ -92,40 +97,50 @@ def sembrar_destellos(img, cuantos, semilla=7):
     W, H = out.size
     rnd = random.Random(semilla)
 
-    puestos = 0
-    intentos = 0
-    while puestos < cuantos and intentos < cuantos * 400:
+    def mezclar(cx, cy, fuerza):
+        if not (0 <= cx < W and 0 <= cy < H):
+            return
+        r, g, b, a = px[cx, cy]
+        if a == 0:
+            return
+        f = max(0.0, min(1.0, fuerza))
+        # Hacia blanco calido, no blanco puro: es una gema sobre oro.
+        px[cx, cy] = (int(r + (255 - r) * f),
+                      int(g + (253 - g) * f),
+                      int(b + (235 - b) * f), a)
+
+    puestos = intentos = 0
+    while puestos < cuantos and intentos < cuantos * 500:
         intentos += 1
-        x = rnd.randrange(4, W - 4)
-        y = rnd.randrange(4, H - 4)
+        x = rnd.randrange(14, W - 14)
+        y = rnd.randrange(14, H - 14)
         if idx[x, y] not in sel:
             continue
 
-        # Tamanos variados: unas pocas grandes mandan, el resto son polvo.
-        grande = rnd.random() < 0.18
-        brazo = rnd.choice([2, 3, 4]) if grande else rnd.choice([1, 2])
-        calor = rnd.uniform(0.85, 1.0)
+        grande = rnd.random() < 0.30
+        brazo = rnd.randint(9, 14) if grande else rnd.randint(5, 8)
+        nucleo = 2 if grande else 1
 
-        def mezclar(cx, cy, fuerza):
-            if not (0 <= cx < W and 0 <= cy < H):
-                return
-            r, g, b, a = px[cx, cy]
-            if a == 0:
-                return
-            f = max(0.0, min(1.0, fuerza))
-            # Hacia blanco calido, no hacia blanco puro: es oro, no un flash.
-            px[cx, cy] = (int(r + (255 - r) * f),
-                          int(g + (252 - g) * f),
-                          int(b + (228 - b) * f), a)
+        # Nucleo: un cuadradito lleno, que es lo que sobrevive a la reduccion.
+        for dx in range(-nucleo, nucleo + 1):
+            for dy in range(-nucleo, nucleo + 1):
+                mezclar(x + dx, y + dy, 1.0 if abs(dx) + abs(dy) <= nucleo else 0.7)
 
-        mezclar(x, y, calor)
-        for d in range(1, brazo + 1):
-            f = calor * (1 - d / (brazo + 1)) ** 1.6
+        # Brazos en cruz, apagandose hacia la punta.
+        for d in range(nucleo + 1, brazo + 1):
+            f = (1 - (d - nucleo) / (brazo - nucleo + 1)) ** 1.5
             mezclar(x + d, y, f); mezclar(x - d, y, f)
             mezclar(x, y + d, f); mezclar(x, y - d, f)
+            # Un pixel de grosor a los lados del brazo para que no se pierda.
+            if d <= brazo * 0.45:
+                mezclar(x + d, y + 1, f * .5); mezclar(x + d, y - 1, f * .5)
+                mezclar(x - d, y + 1, f * .5); mezclar(x - d, y - 1, f * .5)
+                mezclar(x + 1, y + d, f * .5); mezclar(x - 1, y + d, f * .5)
+                mezclar(x + 1, y - d, f * .5); mezclar(x - 1, y - d, f * .5)
+
         if grande:
-            for d in (1, 2):
-                f = calor * 0.28 / d
+            for d in range(1, 5):
+                f = 0.35 * (1 - d / 5)
                 mezclar(x + d, y + d, f); mezclar(x - d, y - d, f)
                 mezclar(x + d, y - d, f); mezclar(x - d, y + d, f)
         puestos += 1

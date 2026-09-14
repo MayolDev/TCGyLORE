@@ -1252,7 +1252,7 @@
     };
     // Si falta el fichero no pasa nada: se queda con el marco base.
     im.onerror = () => {};
-    im.src = `images/marcos/marco-${tipo}.png?v=20260923`;
+    im.src = `images/marcos/marco-${tipo}.png?v=20260924`;
   }
   /**
    * Clave de layout EFECTIVA: la del marco que realmente se está pintando.
@@ -2471,6 +2471,6 @@
       draw();
     };
     im.onerror = () => {};
-    im.src = 'images/marco.png?v=20260923';   // ver la nota del ?v= en index.html
+    im.src = 'images/marco.png?v=20260924';   // ver la nota del ?v= en index.html
   })();
 })();
