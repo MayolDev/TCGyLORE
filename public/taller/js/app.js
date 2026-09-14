@@ -679,10 +679,9 @@
       g.fillStyle = C.parch; g.fillRect(rx+18, ry-9, 132, 18);
       g.fillStyle = INK_P; g.font = '700 15px Archivo, sans-serif';
       g.fillText('EVENTO GLOBAL', rx+24, ry+4);
-      const rf = fitText(g, c.hregla, '"Alegreya", serif', rw-36, rh-30, 24, 14);
-      let ry2 = ry + 34;
-      g.font = rf.font;
-      rf.lines.forEach(l => { g.fillText(l, rx+18, ry2); ry2 += rf.lh; });
+      // Por drawBody y no por fitText: si no, el marcado en linea de la regla
+      // sale en crudo y en el pliego se leian los asteriscos de **negrita**.
+      drawBody(g, c.hregla, rx+18, rw-36, ry+34, rh-30, INK_P, false);
     }
 
     // ---- desde la barra: el escéptico le rebate
@@ -1253,7 +1252,7 @@
     };
     // Si falta el fichero no pasa nada: se queda con el marco base.
     im.onerror = () => {};
-    im.src = `images/marcos/marco-${tipo}.png?v=20260917`;
+    im.src = `images/marcos/marco-${tipo}.png?v=20260918`;
   }
   /**
    * Clave de layout EFECTIVA: la del marco que realmente se está pintando.
@@ -2466,6 +2465,6 @@
       draw();
     };
     im.onerror = () => {};
-    im.src = 'images/marco.png?v=20260917';   // ver la nota del ?v= en index.html
+    im.src = 'images/marco.png?v=20260918';   // ver la nota del ?v= en index.html
   })();
 })();
